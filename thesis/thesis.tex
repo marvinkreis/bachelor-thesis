@@ -1,0 +1,96 @@
+% Standard packages
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[bookmarks,hidelinks]{hyperref}
+\usepackage{graphicx}
+
+% Math symbols
+\usepackage{amsfonts}
+
+% List formatting
+\usepackage{enumitem}
+
+% URLs for references
+\usepackage{url}
+
+% Page style
+\pagestyle{headings}
+
+% Title page
+\usepackage{titling}
+\include{titlepage}
+
+% Information
+\title{Building Whisker - A Testing Framework for Scratch}
+\author{Marvin Kreis}
+\date{DATE TBD}
+
+
+
+
+
+\begin{document}
+
+% https://sokogskriv.no/en/writing/structure-and-argumentation/structuring-a-thesis/
+% https://sokogskriv.no/en/writing/language-and-style/organising-your-writing/
+
+% Write intro + background parallel to the main part and only gather some data before.
+
+% RQs: Can Scratch programs be automatically assessed?
+%      Can this be done without simulating user input / just with constraints?
+
+% Title
+\maketitle
+
+% Table of Contents
+\tableofcontents
+\clearpage
+
+% Abstract
+\input{abstract}
+%     Explain what this thesis is about, and give a quick summary.
+%     Give the reader a good idea about what's going on.
+
+\input{introduction}
+%     Overview of the main points.
+%     Discuss the research questions.
+%     Define the scope of the thesis.
+%     Schematic outline for the rest of the thesis.
+%
+%     Awaken the reader's interest.
+%     Should connect with the conclusions, so review / rewrite it in the end.
+
+\input{background_and_related_work}
+%     Point out previous research on the field and convince the reader that
+%     the theme is important and the approach is relevant.
+%     (What do we know and what are we uncertain about?)
+%     Demonstrate the need for this particular kind of research, show data that proves it.
+
+\input{system_design}
+
+\input{evaluation_method}
+%     Show that the method is suited for answering the research questions.
+%     Show that the method is valid and reliable.
+%     How was the data collected, what options does this give?
+%     What did I do to increase validity?
+%     Describe weaknesses as well as strengths.
+%     Defend and, at the same time, criticise the choices I made.
+%     Document what I did and what I did not do.
+
+\input{results_and_discussion}
+%    Present findings in a systematic manner.
+
+\input{conclusion}
+%    Conclude and sum up the results.
+%    Provide a conclusion to the research questions.
+
+\section{TEST}
+This is a test\cite{hairball} citation. \\
+This is a test\cite{scratch} citation.
+
+% Bibliography
+\clearpage
+\bibliographystyle{plain}
+\bibliography{references}{}
+
+\end{document}
