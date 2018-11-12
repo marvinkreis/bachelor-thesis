@@ -1,0 +1,11 @@
+/* Invalid names */
+FS_012.sb2      Deleted variable: time
+FS_017.sb2      Renamed variable: "Punkte" to "Bunkte"
+24.sb2          Deleted variable: time
+27.sb2          Renamed Sprite: "Bowl" to "Figur2" (also uses sprite for red line)
+
+/* Other problems */
+FS_001.sb2      Starts on up key press instead of green flag
+FS_006.sb2      Wrong scratch project file (scored 30 points but has no code)
+FS_020.sb2      Goes game over on green flag (has to be started twice)
+18.sb2          Goes game over on green flag (sprites have to be dragged up to make it work)
