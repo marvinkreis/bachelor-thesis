@@ -79,11 +79,13 @@ const convertToCsv = function (str) {
         const parser = new Parser();
 
         parser.on('assert', test => {
-            const id = test.id;
-            const name = test.name;
-            const status = test.ok ? 'pass' : test.diag.severity;
-            const message = test.ok ? '' : test.diag.error.message;
-            result.push([id, name, status, message]);
+            for (const entry of test.diag.log) {
+                const id = entry.id;
+                const name = entry.name;
+                const status = entry.status
+                const message = entry.message
+                result.push([id, name, status, message]);
+            }
         });
 
         parser.on('complete', () => {

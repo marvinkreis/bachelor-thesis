@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /*
- * Usage: convert-tap.js [FILE]...
+ * Usage: convert-tap.js [--constraint] [FILE]...
  *
  * Splits TAP13 output from multiple projects into single files and converts them to CSV.
  * The output files are renamed according to the map below.
@@ -9,10 +9,14 @@
  * A single CSV file for every project is placed into ${PWD}/csv.
  * A single CSV file for the coverage of every project is placed into ${PWD}/cov.
  *
+ * If "--constraint" is specified, parse the TAP13 output according to a different format that
+ * is used by the constraint tests.
+ *
  * Required dependencies:
  * tap-parser
  * csv-stringify
  * js-yaml
+ * minilog
  */
 
 const fs = require('fs');
@@ -22,6 +26,9 @@ const {Readable} = require('stream');
 const Parser = require('tap-parser');
 const csvStringify = require('csv-stringify/lib/sync');
 const yaml = require('js-yaml');
+const minilog = require('minilog');
+
+let isConstraintTests = false;
 
 /**
  * Maps the project names to the names to the student id in the manual evaluation.
@@ -79,11 +86,21 @@ const convertToCsv = function (str) {
         const parser = new Parser();
 
         parser.on('assert', test => {
-            const id = test.id;
-            const name = test.name;
-            const status = test.ok ? 'pass' : test.diag.severity;
-            const message = test.ok ? '' : test.diag.error.message;
-            result.push([id, name, status, message]);
+            if (isConstraintTests) {
+                for (const entry of test.diag.log) {
+                    const id = entry.id;
+                    const name = entry.name;
+                    const status = entry.status
+                    const message = entry.message
+                    result.push([id, name, status, message]);
+                }
+            } else {
+                const id = test.id;
+                const name = test.name;
+                const status = test.ok ? 'pass' : test.diag.severity;
+                const message = test.ok ? '' : test.diag.error.message;
+                result.push([id, name, status, message]);
+            }
         });
 
         parser.on('complete', () => {
@@ -113,11 +130,11 @@ const convertCoverageToCsv = function (str) {
     coverageString = coverageString.replace(/^# /gm, '');
     const coverage = yaml.safeLoad(coverageString);
 
-    const result = [['sprite', 'percent', 'num_blocks', 'num_covered_blocks']];
+    const result = [['sprite', 'percent', 'total', 'covered']];
 
     const getRowFromString = (name, coverageStr) => {
         const row = [name];
-        const coverage = coverageStr.match(/(\d+\.?\d*)\s\((\d+)\/(\d+)\)/);
+        const coverage = coverageStr.match(/(.*)\s\((\d+)\/(\d+)\)/);
         row.push(coverage[1]);
         row.push(coverage[2]);
         row.push(coverage[3]);
@@ -159,6 +176,8 @@ const exportTapAndCsv = async function (str) {
 }
 
 const main = function () {
+    const argv = require('minimist')(process.argv.slice(2), {boolean: true});
+
     try {
         fs.mkdirSync(path.join('.', 'tap'));
     } catch (err) {
@@ -175,9 +194,11 @@ const main = function () {
         if (err.code !== 'EEXIST') throw err;
     }
 
-    const files = process.argv.slice(2);
+    if (argv.constraint || argv.c) {
+        isConstraintTests = true;
+    }
 
-    for (const file of files) {
+    for (const file of argv._) {
         const str = fs.readFileSync(file, 'utf-8');
         const taps = str.split(/(?=# project)/);
         for (const tap of taps) {

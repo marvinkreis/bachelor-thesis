@@ -12,7 +12,7 @@ points = keller.points;
 ids = intersect(names(passes), names(points));
 data = data.frame(points = points[ids], passes = passes[ids]);
 
-filteredIds = setdiff(ids, c("K6_S12", "K6_S17", "K7_S24", "K6_S01", "K6_S06", "K6_S20", "K7_S18"));
+filteredIds = setdiff(ids, c("K6_S12", "K6_S17", "K7_S24", "K7_S27", "K6_S01", "K6_S06", "K6_S20", "K7_S18"));
 filteredData = data.frame(points = points[filteredIds], passes = passes[filteredIds]);
 
 scatter = ggplot(data = data, aes(x = points, y = passes)) +
