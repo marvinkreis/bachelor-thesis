@@ -1,4 +1,116 @@
-#project: 15.sb2
+# project: K7_S14.sb3
+TAP version 13
+1..28
+ok 1 - Variable Initialization Test
+not ok 2 - Bowl Initialization Test
+  ---
+  severity: fail
+  error:
+    name: AssertionError
+    actual: -72.05000000000001
+    expected: 0
+    operator: ==
+    message: Bowl must start at x = 0.
+    generatedMessage: false
+  ...
+ok 3 - Fruit Initialization Test
+ok 4 - Bowl Movement Test
+not ok 5 - Bowl Movement Details Test
+  ---
+  severity: fail
+  error:
+    name: AssertionError
+    actual: false
+    expected: true
+    operator: ok
+    message: Bowl must move in steps of size 10.
+    generatedMessage: false
+    constraint: '[no name]'
+  ...
+ok 6 - Apple Falling Test
+ok 7 - Apple Falling Details Test
+ok 8 - Banana Falling Test
+ok 9 - Banana Falling Details Test
+ok 10 - Apple Spawn Test
+ok 11 - Apple Spawn Random X Position Test
+ok 12 - Apple Spawn Y Position Test
+ok 13 - Banana Spawn Test
+ok 14 - Banana Spawn Random X Position Test
+not ok 15 - Banana Spawn Y Position Test
+  ---
+  severity: fail
+  error:
+    name: AssertionError
+    actual: false
+    expected: true
+    operator: ok
+    message: Bananas must spawn at y = 170.
+    generatedMessage: false
+  ...
+ok 16 - Only One Apple Test
+ok 17 - Only One Banana Test
+not ok 18 - Banana Fall Delay Test
+  ---
+  severity: fail
+  error:
+    name: AssertionError
+    actual: false
+    expected: true
+    operator: ok
+    message: Banana must not be visible for a second in the beginning.
+    generatedMessage: false
+    constraint: '[no name]'
+  ...
+not ok 19 - Banana Ground Delay Test
+  ---
+  severity: fail
+  error:
+    name: AssertionError
+    actual: false
+    expected: true
+    operator: ok
+    message: Banana must not be visible for a second after touching the ground.
+    generatedMessage: false
+    constraint: '[no name]'
+  ...
+ok 20 - Apple Points Test
+  ---
+  log:
+    - Banana touched the ground before the apple touched the bowl.
+  ...
+ok 21 - Apple Game Over Test
+ok 22 - Apple Game Over Message Test
+ok 23 - Banana Bowl Points Test
+ok 24 - Banana Ground Points Test
+ok 25 - Banana Ground Message Test
+ok 26 - Timer Tick Test
+ok 27 - Timer Game Over Test
+not ok 28 - Timer Game Over Message Test
+  ---
+  severity: fail
+  error:
+    name: AssertionError
+    actual: false
+    expected: true
+    operator: ok
+    message: Bowl must display a message when the time is up.
+    generatedMessage: false
+  ...
+# summary:
+#   tests: 28
+#   pass: 22
+#   fail: 6
+#   error: 0
+#   skip: 0
+# coverage:
+#   combined: 1.00 (40/40)
+#   individual:
+#     Stage: 1.00 (7/7)
+#     Apple: 1.00 (13/13)
+#     Bowl: 1.00 (6/6)
+#     Bananas: 1.00 (14/14)
+
+# project: K7_S15.sb3
 TAP version 13
 1..28
 ok 1 - Variable Initialization Test
@@ -55,7 +167,7 @@ ok 19 - Banana Ground Delay Test
 ok 20 - Apple Points Test
   ---
   log:
-    - Banana touched the bowl before the apple touched the bowl.
+    - Banana touched the ground before the apple touched the bowl.
   ...
 ok 21 - Apple Game Over Test
 ok 22 - Apple Game Over Message Test
@@ -75,13 +187,21 @@ ok 25 - Banana Ground Message Test
 ok 26 - Timer Tick Test
 ok 27 - Timer Game Over Test
 ok 28 - Timer Game Over Message Test
-# tests: 28
-# pass: 24
-# fail: 3
-# error: 0
-# skip: 1
+# summary:
+#   tests: 28
+#   pass: 24
+#   fail: 3
+#   error: 0
+#   skip: 1
+# coverage:
+#   combined: 1.00 (42/42)
+#   individual:
+#     Stage: NaN (0/0)
+#     Bowl: 1.00 (11/11)
+#     Apple: 1.00 (15/15)
+#     Bananas: 1.00 (16/16)
 
-#project: 16.sb2
+# project: K7_S16.sb3
 TAP version 13
 1..28
 not ok 1 - Variable Initialization Test
@@ -117,27 +237,18 @@ not ok 3 - Fruit Initialization Test
     message: Apple must have a size of 50%.
     generatedMessage: false
   ...
-not ok 4 - Bowl Movement Test
+ok 4 - Bowl Movement Test
+not ok 5 - Bowl Movement Details Test
   ---
   severity: fail
   error:
     name: AssertionError
-    actual: -112
-    expected: -112
-    operator: <
-    message: Bowl must move to the left when left arrow key is pressed.
+    actual: false
+    expected: true
+    operator: ok
+    message: Bowl must move in steps of size 10.
     generatedMessage: false
-  ...
-not ok 5 - Bowl Movement Details Test
-  ---
-  severity: skip
-  error:
-    name: AssumptionError
-    actual: -112
-    expected: -112
-    operator: <
-    message: Bowl must move to the left when left arrow key is pressed.
-    generatedMessage: false
+    constraint: '[no name]'
   ...
 ok 6 - Apple Falling Test
 ok 7 - Apple Falling Details Test
@@ -221,21 +332,39 @@ not ok 27 - Timer Game Over Test
   severity: fail
   error:
     name: AssertionError
-    actual: 2
+    actual: -92
     expected: -100
     operator: ==
     message: Apple must not move after game is over (should be over).
     generatedMessage: false
     constraint: '[no name]'
   ...
-ok 28 - Timer Game Over Message Test
-# tests: 28
-# pass: 17
-# fail: 8
-# error: 0
-# skip: 3
+not ok 28 - Timer Game Over Message Test
+  ---
+  severity: fail
+  error:
+    name: AssertionError
+    actual: 3
+    expected: 20000
+    operator: '>='
+    message: Game over message must not appear before 20 seconds.
+    generatedMessage: false
+  ...
+# summary:
+#   tests: 28
+#   pass: 17
+#   fail: 9
+#   error: 0
+#   skip: 2
+# coverage:
+#   combined: 0.86 (37/43)
+#   individual:
+#     Stage: NaN (0/0)
+#     Bananas: 0.79 (11/14)
+#     Bowl: 0.89 (8/9)
+#     Apple: 0.90 (18/20)
 
-#project: 17.sb2
+# project: K7_S17.sb3
 TAP version 13
 1..28
 ok 1 - Variable Initialization Test
@@ -256,18 +385,7 @@ ok 15 - Banana Spawn Y Position Test
 ok 16 - Only One Apple Test
 ok 17 - Only One Banana Test
 ok 18 - Banana Fall Delay Test
-not ok 19 - Banana Ground Delay Test
-  ---
-  severity: fail
-  error:
-    name: AssertionError
-    actual: false
-    expected: true
-    operator: ok
-    message: Banana must not be visible for a second after touching the ground.
-    generatedMessage: false
-    constraint: '[no name]'
-  ...
+ok 19 - Banana Ground Delay Test
 ok 20 - Apple Points Test
 ok 21 - Apple Game Over Test
 not ok 22 - Apple Game Over Message Test
@@ -281,16 +399,8 @@ not ok 22 - Apple Game Over Message Test
     message: Apple must display a message if it hits the ground.
     generatedMessage: false
   ...
-not ok 23 - Banana Bowl Points Test
+ok 23 - Banana Bowl Points Test
   ---
-  severity: skip
-  error:
-    name: AssumptionError
-    actual: false
-    expected: true
-    operator: ok
-    message: Apple touched the bowl before banana's score could be added.
-    generatedMessage: false
   log:
     - Apple touched the bowl before the banana touched the bowl.
   ...
@@ -315,13 +425,21 @@ not ok 25 - Banana Ground Message Test
 ok 26 - Timer Tick Test
 ok 27 - Timer Game Over Test
 ok 28 - Timer Game Over Message Test
-# tests: 28
-# pass: 24
-# fail: 3
-# error: 0
-# skip: 1
+# summary:
+#   tests: 28
+#   pass: 26
+#   fail: 2
+#   error: 0
+#   skip: 0
+# coverage:
+#   combined: 1.00 (52/52)
+#   individual:
+#     Stage: NaN (0/0)
+#     Bowl: 1.00 (16/16)
+#     Apple: 1.00 (14/14)
+#     Bananas: 1.00 (22/22)
 
-#project: 18.sb2
+# project: K7_S18.sb3
 TAP version 13
 1..28
 ok 1 - Variable Initialization Test
@@ -584,13 +702,21 @@ not ok 28 - Timer Game Over Message Test
     message: Bowl must display a message when the time is up.
     generatedMessage: false
   ...
-# tests: 28
-# pass: 5
-# fail: 9
-# error: 0
-# skip: 14
+# summary:
+#   tests: 28
+#   pass: 5
+#   fail: 9
+#   error: 0
+#   skip: 14
+# coverage:
+#   combined: 0.90 (36/40)
+#   individual:
+#     Stage: 1.00 (7/7)
+#     Bowl: 1.00 (8/8)
+#     Apple: 0.85 (11/13)
+#     Bananas: 0.83 (10/12)
 
-#project: 19.sb2
+# project: K7_S19.sb3
 TAP version 13
 1..28
 not ok 1 - Variable Initialization Test
@@ -782,14 +908,32 @@ not ok 27 - Timer Game Over Test
     generatedMessage: false
     constraint: '[no name]'
   ...
-ok 28 - Timer Game Over Message Test
-# tests: 28
-# pass: 13
-# fail: 9
-# error: 0
-# skip: 6
+not ok 28 - Timer Game Over Message Test
+  ---
+  severity: fail
+  error:
+    name: AssertionError
+    actual: 15810
+    expected: 20000
+    operator: '>='
+    message: Game over message must not appear before 20 seconds.
+    generatedMessage: false
+  ...
+# summary:
+#   tests: 28
+#   pass: 12
+#   fail: 10
+#   error: 0
+#   skip: 6
+# coverage:
+#   combined: 0.91 (39/43)
+#   individual:
+#     Stage: NaN (0/0)
+#     Bowl: 1.00 (11/11)
+#     Bananas: 1.00 (13/13)
+#     Apple: 0.79 (15/19)
 
-#project: 20.sb2
+# project: K7_S20.sb3
 TAP version 13
 1..28
 ok 1 - Variable Initialization Test
@@ -868,7 +1012,7 @@ not ok 19 - Banana Ground Delay Test
 ok 20 - Apple Points Test
   ---
   log:
-    - Banana touched the bowl before the apple touched the bowl.
+    - Banana touched the ground before the apple touched the bowl.
   ...
 not ok 21 - Apple Game Over Test
   ---
@@ -894,10 +1038,6 @@ not ok 22 - Apple Game Over Message Test
     generatedMessage: false
   ...
 ok 23 - Banana Bowl Points Test
-  ---
-  log:
-    - Apple touched the bowl before the banana touched the bowl.
-  ...
 not ok 24 - Banana Ground Points Test
   ---
   severity: fail
@@ -926,8 +1066,8 @@ not ok 27 - Timer Game Over Test
   severity: fail
   error:
     name: AssertionError
-    actual: -99.462
-    expected: -99
+    actual: 23.862
+    expected: 30
     operator: ==
     message: Apple must not move after game is over (should be over).
     generatedMessage: false
@@ -944,13 +1084,21 @@ not ok 28 - Timer Game Over Message Test
     message: Bowl must display a message when the time is up.
     generatedMessage: false
   ...
-# tests: 28
-# pass: 17
-# fail: 11
-# error: 0
-# skip: 0
+# summary:
+#   tests: 28
+#   pass: 17
+#   fail: 11
+#   error: 0
+#   skip: 0
+# coverage:
+#   combined: 0.94 (34/36)
+#   individual:
+#     Stage: NaN (0/0)
+#     Bowl: 0.86 (12/14)
+#     Apple: 1.00 (11/11)
+#     Bananas: 1.00 (11/11)
 
-#project: 24.sb2
+# project: K7_S24.sb3
 TAP version 13
 1..28
 not ok 1 - Variable Initialization Test
@@ -984,10 +1132,10 @@ not ok 7 - Apple Falling Details Test
   severity: skip
   error:
     name: AssumptionError
-    actual: 170
-    expected: 170
-    operator: <
-    message: Apple must fall down.
+    actual: false
+    expected: true
+    operator: ok
+    message: Apple must appear on the top of the screen after 5 seconds.
     generatedMessage: false
   ...
 not ok 8 - Banana Falling Test
@@ -1114,14 +1262,15 @@ not ok 18 - Banana Fall Delay Test
   ...
 not ok 19 - Banana Ground Delay Test
   ---
-  severity: skip
+  severity: fail
   error:
-    name: AssumptionError
+    name: AssertionError
     actual: false
-    expected: ground
-    operator: ==
-    message: Banana didn't touch the ground in 30 seconds.
+    expected: true
+    operator: ok
+    message: Banana must not be visible for a second after touching the ground.
     generatedMessage: false
+    constraint: '[no name]'
   ...
 not ok 20 - Apple Points Test
   ---
@@ -1140,9 +1289,9 @@ not ok 21 - Apple Game Over Test
   error:
     name: AssumptionError
     actual: false
-    expected: ground
-    operator: ==
-    message: Apple must have touched the ground after five seconds.
+    expected: true
+    operator: ok
+    message: An apple must appear on the top of the screen after five seconds.
     generatedMessage: false
   ...
 not ok 22 - Apple Game Over Message Test
@@ -1222,13 +1371,21 @@ not ok 28 - Timer Game Over Message Test
     message: Bowl must display a message when the time is up.
     generatedMessage: false
   ...
-# tests: 28
-# pass: 4
-# fail: 6
-# error: 0
-# skip: 18
+# summary:
+#   tests: 28
+#   pass: 4
+#   fail: 7
+#   error: 0
+#   skip: 17
+# coverage:
+#   combined: 0.59 (20/34)
+#   individual:
+#     Stage: NaN (0/0)
+#     Bowl2: 0.88 (7/8)
+#     Apple: 0.69 (9/13)
+#     Bananas: 0.31 (4/13)
 
-#project: 26.sb2
+# project: K7_S26.sb3
 TAP version 13
 1..28
 ok 1 - Variable Initialization Test
@@ -1341,7 +1498,7 @@ not ok 21 - Apple Game Over Test
   severity: fail
   error:
     name: AssertionError
-    actual: 68
+    actual: -210
     expected: 192
     operator: ==
     message: Apple must not move after game is over (should be over).
@@ -1364,8 +1521,16 @@ ok 23 - Banana Bowl Points Test
   log:
     - Apple touched the bowl before the banana touched the bowl.
   ...
-ok 24 - Banana Ground Points Test
+not ok 24 - Banana Ground Points Test
   ---
+  severity: skip
+  error:
+    name: AssumptionError
+    actual: false
+    expected: true
+    operator: ok
+    message: Apple touched the bowl before banana's score could be subtracted.
+    generatedMessage: false
   log:
     - Apple touched the bowl before the banana touched the ground.
   ...
@@ -1395,13 +1560,21 @@ not ok 28 - Timer Game Over Message Test
     message: Bowl must display a message when the time is up.
     generatedMessage: false
   ...
-# tests: 28
-# pass: 16
-# fail: 12
-# error: 0
-# skip: 0
+# summary:
+#   tests: 28
+#   pass: 15
+#   fail: 12
+#   error: 0
+#   skip: 1
+# coverage:
+#   combined: 0.98 (44/45)
+#   individual:
+#     Stage: NaN (0/0)
+#     Apple: 1.00 (14/14)
+#     Bowl: 0.89 (8/9)
+#     Bananas: 1.00 (22/22)
 
-#project: 27.sb2
+# project: K7_S27.sb3
 TAP version 13
 1..28
 not ok 1 - Variable Initialization Test
@@ -1712,9 +1885,18 @@ not ok 28 - Timer Game Over Message Test
     message: Could not find sprite bowl.
     generatedMessage: false
   ...
-# tests: 28
-# pass: 0
-# fail: 2
-# error: 0
-# skip: 26
+# summary:
+#   tests: 28
+#   pass: 0
+#   fail: 2
+#   error: 0
+#   skip: 26
+# coverage:
+#   combined: 0.50 (13/26)
+#   individual:
+#     Stage: NaN (0/0)
+#     Figur2: 0.00 (0/4)
+#     Figur4: NaN (0/0)
+#     Bananas: 0.60 (6/10)
+#     Apple: 0.58 (7/12)
 

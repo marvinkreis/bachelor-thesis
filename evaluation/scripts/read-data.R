@@ -39,25 +39,36 @@ names(csvs.keller_data.points) = csvs.keller_data$Student
 
 ########## Other data ##########################################################
 
-# Projects for which the project file exits
-projects.projects = names(csvs.test_results[[1]]);
+# Projects which are completely excluded from the evaluation
+# K6_S06 got scored 30 points but the projects has no code.
+projects.exculded = c("K6_S06");
+
+# Projects for which the project file exists
+projects.files = setdiff(names(csvs.test_results[[1]]), projects.exculded);
 
 # Projects which were scored manually
-projects.manual = csvs.keller_data$Student;
+projects.scored = setdiff(csvs.keller_data$Student, projects.exculded);
 
 # Projects for which the project file exists and which were scored manually
-projects.intersect = intersect(projects.projects, projects.manual);
+projects.intersect = intersect(projects.files, projects.scored);
 
 # Projects that don't work properly and can be filtered out (e.g. wrong sprite names, don't start on green flag etc.)
 projects.filter = c(
-    "K6_S12",
-    "K6_S17",
-    "K7_S24",
-    "K7_S27",
-    "K6_S01",
-    "K6_S06",
-    "K6_S20",
-    "K7_S18"
+
+    # Some sprite or variable has the wrong name
+    "K6_S12", # Deleted variable: time
+    "K6_S17", # Renamed variable: "Punkte" to "Bunkte"
+    "K7_S24", # Deleted variable: time
+    "K7_S27", # Renamed Sprite: "Bowl" to "Figur2" (also uses sprite for red line)
+
+    # Zero Coverage
+    "K6_S01", # Starts on up key press instead of green flag
+    "K6_S06", # Wrong scratch project file (scored 30 points but has no code)
+    "K6_S14", # Starts on space key press instead of green flag
+
+    # Game Over on startup
+    "K6_S20", # Has to be started twice
+    "K7_S18"  # Sprites have to be dragged up to make it work
 );
 
 # Properly working projects for which the project file exists and which were scored manually

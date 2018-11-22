@@ -1,2 +1,7 @@
 *.pdf
 *TODO*
+
+evaluation/node_modules
+evaluation/data/test-results/*/tap
+evaluation/data/test-results/*/csv
+evaluation/data/test-results/*/cov
