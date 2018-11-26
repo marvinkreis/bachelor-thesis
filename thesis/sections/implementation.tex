@@ -1,0 +1,45 @@
+\section{Implementation}
+
+\subsection{Design Considerations}
+- Lack of traditional IO means makes it hard to extract information about the current program state
+- Interactive nature of Scratch projects makes it difficult to simulate user input
+- Black Box approach means we only test what the user sees
+
+\subsection{Implementation}
+- Implemented in JavaScript as Scratch 3.0 is implemented in JavaScript
+
+\begin{figure}
+    \tikzset{
+        >=latex,
+        label/.style={draw=none, text width=5.3cm, minimum height=0.5cm, text centered},
+          box/.style={draw,      text width=2.5cm, minimum height=0.7cm, text centered},
+         mute/.style={color=gray}
+    }
+    \centering
+    \begin{tikzpicture}
+        \node[box,mute] at ( 0.0,  3.0) (testfw)        {Test Framework};
+        \node[box]      at ( 0.0,  1.5) (testdriver)    {Test Driver};
+        \node[label]    at ( 0.0,  0.0) (vmwrapper)     {VM Wrapper};
+        \node[box]      at (-1.4, -0.7) (sprites)       {Sprites};
+        \node[box]      at (-1.4, -1.6) (inputs)        {Inputs};
+        \node[box]      at ( 1.5, -0.7) (callbacks)     {Callbacks};
+        \node[box]      at ( 1.5, -1.6) (constraints)   {Constraints};
+        \node[box,mute] at (-2.0, -3.2) (scratchvm)     {Scratch VM};
+        \node[box,mute] at ( 2.2, -3.2) (scratchrender) {Renderer};
+
+        \node[draw, fit=(vmwrapper)(sprites)(inputs)(callbacks)(constraints)] (container) {};
+
+        \foreach \pp/\pf/\pt in {--/testfw/testdriver,
+                                 --/testdriver/container,
+                                 --/container/scratchvm,
+                                 --/container/scratchrender,
+                                 --/scratchvm/scratchrender}
+        \draw[shorten >=\pgflinewidth, ->] (\pf) \pp (\pt);
+    \end{tikzpicture}
+    \caption{Components of Whisker}
+    \label{fig:components_of_whisker}
+\end{figure}
+
+\subsection{Running Tests}
+- Whisker comes with an optional testing framework
+- Include a sample test report?
