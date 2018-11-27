@@ -1,7 +1,7 @@
 % Document layout
-\documentclass[12pt,a4paper,twoside]{report}
-\setlength{\oddsidemargin}{31pt}
-\setlength{\evensidemargin}{31pt}
+\documentclass[12pt,a4paper,twoside,openright]{report}
+\usepackage[margin=3.cm]{geometry}
+\raggedbottom
 
 % Standard packages
 \usepackage[utf8]{inputenc}
@@ -24,8 +24,21 @@
 
 % Tikz diagrams
 \usepackage{tikz}
-\usetikzlibrary{fit}
+\usetikzlibrary{fit, backgrounds}
 
+% Source code highlighting
+% outputdir workaround because minted ignores the '-output-directory' flag.
+\usepackage[outputdir=/tmp/latexrun]{minted}
+\newminted{javascript}{
+    autogobble,
+    breaklines,
+    linenos,
+    fontsize=\footnotesize,
+    framesep=3mm,
+    frame=leftline}
+\newmintinline{javascript}{}
+
+% Floating figures in the text
 \usepackage{wrapfig}
 
 % Page style
@@ -35,9 +48,11 @@
     \fancyhead[LE,RO]{\thepage}
     \fancyhead[LO]{\leftmark}
     \fancyhead[RE]{\rightmark}
-    \fancyfoot{}
-}
+    \fancyfoot{}}
 \pagestyle{plain}
+
+% Space between paragraphs
+\newcommand{\parspace}{\medskip}
 
 % Information
 \title{Whisker: Automated Testing of Scratch Programs}
