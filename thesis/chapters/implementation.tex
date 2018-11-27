@@ -1,11 +1,14 @@
-\section{Implementation}
+\chapter{Implementation}
 
-\subsection{Design Considerations}
+\section{Design Considerations}
 - Lack of traditional IO means makes it hard to extract information about the current program state
 - Interactive nature of Scratch projects makes it difficult to simulate user input
 - Black Box approach means we only test what the user sees
+- Scratch depends on the renderer
+- Realistically Only one VM can run a time
+    -> multiple processes could circumvent the problem (-> electron)
 
-\subsection{Implementation}
+\section{Implementation}
 - Implemented in JavaScript as Scratch 3.0 is implemented in JavaScript
 
 \begin{figure}
@@ -40,6 +43,6 @@
     \label{fig:components_of_whisker}
 \end{figure}
 
-\subsection{Running Tests}
+\section{Running Tests}
 - Whisker comes with an optional testing framework
 - Include a sample test report?

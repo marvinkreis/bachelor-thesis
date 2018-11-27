@@ -1,9 +1,13 @@
-\documentclass[a4paper]{article}
+% Document layout
+\documentclass[12pt,a4paper,twoside]{report}
+\setlength{\oddsidemargin}{31pt}
+\setlength{\evensidemargin}{31pt}
 
 % Standard packages
 \usepackage[utf8]{inputenc}
 \usepackage[bookmarks,hidelinks]{hyperref}
 \usepackage{graphicx}
+\graphicspath{{media/}}
 
 % List formatting
 \usepackage{enumitem}
@@ -16,14 +20,24 @@
 
 % Title page
 \usepackage{titling}
-\include{titlepage}
+\input{titlepage}
 
-% Tikz
+% Tikz diagrams
 \usepackage{tikz}
 \usetikzlibrary{fit}
 
+\usepackage{wrapfig}
+
 % Page style
-\pagestyle{headings}
+\usepackage{fancyhdr}
+\fancypagestyle{plain}{
+    \fancyhead{}
+    \fancyhead[LE,RO]{\thepage}
+    \fancyhead[LO]{\leftmark}
+    \fancyhead[RE]{\rightmark}
+    \fancyfoot{}
+}
+\pagestyle{plain}
 
 % Information
 \title{Whisker: Automated Testing of Scratch Programs}
@@ -48,11 +62,11 @@
 \clearpage
 
 % Abstract
-\include{sections/abstract}
+\input{chapters/abstract}
 %     Explain what this thesis is about, and give a quick summary.
 %     Give the reader a good idea about what's going on.
 
-\include{sections/introduction}
+\input{chapters/introduction}
 %     Overview of the main points.
 %     Discuss the research questions.
 %     Define the scope of the thesis.
@@ -61,11 +75,11 @@
 %     Awaken the reader's interest.
 %     Should connect with the conclusions, so review / rewrite it in the end.
 
-\include{sections/testing-in-scratch}
+\input{chapters/testing-in-scratch}
 
-\include{sections/implementation}
+\input{chapters/implementation}
 
-\include{sections/evaluation-method}
+\input{chapters/evaluation-method}
 %     Show that the method is suited for answering the research questions.
 %     Show that the method is valid and reliable.
 %     How was the data collected, what options does this give?
@@ -74,14 +88,14 @@
 %     Defend and, at the same time, criticise the choices I made.
 %     Document what I did and what I did not do.
 
-\include{sections/results-and-discussion}
+\input{chapters/results-and-discussion}
 %    Present findings in a systematic manner.
 
-\include{sections/conclusion}
+\input{chapters/conclusion}
 %    Conclude and sum up the results.
 %    Provide a conclusion to the research questions.
 
-\include{sections/future-work}
+\input{chapters/future-work}
 
 This is a test citation: \cite{hairball} \\
 This is a test citation: \cite{scratch}
