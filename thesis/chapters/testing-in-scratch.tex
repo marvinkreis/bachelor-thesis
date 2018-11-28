@@ -5,8 +5,8 @@
 \begin{wrapfigure}{r}{0.5\textwidth}
     \centering
     \includegraphics[width=0.4\textwidth]{scratch-example}
-    \caption{Scratch Interface}
-    \label{fig:scratch_interface}
+    \caption{The Scratch Interface}
+    \label{fig:the_scratch_interface}
 \end{wrapfigure}
 === Scratch
 - block based programming language currently developed by the MIT Media Lab \cite{scratch, scratchproject}
@@ -39,11 +39,15 @@ $\rightarrow$ automatic assessment of Scratch programs is still an open problem
 - Replaces constructs in the Scratch project
     -> allows simple textual input-output testing with pre-defined values using "ask" and "say" blocks
     - "ask" and "say" blocks are used in Scratch to ask the user for textual input and to display textual output on the screen
+      (use cartoon speech bubbles)
 - This, however,  only allows to test projects with a small subset of Scratch functionality
 - Not very useful in general for Scratch because it focuses on multimedia and creativity
 - Other languages (also block languages [citation needed]) are better suited for this task
 
-\section{Approach}
+\section{Caveats}
+- Runtime testing of Scratch programs has some caveats
+- This section explains some critical details that make testing of Scratch programs difficult
+
 === Parallel scripts
 - Individual testing of program parts problematic
     - Scratch runs multiple scripts in parallel
@@ -67,18 +71,37 @@ $\rightarrow$ Give test cases an interface that can be used to interact with the
     - a way to get information about sprites and variables
     - a way to simulate user input
 
-=== Test approach
+=== Scratch programs depend on real time
+- Scratch blocks that involve timings, like "wait" or "say for secs" use real time to delay execution
+$\rightarrow$ Scratch programs can not be sped up for testing
+$\rightarrow$ Since Scratch 3.0 runs in a single-threaded environment (JavaScript), running multiple instances
+              at once will influence the execution
+
+=== Many tested properties will depend on time
+- A tested property might depend on a previous value
+    - e.g. check if a sprite is moving right
+    - sprites save the values from the previous execution step
+- Some tested properties should hold for a time or for the whole execution
+    - Provide a way to define constraints that must always hold
+
+\section{Approach}
 - Each test case executes the program exactly once
 - During the test, user input is simulated to control the program
 - Then, the resulting changes (movement, animation, etc.) are checked by the test through traditional assertions
 - The test must be able to control the program execution
     - e.g. save some information about the sprite, run the program for a second, then compare
 
-\section{Shortcomings of this Approach}
+=== Shortcomings of this approach
 - Scratch projects need to be well defined to be tested
     - Can take the creativity out of the process, but can also give the students a guide to follow, which helps them to not get stuck on one problem
     - Students can test their programs with the test suite beforehand on their own to verify their programs
     - Problem: might incentivize students to try to cheat the tests
         $\rightarrow$ Automated testing should only be used in conjunction with static analysis, manual analysis, or random secret tests
+        (static analysis should easily show anomalies on the projects)
+
+=== Advantages
+- Students can test their programs with the test suite beforehand on their own to verify their programs
+    $\rightarrow$ Students can easily receive feedback and will change their programs according to the tests
+    $\rightarrow$ Incentivizes students to ask for help if they can't progress, because the test clearly shows that there is a problem
 
 

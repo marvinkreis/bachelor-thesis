@@ -1,0 +1,144 @@
+\chapter{Evaluation}
+
+- In this chapter, the Whisker testing utility is evaluated
+- The focus of the evaluation lies in comparing the results of automated tests using Whisker to the results of manual assessment
+- A collection of real Scratch programs from a student course is tested with three different test suites
+- The first two test suites try to assess the projects as well as possible
+- The third test suite is used to find out if randomly generated user input can reasonably be used to tests a Scratch project
+
+- Chapter outline
+
+\section{Evaluation Method}
+=== Projects (TODO: actually go through the pdfs)
+- From a students course
+- Two groups, grade 6 and grade 7 $\rightarrow$ realistic for Whisker's purpose
+- Multiple exercises to familiarize themselves with Scratch
+- Build up to final, most complex, project
+- Project has a clear description that stretches about half a DIN A4 page $\rightarrow$ well defined
+- [project description]
+
+=== Are these projects suitable for evaluating Whisker?
+- Complexity on the higher end of what Whisker is supposed to be used for
+- Game Over state makes it hard to assess other properties if the program goes game over because of a bug
+    - E.g. one project would often go game over when an apple touches the borders on the sides
+    - Well defined $\rightarrow$ tests can be written without looking at the projects (but often problematic, e.g. clones, inexact implementations)
+- Students were not aware of the fact, that their projects would be subjected to automated assessment later
+    - Students often deliberately changed their programs from the specification (e.g. different fall speeds)
+    - In a real scenario (in which Whisker is used for grading) students would have the possibility to test their projects beforehand
+    $\rightarrow$ see Chapter 2 - Advantages
+
+=== Tests
+- Normal + Constraint Tests
+    - Deliberately control the bowl to win the game
+
+- Normal Tests
+    - Traditional testing approach: Each test checks one bit of the programs functionality
+    - The program gets executed multiple times
+    - Better for grading
+    - Better for continuous development
+    - Example of a normal test (or put it somewhere else?)
+
+- Constraint Tests
+    - Different approach: One test executes the program only once and checks defined constraints in the background
+    - faster, but less accurate (show difference of average runtime)
+    - not everything in this project can be tested in a single run
+    - Better for quickly checking the program
+    - Example of a constraint test (or put it somewhere else?)
+
+- Random Tests
+    - Same (fewer) constraints as the constraint tests
+    - Random input instead of deliberately controlling the bowl
+    - Random tests only make sense with constraints
+        - defining single test cases would be difficult
+        - execution would take a long time because most tests are skipped
+    - Useful to test the stability of the program (like Android Monkey)
+        - Although not on this particular project
+
+\section{Evaluation Setup}
+- Chrome / Firefox (/ Electron) version
+- JavaScript version
+- Whisker version
+- Link to tests (and projects?)
+
+\section{Results}
+- Manual analysis is used as ground truth
+
+\section{Threats to validity}
+
+
+TODO: list all specifications and make crosses for the tests and constraints (cross + comment)
+\begin{table}
+    \centering
+    \scriptsize
+    \begin{tabular}{ll}
+        \toprule
+        Tests                          & Constraints\\
+        \midrule
+        Variable Initialization        & \\
+        Bowl Initialization            & \\
+        Fruit Initialization           & Fruit Size\\
+        Bowl Movement                  & Bowl Movement\\
+        Bowl Movement Details          & Bowl Movement Details\\
+        Apple Falling                  & \\
+        Apple Falling Details          & Apple Falling Details\\
+        Banana Falling                 & \\
+        Banana Falling Details         & Banana Falling Details\\
+        Apple Spawn                    & \\
+        Apple Spawn Random X Position  & Apply Spawn Random X Position\\
+        Apple Spawn Y Position         & Apple Spawn Y Positions\\
+        Banana Spawn                   & \\
+        Banana Spawn Random X Position & Banana Spawn Random X Position\\
+        Banana Spawn Y Position        & Banana Spawn Y Positions\\
+        Only One Apple                 & Only One Apple\\
+        Only One Banana                & Only One Banana\\
+        Banana Fall Delay              & \\
+        Banana Ground Delay            & \\
+        Apple Points                   & Apple Points\\
+        Apple Game Over                & Apple Game Over\\
+        Apple Game Over Message        & Apple Game Over Message\\
+        Banana Bowl Points             & Banana Bowl Points\\
+        Banana Ground Points           & Banana Ground Points\\
+        Banana Ground Message          & Banana Ground Message\\
+        Timer Tick                     & Timer Tick\\
+        Timer Game Over                & Timer Game Over\\
+        Timer Game Over Message        & Timer Game Over Message\\
+                                       & Score Change\\
+        \bottomrule
+    \end{tabular}
+    \caption{Tests and corresponding constraints}
+    \label{tab:tests_and_corresponding_constraints}
+\end{table}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

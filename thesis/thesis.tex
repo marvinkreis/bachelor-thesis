@@ -24,7 +24,10 @@
 
 % Tikz diagrams
 \usepackage{tikz}
-\usetikzlibrary{fit, backgrounds}
+\usetikzlibrary{fit, backgrounds, shapes}
+
+% Tables
+\usepackage{booktabs}
 
 % Source code highlighting
 % outputdir workaround because minted ignores the '-output-directory' flag.
@@ -38,8 +41,9 @@
     frame=leftline}
 \newmintinline{javascript}{}
 
-% Floating figures in the text
+% Extra figures
 \usepackage{wrapfig}
+\usepackage{subcaption}
 
 % Page style
 \usepackage{fancyhdr}
@@ -94,7 +98,7 @@
 
 \input{chapters/implementation}
 
-\input{chapters/evaluation-method}
+\input{chapters/evaluation}
 %     Show that the method is suited for answering the research questions.
 %     Show that the method is valid and reliable.
 %     How was the data collected, what options does this give?
@@ -103,7 +107,6 @@
 %     Defend and, at the same time, criticise the choices I made.
 %     Document what I did and what I did not do.
 
-\input{chapters/results-and-discussion}
 %    Present findings in a systematic manner.
 
 \input{chapters/conclusion}
