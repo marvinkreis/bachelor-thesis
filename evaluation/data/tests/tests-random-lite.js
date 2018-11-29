@@ -51,42 +51,6 @@ const getSpritesAndVariables = function (t, request) {
 };
 
 /**
- * Follows a sprite with the bowl by simulating left and right arrow key presses.
- * Tries to move the bowl to the same x position as the sprite.
- * Works with "good" movement (i.e. "if key pressed" in a loop) and "bad" movement (i.e. "when key pressed" hats).
- * @param {TestDriver} t The test driver.
- * @param {number} bowlX The x coordinate of the bowl,
- * @param {number} spriteX The x coordinate of the sprite to follow.
- */
-const followSprite = function (t, bowlX, spriteX) {
-    /* Stop if the bowl is near enough. */
-    if (Math.abs(bowlX - spriteX) <= 10) {
-        if (t.isKeyDown('Left')) {
-            t.inputImmediate({device: 'keyboard', key: 'Left', isDown: false});
-        }
-        if (t.isKeyDown('Right')) {
-            t.inputImmediate({device: 'keyboard', key: 'Right', isDown: false});
-        }
-
-    } else if (bowlX > spriteX) {
-        t.inputImmediate({device: 'keyboard', key: 'Right', isDown: false});
-        t.inputImmediate({device: 'keyboard', key: 'Left', isDown: true});
-
-        /* Trick "when key pressed" hats to fire by letting go of the key and immediately pressing it again. */
-        t.inputImmediate({device: 'keyboard', key: 'Left', isDown: false});
-        t.inputImmediate({device: 'keyboard', key: 'Left', isDown: true});
-
-    } else if (bowlX < spriteX) {
-        t.inputImmediate({device: 'keyboard', key: 'Left', isDown: false});
-        t.inputImmediate({device: 'keyboard', key: 'Right', isDown: true});
-
-        /* Trick "when key pressed" hats to fire by letting go of the key and immediately pressing it again. */
-        t.inputImmediate({device: 'keyboard', key: 'Right', isDown: false});
-        t.inputImmediate({device: 'keyboard', key: 'Right', isDown: true});
-    }
-};
-
-/**
  * Returns the newest clone of the given sprite/clone, or the sprite/clone itself, if it is the newest clone or there
  * are no clones of the sprite.
  * @param {Sprite} sprite The sprite.
@@ -175,38 +139,6 @@ const test = async function (t) {
             }
         }
     });
-
-    /* Track the spawn position of fruits. */
-    let oldApples = t.getSprites(sprite => sprite.visible && isApple(sprite) && sprite.y > 100);
-    let oldBananas = t.getSprites(sprite => sprite.visible && isApple(sprite) && sprite.y > 100);
-    const appleSpawnPositions = [];
-    const bananaSpawnPositions = [];
-    t.addCallback(() => {
-        let apples = t.getSprites(sprite => isApple(sprite) && sprite.visible && sprite.y > 100);
-        let bananas = t.getSprites(sprite => isBanana(sprite) && sprite.visible && sprite.y > 100);
-
-        for (const _apple of [...apples]) {
-            apples = apples.filter(s => s === _apple || (s.x !== _apple.x && s.y !== _apple.y));
-        }
-        for (const _banana of [...bananas]) {
-            bananas = bananas.filter(s => s === _banana || (s.x !== _banana.x && s.y !== _banana.y));
-        }
-
-        for (const _apple of apples) {
-            if (oldApples.indexOf(_apple) === -1) {
-                appleSpawnPositions.push(_apple.pos);
-            }
-        }
-        for (const _banana of bananas) {
-            if (oldBananas.indexOf(_banana) === -1) {
-                bananaSpawnPositions.push(_banana.pos);
-            }
-        }
-
-        oldApples = apples;
-        oldBananas = bananas;
-    });
-
 
     /* Track if apples / bananas fall at all. */
     let appleFellTimestamp = -1;
@@ -304,82 +236,6 @@ const test = async function (t) {
     }, 'Banana Falling Details');
     constraints.push(bananaFallingDetails);
 
-    // -------------------- Fruit Spawn --------------------------------------
-
-    const appleSpawnYPosition = t.addConstraint(() => {
-        for (const applePos of appleSpawnPositions) {
-            t.assert.ok(applePos.y === 170 || applePos.y === 165, 'Apples must spawn at y = 170.');
-        }
-    }, 'Apple Spawn Y Position Constraint');
-    constraints.push(appleSpawnYPosition);
-
-    const appleSpawnRandomXPosition = t.addConstraint(() => {
-        if (appleSpawnPositions.length >= 3) {
-            const firstAppleX = appleSpawnPositions[0].x;
-            let positionsDiffer = false;
-
-            for (const pos of appleSpawnPositions) {
-                if (pos.x !== firstAppleX) {
-                    positionsDiffer = true;
-                }
-            }
-
-            t.assert.ok(positionsDiffer, 'Apples must spawn at random x positions.');
-        }
-    }, 'Apple Spawn Random X Position Constraint');
-    constraints.push(appleSpawnRandomXPosition);
-
-    const bananaSpawnYPosition = t.addConstraint(() => {
-        for (const bananaPos of bananaSpawnPositions) {
-            t.assert.ok(bananaPos.y === 170 || bananaPos.y === 163, 'Bananas must spawn at y = 170.');
-        }
-    }, 'Banana Spawn Y Position Constraint');
-    constraints.push(bananaSpawnYPosition);
-
-    const bananaSpawnRandomXPosition = t.addConstraint(() => {
-        if (bananaSpawnPositions.length >= 3) {
-            const firstBananaX = bananaSpawnPositions[0].x;
-            let positionsDiffer = false;
-
-            for (const pos of bananaSpawnPositions) {
-                if (pos.x !== firstBananaX) {
-                    positionsDiffer = true;
-                }
-            }
-
-            t.assert.ok(positionsDiffer, 'Bananas must spawn at random x positions.');
-        }
-    }, 'Banana Spawn Random X Position Constraint');
-    constraints.push(bananaSpawnRandomXPosition);
-
-    const onlyOneApple = t.addConstraint(() => {
-        t.addConstraint(() => {
-            const apples = t.getSprites(s => s.visible && isApple(s));
-            if (apples.length > 2) {
-                const fruitPos = apples[0].pos;
-                for (let i = 1; i < apples.length; i++) {
-                    t.assert.ok(apples[i].x === fruitPos.x && apples[i].y === fruitPos.y,
-                        'There can only be one apple on the screen at a time.');
-                }
-            }
-        });
-    }, 'Only One Apple Constraint');
-    constraints.push(onlyOneApple);
-
-    const onlyOneBanana = t.addConstraint(() => {
-        t.addConstraint(() => {
-            const bananas = t.getSprites(s => s.visible && isBanana(s));
-            if (bananas.length > 2) {
-                const fruitPos = bananas[0].pos;
-                for (let i = 1; i < bananas.length; i++) {
-                    t.assert.ok(bananas[i].x === fruitPos.x && bananas[i].y === fruitPos.y,
-                        'There can only be one banana on the screen at a time.');
-                }
-            }
-        });
-    }, 'Only One Banana Constraint');
-    constraints.push(onlyOneBanana);
-
     // -------------------- Fruit Interaction ---------------------------------
 
     const applePoints = t.addConstraint(() => {
@@ -404,7 +260,7 @@ const test = async function (t) {
         const timeElapsed = t.getTotalTimeElapsed();
         if (timeElapsed <= 20000) {
             for (const touched of appleTouched) {
-                if (timeElapsed - touched.time >= 4000) {
+                if (timeElapsed - touched.time >= 2000) {
                     break;
                 } else if (touched.object === 'ground' && timeElapsed - touched.time >= 3000) {
                     assertGameOver(t, apple, banana, time, score);
@@ -488,38 +344,6 @@ const test = async function (t) {
     }, 'Timer Tick Constraint');
     constraints.push(timerTick);
 
-    const timerGameOver = t.addConstraint(() => {
-        const timeElapsed = t.getTotalTimeElapsed();
-        if (timeElapsed >= 40000) {
-            assertGameOver(t, apple, banana, time, score);
-        } else if (timeElapsed >= 30000) {
-            t.assert.ok(appleFellTimestamp >= 20000 || bananaFellTimestamp >= 20000,
-                'The game must run for at least 20 seconds.');
-        }
-    }, 'Timer Game Over Constraint');
-    constraints.push(timerGameOver);
-
-    let bowlMessageTimestamp = -1;
-    const timerGameOverMessage = t.addConstraint(() => {
-        if (bowlMessageTimestamp === -1) {
-            if (bowl.sayText) {
-                bowlMessageTimestamp = t.getTotalTimeElapsed();
-                t.assert.greaterOrEqual(bowlMessageTimestamp, 20000,
-                    'Bowl must not display a message before 20 seconds.');
-            } else {
-                t.assert.lessOrEqual(t.getRunTimeElapsed(), 40000, 'Bowl must display a message after 30 seconds.');
-            }
-        } else {
-            const timeElapsed = t.getTotalTimeElapsed();
-            if (timeElapsed - bowlMessageTimestamp >= 500 && timeElapsed - bowlMessageTimestamp <= 600) {
-                t.assert.ok(bowl.sayText, 'Bowl must display a message when the time is up.');
-                t.assert.matches(bowl.sayText.toLowerCase(), gameOverRegex,
-                    'Bowl must display \'Ende!\' when the time is up.');
-            }
-        }
-    }, 'Timer Game Over Message Constraint');
-    constraints.push(timerGameOverMessage);
-
     const scoreNotChanging = t.addConstraint(() => {
         const timeElapsed = t.getRunTimeElapsed();
         if (timeElapsed - appleTouched[0].time >= 200 && timeElapsed - bananaTouched[0].time >= 200) {
@@ -563,24 +387,6 @@ const test = async function (t) {
     if (bananaFellTimestamp === -1) {
         bananaFallingDetails.disable();
         bananaFallingDetails.skip = 'Banana did not fall.';
-    }
-
-    if (appleSpawnPositions.length < 2) {
-        appleSpawnRandomXPosition.disable();
-        appleSpawnRandomXPosition.skip = 'Too few apples spawned.';
-        appleSpawnYPosition.disable();
-        appleSpawnYPosition.skip = 'Too few apples spawned.';
-        onlyOneApple.disable();
-        onlyOneApple.skip = 'Too few apples spawned.';
-    }
-
-    if (bananaSpawnPositions.length < 2) {
-        bananaSpawnRandomXPosition.disable();
-        bananaSpawnRandomXPosition.skip = 'Too few bananas spawned.';
-        bananaSpawnYPosition.disable();
-        bananaSpawnYPosition.skip = 'Too few bananas spawned.';
-        onlyOneBanana.disable();
-        onlyOneBanana.skip = 'Too few bananas spawned.';
     }
 
     let appleTouchedBowl = false;

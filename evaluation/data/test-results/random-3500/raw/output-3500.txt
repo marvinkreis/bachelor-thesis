@@ -11,11 +11,11 @@ ok 1 - Test
     - id: 2
       name: Bowl Movement Constraint
       status: fail
-      message: Bowl must move left when left arrow key is pressed.
+      message: Bowl must move right when right arrow key is pressed.
     - id: 3
       name: Bowl Movement Details Constraint
       status: fail
-      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
+      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
     - id: 4
       name: Apple Falling Details
       status: skip
@@ -221,11 +221,11 @@ ok 1 - Test
     - id: 2
       name: Bowl Movement Constraint
       status: fail
-      message: Bowl must move right when right arrow key is pressed.
+      message: Bowl must move left when left arrow key is pressed.
     - id: 3
       name: Bowl Movement Details Constraint
       status: fail
-      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
+      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
     - id: 4
       name: Apple Falling Details
       status: pass
@@ -260,16 +260,16 @@ ok 1 - Test
       message: Too few bananas spawned.
     - id: 12
       name: Apple Points Constraint
-      status: fail
-      message: Apples must give 5 points when they hit the bowl.
+      status: pass
+      message: ''
     - id: 13
       name: Apple Game Over Constraint
-      status: skip
-      message: Apple did not touch the ground.
+      status: pass
+      message: ''
     - id: 14
       name: Apple Game Over Message Constraint
-      status: skip
-      message: Apple did not touch the ground.
+      status: pass
+      message: ''
     - id: 15
       name: Banana Bowl Points Constraint
       status: skip
@@ -280,8 +280,8 @@ ok 1 - Test
       message: Bananas must subtract 8 points when they hit the floor.
     - id: 17
       name: Banana Ground Message Constraint
-      status: fail
-      message: Banana must display a message when it hits the ground.
+      status: pass
+      message: ''
     - id: 18
       name: Timer Tick Constraint
       status: skip
@@ -306,11 +306,11 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.73 (33/45)
+#   combined: 0.69 (31/45)
 #   individual:
 #     Stage: NaN (0/0)
 #     Bowl: 1.00 (6/6)
-#     Bananas: 0.65 (17/26)
+#     Bananas: 0.58 (15/26)
 #     Apple: 0.77 (10/13)
 
 # project: K6_S05.sb3
@@ -365,24 +365,24 @@ ok 1 - Test
       message: Too few bananas spawned.
     - id: 12
       name: Apple Points Constraint
-      status: skip
-      message: Apple did not touch the bowl.
+      status: pass
+      message: ''
     - id: 13
       name: Apple Game Over Constraint
-      status: pass
-      message: ''
+      status: skip
+      message: Apple did not touch the ground.
     - id: 14
       name: Apple Game Over Message Constraint
-      status: pass
-      message: ''
+      status: skip
+      message: Apple did not touch the ground.
     - id: 15
       name: Banana Bowl Points Constraint
       status: skip
       message: Banana did not touch the bowl.
     - id: 16
       name: Banana Ground Points Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Bananas must subtract 8 points when they hit the floor.
     - id: 17
       name: Banana Ground Message Constraint
       status: pass
@@ -401,8 +401,8 @@ ok 1 - Test
       message: ''
     - id: 21
       name: Score Not Changing Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Score must not change if no fruit touches the bowl or the ground.
   ...
 # summary:
 #   tests: 1
@@ -411,11 +411,11 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.71 (35/49)
+#   combined: 0.78 (38/49)
 #   individual:
 #     Stage: NaN (0/0)
-#     Apple: 0.74 (17/23)
-#     Bananas: 0.63 (10/16)
+#     Apple: 0.83 (19/23)
+#     Bananas: 0.69 (11/16)
 #     Bowl: 0.80 (8/10)
 
 # project: K6_S06.sb3
@@ -535,12 +535,12 @@ ok 1 - Test
       message: ''
     - id: 2
       name: Bowl Movement Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Bowl must move right when right arrow key is pressed.
     - id: 3
       name: Bowl Movement Details Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
     - id: 4
       name: Apple Falling Details
       status: pass
@@ -591,12 +591,12 @@ ok 1 - Test
       message: Banana did not touch the bowl.
     - id: 16
       name: Banana Ground Points Constraint
-      status: skip
-      message: Banana did not touch the ground.
+      status: pass
+      message: ''
     - id: 17
       name: Banana Ground Message Constraint
-      status: skip
-      message: Banana did not touch the ground.
+      status: pass
+      message: ''
     - id: 18
       name: Timer Tick Constraint
       status: pass
@@ -621,12 +621,12 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.80 (45/56)
+#   combined: 0.84 (47/56)
 #   individual:
 #     Stage: NaN (0/0)
 #     Bowl: 0.87 (13/15)
 #     Apple: 0.81 (17/21)
-#     Bananas: 0.75 (15/20)
+#     Bananas: 0.85 (17/20)
 
 # project: K6_S11.sb3
 TAP version 13
@@ -684,8 +684,8 @@ ok 1 - Test
       message: Apple did not touch the bowl.
     - id: 13
       name: Apple Game Over Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Score must not change after game is over (should be over).
     - id: 14
       name: Apple Game Over Message Constraint
       status: fail
@@ -778,7 +778,7 @@ ok 1 - Test
     - id: 3
       name: Bowl Movement Details Constraint
       status: fail
-      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
+      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
     - id: 4
       name: Apple Falling Details
       status: fail
@@ -817,12 +817,12 @@ ok 1 - Test
       message: Apple did not touch the bowl.
     - id: 13
       name: Apple Game Over Constraint
-      status: skip
-      message: Apple did not touch the ground.
+      status: pass
+      message: ''
     - id: 14
       name: Apple Game Over Message Constraint
-      status: skip
-      message: Apple did not touch the ground.
+      status: pass
+      message: ''
     - id: 15
       name: Banana Bowl Points Constraint
       status: skip
@@ -859,10 +859,10 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.76 (38/50)
+#   combined: 0.78 (39/50)
 #   individual:
 #     Stage: NaN (0/0)
-#     Apple: 0.66 (19/29)
+#     Apple: 0.69 (20/29)
 #     Bowl: 0.89 (17/19)
 #     Bananas: 1.00 (2/2)
 
@@ -879,11 +879,11 @@ ok 1 - Test
     - id: 2
       name: Bowl Movement Constraint
       status: fail
-      message: Bowl must move right when right arrow key is pressed.
+      message: Bowl must move left when left arrow key is pressed.
     - id: 3
       name: Bowl Movement Details Constraint
       status: fail
-      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
+      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
     - id: 4
       name: Apple Falling Details
       status: skip
@@ -984,11 +984,11 @@ ok 1 - Test
     - id: 2
       name: Bowl Movement Constraint
       status: fail
-      message: Bowl must move right when right arrow key is pressed.
+      message: Bowl must move left when left arrow key is pressed.
     - id: 3
       name: Bowl Movement Details Constraint
       status: fail
-      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
+      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
     - id: 4
       name: Apple Falling Details
       status: fail
@@ -1221,12 +1221,12 @@ ok 1 - Test
       message: ''
     - id: 2
       name: Bowl Movement Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Bowl must move right when right arrow key is pressed.
     - id: 3
       name: Bowl Movement Details Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
     - id: 4
       name: Apple Falling Details
       status: pass
@@ -1261,28 +1261,28 @@ ok 1 - Test
       message: Too few bananas spawned.
     - id: 12
       name: Apple Points Constraint
-      status: pass
-      message: ''
+      status: skip
+      message: Apple did not touch the bowl.
     - id: 13
       name: Apple Game Over Constraint
-      status: skip
-      message: Apple did not touch the ground.
-    - id: 14
-      name: Apple Game Over Message Constraint
-      status: skip
-      message: Apple did not touch the ground.
-    - id: 15
-      name: Banana Bowl Points Constraint
-      status: skip
-      message: Banana did not touch the bowl.
-    - id: 16
-      name: Banana Ground Points Constraint
       status: pass
       message: ''
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: fail
+      message: Apple must display a message if it hits the ground.
+    - id: 15
+      name: Banana Bowl Points Constraint
+      status: pass
+      message: ''
+    - id: 16
+      name: Banana Ground Points Constraint
+      status: skip
+      message: Banana did not touch the ground.
     - id: 17
       name: Banana Ground Message Constraint
-      status: fail
-      message: Banana must display a message when it hits the ground.
+      status: skip
+      message: Banana did not touch the ground.
     - id: 18
       name: Timer Tick Constraint
       status: pass
@@ -1307,12 +1307,12 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.85 (41/48)
+#   combined: 0.77 (37/48)
 #   individual:
 #     Stage: 0.83 (5/6)
-#     Bananas: 0.86 (12/14)
+#     Bananas: 0.64 (9/14)
 #     Bowl: 0.85 (11/13)
-#     Apple: 0.87 (13/15)
+#     Apple: 0.80 (12/15)
 
 # project: K6_S19.sb3
 TAP version 13
@@ -1412,11 +1412,11 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.81 (30/37)
+#   combined: 0.84 (31/37)
 #   individual:
 #     Stage: NaN (0/0)
 #     Apple: 1.00 (6/6)
-#     Bananas: 0.80 (12/15)
+#     Bananas: 0.87 (13/15)
 #     Bowl: 0.75 (12/16)
 
 # project: K6_S20.sb3
@@ -1432,11 +1432,11 @@ ok 1 - Test
     - id: 2
       name: Bowl Movement Constraint
       status: fail
-      message: Bowl must move right when right arrow key is pressed.
+      message: Bowl must move left when left arrow key is pressed.
     - id: 3
       name: Bowl Movement Details Constraint
       status: fail
-      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
+      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
     - id: 4
       name: Apple Falling Details
       status: pass
@@ -1641,12 +1641,12 @@ ok 1 - Test
       message: ''
     - id: 2
       name: Bowl Movement Constraint
-      status: fail
-      message: Bowl must move left when left arrow key is pressed.
+      status: pass
+      message: ''
     - id: 3
       name: Bowl Movement Details Constraint
-      status: fail
-      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
+      status: pass
+      message: ''
     - id: 4
       name: Apple Falling Details
       status: fail
@@ -1790,24 +1790,24 @@ ok 1 - Test
       message: Apple did not touch the bowl.
     - id: 13
       name: Apple Game Over Constraint
-      status: skip
-      message: Apple did not touch the ground.
+      status: pass
+      message: ''
     - id: 14
       name: Apple Game Over Message Constraint
-      status: skip
-      message: Apple did not touch the ground.
+      status: pass
+      message: ''
     - id: 15
       name: Banana Bowl Points Constraint
-      status: fail
-      message: Bananas must give 8 points when they hit the bowl.
+      status: skip
+      message: Banana did not touch the bowl.
     - id: 16
       name: Banana Ground Points Constraint
       status: fail
       message: Bananas must subtract 8 points when they hit the floor.
     - id: 17
       name: Banana Ground Message Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Banana must display a message when it hits the ground.
     - id: 18
       name: Timer Tick Constraint
       status: pass
@@ -1832,11 +1832,11 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.90 (37/41)
+#   combined: 0.83 (34/41)
 #   individual:
 #     Stage: NaN (0/0)
 #     Apple: 0.75 (12/16)
-#     Bananas: 1.00 (18/18)
+#     Bananas: 0.83 (15/18)
 #     Bowl: 1.00 (7/7)
 
 # project: K6_S31.sb3
@@ -1891,20 +1891,20 @@ ok 1 - Test
       message: ''
     - id: 12
       name: Apple Points Constraint
-      status: pass
-      message: ''
+      status: skip
+      message: Apple did not touch the bowl.
     - id: 13
       name: Apple Game Over Constraint
-      status: skip
-      message: Apple did not touch the ground.
-    - id: 14
-      name: Apple Game Over Message Constraint
-      status: skip
-      message: Apple did not touch the ground.
-    - id: 15
-      name: Banana Bowl Points Constraint
       status: pass
       message: ''
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: fail
+      message: Apple must display a message if it hits the ground.
+    - id: 15
+      name: Banana Bowl Points Constraint
+      status: skip
+      message: Banana did not touch the bowl.
     - id: 16
       name: Banana Ground Points Constraint
       status: fail
@@ -1937,11 +1937,11 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 1.00 (33/33)
+#   combined: 0.88 (29/33)
 #   individual:
 #     Stage: 1.00 (7/7)
-#     Bananas: 1.00 (9/9)
-#     Apple: 1.00 (9/9)
+#     Bananas: 0.78 (7/9)
+#     Apple: 0.78 (7/9)
 #     Bowl: 1.00 (8/8)
 
 # project: K6_S33.sb3
@@ -1956,12 +1956,12 @@ ok 1 - Test
       message: ''
     - id: 2
       name: Bowl Movement Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Bowl must move left when left arrow key is pressed.
     - id: 3
       name: Bowl Movement Details Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
     - id: 4
       name: Apple Falling Details
       status: fail
@@ -2042,11 +2042,11 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.83 (40/48)
+#   combined: 0.85 (41/48)
 #   individual:
 #     Stage: 1.00 (5/5)
 #     Bowl: 1.00 (12/12)
-#     Apple: 0.63 (10/16)
+#     Apple: 0.69 (11/16)
 #     Bananas: 0.87 (13/15)
 
 # project: K7_S02.sb3
@@ -2113,16 +2113,16 @@ ok 1 - Test
       message: Apple did not touch the ground.
     - id: 15
       name: Banana Bowl Points Constraint
-      status: pass
-      message: ''
+      status: skip
+      message: Banana did not touch the bowl.
     - id: 16
       name: Banana Ground Points Constraint
-      status: skip
-      message: Banana did not touch the ground.
+      status: pass
+      message: ''
     - id: 17
       name: Banana Ground Message Constraint
-      status: skip
-      message: Banana did not touch the ground.
+      status: pass
+      message: ''
     - id: 18
       name: Timer Tick Constraint
       status: pass
@@ -2210,8 +2210,8 @@ ok 1 - Test
       message: Apple did not touch the bowl.
     - id: 13
       name: Apple Game Over Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Bananas must not move after game is over (should be over).
     - id: 14
       name: Apple Game Over Message Constraint
       status: fail
@@ -2287,24 +2287,24 @@ ok 1 - Test
       message: Banana must fall down in steps of size 7.
     - id: 6
       name: Apple Spawn Y Position Constraint
-      status: skip
-      message: Too few apples spawned.
+      status: pass
+      message: ''
     - id: 7
       name: Apple Spawn Random X Position Constraint
-      status: skip
-      message: Too few apples spawned.
+      status: pass
+      message: ''
     - id: 8
       name: Banana Spawn Y Position Constraint
       status: pass
       message: ''
     - id: 9
       name: Banana Spawn Random X Position Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Bananas must spawn at random x positions.
     - id: 10
       name: Only One Apple Constraint
-      status: skip
-      message: Too few apples spawned.
+      status: pass
+      message: ''
     - id: 11
       name: Only One Banana Constraint
       status: pass
@@ -2323,16 +2323,16 @@ ok 1 - Test
       message: Apple did not touch the ground.
     - id: 15
       name: Banana Bowl Points Constraint
-      status: skip
-      message: Banana did not touch the bowl.
+      status: pass
+      message: ''
     - id: 16
       name: Banana Ground Points Constraint
       status: pass
       message: ''
     - id: 17
       name: Banana Ground Message Constraint
-      status: fail
-      message: Banana must display a message when it hits the ground.
+      status: pass
+      message: ''
     - id: 18
       name: Timer Tick Constraint
       status: skip
@@ -2428,16 +2428,16 @@ ok 1 - Test
       message: ''
     - id: 15
       name: Banana Bowl Points Constraint
-      status: skip
-      message: Banana did not touch the bowl.
+      status: pass
+      message: ''
     - id: 16
       name: Banana Ground Points Constraint
       status: pass
       message: ''
     - id: 17
       name: Banana Ground Message Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Banana must display a message when it hits the ground.
     - id: 18
       name: Timer Tick Constraint
       status: pass
@@ -2482,11 +2482,11 @@ ok 1 - Test
     - id: 2
       name: Bowl Movement Constraint
       status: fail
-      message: Bowl must move left when left arrow key is pressed.
+      message: Bowl must move right when right arrow key is pressed.
     - id: 3
       name: Bowl Movement Details Constraint
       status: fail
-      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
+      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
     - id: 4
       name: Apple Falling Details
       status: fail
@@ -2505,20 +2505,20 @@ ok 1 - Test
       message: Too few apples spawned.
     - id: 8
       name: Banana Spawn Y Position Constraint
-      status: skip
-      message: Too few bananas spawned.
+      status: fail
+      message: Bananas must spawn at y = 170.
     - id: 9
       name: Banana Spawn Random X Position Constraint
-      status: skip
-      message: Too few bananas spawned.
+      status: pass
+      message: ''
     - id: 10
       name: Only One Apple Constraint
       status: skip
       message: Too few apples spawned.
     - id: 11
       name: Only One Banana Constraint
-      status: skip
-      message: Too few bananas spawned.
+      status: pass
+      message: ''
     - id: 12
       name: Apple Points Constraint
       status: skip
@@ -2533,8 +2533,8 @@ ok 1 - Test
       message: Apple did not touch the ground.
     - id: 15
       name: Banana Bowl Points Constraint
-      status: skip
-      message: Banana did not touch the bowl.
+      status: pass
+      message: ''
     - id: 16
       name: Banana Ground Points Constraint
       status: pass
@@ -2567,11 +2567,11 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.66 (27/41)
+#   combined: 0.73 (30/41)
 #   individual:
 #     Stage: 0.86 (6/7)
 #     Apple: 0.58 (7/12)
-#     Bananas: 0.56 (10/18)
+#     Bananas: 0.72 (13/18)
 #     Bowl: 1.00 (4/4)
 
 # project: K7_S07.sb3
@@ -2735,12 +2735,12 @@ ok 1 - Test
       message: Apple did not touch the bowl.
     - id: 13
       name: Apple Game Over Constraint
-      status: skip
-      message: Apple did not touch the ground.
+      status: pass
+      message: ''
     - id: 14
       name: Apple Game Over Message Constraint
-      status: skip
-      message: Apple did not touch the ground.
+      status: pass
+      message: ''
     - id: 15
       name: Banana Bowl Points Constraint
       status: skip
@@ -2767,8 +2767,8 @@ ok 1 - Test
       message: ''
     - id: 21
       name: Score Not Changing Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Score must not change if no fruit touches the bowl or the ground.
   ...
 # summary:
 #   tests: 1
@@ -2777,11 +2777,11 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.63 (24/38)
+#   combined: 0.74 (28/38)
 #   individual:
 #     Stage: NaN (0/0)
-#     Apple: 0.46 (6/13)
-#     Bananas: 0.54 (7/13)
+#     Apple: 0.54 (7/13)
+#     Bananas: 0.77 (10/13)
 #     Bowl: 0.92 (11/12)
 #     Figur1: NaN (0/0)
 
@@ -2821,36 +2821,36 @@ ok 1 - Test
       message: Too few apples spawned.
     - id: 8
       name: Banana Spawn Y Position Constraint
-      status: skip
-      message: Too few bananas spawned.
+      status: pass
+      message: ''
     - id: 9
       name: Banana Spawn Random X Position Constraint
-      status: skip
-      message: Too few bananas spawned.
+      status: pass
+      message: ''
     - id: 10
       name: Only One Apple Constraint
       status: skip
       message: Too few apples spawned.
     - id: 11
       name: Only One Banana Constraint
-      status: skip
-      message: Too few bananas spawned.
-    - id: 12
-      name: Apple Points Constraint
       status: pass
       message: ''
+    - id: 12
+      name: Apple Points Constraint
+      status: skip
+      message: Apple did not touch the bowl.
     - id: 13
       name: Apple Game Over Constraint
-      status: skip
-      message: Apple did not touch the ground.
+      status: pass
+      message: ''
     - id: 14
       name: Apple Game Over Message Constraint
-      status: skip
-      message: Apple did not touch the ground.
+      status: pass
+      message: ''
     - id: 15
       name: Banana Bowl Points Constraint
-      status: skip
-      message: Banana did not touch the bowl.
+      status: pass
+      message: ''
     - id: 16
       name: Banana Ground Points Constraint
       status: fail
@@ -2883,11 +2883,11 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.82 (31/38)
+#   combined: 0.84 (32/38)
 #   individual:
 #     Stage: NaN (0/0)
-#     Apple: 0.75 (9/12)
-#     Bananas: 0.79 (15/19)
+#     Apple: 0.67 (8/12)
+#     Bananas: 0.89 (17/19)
 #     Bowl: 1.00 (7/7)
 
 # project: K7_S11.sb3
@@ -2903,11 +2903,11 @@ ok 1 - Test
     - id: 2
       name: Bowl Movement Constraint
       status: fail
-      message: Bowl must move right when right arrow key is pressed.
+      message: Bowl must move left when left arrow key is pressed.
     - id: 3
       name: Bowl Movement Details Constraint
       status: fail
-      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
+      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
     - id: 4
       name: Apple Falling Details
       status: fail
@@ -3007,12 +3007,12 @@ ok 1 - Test
       message: ''
     - id: 2
       name: Bowl Movement Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Bowl must move right when right arrow key is pressed.
     - id: 3
       name: Bowl Movement Details Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
     - id: 4
       name: Apple Falling Details
       status: pass
@@ -3045,6 +3045,111 @@ ok 1 - Test
       name: Only One Banana Constraint
       status: pass
       message: ''
+    - id: 12
+      name: Apple Points Constraint
+      status: skip
+      message: Apple did not touch the bowl.
+    - id: 13
+      name: Apple Game Over Constraint
+      status: pass
+      message: ''
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: pass
+      message: ''
+    - id: 15
+      name: Banana Bowl Points Constraint
+      status: pass
+      message: ''
+    - id: 16
+      name: Banana Ground Points Constraint
+      status: skip
+      message: Banana did not touch the ground.
+    - id: 17
+      name: Banana Ground Message Constraint
+      status: skip
+      message: Banana did not touch the ground.
+    - id: 18
+      name: Timer Tick Constraint
+      status: fail
+      message: Time must only tick down.
+    - id: 19
+      name: Timer Game Over Constraint
+      status: pass
+      message: ''
+    - id: 20
+      name: Timer Game Over Message Constraint
+      status: pass
+      message: ''
+    - id: 21
+      name: Score Not Changing Constraint
+      status: fail
+      message: Score must not change if no fruit touches the bowl or the ground.
+  ...
+# summary:
+#   tests: 1
+#   pass: 1
+#   fail: 0
+#   error: 0
+#   skip: 0
+# coverage:
+#   combined: 0.83 (34/41)
+#   individual:
+#     Stage: 1.00 (5/5)
+#     Apple: 0.85 (11/13)
+#     Bananas: 0.77 (10/13)
+#     Bowl: 0.80 (8/10)
+
+# project: K7_S14.sb3
+TAP version 13
+1..1
+ok 1 - Test
+  ---
+  log:
+    - id: 1
+      name: Fruit Size Constraint
+      status: pass
+      message: ''
+    - id: 2
+      name: Bowl Movement Constraint
+      status: fail
+      message: Bowl must move right when right arrow key is pressed.
+    - id: 3
+      name: Bowl Movement Details Constraint
+      status: fail
+      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
+    - id: 4
+      name: Apple Falling Details
+      status: pass
+      message: ''
+    - id: 5
+      name: Banana Falling Details
+      status: pass
+      message: ''
+    - id: 6
+      name: Apple Spawn Y Position Constraint
+      status: skip
+      message: Too few apples spawned.
+    - id: 7
+      name: Apple Spawn Random X Position Constraint
+      status: skip
+      message: Too few apples spawned.
+    - id: 8
+      name: Banana Spawn Y Position Constraint
+      status: skip
+      message: Too few bananas spawned.
+    - id: 9
+      name: Banana Spawn Random X Position Constraint
+      status: skip
+      message: Too few bananas spawned.
+    - id: 10
+      name: Only One Apple Constraint
+      status: skip
+      message: Too few apples spawned.
+    - id: 11
+      name: Only One Banana Constraint
+      status: skip
+      message: Too few bananas spawned.
     - id: 12
       name: Apple Points Constraint
       status: skip
@@ -3071,8 +3176,8 @@ ok 1 - Test
       message: ''
     - id: 18
       name: Timer Tick Constraint
-      status: fail
-      message: Time must only tick down.
+      status: pass
+      message: ''
     - id: 19
       name: Timer Game Over Constraint
       status: pass
@@ -3093,14 +3198,14 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.78 (32/41)
+#   combined: 0.82 (33/40)
 #   individual:
-#     Stage: 1.00 (5/5)
-#     Apple: 0.62 (8/13)
-#     Bananas: 0.85 (11/13)
-#     Bowl: 0.80 (8/10)
+#     Stage: 0.86 (6/7)
+#     Apple: 0.77 (10/13)
+#     Bowl: 1.00 (6/6)
+#     Bananas: 0.79 (11/14)
 
-# project: K7_S14.sb3
+# project: K7_S15.sb3
 TAP version 13
 1..1
 ok 1 - Test
@@ -3112,12 +3217,12 @@ ok 1 - Test
       message: ''
     - id: 2
       name: Bowl Movement Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Bowl must move right when right arrow key is pressed.
     - id: 3
       name: Bowl Movement Details Constraint
       status: fail
-      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
+      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
     - id: 4
       name: Apple Falling Details
       status: pass
@@ -3152,8 +3257,8 @@ ok 1 - Test
       message: Too few bananas spawned.
     - id: 12
       name: Apple Points Constraint
-      status: skip
-      message: Apple did not touch the bowl.
+      status: pass
+      message: ''
     - id: 13
       name: Apple Game Over Constraint
       status: pass
@@ -3164,12 +3269,12 @@ ok 1 - Test
       message: ''
     - id: 15
       name: Banana Bowl Points Constraint
-      status: pass
-      message: ''
+      status: skip
+      message: Banana did not touch the bowl.
     - id: 16
       name: Banana Ground Points Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Bananas must subtract 8 points when they hit the floor.
     - id: 17
       name: Banana Ground Message Constraint
       status: pass
@@ -3188,8 +3293,8 @@ ok 1 - Test
       message: ''
     - id: 21
       name: Score Not Changing Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Score must not change if no fruit touches the bowl or the ground.
   ...
 # summary:
 #   tests: 1
@@ -3198,14 +3303,14 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.85 (34/40)
+#   combined: 0.86 (36/42)
 #   individual:
-#     Stage: 0.86 (6/7)
-#     Apple: 0.69 (9/13)
-#     Bowl: 1.00 (6/6)
-#     Bananas: 0.93 (13/14)
+#     Stage: NaN (0/0)
+#     Bowl: 0.82 (9/11)
+#     Apple: 0.93 (14/15)
+#     Bananas: 0.81 (13/16)
 
-# project: K7_S15.sb3
+# project: K7_S16.sb3
 TAP version 13
 1..1
 ok 1 - Test
@@ -3217,12 +3322,12 @@ ok 1 - Test
       message: ''
     - id: 2
       name: Bowl Movement Constraint
-      status: fail
-      message: Bowl must move left when left arrow key is pressed.
+      status: pass
+      message: ''
     - id: 3
       name: Bowl Movement Details Constraint
       status: fail
-      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
+      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
     - id: 4
       name: Apple Falling Details
       status: pass
@@ -3257,8 +3362,8 @@ ok 1 - Test
       message: Too few bananas spawned.
     - id: 12
       name: Apple Points Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Apples must give 5 points when they hit the bowl.
     - id: 13
       name: Apple Game Over Constraint
       status: skip
@@ -3303,117 +3408,12 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.83 (35/42)
+#   combined: 0.79 (34/43)
 #   individual:
 #     Stage: NaN (0/0)
-#     Bowl: 0.82 (9/11)
-#     Apple: 0.87 (13/15)
-#     Bananas: 0.81 (13/16)
-
-# project: K7_S16.sb3
-TAP version 13
-1..1
-ok 1 - Test
-  ---
-  log:
-    - id: 1
-      name: Fruit Size Constraint
-      status: pass
-      message: ''
-    - id: 2
-      name: Bowl Movement Constraint
-      status: fail
-      message: Bowl must move left when left arrow key is pressed.
-    - id: 3
-      name: Bowl Movement Details Constraint
-      status: fail
-      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
-    - id: 4
-      name: Apple Falling Details
-      status: pass
-      message: ''
-    - id: 5
-      name: Banana Falling Details
-      status: pass
-      message: ''
-    - id: 6
-      name: Apple Spawn Y Position Constraint
-      status: skip
-      message: Too few apples spawned.
-    - id: 7
-      name: Apple Spawn Random X Position Constraint
-      status: skip
-      message: Too few apples spawned.
-    - id: 8
-      name: Banana Spawn Y Position Constraint
-      status: skip
-      message: Too few bananas spawned.
-    - id: 9
-      name: Banana Spawn Random X Position Constraint
-      status: skip
-      message: Too few bananas spawned.
-    - id: 10
-      name: Only One Apple Constraint
-      status: skip
-      message: Too few apples spawned.
-    - id: 11
-      name: Only One Banana Constraint
-      status: skip
-      message: Too few bananas spawned.
-    - id: 12
-      name: Apple Points Constraint
-      status: skip
-      message: Apple did not touch the bowl.
-    - id: 13
-      name: Apple Game Over Constraint
-      status: pass
-      message: ''
-    - id: 14
-      name: Apple Game Over Message Constraint
-      status: pass
-      message: ''
-    - id: 15
-      name: Banana Bowl Points Constraint
-      status: skip
-      message: Banana did not touch the bowl.
-    - id: 16
-      name: Banana Ground Points Constraint
-      status: fail
-      message: Bananas must subtract 8 points when they hit the floor.
-    - id: 17
-      name: Banana Ground Message Constraint
-      status: pass
-      message: ''
-    - id: 18
-      name: Timer Tick Constraint
-      status: pass
-      message: ''
-    - id: 19
-      name: Timer Game Over Constraint
-      status: pass
-      message: ''
-    - id: 20
-      name: Timer Game Over Message Constraint
-      status: fail
-      message: Bowl must not display a message before 20 seconds.
-    - id: 21
-      name: Score Not Changing Constraint
-      status: pass
-      message: ''
-  ...
-# summary:
-#   tests: 1
-#   pass: 1
-#   fail: 0
-#   error: 0
-#   skip: 0
-# coverage:
-#   combined: 0.67 (29/43)
-#   individual:
-#     Stage: NaN (0/0)
-#     Bananas: 0.57 (8/14)
-#     Bowl: 0.89 (8/9)
-#     Apple: 0.65 (13/20)
+#     Bananas: 0.79 (11/14)
+#     Bowl: 0.78 (7/9)
+#     Apple: 0.80 (16/20)
 
 # project: K7_S17.sb3
 TAP version 13
@@ -3618,10 +3618,10 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.88 (35/40)
+#   combined: 0.90 (36/40)
 #   individual:
 #     Stage: 1.00 (7/7)
-#     Bowl: 0.88 (7/8)
+#     Bowl: 1.00 (8/8)
 #     Apple: 0.85 (11/13)
 #     Bananas: 0.83 (10/12)
 
@@ -3638,11 +3638,11 @@ ok 1 - Test
     - id: 2
       name: Bowl Movement Constraint
       status: fail
-      message: Bowl must move left when left arrow key is pressed.
+      message: Bowl must move right when right arrow key is pressed.
     - id: 3
       name: Bowl Movement Details Constraint
       status: fail
-      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
+      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
     - id: 4
       name: Apple Falling Details
       status: fail
@@ -3746,8 +3746,8 @@ ok 1 - Test
       message: ''
     - id: 3
       name: Bowl Movement Details Constraint
-      status: fail
-      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
+      status: pass
+      message: ''
     - id: 4
       name: Apple Falling Details
       status: skip
@@ -3766,20 +3766,20 @@ ok 1 - Test
       message: Too few apples spawned.
     - id: 8
       name: Banana Spawn Y Position Constraint
-      status: skip
-      message: Too few bananas spawned.
+      status: pass
+      message: ''
     - id: 9
       name: Banana Spawn Random X Position Constraint
-      status: skip
-      message: Too few bananas spawned.
+      status: pass
+      message: ''
     - id: 10
       name: Only One Apple Constraint
       status: skip
       message: Too few apples spawned.
     - id: 11
       name: Only One Banana Constraint
-      status: skip
-      message: Too few bananas spawned.
+      status: pass
+      message: ''
     - id: 12
       name: Apple Points Constraint
       status: skip
@@ -3794,16 +3794,16 @@ ok 1 - Test
       message: Apple did not touch the ground.
     - id: 15
       name: Banana Bowl Points Constraint
-      status: skip
-      message: Banana did not touch the bowl.
+      status: fail
+      message: Bananas must give 8 points when they hit the bowl.
     - id: 16
       name: Banana Ground Points Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Bananas must subtract 8 points when they hit the floor.
     - id: 17
       name: Banana Ground Message Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Banana must display a message when it hits the ground.
     - id: 18
       name: Timer Tick Constraint
       status: pass
@@ -3828,12 +3828,12 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.86 (31/36)
+#   combined: 0.92 (33/36)
 #   individual:
 #     Stage: NaN (0/0)
 #     Bowl: 0.86 (12/14)
-#     Apple: 0.82 (9/11)
-#     Bananas: 0.91 (10/11)
+#     Apple: 0.91 (10/11)
+#     Bananas: 1.00 (11/11)
 
 # project: K7_S24.sb3
 TAP version 13
@@ -3951,8 +3951,8 @@ ok 1 - Test
       message: ''
     - id: 21
       name: Score Not Changing Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Score must not change if no fruit touches the bowl or the ground.
   ...
 # summary:
 #   tests: 1
@@ -3961,12 +3961,12 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.73 (33/45)
+#   combined: 0.82 (37/45)
 #   individual:
 #     Stage: NaN (0/0)
-#     Apple: 0.71 (10/14)
+#     Apple: 0.86 (12/14)
 #     Bowl: 0.78 (7/9)
-#     Bananas: 0.73 (16/22)
+#     Bananas: 0.82 (18/22)
 
 # project: K7_S27.sb3
 TAP version 13
