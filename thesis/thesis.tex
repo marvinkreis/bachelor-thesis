@@ -28,6 +28,13 @@
 
 % Tables
 \usepackage{booktabs}
+\usepackage{multirow}
+
+% Checkmarks and crosses
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{53}}
+\newcommand{\smark}{\ding{73}}
 
 % Source code highlighting
 % outputdir workaround because minted ignores the '-output-directory' flag.
@@ -41,8 +48,9 @@
     frame=leftline}
 \newmintinline{javascript}{}
 
-% Extra figures
+% Figures
 \usepackage{wrapfig}
+\usepackage[justification=centering]{caption}
 \usepackage{subcaption}
 
 % Page style

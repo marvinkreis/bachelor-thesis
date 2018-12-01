@@ -27,10 +27,11 @@ for (name in names(csvs.test_results)) {
                       coverage = coverage[ids],
                       excluded = ! projects.intersect %in% projects.filtered);
 
-    correlation = round(cor(data$points[!data$excluded], data$passes[!data$excluded]), digits = 4);
+    correlation = cor(data$points[!data$excluded], data$passes[!data$excluded]);
 
     print(name);
     print(data);
+    print(correlation);
 
     scatter = ggplot(data = data, aes(x = points, y = passes, color = coverage, shape = excluded)) +
         geom_point(size = 2) +
@@ -40,7 +41,7 @@ for (name in names(csvs.test_results)) {
         labs(x = "Points (Manual Evaluation)", y = "Test Passes", color = "Coverage", shape = "Excluded") +
         theme_light();
 
-        label = paste("Correlation:\n", correlation, sep = "");
+        label = paste("Correlation:\n", round(correlation, digits = 4), sep = "");
 
         # https://stackoverflow.com/questions/32506444/ggplot-function-to-add-text-just-below-legend
         g = ggplotGrob(scatter);

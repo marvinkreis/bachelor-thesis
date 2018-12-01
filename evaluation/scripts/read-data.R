@@ -9,6 +9,9 @@ dir         = file.path("data", "test-results");
 dirs        = list.files(dir, full.names=TRUE);
 names(dirs) = lapply(dirs, basename);
 
+# Don't always use the random results
+dirs = Filter(function(x) regexpr("random", x) == -1, dirs);
+
 csvs.test_results  = list();
 csvs.test_coverage = list();
 
