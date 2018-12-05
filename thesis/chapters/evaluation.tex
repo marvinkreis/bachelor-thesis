@@ -1,17 +1,17 @@
 \chapter{Evaluation}
 
 - In this chapter, the Whisker testing utility is evaluated
-- The focus of the evaluation lies in comparing the results of automated tests using Whisker to the results of manual assessment
-- Additionally the results of using random input in conjunction to constraint-only tests is explored
-
+- The evaluation focuses on finding out how accurate Whisker's test results can be compared to manual assessment
+- Additionally the results of using different methods of input in conjunction to constraint-only tests is explored
 - A collection of real Scratch programs from a student course is tested with four different test suites
-- The first two test suites try to assess the projects as well as possible
-- The second two test suites are used to find out if randomly generated user input can reasonably be used together with a constraint-only test suite
 
 - Chapter outline
 
 \section{Evaluation Method}
-\subsection{Projects}
+
+- TODO: write about the general evaluation approach
+
+=== Scratch Projects:
 - From a students course
 - Two groups, grade 6 and grade 7 $\rightarrow$ realistic for Whisker's purpose
 - Multiple exercises to familiarize themselves with Scratch
@@ -27,66 +27,6 @@
     - Students often deliberately changed their programs from the specification (e.g. different fall speeds, different messages)
     - In a real scenario (in which Whisker is used for grading) students would have the possibility to test their projects beforehand
     $\rightarrow$ see Chapter 2 - Advantages
-
-\subsection{Excluded Projects}
-
-\begin{table}
-    \centering
-    \scriptsize
-    \begin{tabular}{ll}
-        \toprule
-        Project & Reason                                                                          \\
-        \midrule
-        \multicolumn{2}{l}{\textbf{Detected through the test report}}                             \\
-        K6\_S12 & Deleted variable: time                                                          \\
-        K6\_S17 & Renamed variable: "Punkte" to "Bunkte"                                          \\
-        K7\_S24 & Deleted variable: time                                                          \\
-        K7\_S27 & Renamed Sprite: "Bowl" to "Figur2"                                              \\[\medskipamount]
-
-        \multicolumn{2}{l}{\textbf{Detected through zero statement coverage}}                     \\
-        K6\_S01 & Starts on up key press instead of green flag                                    \\
-        K6\_S06 & Wrong scratch project file (scored 30 points in manual rating but has no code)  \\
-        K6\_S14 & Starts on space key press instead of green flag                                 \\[\medskipamount]
-
-        \multicolumn{2}{l}{\textbf{Detected manually}}                                            \\
-        K6\_S20 & Green flag has to be pressed twice to make it work properly                     \\
-        K7\_S18 & Sprites have to be repositioned manually in the editor to make it work properly \\
-        \bottomrule
-    \end{tabular}
-    \caption{Excluded Projects}
-    \label{tab:excluded_projects}
-\end{table}
-
-\subsection{Tests}
-- Normal + Constraint Tests
-    - Deliberately control the bowl to win the game
-
-- Normal Tests
-    - Traditional testing approach: Each test checks one bit of the programs functionality
-    - The program gets executed multiple times
-    - Better for grading
-    - Better for continuous development
-    - Example of a normal test (or put it somewhere else?)
-
-- Constraint Tests
-    - Different approach: One test executes the program only once and checks defined constraints in the background
-    - faster, but less accurate (show difference of average runtime)
-    - not everything in this project can be tested in a single run
-    - Better for quickly checking the program
-    - Example of a constraint test (or put it somewhere else?)
-    - Can be used with different sources of input (manual / simulated / random)
-    - Instead of passing tests, passing constraints are measured
-    - Tests with wrong sprite names are completely excluded in the evaluation
-
-- Random Tests
-    - Same constraints as the constraint tests
-    - Random input instead of deliberately controlling the bowl
-    - Random tests only make sense with constraints
-        - defining single test cases would be difficult
-        - execution would take a long time because most tests are skipped
-    - Useful to test the stability of the program (like Android Monkey)
-        - Although not on this particular project
-    - This project is not well suited for random tests since random input will quickly result in a game over
 
 Catch fruit with a bowl in order to not go game over and collect as many points as possible before the time is up.
 \begin{table}
@@ -136,6 +76,70 @@ Catch fruit with a bowl in order to not go game over and collect as many points 
     \label{tab:specification}
 \end{table}
 
+\section{Research Questions}
+
+\textbf{RQ1.}
+- Whisker can facilitate grading of Scratch assignments
+    (1) Whisker's results (normal tests and constraint tests) match the results of manual evaluation
+    (2) Whisker's results (normal tests and constraint tests) show low rates of false positives and false negatives
+    (3) Whisker's results (normal tests and constraint tests) are consistent enough to be used for grading
+
+~\\~\\
+=== (1)
+\paragraph{Null hypothesis ($H_0$)}
+Test results have no strong relation to the scores that were given to the projects manually.
+\paragraph{Alternative hypothesis ($H_1$)}
+The results of automated tests closely match the results of manual scoring.
+
+~\\~\\
+=== (2)
+\paragraph{Null hypothesis ($H_0$)}
+Automated test results show a high rate of false positives and false negatives, which makes it unsuitable for grading.
+\paragraph{Alternative hypothesis ($H_1$)}
+The test results show a low enough rate of false positives and false negatives to make it suitable for grading.
+
+~\\~\\
+=== (3)
+\paragraph{Null hypothesis ($H_0$)}
+Automated test results show very different results each run and are thus not accurate enough to use them for grading.
+\paragraph{Alternative hypothesis ($H_1$)}
+Test results are consistent enough over multiple runs to provide accurate information for grading.
+
+~\\~\\
+- Normal Tests
+    - Traditional testing approach: Each test checks one bit of the programs functionality
+    - The program gets executed multiple times
+    - Deliberately control the bowl to win the game
+    - Better for grading
+    - Better for continuous development
+    - Example of a normal test (or put it somewhere else?)
+
+\textbf{RQ2.}
+- The testing process can be done entirely in the background independent of testing scenarios (?)
+    $\rightarrow$ Random input can be used for the test
+    $\rightarrow$ The test can involve the user using the program like they normally would
+
+- Constraint Tests
+    - Different approach: One test executes the program only once and checks defined constraints in the background
+    - Deliberately control the bowl to win the game
+    - faster, but can be less accurate (show difference of average runtime)
+    - not everything in this project can be tested in a single run
+    - Better for quickly checking the program
+    - Example of a constraint test (or put it somewhere else?)
+    - Can be used with different sources of input (manual / simulated / random)
+    - Instead of passing tests, passing constraints are measured
+    - Tests with wrong sprite names are completely excluded in the evaluation
+
+- Random Tests
+- Same constraints as the constraint tests vs. only constraints that can hold in the first few seconds every time
+    - Random input instead of deliberately controlling the bowl
+    - Random tests only make sense with constraints
+        - defining single test cases would be difficult
+        - execution would take a long time because most tests are skipped
+    - Useful to test the stability of the program (like Android Monkey)
+        - Although not on this particular project
+    - This project is not well suited for random tests since random input will quickly result in a game over
+
 \section{Evaluation Setup}
 
 \begin{table}
@@ -156,8 +160,8 @@ Catch fruit with a bowl in order to not go game over and collect as many points 
     \label{tab:test_setup}
 \end{table}
 
-
 \section{Results}
+
 
 \begin{figure}
     \centering
@@ -165,6 +169,46 @@ Catch fruit with a bowl in order to not go game over and collect as many points 
     \caption{Results of the normal test suite (1)}
     \label{fig:scatter_normal_1}
 \end{figure}
+
+=== Excluded Projects
+- Some of the projects were excluded from the evaluation
+- Because they where problematic to automated testing in some way
+    - Tests select sprites and variables by name, and some projects changed the names of sprites and variables
+        - Detected by searching the test reports: ''grep''
+    - Some projects used a different mechanism than the green flag to start their program
+        - Since this is not specified, tests can not start the program
+        - Detected by zero statement coverage
+    - Some Projects didn't work properly because of missing initialization
+        - Go game over on startup
+        - One project work if green flag is pressed multiple times
+        - One project only worked if the sprites were manually dragged to a different position
+
+\begin{table}
+    \centering
+    \scriptsize
+    \begin{tabular}{ll}
+        \toprule
+        Project & Reason                                                                          \\
+        \midrule
+        \multicolumn{2}{l}{\textbf{Detected through the test report}}                             \\
+        K6\_S12 & Deleted variable: time                                                          \\
+        K6\_S17 & Renamed variable: "Punkte" to "Bunkte"                                          \\
+        K7\_S24 & Deleted variable: time                                                          \\
+        K7\_S27 & Renamed Sprite: "Bowl" to "Figur2"                                              \\[\medskipamount]
+
+        \multicolumn{2}{l}{\textbf{Detected through zero statement coverage}}                     \\
+        K6\_S01 & Starts on up key press instead of green flag                                    \\
+        K6\_S06 & Wrong scratch project file (scored 30 points in manual rating but has no code)  \\
+        K6\_S14 & Starts on space key press instead of green flag                                 \\[\medskipamount]
+
+        \multicolumn{2}{l}{\textbf{Detected manually}}                                            \\
+        K6\_S20 & Green flag has to be pressed twice to make it work properly                     \\
+        K7\_S18 & Sprites have to be repositioned manually in the editor to make it work properly \\
+        \bottomrule
+    \end{tabular}
+    \caption{Excluded Projects}
+    \label{tab:excluded_projects}
+\end{table}
 
 \begin{figure}
     \centering

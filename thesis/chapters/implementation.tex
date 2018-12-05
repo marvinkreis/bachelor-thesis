@@ -1,9 +1,9 @@
 \chapter{Implementation}
 
-\section{Implementation}
 - This section shows a implementation of a testing utility for Scratch
 - Uses the approach described above
 - Implemented in JavaScript for compatibility with Scratch 3.0, which is implemented in JavaScript
+- ES16
 
 \begin{itemize}
     \item System design / Components
@@ -16,44 +16,67 @@
     \item The step loop
     \item Coverage measuring
         \begin{itemize}
-            \item What kind blocks are measured
+            \item What kind of blocks are measured
             \item How is coverage measured (only reachable blocks)
         \end{itemize}
 \end{itemize}
 
+- Project is loaded before each test to make the tests more consistent
+
+\section{General Design}
+
+- Whisker is designed to be a layer between test code and the scratch virtual machine
+- Does not change the virtual machine in any way
+    $\rightarrow$ designed so it can be used with any instance of the Scratch virtual machine
+    $\rightarrow$ even something like a browser addon for the original Scratch page would be possible
+- Allows to interact with the VM in various test-friendly ways
+- The main class VM Wrapper and its components make up a wrapper around the scratch virtual machine,
+  which offers extra functionality for testing
+- Test Driver offers a user-friendly interface between the test code and the VM Wrapper
+- Test uses Test Driver to simulate input, get information about sprites, and do assertion
+- Test Driver could be acquired through a helper method or passed to the test method
+    - Examples in this chapter will assume that the test driver is passed to the test functions
+
+=== Limitations
+- Scratch depends on the renderer
+    - Some functionality of the Scratch virtual machine depends on the renderer
+    - Headless tests are impossible without restricting the Scratch program to a subset of available blocks
+- Therefore Whisker assumes the VM is always run with a renderer in place
+
+\section{The Step Loop}
+
+- The core of the Scratch virtual machine is a step-function, which is called at a constant interval (using JavaScript's \texttt{setInterval()})
+- Interval of 30 times / second for Scratch 2.0, 60 times / second for Scratch 3.0
+- The function executes the program until a time limit is reached and then redraws the scene
+- If some visual change occurs in the project, the program execution is stopped earlier and the scene is rendered
+
 \begin{figure}
     \centering
-    \tikzset{>=latex,
-             label/.style={draw=none, text width=5.3cm, minimum height=0.5cm, text centered},
-               box/.style={draw,      text width=2.5cm, minimum height=0.7cm, text centered, rounded corners},
-                 h/.style={fill=blue!10}}
+    \begin{javascriptcode}
+        STEP_TIME = 1000 / STEPS_PER_SECOND;
+        WORK_TIME = 0.75 * STEP_TIME;
 
-    \begin{tikzpicture}
-        \node[box]   at ( 0.0,  3.0) (testfw)        {Test Framework};
-        \node[box]   at ( 0.0,  1.5) (testdriver)    {Test Driver};
-        \node[label] at ( 0.0,  0.0) (vmwrapper)     {VM Wrapper};
-        \node[box]   at (-1.4, -0.7) (sprites)       {Sprites};
-        \node[box]   at (-1.4, -1.6) (inputs)        {Inputs};
-        \node[box]   at ( 1.5, -0.7) (callbacks)     {Callbacks};
-        \node[box]   at ( 1.5, -1.6) (constraints)   {Constraints};
-        \node[box]   at (-2.0, -3.2) (scratchvm)     {Scratch VM};
-        \node[box]   at ( 2.2, -3.2) (scratchrender) {Renderer};
+        while (running &&
+               timeElapsed < WORK_TIME &&
+               !redrawRequested) {
+            for (thread of threads) {
+                stepThread(thread);
+            }
+        }
 
-        \begin{scope}[on background layer]
-            \node[draw, h, rounded corners, fit=(vmwrapper)(sprites)(inputs)(callbacks)(constraints)] (container) {};
-        \end{scope}
-
-        \foreach \pp/\pf/\pt in {--/testfw/testdriver,
-                                 --/testdriver/container,
-                                 --/container/scratchvm,
-                                 --/container/scratchrender,
-                                 --/scratchvm/scratchrender}
-        \draw[shorten >= 2pt, ->] (\pf) \pp (\pt);
-    \end{tikzpicture}
-
-    \caption{Components of Whisker}
-    \label{fig:components_of_whisker}
+        renderer.draw();
+    \end{javascriptcode}
+    \caption{Simplified Scratch Step Procedure}
+    \label{fig:simplified_scratch_step_procedure}
 \end{figure}
+
+- Instead of executing the step function via interval, Whisker executes its own step loop, which calls Scratch's step function
+- Before and after the step of the Scratch program, test code is run, registered inputs are performed and sprite objects are updated
+
+- This should either not affect the Scratch program, or only affect it minimally
+    - Renderer might not need to use the entire allocated rendering time
+    - If something changes in a Scratch program, usually a sprite moves $\rightarrow$ Scratch will only use a fraction of the entire allocated work time in most cases
+    - Scratch uses real time to track wait times -> not affected much by a step that takes longer that normally
 
 \begin{figure}
     \centering
@@ -69,6 +92,8 @@
         \node[box, h] at ( 0.2,  2.0) (step)            {Step Scratch Program};
         \node[box]    at ( 0.2,  1.0) (callbacksafter)  {Call Callbacks (after)};
         \node[box]    at ( 0.2,  0.0) (constraints)     {Check Constraints};
+
+        \node[text width=2cm]    at (-4.5, 2.5) (wait)  {Wait until next step is due};
 
         \node[num] at (-2.6,  5.0) (one)   {1};
         \node[num] at (-2.6,  4.0) (two)   {2};
@@ -98,25 +123,171 @@
     \label{fig:whisker_step_procedure}
 \end{figure}
 
+
+
+\section{Components}
+
+=== WM Wrapper
+- Control the execution of the scratch program
+- Run the program until a certain amount of time has passed or a condition has been met
+- Get the time elapsed since the start of the test or the start of the last run
+- Cancel a run
+- Uses JavaScript's Promise API to wait until a run is finished
+
+\begin{javascriptcode}
+    async function test (t) {
+        await t.runForTime(500);
+        await t.runUntil(() => !t.projectRunning(), 1000);
+        t.assert.ok(t.getTotalTimeElapsed() < 1000);
+    }
+\end{javascriptcode}
+
+=== Sprites
+- Get information about sprites and variables
+- Gives the information that the test uses
+- Does not allow to manipulate sprites and variables
+- Contains ''old'' value for every fitting property
+    - Saves the value from the last step
+    - Useful for constraints (see later)
+    - Initialized with the present value
+- Sprites are only tracked once they are retrieved via one of the getter methods
+- Helps, for example, with programs that spawn a lot of clones (could pose a performance problem otherwise)
+
+\begin{javascriptcode}
+    async function test (t) {
+        const sprite = t.getSprite('Sprite1');
+        const variable = sprite.getVariable('Variable1');
+        const sprites = t.getSprites(s => s.x > 100);
+
+        t.assert.equal(sprite.x, 100);
+        t.assert.equal(sprite.old.x, 100);
+        t.assert.equal(variable.value, 5);
+    }
+\end{javascriptcode}
+
+=== Inputs
+- Simulate inputs on the program
+- At the moment: only mouse and keyboard input
+- Can be registered to be called in the step cycle or be executed immediately
+- Registering a Input with 0 delay is different from executing it immediately
+
+\begin{javascriptcode}
+    async function test (t) {
+        t.inputImmediate({
+            device: 'keyboard',
+            key: 'right arrow',
+            isDown: true
+        });
+
+        const mouseInput = t.addInput(1000, {
+            device: 'mouse',
+            x: 100,
+            y: 0,
+            isDown: true,
+            duration: 500
+        });
+
+        t.assert.ok(t.isKeyDown('right arrow'));
+        t.removeInput(mouseInput);
+        t.addInput(mouseInput);
+    }
+\end{javascriptcode}
+
+=== Callbacks
+- Register callbacks that are called after every step
+- Can be registered to run at two positions in the step cycle (see diagram later)
+
+\begin{javascriptcode}
+    async function test (t) {
+        const sprite = t.getSprite('Sprite1');
+
+        const callback = t.addCallback(() => {
+            t.inputImmediate({
+                device: 'mouse',
+                x: sprite.x,
+                y: sprite.y
+            });
+        });
+
+        t.runForTime(1000);
+
+        callback.enable();
+    }
+\end{javascriptcode}
+
+
+=== Constraints
+- Describe conditions that must always hold
+- Useful, because it separates assertions from the program execution
+    - Define constraints for tested properties, then use whatever input (deliberate / random / manual)
+    - Problem: most constraints still hold if the tested property is not implemented at all
+        - e.g. constraint that checks that a sprite never moves left will hold if the sprite doesn't move at all
+
+
+\begin{javascriptcode}
+    async function test (t) {
+        const sprite = t.getSprite('Sprite1');
+
+        t.onConstraintFailure('fail');
+
+        const constraint = t.addConstraint(() => {
+            t.assert.ok(sprite.x >= sprite.old.x);
+        });
+
+        t.runForTime(1000);
+
+        constraint.disable();
+    }
+\end{javascriptcode}
+
 \begin{figure}
     \centering
-    \begin{javascriptcode}
-        STEP_TIME = 1000 / STEPS_PER_SECOND;
-        WORK_TIME = 0.75 * STEP_TIME;
+    \tikzset{>=latex,
+             label/.style={draw=none, text width=5.3cm, minimum height=0.5cm, text centered},
+               box/.style={draw,      text width=2.5cm, minimum height=0.7cm, text centered, rounded corners},
+                 h/.style={fill=blue!10}}
 
-        while (running &&
-               timeElapsed < WORK_TIME &&
-               !redrawRequested) {
-            for (thread of threads) {
-                stepThread(thread);
-            }
-        }
+    \begin{tikzpicture}
+        \node[box]   at ( 0.0,  3.0) (testcode)      {Test Code};
+        \node[box]   at ( 0.0,  1.5) (testdriver)    {Test Driver};
+        \node[label] at ( 0.0,  0.0) (vmwrapper)     {VM Wrapper};
+        \node[box]   at (-1.4, -0.7) (sprites)       {Sprites};
+        \node[box]   at (-1.4, -1.6) (inputs)        {Inputs};
+        \node[box]   at ( 1.5, -0.7) (callbacks)     {Callbacks};
+        \node[box]   at ( 1.5, -1.6) (constraints)   {Constraints};
+        \node[box]   at (-2.0, -3.2) (scratchvm)     {Scratch VM};
+        \node[box]   at ( 2.2, -3.2) (scratchrender) {Renderer};
 
-        renderer.draw();
-    \end{javascriptcode}
-    \caption{Simplified Scratch Step Procedure}
-    \label{fig:simplified_scratch_step_procedure}
+        \begin{scope}[on background layer]
+            \node[draw, h, rounded corners, fit=(vmwrapper)(sprites)(inputs)(callbacks)(constraints)] (container) {};
+        \end{scope}
+
+        \foreach \pp/\pf/\pt in {--/testcode/testdriver,
+                                 --/testdriver/container,
+                                 --/container/scratchvm,
+                                 --/container/scratchrender,
+                                 --/scratchvm/scratchrender}
+        \draw[shorten >= 2pt, ->] (\pf) \pp (\pt);
+    \end{tikzpicture}
+
+    \caption{Components of Whisker}
+    \label{fig:components_of_whisker}
 \end{figure}
+
+\section{Coverage Measurement}
+
+- Whisker can measure simple statement coverage
+- Project wide and for single sprites / the stage
+
+- Only measures blocks that are part of a script / connected to a hat (this includes procedure definitions)
+- Other blocks are obviously not reachable
+
+- Useful to detect if a project has been properly captured by a test
+    - If coverage is low, there is a problem with the test or project
+    - Or the project contains unnecessary code
+
+- Initialized by traversing the scripts and noting each block id of the blocks in a project
+- Coverage is simply measured by tracking which block ids are put on top of the stack of the threads in the Scratch virtual machine
 
 \section{Running Tests}
 \label{sec:running_tests}
