@@ -50,7 +50,7 @@
 - The function executes the program until a time limit is reached and then redraws the scene
 - If some visual change occurs in the project, the program execution is stopped earlier and the scene is rendered
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \begin{javascriptcode}
         STEP_TIME = 1000 / STEPS_PER_SECOND;
@@ -103,7 +103,7 @@
         \node[num] at (-2.6,  0.0) (six)   {6};
 
         \draw[->]
-            (callbacksbefore)
+               (callbacksbefore)
             -- (inputs)
             -- (sprites)
             -- (step)
@@ -111,8 +111,8 @@
             -- (constraints)
             -- ( 0.2, -1.5);
 
-        \draw[shorten >= 2pt, rounded corners, ->]
-            ( 0.2, -1.0)
+        \draw[shorten >= 2pt, rounded corners, dashed, ->]
+               ( 0.2, -1.0)
             -- (-3.4, -1.0)
             -- (-3.4,  6.0)
             -- ( 0.2,  6.0)
