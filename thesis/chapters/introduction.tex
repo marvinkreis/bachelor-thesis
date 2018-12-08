@@ -7,36 +7,44 @@
 - Its interactive environment lets users easily build animated interactive programs
 
 === What purpose does automatic testing have in this context
+- Student solutions may need to be evaluated
+- Currently no automatic solution to this exists
 - Manual assessment of scratch programs is very time consuming
-- Interactive nature of scratch programs means much interaction is needed to test the program
+- Interactive nature of scratch programs means much interaction with the program is needed to test it
 - Every project has to be opened Individually
-- In contrast, traditional programming languages that feature normal IO can easily be assessed
-- Simply provide input and check output
+- Running the can require many key presses and mouse clicks and can take a long time
+
+- Scratch's IO does not allow to automate this process easily
+    - input consists of key presses, mouse movements and on-screen text input
+    - output consists of sprite animations, sound effects and on-screen text output
+- In contrast, normal programming languages that feature traditional IO can easily be assessed
+- Simply provide input through the standard input and check the standard output
 - This is not so simple for Scratch
 
 === What purpose does it have
-- Allows teachers to grade scratch programs more easily
+- Having a way to automatically test Scratch programs allows teachers to grade scratch programs more easily
     - Less time consuming
-        - There are programming courses using Scratch that have over 200 students \cite{itch}
+        - There are programming courses using Scratch that have over 200 students~\cite{itch}
     - may catch easily overlooked errors
     - Gives students an easy way to get feedback for their programs
         - Can detect errors or functionality, which they might have missed
-- What can learners do with it?
+        - Good idea to run a test suite before submitting a solution
+- Can also be used outside of courses
     - Can serve as a extension to a self-tutorial
     - Gives feedback to the learner
 
 \section{Contributions}
-- This work introduces whisker as a way to automatically assess the functionality of scratch programs
-- Whisker follows a black box GUI testing approach
+- This work introduces Whisker as a way to automatically assess the functionality of scratch programs
+- Whisker follows a black box testing approach
 - Provides a automation tool to control scratch programs from test cases
     - Can simulate input on the program
     - Can query information from the program
 
 - This work shows that automated testing can be used to assess scratch programs
 - \textbf{RQ1:} Whisker can facilitate grading of Scratch assignments
-    - Whisker's results (normal tests and constraint tests) match the results of manual evaluation
-    - Whisker's results (normal tests and constraint tests) show low rates of false positives and false negatives
-    - Whisker's results (normal tests and constraint tests) are consistent enough to be used for grading
+    - test results (normal tests and constraint tests) match the results of manual evaluation
+    - test results (normal tests and constraint tests) show low rates of false positives and false negatives
+    - test results (normal tests and constraint tests) are consistent enough to be used for grading
 - \textbf{RQ2:} The testing process can be done entirely in the background independent of testing scenarios (?)
     $\rightarrow$ \textbf{RQ2.1:} Random input can be used for the test
     ($\rightarrow$ The test can involve the user using the program like they normally would)

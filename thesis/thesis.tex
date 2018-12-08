@@ -1,5 +1,5 @@
 % Document layout
-\documentclass[12pt,a4paper,twoside,openright]{report}
+\documentclass[12pt,a4paper,twoside]{report}
 \usepackage[margin=3.cm]{geometry}
 \raggedbottom
 
@@ -62,12 +62,16 @@
     \fancyhead[RE]{\rightmark}
     \fancyfoot{}}
 \pagestyle{plain}
+\setlength{\headheight}{20pt}
 
 % Space between paragraphs
 \newcommand{\parspace}{\medskip}
 
 % Notes
 \usepackage{marginnote}
+
+% Calculate sizes
+\usepackage{calc}
 
 % Information
 \title{Whisker: Automated Testing of Scratch Programs}
@@ -91,6 +95,13 @@
 \tableofcontents
 \clearpage
 
+% \let\oldclearpage=\clearpage
+% \renewcommand{\clearpage}{}
+\listoffigures
+\listoftables
+\listoflistings
+% \let\clearpage=\oldclearpage
+
 % Abstract
 \input{chapters/abstract}
 %     Explain what this thesis is about, and give a quick summary.
@@ -105,7 +116,7 @@
 %     Awaken the reader's interest.
 %     Should connect with the conclusions, so review / rewrite it in the end.
 
-\input{chapters/testing-in-scratch}
+\input{chapters/background}
 
 \input{chapters/testing-approach}
 
@@ -127,9 +138,6 @@
 %    Provide a conclusion to the research questions.
 
 \input{chapters/future-work}
-
-This is a test citation: \cite{hairball} \\
-This is a test citation: \cite{scratch}
 
 % Bibliography
 \clearpage

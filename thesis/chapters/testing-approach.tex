@@ -1,25 +1,5 @@
 \chapter{Testing Approach}
 
-\section{Black Box Testing}
-
-- Black box approach:
-    - Block box testing bases tests on the specification of the tested program
-    - Tests are written without knowledge of the internals of a program
-    - Program is seen as a ''black box'' that takes some input and produces some output.
-    - Program specification is in the case of Scratch programs most likely a task description for some course or tutorial
-
-    - Input for the black box is user interaction through mouse and keyboard
-    - Interact only how a user can interact with the program
-        - Since Scratch can only be controlled through user interaction and has no API to call blocks or scripts,
-          it only makes sense to control the program this way in the test
-        - No information about the internals of the program other than sprite and variable names
-            - Sprite names should be included in the specification so the test can more easily identify sprites
-            - Giving no or little information about the implementation makes sense for a task description
-    - Output of the black box are changes on Scratch's stage
-    - Test only what the user sees
-        - Only information about sprites and variables (both can be shown on screen)
-        - Sprite positions, movement, looks, etc.
-
 \section{General Test Procedure}
 
 - Before starting a test case, the project is loaded to make sure that every test starts with the same program state
@@ -93,7 +73,8 @@
         $\rightarrow$ Students can easily receive feedback and will change their programs according to the tests
         $\rightarrow$ Incentivizes students to ask for help if they can't progress, because the test clearly shows that there is a problem
 
-\section{Constraint-only Tests}
+\section{Constraint-only Tests}%
+\label{sec:constraint_only_tests}
 
 - Normally, tests would deliberately simulate input on the program, then perform some assertions
 - Constraints open up a new approach to testing Scratch programs by only defining constraints instead of doing normal assertions
@@ -108,8 +89,13 @@
     - E.g. a constraint that describes the movement speed of a sprite will always hold if the sprite does not move at all
     - $\rightarrow$ The constraint need to be filtered
 
-- Disadvantage: Requires more processing, constraints have to be checked between every step
-- Constraints can't fully replace normal assertions: some properties are better checked with normal assertions (e.g. a property only has to hold for one point in time)
+- Normal tests vs. constraint-only tests
+    - Normal tests can be more granular $\rightarrow$ better for grading
+    - Normal tests allow to write very short tests for things that can be checked fast
+        - More difficult if everything is tested in a single constraint-only test
+        $\rightarrow$ Better for continuous development, because it's easier to quickly execute just one test
+    - Constraint-only test require more processing, constraints have to be checked between every step
+    - Constraints can't fully replace normal assertions: some properties are better checked with normal assertions (e.g. a property only has to hold for one point in time)
 
 \begin{figure}[h]
     \centering
