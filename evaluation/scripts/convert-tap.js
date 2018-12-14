@@ -16,17 +16,16 @@
  * tap-parser
  * csv-stringify
  * js-yaml
- * minilog
+ * minimist
  */
 
 const fs = require('fs');
 const path = require('path');
-const {Readable} = require('stream');
 
 const Parser = require('tap-parser');
 const csvStringify = require('csv-stringify/lib/sync');
 const yaml = require('js-yaml');
-const minilog = require('minilog');
+const minimist = require('minimist');
 
 let isConstraintTests = false;
 
@@ -119,7 +118,7 @@ const convertToCsv = function (str) {
 }
 
 /**
- * Converts the coverage statistics of a TAP13 string into a CSV string.
+ * Converts the coverage statistics of a commented out YAML string into a CSV string.
  */
 const convertCoverageToCsv = function (str) {
     let coverageString = str.split('# coverage:\n')[1];
@@ -176,7 +175,7 @@ const exportTapAndCsv = async function (str) {
 }
 
 const main = function () {
-    const argv = require('minimist')(process.argv.slice(2), {boolean: true});
+    const argv = minimist(process.argv.slice(2), {boolean: true});
 
     try {
         fs.mkdirSync(path.join('.', 'tap'));
