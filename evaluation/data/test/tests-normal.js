@@ -1053,19 +1053,19 @@ const testTimerGameOverMessage = async function (t) {
  */
 
 module.exports = [
-    {
+    { // 01
         test: testVariableInitialization,
         name: 'Variable Initialization Test',
         description: 'Tests the initialization of variable values for time and score. Time must start at 30, score must start at 0',
         categories: ['initialization', 'time', 'score']
     },
-    {
+    { // 02
         test: testBowlInitialization,
         name: 'Bowl Initialization Test',
         description: 'Tests the initialization of the bowl position. The bowl must start at (0, -145).',
         categories: ['initialization', 'bowl']
     },
-    {
+    { // 03
         test: testFruitInitialization,
         name: 'Fruit Initialization Test',
         description: 'Tests the initialization of the size of apples and bananas. Apples and bananas must both have a size of 50%.',
@@ -1073,13 +1073,13 @@ module.exports = [
     },
 
 
-    {
+    { // 04
         test: testMoveBowl,
         name: 'Bowl Movement Test',
         description: 'Tests the movement of the bowl sprite. The bowl must move in the respective direction when the left or right arrow key is pressed, and must not move if no arrow key is pressed.',
         categories: ['bowl movement', 'bowl', 'input']
     },
-    {
+    { // 05
         test: testMoveBowlDetails,
         name: 'Bowl Movement Details Test',
         description: 'Tests the movement details of the bowl sprite. The bowl must move in steps of size 10 and never move vertically.',
@@ -1087,87 +1087,87 @@ module.exports = [
     },
 
 
-    {
+    { // 06
         test: testAppleFalling,
         name: 'Apple Falling Test',
         description: 'Tests if the apple falls down from the top of the screen.',
         categories: ['fruit falling', 'apple']
     },
-    {
+    { // 07
         test: testAppleFallingDetails,
         name: 'Apple Falling Details Test',
         description: 'Tests details of the apple falling down. The apple must fall in steps of -5 and must not move up or move horizontally.',
         categories: ['fruit falling', 'apple', 'constraints']
     },
-    {
+    { // 08
         test: testBananaFalling,
         name: 'Banana Falling Test',
         description: 'Tests if the banana falls down from the top of the screen.',
         categories: ['fruit falling', 'banana']
     },
-    {
-        test: testBananaFallingDetails,
+    { // 09
+       test: testBananaFallingDetails,
         name: 'Banana Falling Details Test',
         description: 'Tests details of the banana falling down. The banana must fall in steps of -7 and must not move up or move horizontally.',
         categories: ['fruit falling', 'banana', 'constraints']
     },
 
 
-    {
+    { // 10
         test: testAppleSpawn,
         name: 'Apple Spawn Test',
         description: 'Tests if apples spawn again after falling down.',
         categories: ['fruit spawn', 'apple', 'input']
     },
-    {
+    { // 11
         test: testAppleSpawnRandomXPosition,
         name: 'Apple Spawn Random X Position Test',
         description: 'Tests if apples spawn at the correct x positions. Apples must spawn at random x positions.',
         categories: ['fruit spawn', 'apple', 'input']
     },
-    {
+    { // 12
         test: testAppleSpawnYPosition,
         name: 'Apple Spawn Y Position Test',
         description: 'Tests if apples spawn at the correct y position. Apples must spawn at y = 170.',
         categories: ['fruit spawn', 'apple', 'input']
     },
-    {
+    { // 13
         test: testBananaSpawn,
         name: 'Banana Spawn Test',
         description: 'Tests if bananas spawn after falling down.',
         categories: ['fruit spawn', 'banana', 'input']
     },
-    {
+    { // 14
         test: testBananaSpawnRandomXPosition,
         name: 'Banana Spawn Random X Position Test',
         description: 'Tests if bananas spawn at the correct x positions. Bananas must spawn at random x positions.',
         categories: ['fruit spawn', 'banana', 'input']
     },
-    {
+    { // 15
         test: testBananaSpawnYPosition,
         name: 'Banana Spawn Y Position Test',
         description: 'Tests if bananas spawn at the correct y position. Bananas must spawn at y = 170.',
         categories: ['fruit spawn', 'banana', 'input']
     },
-    {
+    { // 16
         test: testOnlyOneApple,
         name: 'Only One Apple Test',
         description: 'Tests if there is only one apple visible during the game. There can also be two apples visible if they share the exact same position.',
         categories: ['fruit spawn', 'apple', 'constraints', 'input', 'slow']
     },
-    {
+    { // 17
         test: testOnlyOneBanana,
         name: 'Only One Banana Test',
         description: 'Tests if there is only one banana visible during the game. There can also be two bananas visible if they share the exact same position.',
         categories: ['fruit spawn', 'banana', 'constraints', 'input', 'slow']
     },
-    {
+    { // 18
         test: testBananaFallDelay,
         name: 'Banana Fall Delay Test',
         description: 'Tests if the banana waits a second in the beginning, before it falls down.',
         categories: ['fruit spawn', 'banana', 'input']
     },
-    {
+    { // 19
         test: testBananaGroundDelay,
         name: 'Banana Ground Delay Test',
         description: 'Tests if the banana waits a second after it touches the ground, before it falls down.',
@@ -1175,37 +1175,37 @@ module.exports = [
     },
 
 
-    {
+    { // 20
         test: testApplePoints,
         name: 'Apple Points Test',
         description: 'Tests if apples give 5 points when they touch the bowl.',
         categories: ['fruit interaction', 'apple', 'score', 'input']
     },
-    {
+    { // 21
         test: testAppleGameOver,
         name: 'Apple Game Over Test',
         description: 'Tests if an apples falling to the ground end the game.',
         categories: ['fruit interaction', 'apple', 'input']
     },
-    {
+    { // 22
         test: testAppleGameOverMessage,
         name: 'Apple Game Over Message Test',
         description: 'Tests if an apples falling to the ground display a game over message.',
         categories: ['fruit interaction', 'apple', 'input']
     },
-    {
+    { // 23
         test: testBananaBowlPoints,
         name: 'Banana Bowl Points Test',
         description: 'Tests if bananas give 8 points when they touch the bowl.',
         categories: ['fruit interaction', 'banana', 'score', 'input', 'slow']
     },
-    {
+    { // 24
         test: testBananaGroundPoints,
         name: 'Banana Ground Points Test',
         description: 'Tests if bananas subtract 8 points when they touch the ground.',
         categories: ['fruit interaction', 'banana', 'score', 'input']
     },
-    {
+    { // 25
         test: testBananaGroundMessage,
         name: 'Banana Ground Message Test',
         description: 'Tests if bananas display a message when they touch the ground.',
@@ -1213,19 +1213,19 @@ module.exports = [
     },
 
 
-    {
+    { // 26
         test: testTimerTick,
         name: 'Timer Tick Test',
         description: 'Tests if the timer ticks down as expected. The timer must tick down by one every second.',
         categories: ['timer', 'time', 'input', 'slow', 'constraints']
     },
-    {
+    { // 27
         test: testTimerGameOver,
         name: 'Timer Game Over Test',
         description: 'Tests if the game stops after the time limit is reached. The timer must start at 30 and end the game when it reaches 0.',
         categories: ['timer', 'time', 'input', 'slow', 'constraints']
     },
-    {
+    { // 28
         test: testTimerGameOverMessage,
         name: 'Timer Game Over Message Test',
         description: 'Tests if the game displays a game over message after the time limit is reached.',

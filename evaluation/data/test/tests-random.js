@@ -145,7 +145,7 @@ const test = async function (t) {
     t.onConstraintFailure('nothing');
 
     /* Give the program some time to initialize. */
-    await t.runForTime(500);
+    await t.runForTime(5000);
 
     // ==================== Information Tracking ===================================
 
@@ -531,7 +531,6 @@ const test = async function (t) {
 
     // ==================== Test ===================================================
 
-    /*
     t.setRandomInputInterval(150);
     t.registerRandomInputs([
         {
@@ -545,16 +544,14 @@ const test = async function (t) {
             duration: [50, 100]
         }
     ]);
-    */
 
-    /* Catch apples with the bowl. Always use the newest apple and banana if clones are used. */
+    /* Always use the newest apple and banana if clones are used. */
     t.addCallback(() => {
-        followSprite(t, bowl.x, apple.x);
         apple = getNewestClone(apple);
         banana = getNewestClone(banana);
     });
 
-    await t.runForTime(45000);
+    await t.runForTime(5000);
 
     // ==================== Filter Constraints =====================================
 

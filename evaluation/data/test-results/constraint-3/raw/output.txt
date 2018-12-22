@@ -53,30 +53,38 @@ ok 1 - Test
       status: skip
       message: Apple did not touch the bowl.
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: skip
       message: Banana did not touch the bowl.
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: skip
       message: Banana did not touch the ground.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: skip
       message: Banana did not touch the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: skip
       message: Timer did not tick at all.
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: The game must run for at least 20 seconds.
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -112,7 +120,7 @@ ok 1 - Test
     - id: 3
       name: Bowl Movement Details Constraint
       status: fail
-      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
+      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
     - id: 4
       name: Apple Falling Details
       status: pass
@@ -131,49 +139,57 @@ ok 1 - Test
       message: ''
     - id: 8
       name: Banana Spawn Y Position Constraint
-      status: skip
-      message: Too few bananas spawned.
+      status: pass
+      message: ''
     - id: 9
       name: Banana Spawn Random X Position Constraint
-      status: skip
-      message: Too few bananas spawned.
+      status: pass
+      message: ''
     - id: 10
       name: Only One Apple Constraint
       status: pass
       message: ''
     - id: 11
       name: Only One Banana Constraint
-      status: skip
-      message: Too few bananas spawned.
+      status: pass
+      message: ''
     - id: 12
       name: Apple Points Constraint
       status: fail
       message: Apples must give 5 points when they hit the bowl.
     - id: 13
-      name: Banana Bowl Points Constraint
+      name: Apple Game Over Constraint
       status: skip
-      message: Banana did not touch the bowl.
+      message: Apple did not touch the ground.
     - id: 14
-      name: Banana Ground Points Constraint
-      status: pass
-      message: ''
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
     - id: 15
-      name: Banana Ground Message Constraint
-      status: pass
-      message: ''
+      name: Banana Bowl Points Constraint
+      status: fail
+      message: Bananas must give 8 points when they hit the bowl.
     - id: 16
+      name: Banana Ground Points Constraint
+      status: fail
+      message: Bananas must subtract 8 points when they hit the floor.
+    - id: 17
+      name: Banana Ground Message Constraint
+      status: fail
+      message: Banana must display a message when it hits the ground.
+    - id: 18
       name: Timer Tick Constraint
       status: skip
       message: Timer did not tick at all.
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: Score must not change after game is over (should be over).
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -185,11 +201,11 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.57 (21/37)
+#   combined: 0.62 (23/37)
 #   individual:
 #     Stage: NaN (0/0)
 #     Bowl: 1.00 (4/4)
-#     Bananas: 0.53 (9/17)
+#     Bananas: 0.65 (11/17)
 #     Apple: 0.50 (8/16)
 
 # project: K6_S03.sb3
@@ -247,30 +263,38 @@ ok 1 - Test
       status: fail
       message: Apples must give 5 points when they hit the bowl.
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: skip
       message: Banana did not touch the bowl.
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: fail
       message: Bananas must subtract 8 points when they hit the floor.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: fail
       message: Banana must display a message when it hits the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: skip
       message: Timer did not tick at all.
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: Score must not change after game is over (should be over).
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -344,30 +368,38 @@ ok 1 - Test
       status: pass
       message: ''
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: pass
       message: ''
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: fail
       message: Bananas must subtract 8 points when they hit the floor.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: fail
       message: Banana must display a message when it hits the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: pass
       message: ''
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: pass
       message: ''
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: fail
       message: Score must not change if no fruit touches the bowl or the ground.
@@ -379,10 +411,10 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.88 (43/49)
+#   combined: 0.92 (45/49)
 #   individual:
 #     Stage: NaN (0/0)
-#     Apple: 0.83 (19/23)
+#     Apple: 0.91 (21/23)
 #     Bananas: 1.00 (16/16)
 #     Bowl: 0.80 (8/10)
 
@@ -441,30 +473,38 @@ ok 1 - Test
       status: skip
       message: Apple did not touch the bowl.
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: skip
       message: Banana did not touch the bowl.
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: skip
       message: Banana did not touch the ground.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: skip
       message: Banana did not touch the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: skip
       message: Timer did not tick at all.
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: The game must run for at least 20 seconds.
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -538,30 +578,38 @@ ok 1 - Test
       status: pass
       message: ''
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: pass
       message: ''
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: pass
       message: ''
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: fail
       message: Banana must display a message when it hits the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: pass
       message: ''
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: pass
       message: ''
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: pass
       message: ''
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -632,33 +680,41 @@ ok 1 - Test
       message: Too few bananas spawned.
     - id: 12
       name: Apple Points Constraint
-      status: fail
-      message: Apples must give 5 points when they hit the bowl.
-    - id: 13
-      name: Banana Bowl Points Constraint
       status: pass
       message: ''
+    - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
     - id: 14
-      name: Banana Ground Points Constraint
+      name: Apple Game Over Message Constraint
       status: skip
-      message: Banana did not touch the ground.
+      message: Apple did not touch the ground.
     - id: 15
-      name: Banana Ground Message Constraint
+      name: Banana Bowl Points Constraint
       status: skip
-      message: Banana did not touch the ground.
+      message: Banana did not touch the bowl.
     - id: 16
+      name: Banana Ground Points Constraint
+      status: fail
+      message: Bananas must subtract 8 points when they hit the floor.
+    - id: 17
+      name: Banana Ground Message Constraint
+      status: fail
+      message: Banana must display a message when it hits the ground.
+    - id: 18
       name: Timer Tick Constraint
       status: skip
       message: Timer did not tick at all.
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: The game must run for at least 20 seconds.
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -760,30 +816,38 @@ ok 1 - Test
       status: fail
       message: Apples must give 5 points when they hit the bowl.
     - id: 13
+      name: Apple Game Over Constraint
+      status: fail
+      message: Apple must not move after game is over (should be over).
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: pass
+      message: ''
+    - id: 15
       name: Banana Bowl Points Constraint
       status: skip
       message: Banana did not touch the bowl.
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: skip
       message: Banana did not touch the ground.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: skip
       message: Banana did not touch the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: pass
       message: ''
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: pass
       message: ''
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: fail
       message: Score must not change if no fruit touches the bowl or the ground.
@@ -857,30 +921,38 @@ ok 1 - Test
       status: skip
       message: Apple did not touch the bowl.
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: skip
       message: Banana did not touch the bowl.
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: skip
       message: Banana did not touch the ground.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: skip
       message: Banana did not touch the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: skip
       message: Timer did not tick at all.
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: The game must run for at least 20 seconds.
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -954,30 +1026,38 @@ ok 1 - Test
       status: fail
       message: Apples must give 5 points when they hit the bowl.
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: fail
       message: Bananas must give 8 points when they hit the bowl.
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: skip
       message: Banana did not touch the ground.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: skip
       message: Banana did not touch the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: skip
       message: Timer did not tick at all.
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: Apple must not move after game is over (should be over).
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -1051,30 +1131,38 @@ ok 1 - Test
       status: skip
       message: Apple did not touch the bowl.
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: skip
       message: Banana did not touch the bowl.
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: skip
       message: Banana did not touch the ground.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: skip
       message: Banana did not touch the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: skip
       message: Timer did not tick at all.
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: The game must run for at least 20 seconds.
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -1176,30 +1264,38 @@ ok 1 - Test
       status: pass
       message: ''
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: pass
       message: ''
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: pass
       message: ''
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: fail
       message: Banana must display a message when it hits the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: pass
       message: ''
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: pass
       message: ''
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -1273,30 +1369,38 @@ ok 1 - Test
       status: fail
       message: Apples must give 5 points when they hit the bowl.
     - id: 13
+      name: Apple Game Over Constraint
+      status: fail
+      message: Time must not change after game is over (should be over).
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: fail
+      message: Apple must display a message if it hits the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: pass
       message: ''
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: pass
       message: ''
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: pass
       message: ''
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: fail
       message: Time must only tick down.
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
-      message: Score must not change after game is over (should be over).
-    - id: 18
+      message: Bananas must not move after game is over (should be over).
+    - id: 20
       name: Timer Game Over Message Constraint
       status: pass
       message: ''
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -1328,11 +1432,11 @@ ok 1 - Test
     - id: 2
       name: Bowl Movement Constraint
       status: fail
-      message: Bowl must move left when left arrow key is pressed.
+      message: Bowl must move right when right arrow key is pressed.
     - id: 3
       name: Bowl Movement Details Constraint
       status: fail
-      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
+      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
     - id: 4
       name: Apple Falling Details
       status: pass
@@ -1370,30 +1474,38 @@ ok 1 - Test
       status: skip
       message: Apple did not touch the bowl.
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: skip
       message: Banana did not touch the bowl.
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: skip
       message: Banana did not touch the ground.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: skip
       message: Banana did not touch the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: skip
       message: Timer did not tick at all.
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: The game must run for at least 20 seconds.
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must not display a message before 20 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -1467,30 +1579,38 @@ ok 1 - Test
       status: skip
       message: Apple did not touch the bowl.
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: skip
       message: Banana did not touch the bowl.
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: skip
       message: Banana did not touch the ground.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: skip
       message: Banana did not touch the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: skip
       message: Timer did not tick at all.
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: The game must run for at least 20 seconds.
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -1564,30 +1684,38 @@ ok 1 - Test
       status: pass
       message: ''
     - id: 13
+      name: Apple Game Over Constraint
+      status: fail
+      message: Score must not change after game is over (should be over).
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: fail
+      message: Apple must display a message if it hits the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: pass
       message: ''
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: pass
       message: ''
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: fail
       message: Banana must display a message when it hits the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: skip
       message: Timer did not tick at all.
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: The game must run for at least 20 seconds.
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -1661,30 +1789,38 @@ ok 1 - Test
       status: fail
       message: Apples must give 5 points when they hit the bowl.
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: fail
       message: Bananas must give 8 points when they hit the bowl.
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: fail
       message: Bananas must subtract 8 points when they hit the floor.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: fail
       message: Banana must display a message when it hits the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: pass
       message: ''
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: Time must not change after game is over (should be over).
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -1758,30 +1894,38 @@ ok 1 - Test
       status: pass
       message: ''
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: pass
       message: ''
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: fail
       message: Bananas must subtract 8 points when they hit the floor.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: fail
       message: Banana must display a message when it hits the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: pass
       message: ''
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: Time must not change after game is over (should be over).
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -1852,36 +1996,44 @@ ok 1 - Test
       message: ''
     - id: 12
       name: Apple Points Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Apples must give 5 points when they hit the bowl.
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: fail
       message: Bananas must give 8 points when they hit the bowl.
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: fail
       message: Bananas must subtract 8 points when they hit the floor.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: fail
       message: Banana must display '-8' when it hits the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: pass
       message: ''
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: Time must not change after game is over (should be over).
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
-      status: fail
-      message: Score must not change if no fruit touches the bowl or the ground.
+      status: pass
+      message: ''
   ...
 # summary:
 #   tests: 1
@@ -1952,30 +2104,38 @@ ok 1 - Test
       status: fail
       message: Apples must give 5 points when they hit the bowl.
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: pass
       message: ''
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: pass
       message: ''
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: pass
       message: ''
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: pass
       message: ''
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: Bananas must not move after game is over (should be over).
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -2030,49 +2190,57 @@ ok 1 - Test
       message: ''
     - id: 8
       name: Banana Spawn Y Position Constraint
-      status: pass
-      message: ''
+      status: skip
+      message: Too few bananas spawned.
     - id: 9
       name: Banana Spawn Random X Position Constraint
-      status: pass
-      message: ''
+      status: skip
+      message: Too few bananas spawned.
     - id: 10
       name: Only One Apple Constraint
       status: pass
       message: ''
     - id: 11
       name: Only One Banana Constraint
-      status: pass
-      message: ''
+      status: skip
+      message: Too few bananas spawned.
     - id: 12
       name: Apple Points Constraint
       status: pass
       message: ''
     - id: 13
-      name: Banana Bowl Points Constraint
-      status: pass
-      message: ''
+      name: Apple Game Over Constraint
+      status: fail
+      message: Time must not change after game is over (should be over).
     - id: 14
+      name: Apple Game Over Message Constraint
+      status: fail
+      message: Apple must display a message if it hits the ground.
+    - id: 15
+      name: Banana Bowl Points Constraint
+      status: skip
+      message: Banana did not touch the bowl.
+    - id: 16
       name: Banana Ground Points Constraint
       status: pass
       message: ''
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: fail
       message: Banana must display a message when it hits the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: pass
       message: ''
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: Apple must not move after game is over (should be over).
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -2084,11 +2252,11 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.92 (34/37)
+#   combined: 0.86 (32/37)
 #   individual:
 #     Stage: 1.00 (6/6)
 #     Apple: 0.83 (10/12)
-#     Bananas: 0.92 (11/12)
+#     Bananas: 0.75 (9/12)
 #     Bowl: 1.00 (7/7)
 
 # project: K7_S04.sb3
@@ -2146,30 +2314,38 @@ ok 1 - Test
       status: pass
       message: ''
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: skip
       message: Banana did not touch the bowl.
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: pass
       message: ''
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: fail
       message: Banana must display a message when it hits the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: skip
       message: Timer did not tick at all.
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: Score must not change after game is over (should be over).
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -2243,30 +2419,38 @@ ok 1 - Test
       status: pass
       message: ''
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: pass
       message: ''
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: pass
       message: ''
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: pass
       message: ''
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: pass
       message: ''
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: pass
       message: ''
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -2302,7 +2486,7 @@ ok 1 - Test
     - id: 3
       name: Bowl Movement Details Constraint
       status: fail
-      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
+      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
     - id: 4
       name: Apple Falling Details
       status: fail
@@ -2340,30 +2524,38 @@ ok 1 - Test
       status: pass
       message: ''
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: pass
       message: ''
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: pass
       message: ''
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: fail
       message: Banana must display a message when it hits the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: pass
       message: ''
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: pass
       message: ''
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -2437,30 +2629,38 @@ ok 1 - Test
       status: pass
       message: ''
     - id: 13
-      name: Banana Bowl Points Constraint
-      status: pass
-      message: ''
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
     - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
+      name: Banana Bowl Points Constraint
+      status: skip
+      message: Banana did not touch the bowl.
+    - id: 16
       name: Banana Ground Points Constraint
       status: fail
       message: Bananas must subtract 8 points when they hit the floor.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: fail
       message: Banana must display a message when it hits the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: pass
       message: ''
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
-      message: Bananas must not move after game is over (should be over).
-    - id: 18
+      message: Time must not change after game is over (should be over).
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -2472,12 +2672,12 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.73 (37/51)
+#   combined: 0.67 (34/51)
 #   individual:
 #     Stage: 0.50 (5/10)
 #     Bowl: 0.80 (8/10)
 #     Apple: 0.67 (10/15)
-#     Bananas: 0.88 (14/16)
+#     Bananas: 0.69 (11/16)
 
 # project: K7_S08.sb3
 TAP version 13
@@ -2531,33 +2731,41 @@ ok 1 - Test
       message: ''
     - id: 12
       name: Apple Points Constraint
-      status: fail
-      message: Apples must give 5 points when they hit the bowl.
+      status: pass
+      message: ''
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: pass
       message: ''
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: fail
       message: Bananas must subtract 8 points when they hit the floor.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: pass
       message: ''
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: pass
       message: ''
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
-      message: Bananas must not move after game is over (should be over).
-    - id: 18
+      message: Apple must not move after game is over (should be over).
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: fail
       message: Score must not change if no fruit touches the bowl or the ground.
@@ -2632,30 +2840,38 @@ ok 1 - Test
       status: fail
       message: Apples must give 5 points when they hit the bowl.
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: pass
       message: ''
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: fail
       message: Bananas must subtract 8 points when they hit the floor.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: pass
       message: ''
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: pass
       message: ''
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: Time must not change after game is over (should be over).
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: fail
       message: Score must not change if no fruit touches the bowl or the ground.
@@ -2691,7 +2907,7 @@ ok 1 - Test
     - id: 3
       name: Bowl Movement Details Constraint
       status: fail
-      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
+      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
     - id: 4
       name: Apple Falling Details
       status: fail
@@ -2729,30 +2945,38 @@ ok 1 - Test
       status: skip
       message: Apple did not touch the bowl.
     - id: 13
+      name: Apple Game Over Constraint
+      status: pass
+      message: ''
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: pass
+      message: ''
+    - id: 15
       name: Banana Bowl Points Constraint
       status: skip
       message: Banana did not touch the bowl.
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: fail
       message: Bananas must subtract 8 points when they hit the floor.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: fail
       message: Banana must display a message when it hits the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: skip
       message: Timer did not tick at all.
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: The game must run for at least 20 seconds.
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -2826,30 +3050,38 @@ ok 1 - Test
       status: pass
       message: ''
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: pass
       message: ''
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: pass
       message: ''
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: pass
       message: ''
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: fail
       message: Time must only tick down.
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: pass
       message: ''
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: pass
       message: ''
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -2923,30 +3155,38 @@ ok 1 - Test
       status: pass
       message: ''
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: pass
       message: ''
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: pass
       message: ''
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: pass
       message: ''
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: pass
       message: ''
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: pass
       message: ''
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -2982,7 +3222,7 @@ ok 1 - Test
     - id: 3
       name: Bowl Movement Details Constraint
       status: fail
-      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
+      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
     - id: 4
       name: Apple Falling Details
       status: pass
@@ -3017,33 +3257,41 @@ ok 1 - Test
       message: ''
     - id: 12
       name: Apple Points Constraint
-      status: fail
-      message: Apples must give 5 points when they hit the bowl.
+      status: pass
+      message: ''
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: fail
       message: Bananas must give 8 points when they hit the bowl.
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: fail
       message: Bananas must subtract 8 points when they hit the floor.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: pass
       message: ''
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: pass
       message: ''
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: pass
       message: ''
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: pass
       message: ''
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: fail
       message: Score must not change if no fruit touches the bowl or the ground.
@@ -3117,30 +3365,38 @@ ok 1 - Test
       status: pass
       message: ''
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: skip
       message: Banana did not touch the bowl.
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: fail
       message: Bananas must subtract 8 points when they hit the floor.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: pass
       message: ''
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: pass
       message: ''
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: Score must not change after game is over (should be over).
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must not display a message before 20 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -3214,30 +3470,38 @@ ok 1 - Test
       status: pass
       message: ''
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: fail
       message: Bananas must give 8 points when they hit the bowl.
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: fail
       message: Bananas must subtract 8 points when they hit the floor.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
-      status: pass
-      message: ''
-    - id: 16
+      status: fail
+      message: Banana must display a message when it hits the ground.
+    - id: 18
       name: Timer Tick Constraint
       status: pass
       message: ''
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: pass
       message: ''
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: pass
       message: ''
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -3311,30 +3575,38 @@ ok 1 - Test
       status: skip
       message: Apple did not touch the bowl.
     - id: 13
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: skip
       message: Banana did not touch the bowl.
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: skip
       message: Banana did not touch the ground.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: skip
       message: Banana did not touch the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: skip
       message: Timer did not tick at all.
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: The game must run for at least 20 seconds.
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -3408,30 +3680,38 @@ ok 1 - Test
       status: pass
       message: ''
     - id: 13
+      name: Apple Game Over Constraint
+      status: fail
+      message: Time must not change after game is over (should be over).
+    - id: 14
+      name: Apple Game Over Message Constraint
+      status: fail
+      message: Apple must display a message if it hits the ground.
+    - id: 15
       name: Banana Bowl Points Constraint
       status: pass
       message: ''
-    - id: 14
+    - id: 16
       name: Banana Ground Points Constraint
       status: pass
       message: ''
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: pass
       message: ''
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: fail
       message: Time must only tick down.
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: Time must not change after game is over (should be over).
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must not display a message before 20 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -3505,30 +3785,38 @@ ok 1 - Test
       status: fail
       message: Apples must give 5 points when they hit the bowl.
     - id: 13
-      name: Banana Bowl Points Constraint
+      name: Apple Game Over Constraint
       status: fail
-      message: Bananas must give 8 points when they hit the bowl.
+      message: Bananas must not move after game is over (should be over).
     - id: 14
+      name: Apple Game Over Message Constraint
+      status: fail
+      message: Apple must display a message if it hits the ground.
+    - id: 15
+      name: Banana Bowl Points Constraint
+      status: pass
+      message: ''
+    - id: 16
       name: Banana Ground Points Constraint
       status: fail
       message: Bananas must subtract 8 points when they hit the floor.
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: fail
       message: Banana must display a message when it hits the ground.
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: pass
       message: ''
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: fail
       message: Apple must not move after game is over (should be over).
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -3630,30 +3918,38 @@ ok 1 - Test
       status: pass
       message: ''
     - id: 13
-      name: Banana Bowl Points Constraint
-      status: pass
-      message: ''
+      name: Apple Game Over Constraint
+      status: skip
+      message: Apple did not touch the ground.
     - id: 14
+      name: Apple Game Over Message Constraint
+      status: skip
+      message: Apple did not touch the ground.
+    - id: 15
+      name: Banana Bowl Points Constraint
+      status: skip
+      message: Banana did not touch the bowl.
+    - id: 16
       name: Banana Ground Points Constraint
       status: pass
       message: ''
-    - id: 15
+    - id: 17
       name: Banana Ground Message Constraint
       status: pass
       message: ''
-    - id: 16
+    - id: 18
       name: Timer Tick Constraint
       status: pass
       message: ''
-    - id: 17
+    - id: 19
       name: Timer Game Over Constraint
       status: pass
       message: ''
-    - id: 18
+    - id: 20
       name: Timer Game Over Message Constraint
       status: fail
       message: Bowl must display a message after 30 seconds.
-    - id: 19
+    - id: 21
       name: Score Not Changing Constraint
       status: pass
       message: ''
@@ -3665,12 +3961,12 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.89 (40/45)
+#   combined: 0.84 (38/45)
 #   individual:
 #     Stage: NaN (0/0)
 #     Apple: 0.71 (10/14)
 #     Bowl: 0.89 (8/9)
-#     Bananas: 1.00 (22/22)
+#     Bananas: 0.91 (20/22)
 
 # project: K7_S27.sb3
 TAP version 13
