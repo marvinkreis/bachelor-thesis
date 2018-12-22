@@ -13,16 +13,16 @@ const csvStringify = require('csv-stringify/lib/sync');
 const convertCoverageToCsv = function (str) {
     const coverages = JSON.parse(str);
 
-    const result = [['time', /*'running',*/ 'percent', 'total', 'covered']];
+    const result = [['time', 'running', 'percent', 'total', 'covered']];
 
     for (const coverage of  coverages) {
         const time = coverage.time;
-        /*const running = Number(coverage.running);*/
+        const running = Number(coverage.running);
         const total = coverage.combined.total;
         const covered = coverage.combined.covered;
         const percent = total === 0 ? NaN : (covered / total).toFixed(2);
 
-        result.push([time, /*running,*/ percent, total, covered]);
+        result.push([time, running, percent, total, covered]);
     }
 
     return(csvStringify(result));

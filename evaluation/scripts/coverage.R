@@ -12,8 +12,8 @@ source("scripts/annotate-plot.R");
 # The names of the projects to be used in the scatter plot
 ids = projects.filtered;
 
-# The names of the data sets for which to make scatter plots for
-data_sets = list("run-1");
+# The names of the data sets for which to make plots for
+data_sets = list("run-1", "run-2", "run-3");
 
 breaks = c(1, 2, 4, 8, 16, 32, 64, 128, 256, 600);
 
@@ -62,8 +62,9 @@ for (set_name in data_sets) {
     label = paste("Average Coverage: ", round(mean(coverage_totals), digits = 4), sep="");
     line = annotate_plot(line, label);
 
-    ggsave(paste("coverage-line-", set_name, ".pdf", sep=""), plot = line, width = 20, height = 10, units = "cm");
+    ggsave(paste("coverage-line-", set_name, ".pdf", sep=""), plot = line, width = 25, height = 10, units = "cm");
 
+    print(set_name);
     print(coverage_totals);
     print(mean(coverage_totals));
 }

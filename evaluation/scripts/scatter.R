@@ -72,7 +72,7 @@ main = function () {
                               passes = avg_passes,
                               coverage = avg_coverage);
 
-            make_scatter_plot(data, set_name);
+            make_scatter_plot(data, paste(set_name, "-avg", sep = ""));
         }
     }
 }

@@ -12,12 +12,7 @@ data_names = c("normal-1");
 
 
 for (data_name in data_names) {
-    data = data.frame(project = NA,
-                      group = NA,
-                      max_passes = NA,
-                      max_points = NA,
-                      passes = NA,
-                      points = NA);
+    data = data.frame(NA, NA, NA, NA, NA, NA);
     names(data) = c("project", "group", "max_passes", "max_points", "passes", "points");
 
     test_results = csvs.test_results[[data_name]];

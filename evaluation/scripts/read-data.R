@@ -9,7 +9,7 @@ dir         = file.path("data", "test-results");
 dirs        = list.files(dir, full.names=TRUE);
 names(dirs) = lapply(dirs, basename);
 
-# Don't always use the results from random inputs tests
+# Comment this out to read the results for random input on the catching game
 dirs = Filter(function(x) regexpr("random", x) == -1, dirs);
 
 csvs.test_results  = list();
@@ -31,7 +31,7 @@ names(csvs.test_results)  = names(dirs);
 names(csvs.test_coverage) = names(dirs);
 
 
-########## Read the data of the manual evaluation ##############################
+########## Read manual evaluation results ######################################
 
 file                 = file.path("data", "ba-keller-data", "overview.csv");
 csvs.keller_overview = read.csv(file);
@@ -45,7 +45,7 @@ csvs.keller_points.total = colSums(csvs.keller_points);
 
 ########## Read coverage results ###############################################
 
-dir         = file.path("data", "coverage");
+dir         = file.path("data", "coverage-results");
 dirs        = list.files(dir, full.names=TRUE);
 names(dirs) = lapply(dirs, basename);
 
@@ -59,6 +59,62 @@ for (i in 1:length(dirs)) {
 }
 
 names(csvs.coverage) = names(dirs);
+
+
+########## Read time results ###############################################
+
+dir         = file.path("data", "time-results");
+dirs        = list.files(dir, full.names=TRUE);
+names(dirs) = lapply(dirs, basename);
+
+csvs.time   = list();
+
+for (i in 1:length(dirs)) {
+    dir                   = file.path(dirs[[i]], "time");
+    files                 = list.files(dir, pattern="*.csv", full.names=TRUE);
+    csvs.time[[i]]        = lapply(files, function(file) read.csv(file, header=TRUE, check.names=FALSE));
+    names(csvs.time[[i]]) = lapply(files, function(file) file_path_sans_ext(basename(file)));
+}
+
+names(csvs.time) = names(dirs);
+
+
+########## Project categories ##################################################
+
+# Projects which are completely excluded from the evaluation
+# K6_S06 got scored 30 points but the projects has no code.
+projects.excluded = c("K6_S06");
+
+# Projects for which the project file exists
+projects.files = setdiff(names(csvs.test_results[[1]]), projects.excluded);
+
+# Projects which were scored manually
+projects.scored = setdiff(csvs.keller_overview$Student, projects.excluded);
+
+# Projects for which the project file exists and which were scored manually
+projects.intersect = intersect(projects.files, projects.scored);
+
+# Projects that don't work properly and can be filtered out (e.g. wrong sprite names, don't start on green flag etc.)
+projects.filter = c(
+
+    # Some sprite or variable has the wrong name
+    "K6_S12", # Deleted variable: time
+    "K6_S17", # Renamed variable: "Punkte" to "Bunkte"
+    "K7_S24", # Deleted variable: time
+    "K7_S27", # Renamed Sprite: "Bowl" to "Figur2" (also uses sprite for red line)
+
+    # Zero Coverage
+    "K6_S01", # Starts on up key press instead of green flag
+    "K6_S06", # Wrong scratch project file (scored 30 points but has no code)
+    "K6_S14", # Starts on space key press instead of green flag
+
+    # Game Over on startup
+    "K6_S20", # Has to be started twice
+    "K7_S18"  # Sprites have to be dragged up to make it work
+);
+
+# Properly working projects for which the project file exists and which were scored manually
+projects.filtered = setdiff(projects.intersect, projects.filter);
 
 
 ########## Mapping between categories of manual evaluation and tests ##########
@@ -136,42 +192,3 @@ mapping.constraint.tests[[12]] = c(02, 03);
 mapping.constraint.tests[[13]] = c();
 
 names(mapping.normal.tests) = 1:13;
-
-
-########## Project categories ##################################################
-
-# Projects which are completely excluded from the evaluation
-# K6_S06 got scored 30 points but the projects has no code.
-projects.excluded = c("K6_S06");
-
-# Projects for which the project file exists
-projects.files = setdiff(names(csvs.test_results[[1]]), projects.excluded);
-
-# Projects which were scored manually
-projects.scored = setdiff(csvs.keller_overview$Student, projects.excluded);
-
-# Projects for which the project file exists and which were scored manually
-projects.intersect = intersect(projects.files, projects.scored);
-
-# Projects that don't work properly and can be filtered out (e.g. wrong sprite names, don't start on green flag etc.)
-projects.filter = c(
-
-    # Some sprite or variable has the wrong name
-    "K6_S12", # Deleted variable: time
-    "K6_S17", # Renamed variable: "Punkte" to "Bunkte"
-    "K7_S24", # Deleted variable: time
-    "K7_S27", # Renamed Sprite: "Bowl" to "Figur2" (also uses sprite for red line)
-
-    # Zero Coverage
-    "K6_S01", # Starts on up key press instead of green flag
-    "K6_S06", # Wrong scratch project file (scored 30 points but has no code)
-    "K6_S14", # Starts on space key press instead of green flag
-
-    # Game Over on startup
-    "K6_S20", # Has to be started twice
-    "K7_S18"  # Sprites have to be dragged up to make it work
-);
-
-# Properly working projects for which the project file exists and which were scored manually
-projects.filtered = setdiff(projects.intersect, projects.filter);
-
