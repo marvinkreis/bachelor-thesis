@@ -1,18 +1,23 @@
 \chapter{Evaluation}%
 \label{cha:evaluation}
 
+TODO: Introduction
+
 - In this chapter, the Whisker testing utility is evaluated
-- The evaluation focuses on finding out how accurate Whisker's test results can be compared to manual assessment
-- Additionally the results of using different methods of input in conjunction to constraint-only tests is explored
-- A collection of real Scratch programs from a student course is tested with four different test suites
+
+- 3 Parts
+- TODO: explain RQs
+    - 1. First it is shown that it is possible to run Whisker tests without interfering with the execution of the Scratch program
+    - 2. The main part of the evaluation focuses on finding out how accurate Whisker's test results can be compared to manual assessment (normal + constraint tests)
+    - 3. Then Whiskers random input is evaluated
 
 - Chapter outline
 
-\section{Research Questions}
+\section{Testing Setup}
 
-TODO summarize the research questions and what purpose they serve
+\subsection{Projects Under Test}
 
-\section{Evaluation Method}
+\subsubsection*{Catching Game}
 
 === Scratch Projects:
 - From a students course
@@ -31,9 +36,6 @@ TODO summarize the research questions and what purpose they serve
     - In a real scenario (in which Whisker is used for grading) students would have the possibility to test their projects beforehand
     $\rightarrow$ see Chapter 2 - Advantages
 
-\parspace
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam cursus neque at magna vehicula, id lobortis massa tempus. Ut vitae orci euismod, posuere purus at, fringilla justo. Suspendisse in sodales neque. Mauris odio enim, varius sed porttitor in, ullamcorper nec eros. Aenean placerat arcu non leo imperdiet sodales. Nullam vestibulum justo nibh. Duis ac nibh congue, molestie sapien in, condimentum turpis. Donec in nisl vitae sem vehicula vehicula ac non velit. Integer at laoreet sapien. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam suscipit arcu condimentum rhoncus auctor. Donec porta augue vitae quam malesuada posuere.
-
 === Program description
 \begin{wrapfigure}{r}{0.35\textwidth + 5mm}
     \centering
@@ -49,7 +51,51 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam cursus neque at m
 - If a banana touches the ground point is subtracts points
 - The game is over after 30 seconds elapsed
 
-- Table \ref{tab:project_specification} shows the full specification of the program as well as which of the test suites, which are used later, covers which parts of the specification.
+- Table \ref{tab:project_specification} shows the full specification of the program as well as which of the test suites (ref ...) covers which parts of the specification.
+
+=== Excluded Projects
+- Some of the projects were excluded from the evaluation
+- Because they where problematic to automated testing in some way
+    - Tests select sprites and variables by name, and some projects changed the names of sprites and variables
+        - Detected by searching the test reports: ''grep''
+    - Some projects used a different mechanism than the green flag to start their program
+        - Since this is not specified, tests can not start the program
+        - Detected by zero statement coverage
+    - Some Projects didn't work properly because of missing initialization
+        - Go game over on startup
+        - One project work if green flag is pressed multiple times
+        - One project only worked if the sprites were manually dragged to a different position
+
+\begin{table}
+    \centering
+    \scriptsize
+    \begin{tabular}{ll}
+        \toprule
+        Project & Reason                                                                          \\
+        \midrule
+        \multicolumn{2}{l}{\textbf{Detected through the test report}}                             \\
+        K6\_S12 & Deleted variable: time                                                          \\
+        K6\_S17 & Renamed variable: "Punkte" to "Bunkte"                                          \\
+        K7\_S24 & Deleted variable: time                                                          \\
+        K7\_S27 & Renamed Sprite: "Bowl" to "Figur2"                                              \\[\medskipamount]
+
+        \multicolumn{2}{l}{\textbf{Detected through zero statement coverage}}                     \\
+        K6\_S01 & Starts on up key press instead of green flag                                    \\
+        K6\_S06 & Wrong scratch project file (scored 30 points in manual rating but has no code)  \\
+        K6\_S14 & Starts on space key press instead of green flag                                 \\[\medskipamount]
+
+        \multicolumn{2}{l}{\textbf{Detected manually}}                                            \\
+        K6\_S20 & Green flag has to be pressed twice to make it work properly                     \\
+        K7\_S18 & Sprites have to be repositioned manually in the editor to make it work properly \\
+        \bottomrule
+    \end{tabular}
+    \caption{Excluded Projects}
+    \label{tab:excluded_projects}
+\end{table}
+
+\subsubsection{Code Club Projects}
+
+\subsection{Test Suites}
 
 \begin{table}
     \centering
@@ -98,7 +144,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam cursus neque at m
     \label{tab:project_specification}
 \end{table}
 
-\section{Evaluation Setup}
+\subsection{Testing Environment}
 
 \begin{table}
     \centering
@@ -106,6 +152,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam cursus neque at m
     \begin{tabular}{ll}
         \toprule
         Whisker    & Whisker     1.0 \\
+        Scratch VM & Scratch VM  0.2.0-prerelease.20181005173109 \\
         Browser    & Chrome      70.0.3538.110 (64-Bit) \\
         JavaScript & V8          7.0.276.40 \\
         OS         & Windows 8.1 Version 6.3 (Build 9600) \\
@@ -118,67 +165,13 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam cursus neque at m
     \label{tab:test_setup}
 \end{table}
 
-\section{Results}
+\section{RQ1: Interference with the Program Under Test}
 
-\begin{figure}
-    \centering
-    \includegraphics[width=.65\textwidth]{scatter-normal-1}
-    \caption{Results of the normal test suite (1)}
-    \label{fig:scatter_normal_1}
-\end{figure}
+Since the tests execute code between steps in a single threaded environment,
+they could, in theory, interfere with the program by slowing down the step cycle.
+This can make the program behave differently, because Scratch programs use absolute timings (TODO figure).
 
-=== Excluded Projects
-- Some of the projects were excluded from the evaluation
-- Because they where problematic to automated testing in some way
-    - Tests select sprites and variables by name, and some projects changed the names of sprites and variables
-        - Detected by searching the test reports: ''grep''
-    - Some projects used a different mechanism than the green flag to start their program
-        - Since this is not specified, tests can not start the program
-        - Detected by zero statement coverage
-    - Some Projects didn't work properly because of missing initialization
-        - Go game over on startup
-        - One project work if green flag is pressed multiple times
-        - One project only worked if the sprites were manually dragged to a different position
-
-\begin{table}
-    \centering
-    \scriptsize
-    \begin{tabular}{ll}
-        \toprule
-        Project & Reason                                                                          \\
-        \midrule
-        \multicolumn{2}{l}{\textbf{Detected through the test report}}                             \\
-        K6\_S12 & Deleted variable: time                                                          \\
-        K6\_S17 & Renamed variable: "Punkte" to "Bunkte"                                          \\
-        K7\_S24 & Deleted variable: time                                                          \\
-        K7\_S27 & Renamed Sprite: "Bowl" to "Figur2"                                              \\[\medskipamount]
-
-        \multicolumn{2}{l}{\textbf{Detected through zero statement coverage}}                     \\
-        K6\_S01 & Starts on up key press instead of green flag                                    \\
-        K6\_S06 & Wrong scratch project file (scored 30 points in manual rating but has no code)  \\
-        K6\_S14 & Starts on space key press instead of green flag                                 \\[\medskipamount]
-
-        \multicolumn{2}{l}{\textbf{Detected manually}}                                            \\
-        K6\_S20 & Green flag has to be pressed twice to make it work properly                     \\
-        K7\_S18 & Sprites have to be repositioned manually in the editor to make it work properly \\
-        \bottomrule
-    \end{tabular}
-    \caption{Excluded Projects}
-    \label{tab:excluded_projects}
-\end{table}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=.65\textwidth]{scatter-constraint-1}
-    \caption{Results of the constraint test suite (2) \\ with deliberately simulated input}
-    \label{fig:scatter_constraint_1}
-\end{figure}
-
-=== Normal Tests
-- Manual analysis is used as ground truth
-
---------------------------------------------------------
-
+~\\~\\
 \textbf{RQ1.} typical tests don't interfere with the execution of typical Scratch programs
 $\rightarrow$ measure how long Scratch takes for a step (WORK\_TIME AND time to render)
 $\rightarrow$ measure how long each operation in the Whisker step procedure takes (e.g. callbacks, sprites, constraints)
@@ -190,14 +183,19 @@ Additional computations for testing are to slow to be executed while the program
 \paragraph{Alternative hypothesis ($H_1$)}
 Additional computations for testing can be fast enough to not affect the average step time.
 
-~\\~\\
+\section{RQ2: Accuracy of Test Results}
+% \subsection{Evaluation Method}
+% \subsection{Data Selection}
+% \subsection{Threats to Validity}
+
 \textbf{RQ2.}
 - Automatic testing can facilitate grading of Scratch assignments
     (1) test results (normal tests and constraint tests) match the results of manual evaluation
-    (2) test results (normal tests and constraint tests) show low rates of false positives and false negatives
     (3) test results (normal tests and constraint tests) are consistent enough to be used for grading
         $\rightarrow$ Plot difference number of test passes per project
         $\rightarrow$ Check average difference
+
+- Manual analysis is used as ground truth
 
 ~\\~\\
 === (1)
@@ -209,39 +207,27 @@ The results of automated tests closely match the results of manual scoring.
 ~\\~\\
 === (2)
 \paragraph{Null hypothesis ($H_0$)}
-Automated test results show a high rate of false positives and false negatives, which makes it unsuitable for grading.
-\paragraph{Alternative hypothesis ($H_1$)}
-The test results show a low enough rate of false positives and false negatives to make it suitable for grading.
-
-~\\~\\
-=== (3)
-\paragraph{Null hypothesis ($H_0$)}
 Automated test results show very different results each run and are thus not accurate enough to use them for grading.
 \paragraph{Alternative hypothesis ($H_1$)}
 Test results are consistent enough over multiple runs to provide accurate information for grading.
 
-~\\~\\
-- Normal Tests
-    - Traditional testing approach: Each test checks one bit of the programs functionality
-    - The program gets executed multiple times
-    - Deliberately control the bowl to win the game
+\section{RQ3: Testing with Random Inputs}
 
-~\\~\\
 \textbf{RQ3.}
 - The testing process can be done entirely in the background independent of testing scenarios (?)
     $\rightarrow$ Random input can be used for the test
     $\rightarrow$ The test can involve the user using the program like they normally would
 
-- Constraint Tests
-    - Different approach: One test executes the program only once and checks defined constraints in the background, see Section \ref{sec:constraint_only_tests}
-    - Deliberately control the bowl to win the game
-    - faster, but can be less accurate (show difference of average runtime)
-    - not everything in this project can be tested in a single run
-    - Better for quickly checking the program
-    - Example of a constraint test (or put it somewhere else?)
-    - Can be used with different sources of input (manual / simulated / random)
-    - Instead of passing tests, passing constraints are measured
-    - Tests with wrong sprite names are completely excluded in the evaluation
+% - Constraint Tests
+%     - Different approach: One test executes the program only once and checks defined constraints in the background, see Section \ref{sec:constraint_only_tests}
+%     - Deliberately control the bowl to win the game
+%     - faster, but can be less accurate (show difference of average runtime)
+%     - not everything in this project can be tested in a single run
+%     - Better for quickly checking the program
+%     - Example of a constraint test (or put it somewhere else?)
+%     - Can be used with different sources of input (manual / simulated / random)
+%     - Instead of passing tests, passing constraints are measured
+%     - Tests with wrong sprite names are completely excluded in the evaluation
 
 - Random Tests
 - Same constraints as the constraint tests vs. only constraints that can hold in the first few seconds every time
@@ -253,6 +239,7 @@ Test results are consistent enough over multiple runs to provide accurate inform
         - Although not on this particular project
     - This project is not well suited for random tests since random input will quickly result in a game over
 
+
 \section{Threats to validity}
 - Students often deliberately changed their programs from the specification (e.g. different fall speeds)
     - Tests were adjusted to allow a little more than the specification (e.g. different message)
@@ -260,3 +247,21 @@ Test results are consistent enough over multiple runs to provide accurate inform
 - For each tests suite, many / all projects were executed in a row
     - Could have a performance impact (?), but Scratch doesn't need a lot of resources
     - If anything, it could have a negative impact on the results, but results are very positive
+
+- Tests could interfere with the program under test (see prev. section)
+    - But Scratch programs don't usually do calculations without moving any sprite
+    - Most time related functionality is based on absolute time, slow-down would not affect it
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=.65\textwidth]{scatter-normal-1}
+%     \caption{Results of the normal test suite (1)}
+%     \label{fig:scatter_normal_1}
+% \end{figure}
+%
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=.65\textwidth]{scatter-constraint-1}
+%     \caption{Results of the constraint test suite (2) \\ with deliberately simulated input}
+%     \label{fig:scatter_constraint_1}
+% \end{figure}
