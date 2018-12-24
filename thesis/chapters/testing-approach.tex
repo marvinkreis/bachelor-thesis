@@ -24,6 +24,11 @@
         - It can simulate mouse movement, mouse button presses and keyboard button presses.
         - This is the only way the test can interact with the program.
         - The test should only interact with the program how a normal user would.
+
+        - This work will explore automatic generation of input for Scratch programs
+        - Input can be generated randomly
+        - Static analysis can be used to detect the input events the program recognizes and to give the program inputs
+        - A combination of both will be used for this work
     \item \textbf{Access Information}.
         - The test can select sprites by their name or by other condition (e.g. a sprite at a certain place).
         - It can also access the value of variables through the sprites the variables belong to.
@@ -78,16 +83,17 @@
 
 - Normally, tests would deliberately simulate input on the program, then perform some assertions
 - Constraints open up a new approach to testing Scratch programs by only defining constraints instead of doing normal assertions
+- In the end of the test, it has to be checked if the desired situation for the constraint occurred during the program execution
+    - E.g. a constraint that describes the movement speed of a sprite will always hold if the sprite does not move at all
+    - $\rightarrow$ The constraint need to be filtered
 - This makes it possible to separate the checking of properties from the execution of the program
     - Checks are only done through constraints, which run in the background
     $\rightarrow$ This is independent from the program execution
     $\rightarrow$ The program can be controlled by arbitrary input, as long as the desired situation for the constraint(s) comes about
         - Deliberately simulated input
         - Manual user input
-        - Random input
-- In the end of the test, it has to be checked if the desired situation for the constraint occurred during the program execution
-    - E.g. a constraint that describes the movement speed of a sprite will always hold if the sprite does not move at all
-    - $\rightarrow$ The constraint need to be filtered
+        - Random input ($\rightarrow$ well-suited for random input, because the test is independent from the source of input)
+          Similar approaches have been used in other testing applications, e.g. QuickCheck \ref{quickcheck}
 
 - Normal tests vs. constraint-only tests
     - Normal tests can be more granular $\rightarrow$ better for grading
@@ -172,3 +178,5 @@
     \caption{Comparison of the procedure of normal tests and constraint-only tests}
     \label{comparison_of_the_procedure_of_normal_tests_and_constraint_only_tests}
 \end{figure}
+
+

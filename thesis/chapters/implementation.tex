@@ -186,7 +186,7 @@ $\rightarrow$ If the additional computations take too long, they could influence
     \label{fig:whisker_step_procedure}
 \end{figure}
 
-\section{Test Interface}
+\section{The Test Interface}
 
 === WM Wrapper
 - Control the execution of the scratch program
@@ -294,12 +294,14 @@ $\rightarrow$ If the additional computations take too long, they could influence
 
 === Random Inputs
 - Provides a simple way to perform inputs randomly
-- Naive way of testing the program without deliberately controlling the inputs
+- Way of testing the program without deliberately controlling the inputs
+- In a set time interval (at the next step), an input is randomly selected from a pool of registered random inputs
 
-- In a set time interval, an input is randomly selected from a pool of registered random inputs
 - You  can register inputs for the random pool, or let Whisker choose inputs based on the blocks used in the program
+- Random inputs can be detected through simple static analysis
+$\rightarrow$ Blocks that take inputs and their options are analyzed
 
-- TODO list of detected blocks and resulting inputs ?
+- TODO table of detected blocks and resulting inputs ?
 
 \begin{listing}[ht]
     \centering

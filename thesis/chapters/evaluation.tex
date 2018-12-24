@@ -95,6 +95,17 @@ TODO: Introduction
 
 \subsubsection{Code Club Projects}
 
+Code Club \ref{codeclub} offers free coding projects and step by step guide for programming beginners. (aimed towards children)
+For each project, a sample solution is provided by a volunteer.
+These projects will be used to measure the achieved coverage by automatically generated test input.
+They are suited for this task, because
+    - they are used for educational purposes
+        $\rightarrow$ fits Whisker's purpose for automated grading
+    - they are diverse
+        $\rightarrow$ different kinds of programs and games
+
+TODO: table?
+
 \subsection{Test Suites}
 
 \begin{table}
@@ -157,7 +168,7 @@ TODO: Introduction
         JavaScript & V8          7.0.276.40 \\
         OS         & Windows 8.1 Version 6.3 (Build 9600) \\
         CPU        & Intel Core i5 4670 (4 x  3.40 GHz) \\
-        GPU        & NVIDIA GeForce GTX 1080 \\
+        GPU        & Nvidia GeForce GTX 1080 \\
         RAM        & 8GB DDR3-1600 \\
         \bottomrule
     \end{tabular}
@@ -176,6 +187,10 @@ This can make the program behave differently, because Scratch programs use absol
 $\rightarrow$ measure how long Scratch takes for a step (WORK\_TIME AND time to render)
 $\rightarrow$ measure how long each operation in the Whisker step procedure takes (e.g. callbacks, sprites, constraints)
 $\rightarrow$ Explain how the times are measured
+
+TODO: explain why testing procedure might interfere with Scratch programs (absolute timings)
+TODO: timing diagram and table of timings for real tests
+TODO: example code for tests that interfere and their test data
 
 ~\\~\\
 \paragraph{Null hypothesis ($H_0$)}
@@ -196,6 +211,10 @@ Additional computations for testing can be fast enough to not affect the average
         $\rightarrow$ Check average difference
 
 - Manual analysis is used as ground truth
+
+TODO: explain why accuracy is evaluated in this way
+    - attention to automated grading
+TODO: discuss scatter and bar plots
 
 ~\\~\\
 === (1)
@@ -229,15 +248,14 @@ Test results are consistent enough over multiple runs to provide accurate inform
 %     - Instead of passing tests, passing constraints are measured
 %     - Tests with wrong sprite names are completely excluded in the evaluation
 
-- Random Tests
+- Automatic test input generation
 - Same constraints as the constraint tests vs. only constraints that can hold in the first few seconds every time
     - Random input instead of deliberately controlling the bowl
-    - Random tests only make sense with constraints
-        - defining single test cases would be difficult
-        - execution would take a long time because most tests are skipped
-        - Useful to test the stability of the program (like Android Monkey \cite{androidmonkey})
-        - Although not on this particular project
-    - This project is not well suited for random tests since random input will quickly result in a game over
+    - Useful to test the stability of the program (like Android Monkey \cite{androidmonkey})
+    - The catching game is not well suited for this approach since random input will quickly result in a game over
+
+TODO: discuss test results
+TODO: discuss coverage results
 
 
 \section{Threats to validity}
@@ -251,6 +269,8 @@ Test results are consistent enough over multiple runs to provide accurate inform
 - Tests could interfere with the program under test (see prev. section)
     - But Scratch programs don't usually do calculations without moving any sprite
     - Most time related functionality is based on absolute time, slow-down would not affect it
+
+- Browser JavaScript could be problematic
 
 % \begin{figure}
 %     \centering
