@@ -10,7 +10,8 @@
 \graphicspath{{media/}}
 
 % List formatting
-\usepackage{enumitem}
+\usepackage{enumerate}
+%\usepackage{enumitem}
 
 % Math symbols
 \usepackage{amsfonts}
@@ -69,6 +70,7 @@
 
 % Notes
 \usepackage{marginnote}
+\newcommand{\mnote}[1]{\marginnote{\parbox{2cm}{\raggedright\scriptsize #1}}}
 
 % Calculate sizes
 \usepackage{calc}

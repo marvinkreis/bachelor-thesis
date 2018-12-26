@@ -1,3 +1,5 @@
+% REMEMBER: Write the thesis from the view of the reader. How would I like to READ the thesis?
+
 \chapter{Introduction}
 
 \section{Overview}
@@ -34,20 +36,31 @@
     - Gives feedback to the learner
 
 \section{Contributions}
-- This work introduces Whisker as a way to automatically assess the functionality of scratch programs
-- Whisker follows a black box testing approach
-- Provides a automation tool to control scratch programs from test cases
-    - Can simulate input on the program
-    - Can query information from the program
+This thesis introduces a new approach towards dynamic testing of Scratch programs.
+The test procedure involves an automation utility, which simulates user input (e.g. mouse movement or key presses) and allows access to information about the sprites and variables of the program.
+This allows to test the program in traditional unit-test-like test cases.
+Then, we present a way to separate the code from the simulated inputs.
+This opens up the possibility to automatically generate user input for tests, which we explore later.
 
-- This work shows that automated testing can be used to assess scratch programs
-- \textbf{RQ1:} Whisker can facilitate grading of Scratch assignments
-    - test results (normal tests and constraint tests) match the results of manual evaluation
-    - test results (normal tests and constraint tests) show low rates of false positives and false negatives
-    - test results (normal tests and constraint tests) are consistent enough to be used for grading
-- \textbf{RQ2:} The testing process can be done entirely in the background independent of testing scenarios (?)
-    $\rightarrow$ \textbf{RQ2.1:} Random input can be used for the test
-    ($\rightarrow$ The test can involve the user using the program like they normally would)
+Then, this work introduces Whisker, an implementation of the aforementioned testing utility.
+It provides a test-friendly interface to control the Scratch virtual machine through JavaScript methods.
+With this implementation, we also explore automated test input generation through a combination of random input and simple static analysis on the Scratch project.
+
+Whisker is evaluated with realistic Scratch programs from different educational courses.
+The results provide the following insights:
+
+\mnote{Put statistics here?}
+% correlation, avg. number of inconsistencies, avg. coverage
+\begin{enumerate}[(1)]
+    \item The testing process does not interfere with the execution of the programs under test.
+        Scratch programs behave the same during testing and during normal use.
+        Specifically, additional computations for testing do not slow the execution of the tested program down.
+    \item Test results can be accurate enough to aid in grading Scratch assignments.
+        They can closely match the results of manual assessment and show consistent results over multiple test runs.
+    \item Automated test input generation is a viable method to control the tested Scratch programs for testing purposes.
+        A combination of random input generation and simple static analysis can be used to generate input, which covers a big portion of most Scratch programs' functionality.
+\mnote{2 times ''combination of random ...''}
+\end{enumerate}
 
 \section{Outline}
 ...
