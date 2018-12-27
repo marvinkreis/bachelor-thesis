@@ -8,6 +8,12 @@ TODO: keyword "automation"
 - Uses the approach described above
 - Implemented in JavaScript (ES6) for compatibility with Scratch 3.0, which is implemented in JavaScript
 
+\section {Scratch 3.0 Implementation Details}
+
+Scratch's interpreter sequentializes the execution.
+This is necessary for the single-threaded JavaScript environment Scratch is run in.
+This means that no race-conditions can occur on a language level.
+
 \section{General Design}
 
 - TODO explain Scratch's design?
