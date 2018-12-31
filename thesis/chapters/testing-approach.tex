@@ -27,9 +27,9 @@ Tests can then check the visual and auditory output of the program.
 Scratch is entirely run inside a GUI interface and therefore lacks traditional IO mechanisms.
 Its output consists of visual animations and audio, which difficult hard to analyze automatically.
 Likewise, Scratch's input, which mainly consists of keyboard and mouse input, can be problematic for testing.
-We are going to deal with this problem by creating an interface,
+We are going to deal with this problem by creating a wrapper around Scratch,
 which can be used to simulate input and access information about the sprites which make up the output.
-Tests can then use methods, which the interface provides, instead of manually interacting with the Scratch program.
+Tests can then use methods, which the wrapper provides, instead of manually interacting with the Scratch program.
 
 \begin{wrapfigure}{r}{0.25\textwidth + 5mm}
     \centering
@@ -49,8 +49,10 @@ This means that the execution of the Scratch program can only be paused or delay
 Pausing the execution of the Scratch program for too long, while a delay is active,
 takes away execution time from other scripts, which are executed parallel to the delay.
 This can potentially have an impact on the program under test.
-We solve this problem by interacting directly with Scratch's virtual machine instead of interacting with any GUI or multimedia parts of Scratch.
-Like this, we can make the computations fast enough, so they cannot interfere with the program under test.
+% We solve this problem by interacting directly with Scratch's virtual machine instead of interacting with any GUI or multimedia parts of Scratch.
+% Like this, we can make the computations fast enough, so they cannot interfere with the program under test.
+Therefore, additional computations by the testing procedure must be fast enough to avoid interfering with the program under test.
+\mnote{Reference the evaluation section about timings here?}
 
 % === Many tested properties will depend on time
 % - A tested property might depend on a previous value
@@ -62,6 +64,7 @@ Like this, we can make the computations fast enough, so they cannot interfere wi
 \section{General Testing Procedure}
 
 TODO: general explanation of the approach first
+"To summarize the previous section"?
 
 - Before starting a test case, the project is loaded to make sure that every test starts with the same program state
     - If this would not be done, it would be very hard to test programs that don't do proper initialization

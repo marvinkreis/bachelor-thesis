@@ -100,27 +100,27 @@ Sprite manipulation and such cannot be tested with ITCH.
 In this case, programming environments like BlockPy~\cite{blockpy} are probably a better choice that Scratch,
 since they allow to translate the block-based code into a traditional programming language (in this case: Python).
 
-\section{Black Box Testing}
-
-- Black box approach:
-    - Block box testing bases tests on the specification of the tested program
-    - Tests are written without knowledge of the internals of a program
-    - Program is seen as a ''black box'' that takes some input and produces some output.
-    - Program specification is in the case of Scratch programs most likely a task description for some course or tutorial
-
-    - Input for the black box is user interaction through mouse and keyboard
-    - Interact only how a user can interact with the program
-        - Since Scratch can only be controlled through user interaction and has no API to call blocks or scripts,
-          it only makes sense to control the program this way in the test
-        - No information about the internals of the program other than sprite and variable names
-            - Sprite names should be included in the specification so the test can more easily identify sprites
-            - Giving no or little information about the implementation makes sense for a task description
-    - Output of the black box are changes on Scratch's stage
-    - Test only what the user sees
-        - Only information about sprites and variables (both can be shown on screen)
-        - Sprite positions, movement, looks, etc.
-
-\section{Automatic Test Generation}%
-\label{sec:automatic_test_generation}
+% \section{Black Box Testing}
+%
+% - Black box approach:
+%     - Block box testing bases tests on the specification of the tested program
+%     - Tests are written without knowledge of the internals of a program
+%     - Program is seen as a ''black box'' that takes some input and produces some output.
+%     - Program specification is in the case of Scratch programs most likely a task description for some course or tutorial
+%
+%     - Input for the black box is user interaction through mouse and keyboard
+%     - Interact only how a user can interact with the program
+%         - Since Scratch can only be controlled through user interaction and has no API to call blocks or scripts,
+%           it only makes sense to control the program this way in the test
+%         - No information about the internals of the program other than sprite and variable names
+%             - Sprite names should be included in the specification so the test can more easily identify sprites
+%             - Giving no or little information about the implementation makes sense for a task description
+%     - Output of the black box are changes on Scratch's stage
+%     - Test only what the user sees
+%         - Only information about sprites and variables (both can be shown on screen)
+%         - Sprite positions, movement, looks, etc.
+%
+% \section{Automatic Test Generation}%
+% \label{sec:automatic_test_generation}
 
 
