@@ -95,56 +95,10 @@ Scratch supports these operations through "ask" and "say" blocks.
 To automate the input and output, "ask" and "say" blocks are replaced with structures, which give the program configured input text, and save the result to the project file.
 ITCH then executes the program, saves it, and analyzes the saved project file to generate a test report.
 This allows simple input-output-testing for Scratch, which is useful for testing the correctness of an implemented algorithm.
-But ITCH has a major drawback: By reducing Scratch programs to textual IO, most of its functionality is left untouched.
+But ITCH has a major drawback: Reducing Scratch programs to textual IO means that only a small subset of Scratch's functionality is available to the programs under test.
 Sprite manipulation and such cannot be tested with ITCH.
 In this case, programming environments like BlockPy~\cite{blockpy} are probably a better choice that Scratch,
 since they allow to translate the block-based code into a traditional programming language (in this case: Python).
-
-\section{Challenges of Testing Scratch Programs}
-
-Testing Scratch programs is not a straightforward task.
-There exist multiple challenges that have to be overcome in order to test Scratch programs accurately.
-This section explains these challenges and how they may be overcome.
-
-% \textbf{Parallel scripts.}
-% One problem is the way, in which Scratch executes a program's code.
-% There exists no single point of entry.
-% Instead, when the program starts, all scripts with the ''when green flag pressed'' are run in parallel.
-
-=== Parallel scripts
-- Individual testing of program parts problematic
-    - Scratch does not have a way to form methods
-        - You can make own procedures with parameters, but there is no return-mechanism
-        - This would reduce Scratch to simple IO $\rightarrow$ not what it's there for
-    - Scratch runs multiple scripts in parallel
-        - Scripts often depend on one another
-    - Not very useful to test single program parts
-    - Possible to define multiple independent scripts that each activate with a different button press
-        - but becomes convoluted
-        - but defeats to purpose of Scratch to create a interactive environment
-$\rightarrow$ Use a complete black box approach
-    - Scratch programs are controlled by simulating user input instead of manually calling certain scripts
-    - The only information, which is checked, is what appears on screen
-        - properties of sprites and variables
-
-=== Lack of IO, multimedia nature
-- Scratch has a Lack of traditional IO mechanisms
-    - makes it hard to extract information about the current program state
-    - makes it hard to control the execution of a Scratch program
-    - no traditional input output testing possible without limiting the project to a small subset of Scratch's functionality
-$\rightarrow$ Give test cases an interface that can be used to interact with the Scratch project
-    - interacts directly with the Scratch virtual machine
-    - a way to get information about sprites and variables
-    - a way to simulate user input
-
-=== Many tested properties will depend on time
-- A tested property might depend on a previous value
-    - e.g. check if a sprite is moving right
-    - sprites save the values from the previous execution step
-- Some tested properties should hold for a time or for the whole execution
-    - Provide a way to define constraints that must always hold
-
-=== Scratch uses absolute timings
 
 \section{Black Box Testing}
 

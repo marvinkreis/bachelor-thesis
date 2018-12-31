@@ -3,10 +3,65 @@
 \chapter{Testing Approach}
 
 TODO: Intro: what is the general idea, what does the approach want to accomplish
-TODO: put challenges section here
 TODO: keyword "automation"
 
+\section{Challenges of Testing Scratch Programs}
+
+Dynamically testing Scratch programs is not a straightforward task.
+There exist multiple challenges that have to be overcome in order to test Scratch programs accurately.
+This section explains these challenges and how the presented approach overcomes these challenges.
+
+\textbf{Parallel scripts.}
+One problem is Scratch's code system.
+It does not have a traditional mechanism to structure code into methods, which return values.
+Furthermore, scripts run in parallel and may depend on one another.
+This makes it hard to test a part of the program in isolation from the rest of the program.
+One could circumvent this problem by restricting the tested programs, like ITCH~\cite{itch} does it,
+but this defeats the purpose of using Scratch as a language.
+To deal with this challenge, this work proposes a black-box testing approach.
+This way, the test code does not have to concern itself with the internals of the program.
+Scratch programs can be controlled by simulating user input, instead of calling specific scripts.
+Tests can then check the visual and auditory output of the program.
+
+\textbf{GUI input and output.}
+Scratch is entirely run inside a GUI interface and therefore lacks traditional IO mechanisms.
+Its output consists of visual animations and audio, which difficult hard to analyze automatically.
+Likewise, Scratch's input, which mainly consists of keyboard and mouse input, can be problematic for testing.
+We are going to deal with this problem by creating an interface,
+which can be used to simulate input and access information about the sprites which make up the output.
+Tests can then use methods, which the interface provides, instead of manually interacting with the Scratch program.
+
+\begin{wrapfigure}{r}{0.25\textwidth + 5mm}
+    \centering
+    \vspace{-6mm}
+    \includegraphics[width=0.25\textwidth]{code-timing}
+    \vspace{-3mm}
+    \caption{Delaying blocks}
+    \label{fig:delaying_blocks}
+\end{wrapfigure}
+
+\textbf{Absolute timings.}
+Scratch offers code blocks to delay the execution of a script, which often find use in typical game-like programs.
+These blocks use absolute timings to implement the delay.
+Basically, they save the current time when they pause the script,
+then later resume the execution of the script when the difference between the current time and the saved time reached the desired delay length.
+This means that the execution of the Scratch program can only be paused or delayed for a very short time without interfering with these timings.
+Pausing the execution of the Scratch program for too long, while a delay is active,
+takes away execution time from other scripts, which are executed parallel to the delay.
+This can potentially have an impact on the program under test.
+We solve this problem by interacting directly with Scratch's virtual machine instead of interacting with any GUI or multimedia parts of Scratch.
+Like this, we can make the computations fast enough, so they cannot interfere with the program under test.
+
+% === Many tested properties will depend on time
+% - A tested property might depend on a previous value
+%     - e.g. check if a sprite is moving right
+%     - sprites save the values from the previous execution step
+% - Some tested properties should hold for a time or for the whole execution
+%     - Provide a way to define constraints that must always hold
+
 \section{General Testing Procedure}
+
+TODO: general explanation of the approach first
 
 - Before starting a test case, the project is loaded to make sure that every test starts with the same program state
     - If this would not be done, it would be very hard to test programs that don't do proper initialization
