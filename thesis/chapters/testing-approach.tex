@@ -2,64 +2,97 @@
 
 \chapter{Testing Approach}
 
-TODO: Intro: what is the general idea, what does the approach want to accomplish
-TODO: keyword "automation"
+% - IO
+% - parallel scripts
+% - overhead
 
-\section{Challenges of Testing Scratch Programs}
 
-Dynamically testing Scratch programs is not a straightforward task.
-There exist multiple challenges that have to be overcome in order to test Scratch programs accurately.
-This section explains these challenges and how the presented approach overcomes these challenges.
+\mnote{does knowing sprite and variable names make it grey-box?}
+To enable dynamic testing for Scratch, we propose a black-bock approach with a testing utility, which automates Scratch's IO.
+Because Scratch's parallel scripts and lack of code separation, would make white-box testing difficult,
+we instead chose to ignore the internals and only focus on the input and output of the program.
+Of course, this raises the question of how to access Scratch's IO.
+Since Scratch's input usually consists of mouse and keyboard input, and its output consists of visual animations and sound,
+they are not easily accessible in a programmable way.
+To overcome this challenge, we developed a testing utility, which acts like a wrapper around Scratch.
+It interacts with Scratch's virtual machine instead of its GUI in order to automate the IO.
+This utility offers a programmable interface for Scratch, which makes black-box testing possible.
 
-\textbf{Parallel scripts.}
-One problem is Scratch's code system.
-It does not have a traditional mechanism to structure code into methods, which return values.
-Furthermore, scripts run in parallel and may depend on one another.
-This makes it hard to test a part of the program in isolation from the rest of the program.
-One could circumvent this problem by restricting the tested programs, like ITCH~\cite{itch} does it,
-but this defeats the purpose of using Scratch as a language.
-To deal with this challenge, this work proposes a black-box testing approach.
-This way, the test code does not have to concern itself with the internals of the program.
-Scratch programs can be controlled by simulating user input, instead of calling specific scripts.
-Tests can then check the visual and auditory output of the program.
+% Therefore, we only concern ourselves with ...
 
-\textbf{GUI input and output.}
-Scratch is entirely run inside a GUI interface and therefore lacks traditional IO mechanisms.
-Its output consists of visual animations and audio, which difficult hard to analyze automatically.
-Likewise, Scratch's input, which mainly consists of keyboard and mouse input, can be problematic for testing.
-We are going to deal with this problem by creating a wrapper around Scratch,
-which can be used to simulate input and access information about the sprites which make up the output.
-Tests can then use methods, which the wrapper provides, instead of manually interacting with the Scratch program.
+% We are going to deal with this problem by creating a wrapper around Scratch,
+% which can be used to simulate input and access information about the sprites which make up the output.
+% Tests can then use methods, which the wrapper provides, instead of manually interacting with the Scratch program.
 
-\begin{wrapfigure}{r}{0.25\textwidth + 5mm}
+% Therefore, additional computations by the testing procedure must be fast enough to avoid interfering with the program under test.
+
+\mnote{TODO: better captions}
+\begin{figure}[h]
     \centering
-    \vspace{-6mm}
-    \includegraphics[width=0.25\textwidth]{code-timing}
-    \vspace{-3mm}
-    \caption{Delaying blocks}
-    \label{fig:delaying_blocks}
-\end{wrapfigure}
 
-\textbf{Absolute timings.}
-Scratch offers code blocks to delay the execution of a script, which often find use in typical game-like programs.
-These blocks use absolute timings to implement the delay.
-Basically, they save the current time when they pause the script,
-then later resume the execution of the script when the difference between the current time and the saved time reached the desired delay length.
-This means that the execution of the Scratch program can only be paused or delayed for a very short time without interfering with these timings.
-Pausing the execution of the Scratch program for too long, while a delay is active,
-takes away execution time from other scripts, which are executed parallel to the delay.
-This can potentially have an impact on the program under test.
-% We solve this problem by interacting directly with Scratch's virtual machine instead of interacting with any GUI or multimedia parts of Scratch.
-% Like this, we can make the computations fast enough, so they cannot interfere with the program under test.
-Therefore, additional computations by the testing procedure must be fast enough to avoid interfering with the program under test.
-\mnote{Reference the evaluation section about timings here?}
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \tikzset{>=latex,
+                 put/.style={draw, text width=2.5cm, minimum height=2.2cm, minimum width=3.5cm, text centered, fill=black!90, text=white, rounded corners},
+                  vm/.style={draw, minimum height=3.5cm, minimum width=6.0cm, fill=white, rounded corners},
+                 gui/.style={draw, minimum height=4.7cm, minimum width=7.0cm, fill=blue!20, rounded corners},
+            arrowtxt/.style={text width=3.3cm, midway}}
 
-% === Many tested properties will depend on time
-% - A tested property might depend on a previous value
-%     - e.g. check if a sprite is moving right
-%     - sprites save the values from the previous execution step
-% - Some tested properties should hold for a time or for the whole execution
-%     - Provide a way to define constraints that must always hold
+         \begin{tikzpicture}[scale=0.8, every node/.style={scale=0.8}]
+            \begin{scope}[on background layer]
+                \node[gui]     at (  5.9,  0.4) (gui)    {};
+                \node[vm]      at (  5.9,  0.0) (vm)     {};
+                \node[]        at ( -2.0,  0.4) (input)  {};
+                \node[]        at ( 14.0,  0.4) (output) {};
+            \end{scope}
+
+            \node[put]         at (  5.9, -0.4) (put)    {\textbf{Program under test (Black box)}};
+            \node[]            at (  5.9,  1.3) (vmtxt)  {\textbf{Scratch Virtual Machine}};
+            \node[font=\large] at (  5.9, 2.25) (guitxt) {\textbf{Scratch GUI}};
+
+            \path [draw, ->] (input) -- node [arrowtxt, above] {\textbf{Input}} (gui);
+            \path [draw, ->] (gui)   -- node [arrowtxt, above] {\textbf{Output}} (output);
+            \path [draw, ->] (input) -- node [arrowtxt, below] {Key presses, mouse movement, mouse clicks, etc.} (gui);
+            \path [draw, ->] (gui)   -- node [arrowtxt, below] {Visual animations, audio, etc.} (output);
+        \end{tikzpicture}
+        \caption{Input and output of the Scratch GUI}
+        \label{fig:input_and_output_of_the_scratch_gui}
+    \end{subfigure}
+
+    \bigskip
+
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \tikzset{>=latex,
+                 put/.style={draw, text width=2.5cm, minimum height=2.2cm, minimum width=3.5cm, text centered, fill=black!90, text=white, rounded corners},
+                  vm/.style={draw, minimum height=3.5cm, minimum width=6.0cm, fill=white, rounded corners},
+                util/.style={draw, minimum height=4.7cm, minimum width=7.0cm, fill=green!20, rounded corners},
+            arrowtxt/.style={text width=3.3cm, midway}}
+
+         \begin{tikzpicture}[scale=0.8, every node/.style={scale=0.8}]
+            \begin{scope}[on background layer]
+                \node[util]    at (  5.9,  0.4) (util)    {};
+                \node[vm]      at (  5.9,  0.0) (vm)      {};
+                \node[]        at ( -2.0,  0.4) (input)   {};
+                \node[]        at ( 14.0,  0.4) (output)  {};
+            \end{scope}
+
+            \node[put]         at (  5.9, -0.4) (put)     {\textbf{Program under test (Black box)}};
+            \node[]            at (  5.9,  1.3) (vmtxt)   {\textbf{Scratch Virtual Machine}};
+            \node[font=\large] at (  5.9,  2.2) (utiltxt) {\textbf{Testing Utility}};
+
+            \path [draw, ->] (input) -- node [arrowtxt, above] {\textbf{Input}} (util);
+            \path [draw, ->] (util)  -- node [arrowtxt, above] {\textbf{Output}} (output);
+            \path [draw, ->] (input) -- node [arrowtxt, below] {Interface to simulate input} (util);
+            \path [draw, ->] (util)  -- node [arrowtxt, below] {Interface to query information about sprites and variables} (output);
+        \end{tikzpicture}
+        \caption{Input and output of the testing utility}
+        \label{fig:input_and_output_of_the_testing utility}
+    \end{subfigure}
+
+    \caption{Comparison of IO mechanisms}
+    \label{fig:comparison_of_io_mechanisms}
+\end{figure}
 
 \section{General Testing Procedure}
 
@@ -242,7 +275,7 @@ TODO: general explanation of the approach first
         \label{fig:constraint_only_test_procedure}
     \end{subfigure}
     \caption{Comparison of the procedure of normal tests and constraint-only tests}
-    \label{comparison_of_the_procedure_of_normal_tests_and_constraint_only_tests}
+    \label{fig:comparison_of_the_procedure_of_normal_tests_and_constraint_only_tests}
 \end{figure}
 
 
