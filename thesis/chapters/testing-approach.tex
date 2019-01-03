@@ -6,15 +6,19 @@
 % - parallel scripts
 % - overhead
 
+\section{General Approach}
 
 \mnote{does knowing sprite and variable names make it grey-box?}
-To enable dynamic testing for Scratch, we propose a black-bock approach with a testing utility, which automates Scratch's IO.
+In this work, we propose a way to perform dynamic testing on Scratch programs.
+Tests follow a black-bock approach and make use of a testing utility, which allows test code to interact with a running Scratch program.
+% To enable dynamic testing for Scratch, we propose a black-bock approach with a testing utility, which allows test code to interact with a running Scratch program.
+
 Because Scratch's parallel scripts and lack of code separation, would make white-box testing difficult,
 we instead chose to ignore the internals and only focus on the input and output of the program.
 Of course, this raises the question of how to access Scratch's IO.
 Since Scratch's input usually consists of mouse and keyboard input, and its output consists of visual animations and sound,
 they are not easily accessible in a programmable way.
-To overcome this challenge, we developed a testing utility, which acts like a wrapper around Scratch.
+To overcome this challenge, we developed a testing utility, which acts as a wrapper around Scratch.
 It interacts with Scratch's virtual machine instead of its GUI in order to automate the IO.
 This utility offers a programmable interface for Scratch, which makes black-box testing possible.
 
@@ -94,86 +98,53 @@ This utility offers a programmable interface for Scratch, which makes black-box 
     \label{fig:comparison_of_io_mechanisms}
 \end{figure}
 
-\section{General Testing Procedure}
+\section{Testing Procedure}
 
-TODO: general explanation of the approach first
-"To summarize the previous section"?
+Automating Scratch allows us to write tests for Scratch in a unit-test-like fashion.
+The utility can load and start the program before each test starts.
+By doing this, we allow every test starts with a fresh instance of the program in the exact same situation.
+The test code can then interact with the program in order to produce a desired situation and check how to program behaves through assertions.
 
-- Before starting a test case, the project is loaded to make sure that every test starts with the same program state
-    - If this would not be done, it would be very hard to test programs that don't do proper initialization
-    - Tests would depend on the state the previous test leaves the program in
-    $\rightarrow$ Very inconsistent, therefore desirable to load the program before each test
-
-- Then the test executes the program
-
-\textit{- The test may press the green flag multiple times
-- This allows to
-    - test correct initialization of the program
-    - test random values that are determined only once per program run
-        - e.g. the program spawns a number of sprites in the beginning
-        $\rightarrow$ only way to check if it's indeed random is to run the program multiple times
-    }
-
-\noindent- The test can then:
+\noindent Test code can use the testing utility to do the following:
 \begin{itemize}
-    \item \textbf{Simulate Input}.
-        - The test can simulate various user input.
-        - It can simulate mouse movement, mouse button presses and keyboard button presses.
-        - This is the only way the test can interact with the program.
-        - The test should only interact with the program how a normal user would.
-
-        - This work will explore automatic generation of input for Scratch programs
-        - Input can be generated randomly
-        - Static analysis can be used to detect the input events the program recognizes and to give the program inputs
-        - A combination of both will be used for this work
-    \item \textbf{Access Information}.
-        - The test can select sprites by their name or by other condition (e.g. a sprite at a certain place).
-        - It can also access the value of variables through the sprites the variables belong to.
-        - Allows to check sprite positions, movement, animation, speech bubbles, etc.
-        - Allows to check numbers that are displayed to the user
-    \item \textbf{Control the program execution}.
-        - The test can control how and for how long the program under test is run.
-        - For example, the test can do some setup, then run the program until some sprite moves, then do some assertions.
-    \item \textbf{Define constraints}.
-        - The test can define constraints that must always hold true.
-        - E.g. it can define that a sprite must never move left, or a sprite always moves in a certain direction when a key is pressed.
-        - Needed because making assertions manually after every execution step is bothersome.
+    \item \textbf{Simulate Input.}
+        By simulating Scratch's main input methods, the test can control the tested program.
+        The goal is to simulate a user interacting with the program.
+        Therefore, this is the only way the test can manipulate the program.
+        The possible input includes mouse movement, mouse button presses, keyboard key presses and entering answers to ask blocks.
+    \item \textbf{Access Information.}
+        \mnote{Explain how in the implementation chapter (objects)}
+        The testing utility can be used to access sprites and variables of the program.
+        This makes it possible to gather information about anything, which is displayed on the stage.
+        Analyzing Scratch's visual output would otherwise be very difficult.
+        The provided sprite attributes include the sprite's position, rotation, size, current costume, speech bubble text, etc..
+        The values of the program's variables can also be accessed.
+        These variable values can usually be displayed to the user in Scratch's graphical output, and are commonly used in Scratch programs to convey information to the user.
+    \item \textbf{Control the program execution.}
+        The test is able to control when and for how long the program under test is run.
+        In the beginning of the test, the program starts in a paused state with the green flag already pressed.
+        The test can then run (resume) the program for a certain time, or until a condition is met.
+        The green flag can also be pressed again in order to restart the program, which can, for example, be useful for testing programs, that use randomness.
+    \item \textbf{Register Callbacks.}
+        The test can register callbacks, which get called every time Scratch renders a new picture.
+        This allows the test to track the information, which the user would normally see, while the program is running.
+    \item \textbf{Register constraints.}
+        By registering constraints, the test can define conditions that must always hold true.
+        Constraints are done through special callbacks, which perform assertions.
+        They are, like callbacks, checked every time Scratch renders a frame.
+        For example, this can be used to define that a certain sprite always has to move right when the right arrow key is pressed.
 \end{itemize}
 
-\noindent- The test can not:
+However, the test can not:
 \begin{itemize}
-    \item \textbf{Directly manipulate properties of sprites or variables}.
-        - The test should only interact with the program like a user would $\rightarrow$ realistic scenario
-        - Directly manipulating sprites or variables could result in unexpected behaviour of the program
-        $\rightarrow$ does not make sense for testing scratch programs
+    \item \textbf{Directly manipulate sprite attributes.}
+        The test should only interact with the program like a user would.
+        Directly manipulating sprites or variables could result in unexpected behaviour of the program.
+        Therefore, it does not make sense to directly manipulate sprites for testing Scratch.
     \item \textbf{Execute single scripts or blocks directly}.
-        - Block box approach does not allow to know anything about the code of the program (only names of sprites and variables)
-        - Scratch programs are not made for modularity
-            - Scripts are run in parallel
-            - The given task could ask for isolated scripts that can be run on their own, but other languages are probably better suited for this
-
+        The block box approach does not allow knowledge about the code of the program.
+        Executing single scripts could also lead to unexpected behaviour from the program, because the scripts could depend on other scripts, which run parallelly.
 \end{itemize}
-
-\section{Advantages and Disadvantages}
-
-=== Shortcomings of this approach
-- Scratch projects need to be well defined to be tested
-    - Can take the creativity out of the process, but can also give the students a guide to follow, which helps them to not get stuck on one problem
-    - Students can test their programs with the test suite beforehand on their own to verify their programs
-    - Problem: might incentivize students to try to cheat the tests
-        $\rightarrow$ Automated testing should only be used in conjunction with static analysis, manual analysis, or random secret tests
-        (static analysis should easily show anomalies on the projects)
-- Scratch programs can be pretty inconsistent
-    - Some programs may only sometimes work and other times not
-    $\rightarrow$ They may or may not pass the test
-
-=== Advantages
-- Allows the full range of Scratch functionality
-    - ITCH only allows textual input and output, greatly limiting the possible functionality of tested programs
-- Tests are easily understandable since they use the program like a normal user would
-    - Students can test their programs with the test suite beforehand on their own to verify their programs
-        $\rightarrow$ Students can easily receive feedback and will change their programs according to the tests
-        $\rightarrow$ Incentivizes students to ask for help if they can't progress, because the test clearly shows that there is a problem
 
 \section{Constraint-only Tests}%
 \label{sec:constraint_only_tests}
@@ -278,4 +249,23 @@ TODO: general explanation of the approach first
     \label{fig:comparison_of_the_procedure_of_normal_tests_and_constraint_only_tests}
 \end{figure}
 
+\section{Advantages and Disadvantages}
 
+=== Shortcomings of this approach
+- Scratch projects need to be well defined to be tested
+    - Can take the creativity out of the process, but can also give the students a guide to follow, which helps them to not get stuck on one problem
+    - Students can test their programs with the test suite beforehand on their own to verify their programs
+    - Problem: might incentivize students to try to cheat the tests
+        $\rightarrow$ Automated testing should only be used in conjunction with static analysis, manual analysis, or random secret tests
+        (static analysis should easily show anomalies on the projects)
+- Scratch programs can be pretty inconsistent
+    - Some programs may only sometimes work and other times not
+    $\rightarrow$ They may or may not pass the test
+
+=== Advantages
+- Allows the full range of Scratch functionality
+    - ITCH only allows textual input and output, greatly limiting the possible functionality of tested programs
+- Tests are easily understandable since they use the program like a normal user would
+    - Students can test their programs with the test suite beforehand on their own to verify their programs
+        $\rightarrow$ Students can easily receive feedback and will change their programs according to the tests
+        $\rightarrow$ Incentivizes students to ask for help if they can't progress, because the test clearly shows that there is a problem

@@ -1,5 +1,16 @@
 % REMEMBER: Write the thesis from the view of the reader. How would I like to READ the thesis?
 
+% FROM APPROACH:
+% - Before starting a test case, the project is loaded to make sure that every test starts with the same program state
+%     - If this would not be done, it would be very hard to test programs that don't do proper initialization
+%     - Tests would depend on the state the previous test leaves the program in
+%     $\rightarrow$ Very inconsistent, therefore desirable to load the program before each test
+
+%         - This work will explore automatic generation of input for Scratch programs
+%         - Input can be generated randomly
+%         - Static analysis can be used to detect the input events the program recognizes and to give the program inputs
+%         - A combination of both will be used for this work
+
 \chapter{Implementation}
 
 TODO: keyword "automation"
