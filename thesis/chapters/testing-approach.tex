@@ -8,9 +8,9 @@
 
 \section{General Approach}
 
-\mnote{does knowing sprite and variable names make it grey-box?}
 In this work, we propose a way to perform dynamic testing on Scratch programs.
-Tests follow a black-bock approach and make use of a testing utility, which allows test code to interact with a running Scratch program.
+The main goal of this approach is to assess student-written solutions to Scratch assignments.
+make use of a testing utility, which allows test code to interact with a running Scratch program.
 % To enable dynamic testing for Scratch, we propose a black-bock approach with a testing utility, which allows test code to interact with a running Scratch program.
 
 Because Scratch's parallel scripts and lack of code separation, would make white-box testing difficult,
@@ -18,9 +18,15 @@ we instead chose to ignore the internals and only focus on the input and output 
 Of course, this raises the question of how to access Scratch's IO.
 Since Scratch's input usually consists of mouse and keyboard input, and its output consists of visual animations and sound,
 they are not easily accessible in a programmable way.
-To overcome this challenge, we developed a testing utility, which acts as a wrapper around Scratch.
-It interacts with Scratch's virtual machine instead of its GUI in order to automate the IO.
-This utility offers a programmable interface for Scratch, which makes black-box testing possible.
+To overcome this challenge, we developed a testing utility called Whisker, which acts as a wrapper around Scratch.
+It interacts with Scratch's virtual machine in order to automate its IO.
+Whisker offers a programmable interface for Scratch, which testing for Scratch possible.
+
+Whisker is, like Scratch 3, implemented in JavaScript.
+Hence, test code is also written in JavaScript.
+Whisker can, in theory, be used with any JS testing framework,
+but for compatibility reasons, we developed a rudimentary testing framework to go along with Whisker (more on this in section~\ref{TODO}).
+
 
 % Therefore, we only concern ourselves with ...
 
@@ -37,22 +43,22 @@ This utility offers a programmable interface for Scratch, which makes black-box 
     \begin{subfigure}[b]{\textwidth}
         \centering
         \tikzset{>=latex,
-                 put/.style={draw, text width=2.5cm, minimum height=2.2cm, minimum width=3.5cm, text centered, fill=black!90, text=white, rounded corners},
-                  vm/.style={draw, minimum height=3.5cm, minimum width=6.0cm, fill=white, rounded corners},
-                 gui/.style={draw, minimum height=4.7cm, minimum width=7.0cm, fill=blue!20, rounded corners},
+                 put/.style={draw, text width=2.5cm, minimum height=1.7cm, minimum width=3.5cm, text centered, fill=red!20, rounded corners},
+                  vm/.style={draw, minimum height=3.0cm, minimum width=6.0cm, fill=white, rounded corners},
+                 gui/.style={draw, minimum height=4.2cm, minimum width=7.0cm, fill=blue!20, rounded corners},
             arrowtxt/.style={text width=3.3cm, midway}}
 
          \begin{tikzpicture}[scale=0.8, every node/.style={scale=0.8}]
             \begin{scope}[on background layer]
-                \node[gui]     at (  5.9,  0.4) (gui)    {};
-                \node[vm]      at (  5.9,  0.0) (vm)     {};
-                \node[]        at ( -2.0,  0.4) (input)  {};
-                \node[]        at ( 14.0,  0.4) (output) {};
+                \node[gui]     at (  5.9,  0.4) (gui)     {};
+                \node[vm]      at (  5.9,  0.0) (vm)      {};
+                \node[]        at ( -2.0,  0.4) (input)   {};
+                \node[]        at ( 14.0,  0.4) (output)  {};
             \end{scope}
 
-            \node[put]         at (  5.9, -0.4) (put)    {\textbf{Program under test (Black box)}};
-            \node[]            at (  5.9,  1.3) (vmtxt)  {\textbf{Scratch Virtual Machine}};
-            \node[font=\large] at (  5.9, 2.25) (guitxt) {\textbf{Scratch GUI}};
+            \node[put]         at (  5.9, -0.4) (put)     {\textbf{Program under test}};
+            \node[]            at (  5.9,  1.0) (vmtxt)   {\textbf{Scratch Virtual Machine}};
+            \node[font=\large] at (  5.9,  2.0) (guitxt)  {\textbf{Scratch GUI}};
 
             \path [draw, ->] (input) -- node [arrowtxt, above] {\textbf{Input}} (gui);
             \path [draw, ->] (gui)   -- node [arrowtxt, above] {\textbf{Output}} (output);
@@ -68,9 +74,9 @@ This utility offers a programmable interface for Scratch, which makes black-box 
     \begin{subfigure}[b]{\textwidth}
         \centering
         \tikzset{>=latex,
-                 put/.style={draw, text width=2.5cm, minimum height=2.2cm, minimum width=3.5cm, text centered, fill=black!90, text=white, rounded corners},
-                  vm/.style={draw, minimum height=3.5cm, minimum width=6.0cm, fill=white, rounded corners},
-                util/.style={draw, minimum height=4.7cm, minimum width=7.0cm, fill=green!20, rounded corners},
+                 put/.style={draw, text width=2.5cm, minimum height=1.7cm, minimum width=3.5cm, text centered, fill=red!20, rounded corners},
+                  vm/.style={draw, minimum height=3.0cm, minimum width=6.0cm, fill=white, rounded corners},
+                util/.style={draw, minimum height=4.2cm, minimum width=7.0cm, fill=green!20, rounded corners},
             arrowtxt/.style={text width=3.3cm, midway}}
 
          \begin{tikzpicture}[scale=0.8, every node/.style={scale=0.8}]
@@ -81,9 +87,9 @@ This utility offers a programmable interface for Scratch, which makes black-box 
                 \node[]        at ( 14.0,  0.4) (output)  {};
             \end{scope}
 
-            \node[put]         at (  5.9, -0.4) (put)     {\textbf{Program under test (Black box)}};
-            \node[]            at (  5.9,  1.3) (vmtxt)   {\textbf{Scratch Virtual Machine}};
-            \node[font=\large] at (  5.9,  2.2) (utiltxt) {\textbf{Testing Utility}};
+            \node[put]         at (  5.9, -0.4) (put)     {\textbf{Program under test}};
+            \node[]            at (  5.9,  1.0) (vmtxt)   {\textbf{Scratch Virtual Machine}};
+            \node[font=\large] at (  5.9,  2.0) (utiltxt) {\textbf{Testing Utility}};
 
             \path [draw, ->] (input) -- node [arrowtxt, above] {\textbf{Input}} (util);
             \path [draw, ->] (util)  -- node [arrowtxt, above] {\textbf{Output}} (output);
@@ -101,17 +107,26 @@ This utility offers a programmable interface for Scratch, which makes black-box 
 \section{Testing Procedure}
 
 Automating Scratch allows us to write tests for Scratch in a unit-test-like fashion.
-The utility can load and start the program before each test starts.
+Whisker can load and start the program before each test starts.
 By doing this, we allow every test starts with a fresh instance of the program in the exact same situation.
 The test code can then interact with the program in order to produce a desired situation and check how to program behaves through assertions.
 
-\noindent Test code can use the testing utility to do the following:
+The following list will give an overview of Whisker's basic functions.
+The Whisker instance will be denoted as $t$ in example code snippets.
+
 \begin{itemize}
     \item \textbf{Simulate Input.}
         By simulating Scratch's main input methods, the test can control the tested program.
         The goal is to simulate a user interacting with the program.
         Therefore, this is the only way the test can manipulate the program.
         The possible input includes mouse movement, mouse button presses, keyboard key presses and entering answers to ask blocks.
+        \begin{javascriptcode}
+            t.addInput(1000, {
+                device: 'keyboard',
+                key: 'right arrow',
+                isDown: true
+            });
+        \end{javascriptcode}
     \item \textbf{Access Information.}
         \mnote{Explain how in the implementation chapter (objects)}
         The testing utility can be used to access sprites and variables of the program.
@@ -120,22 +135,40 @@ The test code can then interact with the program in order to produce a desired s
         The provided sprite attributes include the sprite's position, rotation, size, current costume, speech bubble text, etc..
         The values of the program's variables can also be accessed.
         These variable values can usually be displayed to the user in Scratch's graphical output, and are commonly used in Scratch programs to convey information to the user.
+        \begin{javascriptcode}
+            const sprite = t.getSprite('Sprite1');
+            const stage = t.getStage();
+            const variable = stage.getVariable('my variable');
+            console.log(sprite.x);
+            console.log(variable.value);
+        \end{javascriptcode}
     \item \textbf{Control the program execution.}
         The test is able to control when and for how long the program under test is run.
         In the beginning of the test, the program starts in a paused state with the green flag already pressed.
         The test can then run (resume) the program for a certain time, or until a condition is met.
         The green flag can also be pressed again in order to restart the program, which can, for example, be useful for testing programs, that use randomness.
+        \begin{javascriptcode}
+            await t.runForTime(1000);
+            await t.runUntil(() => sprite.x > 100));
+        \end{javascriptcode}
     \item \textbf{Register Callbacks.}
         The test can register callbacks, which get called every time Scratch renders a new picture.
         This allows the test to track the information, which the user would normally see, while the program is running.
+        \begin{javascriptcode}
+            const spritePositions = [];
+            t.addCallback(() => spritePositions.push(sprite.x));
+        \end{javascriptcode}
     \item \textbf{Register constraints.}
         By registering constraints, the test can define conditions that must always hold true.
         Constraints are done through special callbacks, which perform assertions.
-        They are, like callbacks, checked every time Scratch renders a frame.
-        For example, this can be used to define that a certain sprite always has to move right when the right arrow key is pressed.
+        For example, this can be used to define that a certain sprite must always be visible.
+        \begin{javascriptcode}
+            t.addConstraint(() => t.assert.ok(sprite.visible === true));
+        \end{javascriptcode}
 \end{itemize}
 
-However, the test can not:
+\noindent Some things are, despite being possible in theory, explicitly \textbf{not} allowed in tests:
+
 \begin{itemize}
     \item \textbf{Directly manipulate sprite attributes.}
         The test should only interact with the program like a user would.
@@ -144,6 +177,39 @@ However, the test can not:
     \item \textbf{Execute single scripts or blocks directly}.
         The block box approach does not allow knowledge about the code of the program.
         Executing single scripts could also lead to unexpected behaviour from the program, because the scripts could depend on other scripts, which run parallelly.
+\end{itemize}
+
+\section{Advantages and Disadvantages}
+
+This section will highlight some disadvantages and advantages of the presented testing approach.
+
+% - Scratch programs can be pretty inconsistent
+%     - Some programs may only sometimes work and other times not
+%     $\rightarrow$ They may or may not pass the test
+
+\noindent Disadvantages:
+
+\begin{itemize}
+    \item Scratch programs have to be well specified, since testing relies on the program's specification.
+        Therefore, if the specification is too vague, testing can become difficult.
+        Tests for imprecise specifications potentially need to consider more possible cases of how the program could behave.
+        Likewise, conflicting interpretations of the specification between the test and the program may result in false negative test outcomes.
+    \item Since we only test the program as a whole, testing a single part of the program can be difficult.
+        If, for example, some functionality of a program depends on another functionality being implemented correctly,
+        but the latter does not work, we can not test the first functionality properly.
+\end{itemize}
+
+\noindent Advantages:
+
+\begin{itemize}
+    \item This approach allows to test programs with most of Scratch's functionality.
+        Apart from sounds and extensions, anything, which Scratch has to offer, can be tested with this approach.
+        In contrast, ITCH's previous testing approach limited Scratch programs to textual IO.
+    \item Tests are easily understood, because they control the program like a normal person would.
+        This is important, because students, whose programs are supposed to be tested later,
+        could be allowed to run tests on their programs themselves during development.
+        This way, students could easily receive valuable feedback about the correctness of their implementations.
+        Therefore, it is beneficial to have tests, whose actions and purposes are easily understood by students.
 \end{itemize}
 
 \section{Constraint-only Tests}%
@@ -173,99 +239,73 @@ However, the test can not:
     - Constraint-only test require more processing, constraints have to be checked between every step
     - Constraints can't fully replace normal assertions: some properties are better checked with normal assertions (e.g. a property only has to hold for one point in time)
 
-\begin{figure}[h]
-    \centering
-    \begin{subfigure}[b]{.45\textwidth}
-        \centering
-        \tikzset{>=latex,
-                 box/.style={draw, text width=4.3cm, minimum height=0.7cm, text centered, rounded corners},
-                 num/.style={draw, circle, inner sep=0.6mm, text centered},
-                   h/.style={fill=blue!10}}
-
-        \begin{tikzpicture}
-            \node[box] at ( 0.2,  5.0) (initialize) {Initialize the program};
-            \node[box] at ( 0.2,  3.0) (run)        {Run the program};
-            \node[box] at ( 0.2,  2.0) (inputs)     {Simulate inputs};
-            \node[box] at ( 0.2,  1.0) (checks)     {Perform checks};
-
-            \node[num] at (-2.6,  5.0) (one)   {1};
-            \node[num] at (-2.6,  3.0) (two)   {2};
-            \node[num] at (-2.6,  2.0) (three) {3};
-            \node[num] at (-2.6,  1.0) (four)  {4};
-
-            \draw[->]
-                   (initialize)
-                -- (run)
-                -- (inputs)
-                -- (checks)
-                -- ( 0.2, -1.5);
-
-            \draw[shorten >= 2pt, rounded corners, dashed, ->]
-                   ( 0.2,  0.0)
-                -- (-3.4,  0.0)
-                -- (-3.4,  4.0)
-                -- ( 0.2,  4.0);
-        \end{tikzpicture}
-
-        \caption{Normal Test Procedure}
-        \label{fig:normal_test_procedure}
-    \end{subfigure}
-    \begin{subfigure}[b]{.45\textwidth}
-        \centering
-        \tikzset{>=latex,
-                 box/.style={draw, text width=4.3cm, minimum height=0.7cm, text centered, rounded corners},
-                 num/.style={draw, circle, inner sep=0.6mm, text centered},
-                   h/.style={fill=blue!10}}
-
-        \begin{tikzpicture}
-            \node[box] at ( 0.2,  5.5)  (initialize)  {Initialize the program};
-            \node[box] at ( 0.2,  4.25) (tracking)    {Setup tracking of information};
-            \node[box] at ( 0.2,  3.0)  (constraints) {Register constraints};
-            \node[box] at ( 0.2,  2.0)  (run)         {Run the program};
-            \node[box] at ( 0.2,  1.0)  (inputs)      {(Simulate Inputs)};
-            \node[box] at ( 0.2,  0.0)  (filter)      {Filter constraints};
-
-            \node[num] at (-2.6,  5.5)  (one)   {1};
-            \node[num] at (-2.6,  4.25) (two)   {2};
-            \node[num] at (-2.6,  3.0)  (three) {3};
-            \node[num] at (-2.6,  2.0)  (four)  {4};
-            \node[num] at (-2.6,  1.0)  (five)  {5};
-            \node[num] at (-2.6,  0.0)  (six)   {6};
-
-            \draw[->]
-                   (initialize)
-                -- (tracking)
-                -- (constraints)
-                -- (run)
-                -- (inputs)
-                -- (filter)
-                -- ( 0.2, -1.0);
-        \end{tikzpicture}
-
-        \caption{Constraint-only Test Procedure}
-        \label{fig:constraint_only_test_procedure}
-    \end{subfigure}
-    \caption{Comparison of the procedure of normal tests and constraint-only tests}
-    \label{fig:comparison_of_the_procedure_of_normal_tests_and_constraint_only_tests}
-\end{figure}
-
-\section{Advantages and Disadvantages}
-
-=== Shortcomings of this approach
-- Scratch projects need to be well defined to be tested
-    - Can take the creativity out of the process, but can also give the students a guide to follow, which helps them to not get stuck on one problem
-    - Students can test their programs with the test suite beforehand on their own to verify their programs
-    - Problem: might incentivize students to try to cheat the tests
-        $\rightarrow$ Automated testing should only be used in conjunction with static analysis, manual analysis, or random secret tests
-        (static analysis should easily show anomalies on the projects)
-- Scratch programs can be pretty inconsistent
-    - Some programs may only sometimes work and other times not
-    $\rightarrow$ They may or may not pass the test
-
-=== Advantages
-- Allows the full range of Scratch functionality
-    - ITCH only allows textual input and output, greatly limiting the possible functionality of tested programs
-- Tests are easily understandable since they use the program like a normal user would
-    - Students can test their programs with the test suite beforehand on their own to verify their programs
-        $\rightarrow$ Students can easily receive feedback and will change their programs according to the tests
-        $\rightarrow$ Incentivizes students to ask for help if they can't progress, because the test clearly shows that there is a problem
+% \begin{figure}[h]
+%     \centering
+%     \begin{subfigure}[b]{.45\textwidth}
+%         \centering
+%         \tikzset{>=latex,
+%                  box/.style={draw, text width=4.3cm, minimum height=0.7cm, text centered, rounded corners},
+%                  num/.style={draw, circle, inner sep=0.6mm, text centered},
+%                    h/.style={fill=blue!10}}
+%
+%         \begin{tikzpicture}
+%             \node[box] at ( 0.2,  3.0) (run)        {Run the program};
+%             \node[box] at ( 0.2,  2.0) (inputs)     {Simulate inputs};
+%             \node[box] at ( 0.2,  1.0) (checks)     {Perform checks};
+%
+%             \node[num] at (-2.6,  3.0) (one)   {1};
+%             \node[num] at (-2.6,  2.0) (two)   {2};
+%             \node[num] at (-2.6,  1.0) (three) {3};
+%
+%             \draw[->]
+%                    ( 0.2,  4.8)
+%                 -- (run)
+%                 -- (inputs)
+%                 -- (checks)
+%                 -- ( 0.2, -1.0);
+%
+%             \draw[shorten >= 2pt, rounded corners, dashed, ->]
+%                    ( 0.2,  0.0)
+%                 -- (-3.4,  0.0)
+%                 -- (-3.4,  4.0)
+%                 -- ( 0.2,  4.0);
+%         \end{tikzpicture}
+%
+%         \caption{Normal Test Procedure}
+%         \label{fig:normal_test_procedure}
+%     \end{subfigure}
+%     \begin{subfigure}[b]{.45\textwidth}
+%         \centering
+%         \tikzset{>=latex,
+%                  box/.style={draw, text width=4.3cm, minimum height=0.7cm, text centered, rounded corners},
+%                  num/.style={draw, circle, inner sep=0.6mm, text centered},
+%                    h/.style={fill=blue!10}}
+%
+%         \begin{tikzpicture}
+%             \node[box] at ( 0.2,  4.25) (tracking)    {Setup tracking of information};
+%             \node[box] at ( 0.2,  3.0)  (constraints) {Register constraints};
+%             \node[box] at ( 0.2,  2.0)  (run)         {Run the program};
+%             \node[box] at ( 0.2,  1.0)  (inputs)      {(Simulate Inputs)};
+%             \node[box] at ( 0.2,  0.0)  (filter)      {Filter constraints};
+%
+%             \node[num] at (-2.6,  4.25) (one)   {1};
+%             \node[num] at (-2.6,  3.0)  (two)   {2};
+%             \node[num] at (-2.6,  2.0)  (three) {3};
+%             \node[num] at (-2.6,  1.0)  (four)  {4};
+%             \node[num] at (-2.6,  0.0)  (five)  {5};
+%
+%             \draw[->]
+%                    (tracking)
+%                 -- (constraints)
+%                 -- (run)
+%                 -- (inputs)
+%                 -- (filter)
+%                 -- ( 0.2, -1.0);
+%         \end{tikzpicture}
+%
+%         \caption{Constraint-only Test Procedure}
+%         \label{fig:constraint_only_test_procedure}
+%     \end{subfigure}
+%     \caption{Comparison of the procedure of normal tests and constraint-only tests}
+%     \label{fig:comparison_of_the_procedure_of_normal_tests_and_constraint_only_tests}
+% \end{figure}
