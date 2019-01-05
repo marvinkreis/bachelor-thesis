@@ -1,4 +1,5 @@
 % REMEMBER: Write the thesis from the view of the reader. How would I like to READ the thesis?
+% WHY -> WHAT -> HOW structure
 
 % FROM APPROACH:
 % - Before starting a test case, the project is loaded to make sure that every test starts with the same program state
@@ -207,7 +208,7 @@ $\rightarrow$ If the additional computations take too long, they could influence
     \label{fig:whisker_step_procedure}
 \end{figure}
 
-\section{The Test Interface}
+\section{The Basic Testing Functionality}
 
 === WM Wrapper
 - Control the execution of the scratch program
@@ -375,7 +376,7 @@ $\rightarrow$ Blocks that take inputs and their options are analyzed
             });
         });
 
-        t.runForTime(1000);
+        await t.runForTime(1000);
 
         callback.disable();
         callback.enable();
@@ -414,7 +415,7 @@ $\rightarrow$ Blocks that take inputs and their options are analyzed
             t.assert.ok(sprite.x >= sprite.old.x);
         });
 
-        t.runForTime(1000);
+        await t.runForTime(1000);
 
         constraint.disable();
     \end{javascriptcode}
@@ -422,6 +423,8 @@ $\rightarrow$ Blocks that take inputs and their options are analyzed
     \caption{Example code for Constraints}
     \label{fig:example_code_for_constraints}
 \end{listing}
+
+\section{Automated Test Input Generation}
 
 \section{Coverage Measurement}
 - Whisker can measure simple statement coverage

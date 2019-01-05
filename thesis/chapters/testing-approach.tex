@@ -1,4 +1,5 @@
 % REMEMBER: Write the thesis from the view of the reader. How would I like to READ the thesis?
+% WHY -> WHAT -> HOW structure
 
 \chapter{Testing Approach}
 
@@ -108,11 +109,13 @@ but for compatibility reasons, we developed a rudimentary testing framework to g
 
 Automating Scratch allows us to write tests for Scratch in a unit-test-like fashion.
 Whisker can load and start the program before each test starts.
-By doing this, we allow every test starts with a fresh instance of the program in the exact same situation.
+By doing this, every test starts with a fresh instance of the program in the exact same situation.
 The test code can then interact with the program in order to produce a desired situation and check how to program behaves through assertions.
 
 The following list will give an overview of Whisker's basic functions.
 The Whisker instance will be denoted as $t$ in example code snippets.
+
+\mnote{TODO: properties depend on time $\rightarrow$ ''old'' values}
 
 \begin{itemize}
     \item \textbf{Simulate Input.}
@@ -156,14 +159,18 @@ The Whisker instance will be denoted as $t$ in example code snippets.
         This allows the test to track the information, which the user would normally see, while the program is running.
         \begin{javascriptcode}
             const spritePositions = [];
-            t.addCallback(() => spritePositions.push(sprite.x));
+            const callback = t.addCallback(() => spritePositions.push(sprite.pos));
+            callback.disable();
+            callback.enable();
         \end{javascriptcode}
     \item \textbf{Register constraints.}
         By registering constraints, the test can define conditions that must always hold true.
         Constraints are done through special callbacks, which perform assertions.
         For example, this can be used to define that a certain sprite must always be visible.
         \begin{javascriptcode}
-            t.addConstraint(() => t.assert.ok(sprite.visible === true));
+            const constraint = t.addConstraint(() => t.assert.ok(sprite.visible === true));
+            constraint.disable();
+            constraint.enable();
         \end{javascriptcode}
 \end{itemize}
 
@@ -212,32 +219,232 @@ This section will highlight some disadvantages and advantages of the presented t
         Therefore, it is beneficial to have tests, whose actions and purposes are easily understood by students.
 \end{itemize}
 
-\section{Constraint-only Tests}%
-\label{sec:constraint_only_tests}
 
-- TODO: when constraints are checked can't be clear here, a different implementation could allow constraints to be checked e.g. when a value is changed.
 
-- Normally, tests would deliberately simulate input on the program, then perform some assertions
-- Constraints open up a new approach to testing Scratch programs by only defining constraints instead of doing normal assertions
-- In the end of the test, it has to be checked if the desired situation for the constraint occurred during the program execution
-    - E.g. a constraint that describes the movement speed of a sprite will always hold if the sprite does not move at all
-    - $\rightarrow$ The constraint need to be filtered
-- This makes it possible to separate the checking of properties from the execution of the program
-    - Checks are only done through constraints, which run in the background
-    $\rightarrow$ This is independent from the program execution
-    $\rightarrow$ The program can be controlled by arbitrary input, as long as the desired situation for the constraint(s) comes about
-        - Deliberately simulated input
-        - Manual user input
-        - Random input ($\rightarrow$ well-suited for random input, because the test is independent from the source of input)
-          Similar approaches have been used in other testing applications, e.g. QuickCheck \cite{quickcheck}
 
-- Normal tests vs. constraint-only tests
-    - Normal tests can be more granular $\rightarrow$ better for grading
-    - Normal tests allow to write very short tests for things that can be checked fast
-        - More difficult if everything is tested in a single constraint-only test
-        $\rightarrow$ Better for continuous development, because it's easier to quickly execute just one test
-    - Constraint-only test require more processing, constraints have to be checked between every step
-    - Constraints can't fully replace normal assertions: some properties are better checked with normal assertions (e.g. a property only has to hold for one point in time)
+
+
+
+
+
+
+\chapter{Using Constraints For Flexible Test Inputs}%
+\label{cha:using_constraints_to_enable_flexible_test_inputs}
+
+This section will describe why separating control of the program under test from the test code can be beneficial,
+and how this can be achieved by using Whisker's constraints.
+
+\section{Input-Independent Tests}
+
+Usually, tests will provide the program under test with inputs and check the resulting outputs.
+However, in many cases, a different approach is possible as well.
+Tests may use other sources of input and simply observe if the program's output is correct for the input provided by the source.
+QuickCheck~\cite{quickcheck} by Claessen et al., for example, uses this this principle, to test the correctness of Haskell programs.
+In order to do this, tests define conditions, which the program must comply with.
+QuickCheck then automatically generates input for the program and checks if the defined conditions hold.
+
+Scratch programs can often be tested in a similar way.
+To do this, tests have to be made independent of the simulated input on the program.
+This does not just enable us to test with random input, but with other input sources as well.
+For example, the program could be manually controlled by a person, or input could be recorded and played back.
+Whisker also offers its own method of automated input generation by randomizing a set of inputs,
+which are either provided by the test itself, or deduced by analyzing the program code (see section~\ref{TODO} for more information on this).
+
+Scratch tests can be made independent of inputs.
+Whisker provides the means to do this.
+Using constraints allows us to define conditions, which the program must hold.
+Constraints checks the programs compliance to the conditions by continually performing assertions throughout the program execution.
+Since this is done entirely in the background while the program under test is running, we can define some constraints and just let the program run for some time.
+This way, it does not matter in what state the program is during its execution, or what inputs it is receiving.
+If a condition does not hold, the respective constraint fails.
+
+\section{Testing Procedure}
+
+\begin{wrapfigure}{r}{0.35\textwidth + 5mm}
+    \centering
+    \vspace{-5mm}
+    \tikzset{>=latex,
+             box/.style={draw, text width=4.3cm, minimum height=0.7cm, text centered, rounded corners},
+             num/.style={draw, circle, inner sep=0.6mm, text centered},
+               h/.style={fill=blue!10}}
+
+     \begin{tikzpicture}[scale=0.75, every node/.style={scale=0.75}]
+        \node[box, h] at ( 0.2,  4.25) (tracking)    {Setup information tracking};
+        \node[box, h] at ( 0.2,  3.0)  (constraints) {Register constraints};
+        \node[box]    at ( 0.2,  2.0)  (inputs)      {(Simulate Inputs)};
+        \node[box]    at ( 0.2,  1.0)  (run)         {Run the program};
+        \node[box, h] at ( 0.2,  0.0)  (verify)      {Verify tested situation};
+
+        \node[num] at (-2.6,  4.25) (one)   {1};
+        \node[num] at (-2.6,  3.0)  (two)   {2};
+        \node[num] at (-2.6,  2.0)  (three) {3};
+        \node[num] at (-2.6,  1.0)  (four)  {4};
+        \node[num] at (-2.6,  0.0)  (five)  {5};
+
+        \draw[->]
+               ( 0.2,  5.1)
+            -- (tracking)
+            -- (constraints)
+            -- (inputs)
+            -- (run)
+            -- (verify)
+            -- ( 0.2, -0.8);
+    \end{tikzpicture}
+    \vspace{-2mm}
+    \caption{Input-Independent Test Procedure}
+    \label{fig:input-independent-test-procedure}
+\end{wrapfigure}
+Figure~\ref{fig:input-independent-test-procedure} shows a test procedure, which uses the aforementioned approach to test independently of the simulated input.
+We will go through each step of the procedure with the aid of an example.
+Consider program with a single sprite, which is supposed to move to the right precisely when the right arrow key is pressed.
+We want to write a test to check if the sprite's movement works correctly.
+Figure~\ref{fig:normal-input-independet-test-comparison} shows the resulting test code for the example and compares it to a similar test in a more common approach without defining constraints.
+
+\begin{enumerate}
+    \item \textbf{Setup information tracking.}
+        The constraint, which we have to define, depends on information, which is not always available.
+        Because we need to determine the sprite's movement direction, we have to know the position of the sprite from the last rendered frame.
+        In order to track this, we add a callback, which tracks the sprite's last position.
+        (Note: Whisker makes the sprites' attributes from the last step available through \texttt{sprite.old}, but we are going to ignore this for the sake of the example)
+        \begin{javascriptcode}
+            let oldX;
+            t.addCallback(() => {
+                oldX = sprite.x;
+            });
+        \end{javascriptcode}
+    \item \textbf{Register constraints.}
+        Now, that we know the sprite's last position, we can determine if, and in which direction, it has moved since the last frame.
+        We check its movement dependent on what key is currently pressed.
+        \begin{javascriptcode}
+            t.addConstraint(() => {
+                if (t.isKeyDown("right arrow")) {
+                    t.assert.ok(sprite.x > oldX);
+                } else {
+                    t.assert.ok(sprite.x === oldX);
+                }
+            });
+        \end{javascriptcode}
+    \item[3+4.] \textbf{Simulate Inputs, Run the program.}
+        \setcounter{enumi}{4}
+        Now we can register inputs if we want to and then run the program.
+        How we simulate inputs, or if we perform inputs manually, does not matter, of course.
+        \begin{javascriptcode}
+            t.detectRandomInputs();
+            await t.runForTime(5000);
+        \end{javascriptcode}
+    \item \textbf{Verify tested situation.}
+        If our source of input does not guarantee, that the right arrow key gets pressed at all, we risk the chance of a false positive test result,
+        because then part of our constraint does not ever get executed.
+        In this case, we also want set up tracking for the key press in the beginning,
+        and then skip the test if the key does not get pressed at all in the end.
+        \begin{javascriptcode}
+            let rightPressed = false;
+            const detectRight = t.addCallback(() => {
+                if (t.isKeyDown("right arrow")) {
+                    rightPressed = true;
+                    detectRight.disable();
+                }
+            });
+
+            ...
+
+            t.assume.ok(rightPressed);
+        \end{javascriptcode}
+\end{enumerate}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{.43\textwidth}
+        \centering
+        \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, framesep=2mm, frame=lines]{javascript}
+            const sp = t.getSprite('Sprite1');
+
+            let oldX = sprite.x;
+
+            await t.runForTime(1000);
+
+            /* Sprite should not move when no key
+               is pressed. */
+            t.assert.ok(oldX === sprite.x);
+
+            t.inputImmediate({
+                device: 'keyboard',
+                key: 'right arrow',
+                isDown: true
+            });
+
+            await t.runForTime(1000);
+
+            /* Sprite should move right when the
+               right arrow key is pressed. */
+            t.assert.ok(oldX < sprite.x);
+        \end{minted}
+        \caption{Normal test}
+    \end{subfigure}
+    \hspace{.08\textwidth}
+    \begin{subfigure}[b]{.47\textwidth}
+        \centering
+        \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, framesep=2mm, frame=lines]{javascript}
+            const sprite = t.getSprite('Sprite1');
+
+            /* Detect if the right key is pressed.
+               Optional, if  the used input guaranties,
+               that the right arrow key is pressed. */
+            let rightPressed = false;
+            const detectRight = t.addCallback(() => {
+                if (t.isKeyDown("right arrow")) {
+                    rightPressed = true;
+                    detectRight.disable();
+                }
+            });
+
+            /* (1) Track the x position of the sprite, so
+               horizantal movement can be checked. */
+            let oldX;
+            t.addCallback(() => {
+                oldX = sprite.x;
+            });
+
+            /* (2) Sprite should move right when the
+               right arrow key is pressed. Sprite
+               should not move when no key is pressed. */
+            t.addConstraint(() => {
+                if (t.isKeyDown("right arrow")) {
+                    t.assert.ok(sprite.x > oldX);
+                } else {
+                    t.assert.ok(sprite.x === oldX);
+                }
+            });
+
+            /* (3) Some code, which registers inputs.
+               Or nothing if inputs are done manually.
+               For example: */
+            t.detectRandomInputs();
+
+            /* (4) */
+            await t.runForTime(5000);
+
+            /* (5) Optional, if  the used input
+               guaranties, that the right arrow key
+               is pressed. */
+            t.assume.ok(rightPressed);
+        \end{minted}
+        \caption{Input-independent test}
+    \end{subfigure}
+    \caption{Comparison of normal tests and an input-independent test using constraints}
+    \label{fig:normal-input-independet-test-comparison}
+\end{figure}
+
+\section{Combining Tests}
+
+Apart from being independent of their test input, a second advantage of this approach is that it allows tests to easily be combined.
+By copying constraints and their necessary information tracking from one test to another, the checks of one test can be combined with the other's checks.
+Depending on the program, it may be possible to perform many tests with a single program execution.
+In case tests are expected to fail, for example for automated assessment of student assignments,
+Whisker also offers the option to simply disable failed constraints instead of failing the test.
+This way, one can simply check which constraints failed at the end of the test, and generate some kind of test report about which of the checks failed.
+
+\mnote{TODO: figure}
 
 % \begin{figure}[h]
 %     \centering

@@ -1,4 +1,5 @@
 % REMEMBER: Write the thesis from the view of the reader. How would I like to READ the thesis?
+% WHY -> WHAT -> HOW structure
 
 \chapter{Background}%
 \label{cha:background}
@@ -57,7 +58,7 @@ Other events include key presses on the keyboard, clicks on a specific sprite, a
 Active scripts effectively run in parallel until the end of each script is reached, or until the script is stopped by itself or another script.
 
 \textbf{Sprite and variables.}
-Each sprite contains its own code and variables.
+Each sprite contains its own scripts and variables.
 These variables, as well as the sprite itself can only be manipulated by the sprite's own scripts.
 The only exception to this rule is the stage, whose variables are accessible by all other sprites as well.
 Sprites can interact with each other through a messaging system and through the stage's variables.
@@ -126,6 +127,8 @@ since they allow to translate the block-based code into a traditional programmin
 % \label{sec:automatic_test_generation}
 
 \section{Challenges of Testing Scratch Programs}
+
+\mnote{TODO: properties depend on time $\rightarrow$ ''old'' values}
 
 Dynamically testing Scratch programs is not a straightforward task.
 There exist multiple challenges that have to be overcome in order to test Scratch programs accurately.
