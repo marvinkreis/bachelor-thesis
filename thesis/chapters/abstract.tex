@@ -2,25 +2,22 @@
 % WHY -> WHAT -> HOW structure
 
 \begin{abstract}
-    - Scratch is very common as an introduction to programming
-    - Workshops and courses are held with Scratch
-    - Many people pick up Scratch on their own and follow tutorials
+    Scratch is commonly adapted by educational courses to introduce students to the principles of computer programming.
+    As some of these courses are attended by a large number of students, one big disadvantage of Scratch becomes relevant: Grading Scratch assignments can be troublesome.
+    Scratch's interactive nature makes grading very time-consuming, since many key presses or clicks are required to execute a program.
+    At the same time, automating this process is still an open problem, since Scratch's visual and auditory output make automation difficult.
+    Automated testing could not just aid teachers in the grading process, but it could also help students to detect errors in their own programs.
 
-    - Assessment of Scratch programs is still an open problem
-        - Teachers might want to check their student's programs to grade them or to compile statistics
-        - Learners might want to check their own solutions and get feedback
+    In order to solve this problem, we implemented Whisker, a program, which automates Scratch 3.0's IO to make dynamic testing possible.
+    Whisker offers a JavaScript interface, which allows to simulate user input on programs, and to access Scratch's visual output in the form of sprite attributes and variables.
+    Additionally, Whisker also offers automated input generation, which can be used to control Scratch programs automatically.
+    With this, we explore an alternative approach to testing, which defines constraints, lets the program be controlled automatically, and checks if any of the constraints are violated by the program.
 
-    - Automatic assessment of Scratch programs is needed
-        - basic static analysis possible
-        - runtime testing is not really possible yet
-        - Scratch does not have normal input / output like traditional programs, but is based on multimedia
-        - programs need to be run manually to assess their functionality
-        - takes a lot of effort
-        - Whisker can support educators and learners in the assessment
+    To evaluate Whisker, we used it to test a collection of student solutions from a 6th/7th grade Scratch workshop.
+    Our test results closely match scores from independent manual grading, with an average correlation coefficient of 0.89,
+    and are also fairly consistent over multiple test runs.
+    Furthermore, we evaluated Whisker's automated input generation by measuring its achieved coverage on the sample solutions to CodeClub's Scratch courses.
+    The achieved coverage ranged from 0.65 to 1.00 with an average of 0.94 over three runs.
 
-    - Whisker allows GUI testing for Scratch
-        - Allows to write test cases in JavaScript that executed the program, simulate user input and check sprite properties
-
-    - Whisker was tested on a collection of Scratch programs written by students
-    - Evaluation shows ...
+    % While Whisker is not matured yet, it serves as a milestone in automated assessment for Scratch, since it is the first tool, which allows runtime testing for Scratch without limiting the programs in any way.
 \end{abstract}
