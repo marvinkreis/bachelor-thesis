@@ -15,29 +15,18 @@ It will also highlight some previous approaches to automated assessment for Scra
 
 \mnote{TODO: Scratch is run and developed inside a GUI, run with a VM}
 
-\begin{wrapfigure}{r}{0.30\textwidth + 5mm}
-    \vspace{-3mm}
-    \centering
-    \includegraphics[width=0.30\textwidth]{scratch-stage}
-    \caption{A catching game implemented in Scratch}
-    \label{fig:a_catching_game_implemented_in_scratch}
-    \vspace{-6mm}
-\end{wrapfigure}
-
 Scratch~\cite{scratch} is a programming language developed by the MIT Media Lab.
 Its main goal is to offer an intuitive programming language suited for programming novices and children.
 Scratch implements a block-based code system, which eliminates the possibility of syntax errors.
-It also allows users to easily integrate graphics and audio into their program.
+It also allows users to easily integrate graphics and audio into their programs.
 \parspace
 
-\begin{wrapfigure}{r}{0.40\textwidth + 5mm}
-    \vspace{-3mm}
+\begin{figure}[h]
     \centering
-    \includegraphics[width=0.40\textwidth]{scratch-code}
-    \caption{Scratch scripts}
-    \label{fig:scratch_blocks}
-    \vspace{-3mm}
-\end{wrapfigure}
+    \includegraphics[width=0.85\textwidth]{scratch-gui}
+    \caption{A catching game implemented in Scratch}
+    \label{fig:scratch-gui}
+\end{figure}
 
 \mnote{TODO: reference all figures in the text}
 \textbf{Input and output.}
@@ -45,11 +34,26 @@ Scratch programs create interactive two-dimensional animations through a number 
 The program manipulates sprites' appearance, position, size, rotation, visual effects and sounds.
 Furthermore, Sprites can also display messages and ask the user to type answers into a text box.
 Programs can react to user input like keyboard key presses, mouse clicks or mouse cursor movement.
-Figure~\ref{fig:a_catching_game_implemented_in_scratch} shows a screenshot of an example program.
+Figure~\ref{fig:scratch-gui} shows a screenshot of an example program.
 \parspace
 
+
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}
+        \node[anchor=south west,inner sep=0] at (0, 0) {\includegraphics[width=0.6\textwidth]{scratch-code}};
+        \draw[red, ultra thick, rounded corners]  (0, 5.27) rectangle (2.20, 6.10);
+        \draw[blue, ultra thick, rounded corners] (0, 1.65) rectangle (3.90, 5.10);
+        \node[red, font=\large, anchor=north east]   at (0, 6.00) {\texttt{Hat}};
+        \node[blue, font=\large, anchor=north east]  at (0, 5.00) {\texttt{Code}};
+    \end{tikzpicture}
+    \caption{Scratch code}
+    \label{fig:scratch_code}
+\end{figure}
+\mnote{TODO: move scripts in figure further apart}
+
 \textbf{Code.}
-Programming in Scratch is done by sticking together a structure of pre-defined blocks.
+Programming in Scratch is done by sticking together a structure of pre-defined blocks, which are equivalent to statements in traditional programming languages.
 Multiple blocks are combined together with a \textit{hat} to make up a \textit{script}.
 Scripts are called through a event, which is defined by their hat. % TODO show hat, code, script region in figure
 There are a variety of different events in Scratch.
@@ -60,17 +64,10 @@ Other events include key presses on the keyboard, clicks on a specific sprite, a
 Active scripts effectively run in parallel until the end of each script is reached, or until the script is stopped by itself or another script.
 \parspace
 
-\begin{wrapfigure}{r}{0.45\textwidth + 5mm}
-    \centering
-    \vspace{-4mm}
-    \includegraphics[width=0.45\textwidth]{scratch-sprites}
-    \caption{The sprite menu}
-    \label{fig:the_sprite_menu}
-\end{wrapfigure}
 \textbf{Sprite and variables.}
 Each sprite contains its own scripts and variables.
 These variables, as well as the sprite itself can only be manipulated by the sprite's own scripts.
-The only exception to this rule is the stage, whose variables are accessible by all other sprites as well.
+The only exception to this rule is the stage, whose variables are global.
 Sprites can communicate with each other through a messaging system and through the stage's variables.
 By \textit{cloning} sprites, the program can create multiple instances of a sprite, which behave alike.
 The cloned sprites then also share the original sprite's variables.
@@ -89,8 +86,8 @@ It allows users to load a saved project file and analyze it by iterating through
 % Example applications of Hairball are detecting code smells or finding out if a desired programming concept is implemented in the program.
 A example application of this program is the web-based assessment tool called Dr. Scratch~\cite{drscratch} by Jes\'{u}s et al..
 Dr. Scratch uses Hairball to measure the complexity of uploaded Scratch programs in various categories and scores them accordingly.
-Though Hairball is very useful for analyzing programs statically, it is not fitted to test the functionality and the correctness of a program.
-In order to do this, a dynamic testing approach is more suitable.
+Though Hairball is very useful for analyzing programs statically, testing the functionality of a program with it would be very difficult.
+In order to do this, a dynamic testing approach is more suitable, because it can simply observe to programs behaviour instead of having to deduct it from the programs source code.
 \parspace
 
 \textbf{ITCH.}
@@ -104,8 +101,8 @@ ITCH then executes the program, saves it, and analyzes the saved project file to
 This allows simple input-output-testing for Scratch, which is useful for testing the correctness of an implemented algorithm.
 But ITCH has a major drawback: Reducing Scratch programs to textual IO means, that only a small subset of Scratch's functionality is available to the programs under test.
 Sprite manipulation and such cannot be tested with ITCH.
-In this case, programming environments like BlockPy~\cite{blockpy} are probably often a better choice that Scratch,
-since they allow to translate their block-based code into a traditional programming language (in this case: Python).
+If the only reason to adopt Scratch is its block-based code system, there exist other block-based programming environments, that serve as a front-end to more common programming languages, which can be tested more easily.
+An example for this is BlockPy~\cite{blockpy}, which translates its block-based code into Python.
 
 % \section{Black Box Testing}
 %
@@ -132,22 +129,19 @@ since they allow to translate their block-based code into a traditional programm
 
 \section{Challenges of Testing Scratch Programs}
 
-\mnote{TODO: properties depend on time $\rightarrow$ ''old'' values}
-
 Dynamically testing Scratch programs is not a straightforward task.
 There exist multiple challenges, that have to be overcome in order to test Scratch programs accurately.
 This section will go over these challenges and explain each one of them.
 % TODO: This section explains these challenges and how the presented approach overcomes them.
 \parspace
 
-\mnote{TODO: more discussion}
-\textbf{Parallel scripts.}
-One problem is Scratch's code system.
-It does not have a traditional mechanism to structure code into methods, which return values.
-Furthermore, scripts run in parallel and may depend on one another.
+\textbf{Scratch's code system.}
+Scratch does not have a traditional mechanism to structure code into methods, which return values.
+Unit test cases usually call methods with some input and check the returned value, but this is not possible in Scratch.
+Additionally, scripts run in parallel and may depend on one another.
 This makes it hard to test a part of the program in isolation from the rest of the program.
 One could circumvent this problem by restricting the tested programs, like ITCH~\cite{itch} does it,
-but this defeats the purpose of using Scratch as a language.
+but that defeats the purpose of using Scratch as a language.
 % To deal with this challenge, this work proposes a black-box testing approach.
 % This way, the test code does not have to concern itself with the internals of the program.
 % Scratch programs can be controlled by simulating user input, instead of calling specific scripts.
@@ -155,39 +149,43 @@ but this defeats the purpose of using Scratch as a language.
 \parspace
 
 \textbf{GUI input and output.}
-Scratch is entirely run inside a GUI interface and therefore lacks traditional IO mechanisms.
-Its output consists of visual animations and audio, which difficult hard to analyze automatically.
+Scratch is entirely run inside a graphical user interface and therefore lacks traditional IO mechanisms.
+Its output consists of visual animations and audio, which are difficult to analyze automatically.
 Likewise, Scratch's input, which mainly consists of keyboard and mouse input, can make interacting with the program problematic.
 % We are going to deal with this problem by creating a wrapper around Scratch,
 % which can be used to simulate input and access information about the sprites which make up the output.
 % Tests can then use methods, which the wrapper provides, instead of manually interacting with the Scratch program.
 \parspace
 
-\begin{wrapfigure}{r}{0.25\textwidth + 5mm}
-    \centering
-    \vspace{-6mm}
-    \includegraphics[width=0.25\textwidth]{code-timing}
-    \vspace{-3mm}
-    \caption{Delaying blocks}
-    \label{fig:delaying_blocks}
-    \vspace{-3mm}
-\end{wrapfigure}
+\textbf{Randomness.}
+Scratch provides blocks to incorporate randomness into programs.
+Non-determinism is problematic for testing in general and not just for Scratch,
+but Scratch programs tend to often make use of randomness,
+since it can make game-like programs more interesting.
+This is especially relevant in the context of automated grading.
+Programming tasks for students in conventional programming languages are usually deterministic.
+However, Scratch assignments may tend to feature randomness to make the task more exciting.
+\parspace
 
-\textbf{Absolute timings.}
-Scratch offers code blocks to delay the execution of a script, which often find use in typical game-like programs.
-These blocks use absolute timings to implement the delay.
-Basically, they save the current time when they pause the script,
-then later resume the execution of the script when the difference between the current time and the saved time reached the desired delay length.
-This means, that the execution of the Scratch program can only be paused or delayed for a very short time without interfering with these timings.
-Pausing the execution of the Scratch program for too long, while a delay is active,
-takes away execution time from other scripts, which are executed parallel to the delay.
-This can potentially have an impact on the program under test.
-% Therefore, additional computations by the testing procedure must be fast enough to avoid interfering with the program under test.
-\mnote{TODO: Reference the evaluation section about timings here?}
+\textbf{Missing Initialization.}
+Scratch programs don't start with a fixed configuration of sprites and variables.
+When the program is loaded, it loads the sprite attributes and variable values from the project file and restores that state.
+Then, when the program is run, it starts with this state, but subsequent executions of the program continue with the configuration,
+which the last run of the program left after it ended.
+Scratch programs can deal with this by doing initialization in the beginning, but many don't.
+Therefore, if a program is run multiple times for testing, the initial sprite and variable configuration needs to be restored.
+\parspace
 
-% === Many tested properties will depend on time
-% - A tested property might depend on a previous value
-%     - e.g. check if a sprite is moving right
-%     - sprites save the values from the previous execution step
-% - Some tested properties should hold for a time or for the whole execution
-%     - Provide a way to define constraints that must always hold
+\textbf{Fuzziness of properties.}
+Scratch programs often don't deal with exact values,
+since small differences in sprite properties are generally indistinguishable in the program's output.
+This can make testing more difficult, since assertions have to take small deviations into consideration.
+Scratch itself also makes dealing with exact values unattractive.
+In the Scratch GUI, sprites can initially be positioned on the stage via drag and drop.
+Also, instead of comparing exact positions, Scratch offers built in blocks to directly check for sprite collisions.
+\parspace
+
+\textbf{Properties need to be observed over time.}
+In order to test movement or animations, we need to track sprite information over a period of time.
+Hence, we need a way to periodically access sprite attributes (and variables) during the program execution.
+\parspace

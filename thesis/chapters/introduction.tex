@@ -5,16 +5,16 @@
 
 \section{Motivation}
 
-Introductory CS courses often use educational programming languages to teach the principles of computer programming.
+Introductory computer science (CS) courses often use educational programming languages to teach the principles of computer programming.
 These languages are designed to be easily understandable and engaging for programming novices.
-In order to accomplish this, they often feature visual and auditory projects instead of textual IO.
+In order to accomplish this, they often feature visual and auditory projects instead of textual input and output (IO).
 One of the best known and most used languages for this purpose is MIT's Scratch~\cite{scratch, scratchproject}.
-Usages of Scratch can be found from primary school classes all the way up to introductory computer science courses in universities~\cite{itch, hairball}.
+Usages of Scratch can be found from primary school classes all the way up to introductory CS courses in universities~\cite{itch}.
 Scratch features a block-based programming environment, which lets users build interactive, multimedia programs with little effort.
 \parspace
 
 But Scratch's multimedia focus can also be its downfall.
-Scratch is entirely developed and executed inside of a GUI, and programs usually require manual interaction with keyboard and mouse to run.
+Scratch is entirely developed and executed inside of a graphical user interface (GUI), and programs usually require manual interaction with keyboard and mouse to run.
 Because of this, grading student assignments can be troublesome and particularly slow.
 Assessment of Scratch programs involves opening, running and interacting with every program individually.
 Some courses, which use Scratch, are attended by more than 200 students~\cite{itch}.
@@ -24,49 +24,36 @@ Programs are given some pre-defined input, then their according output is analyz
 But therein lies Scratch's problem.
 Scratch does not have textual input and output mechanisms like most programming languages.
 Therefore, automatically testing Scratch programs is not a trivial task.
-% In order to solve this problem, we propose a program, which automates Scratch's input and output in a programmable way.
-% This makes is possible to automatically test Scratch programs for correctness.
 \parspace
 
-% Having a way to automate the process of grading Scratch programs is a significant advantage.
-% Some courses, which use Scratch, are attended by more than 200 students~\cite{itch}.
-% Therefore, manual assessment of student solutions becomes too time consuming too be feasible, and automated assessment is needed.
-\mnote{TODO: mention TDD, TODO: remove this?}
-Students are also able to profit from automated tests.
-They can receive valuable feedback by running the tests on their programs themselves.
+Not only teachers would be able profit from dynamic testing for Scratch, it can also be very useful for students.
+For one thing, they can receive valuable feedback by running their teacher's tests on their programs themselves.
 Like this, students can identify and fix errors in their programs before submitting them.
-
-% === What purpose does it have
-% - Having a way to automatically test Scratch programs allows teachers to grade scratch programs more easily
-%     - Less time consuming
-%         - There are programming courses using Scratch that have over 200 students~\cite{itch}
-%     - may catch easily overlooked errors
-%     - Gives students an easy way to get feedback for their programs
-%         - Can detect errors or functionality, which they might have missed
-%         - Good idea to run a test suite before submitting a solution
-% - Can also be used outside of courses
-%     - Can serve as a extension to a self-tutorial
-%     - Gives feedback to the learner
+In some cases, maybe even a variant of test driven development can be adopted.
+At the same time, dynamic testing is also helpful for self-study.
+Online tutorials for Scratch could include a test suite for learners to test their programs with.
 
 
 \section{Contributions}
 This thesis introduces a new approach towards dynamic testing of Scratch programs.
-% The testing procedure involves an automation utility, which simulates user input (e.g. mouse movement or key presses) and allows access to information about the sprites and variables of the program.
 The testing procedure involves an automation utility, which simulates user input (e.g. mouse movement or key presses) and allows access to Scratch's visual output through a test-friendly interface.
 This allows to test the program in traditional unit-test-like test cases.
-Then, we present a way to separate test code from its simulated inputs.
-This opens up the possibility to use arbitrary sources of simulated input for the test, including automatically generated input.
 \parspace
 
-Then, this work introduces Whisker, an implementation of the aforementioned automation utility,
+For these tests, we present a way to separate test code from its simulated inputs,
+which opens up the possibility to use arbitrary sources of simulated input for the test,
+including automatically generated input.
+\parspace
+
+We introduces Whisker, an implementation of the aforementioned automation utility,
 which provides a interface to control the Scratch virtual machine through JavaScript methods.
 With this implementation, we also explore the possibility of automated test input generation through a combination of random input and simple static analysis on the Scratch project.
 \parspace
 
-In the end, Whisker is evaluated with realistic Scratch programs from different educational courses.
+We evaluate Whisker with realistic Scratch programs from different educational courses.
 The results provide the following insights:
 
-\mnote{Put statistics here?}
+\mnote{Put statistics here}
 % correlation, avg. number of inconsistencies, avg. coverage
 \begin{enumerate}[(1)]
     \item The testing process does not interfere with the execution of the programs under test.

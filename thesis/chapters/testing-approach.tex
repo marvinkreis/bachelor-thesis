@@ -1,17 +1,21 @@
 % REMEMBER: Write the thesis from the view of the reader. How would I like to READ the thesis?
 % WHY -> WHAT -> HOW structure
 
-\chapter{Testing Approach}
+\chapter{Testing With Whisker}
 
-% - IO
-% - parallel scripts
-% - overhead
+\mnote{TODO: explain how tests are run $\rightarrow$ any Scratch VM, Whisker has a GUI for it, TAP13 reports}
+\mnote{TODO: explain automated test input generation}
+\mnote{TODO: explain why the program is loaded before each test}
+% - Before starting a test case, the project is loaded to make sure that every test starts with the same program state
+%     - If this would not be done, it would be very hard to test programs that don't do proper initialization
+%     - Tests would depend on the state the previous test leaves the program in, since Scratch programs don't reset when being stopped
+%     $\rightarrow$ Very inconsistent, therefore desirable to load the program before each test
 
 \section{General Approach}
 
 In this work, we propose a way to perform dynamic testing on Scratch programs.
 The main goal of this approach is to be able to automatically assess student's solutions to Scratch assignments.
-In order to do so, this approach makes use of a automation utility, which allows test code to interact with a running Scratch program.
+In order to do so, this approach makes use of an automation utility, which allows test code to interact with a running Scratch program.
 % To enable dynamic testing for Scratch, we propose a black-bock approach with a testing utility, which allows test code to interact with a running Scratch program.
 \parspace
 
@@ -20,7 +24,7 @@ we instead chose to ignore the internals of the program and to go with a black-b
 This raises the question of how to access Scratch's IO.
 Since Scratch's input usually consists of mouse and keyboard input, and its output consists of visual animations and sound,
 they are not easily accessible in a programmable way.
-To overcome this challenge, we developed a automation utility called Whisker, which acts as a wrapper around Scratch.
+To overcome this challenge, we developed an automation utility called Whisker, which acts as a wrapper around Scratch.
 It interacts with Scratch's virtual machine in order to automate its IO.
 Whisker offers a programmable interface for Scratch, which makes automated testing for Scratch possible.
 \mnote{TODO: reference figure in the text}
@@ -41,33 +45,37 @@ but for compatibility reasons, we developed a rudimentary testing framework to g
 % Therefore, additional computations by the testing procedure must be fast enough to avoid interfering with the program under test.
 
 \mnote{TODO: better captions for figures}
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
 
     \begin{subfigure}[b]{\textwidth}
         \centering
         \tikzset{>=latex,
-                 put/.style={draw, text width=2.5cm, minimum height=1.7cm, minimum width=3.5cm, text centered, fill=red!20, rounded corners},
-                  vm/.style={draw, minimum height=3.0cm, minimum width=6.0cm, fill=white, rounded corners},
-                 gui/.style={draw, minimum height=4.2cm, minimum width=7.0cm, fill=blue!20, rounded corners},
-            arrowtxt/.style={text width=3.3cm, midway}}
+               arrow/.style={draw, -{Latex[length=1.5mm, width=1.5mm]}},
+                 put/.style={draw, minimum height=1.7cm, minimum width=3.5cm, rounded corners, fill=red!20, text width=2.5cm, text centered},
+                  vm/.style={draw, minimum height=3.0cm, minimum width=6.0cm, rounded corners, fill=white},
+                 gui/.style={draw, minimum height=4.2cm, minimum width=7.0cm, rounded corners, fill=blue!20},
+                 box/.style={draw, minimum height=4.2cm, minimum width=4.0cm, rounded corners, text width=3.5cm},
+              boxtxt/.style={minimum width=4.0cm, rounded corners, text width=3.5cm}}
 
          \begin{tikzpicture}[scale=0.8, every node/.style={scale=0.8}]
             \begin{scope}[on background layer]
-                \node[gui]     at (  5.9,  0.4) (gui)     {};
-                \node[vm]      at (  5.9,  0.0) (vm)      {};
-                \node[]        at ( -2.0,  0.4) (input)   {};
-                \node[]        at ( 14.0,  0.4) (output)  {};
+                \node[gui] at (0.0,  0.4) (gui)     {};
+                \node[vm]  at (0.0,  0.0) (vm)      {};
             \end{scope}
 
-            \node[put]         at (  5.9, -0.4) (put)     {\textbf{Program under test}};
-            \node[]            at (  5.9,  1.0) (vmtxt)   {\textbf{Scratch Virtual Machine}};
-            \node[font=\large] at (  5.9,  2.0) (guitxt)  {\textbf{Scratch GUI}};
+            \node[put]     at (0.0, -0.4) (put)     {\textbf{Program under test}};
+            \node[]        at (0.0,  1.0) (vmtxt)   {\textbf{Scratch Virtual Machine}};
+            \node[]        at (0.0,  2.0) (guitxt)  {\large \textbf{Scratch GUI}};
+            \node[box, left=of gui]       (input)   {};
+            \node[box, right=of gui]      (output)  {};
+            \node[boxtxt, below right] at ([yshift=-2mm] input.north west)  (inputtxt)
+                {\centering {\large \textbf{Input}}\\[.5\baselineskip]Key presses, mouse movement, mouse clicks, etc.};
+            \node[boxtxt, below right] at ([yshift=-2mm] output.north west) (outputtxt)
+                {\centering {\large \textbf{Output}}\\[.5\baselineskip]Visual animations, audio, etc.};
 
-            \path [draw, ->] (input) -- node [arrowtxt, above] {\textbf{Input}} (gui);
-            \path [draw, ->] (gui)   -- node [arrowtxt, above] {\textbf{Output}} (output);
-            \path [draw, ->] (input) -- node [arrowtxt, below] {Key presses, mouse movement, mouse clicks, etc.} (gui);
-            \path [draw, ->] (gui)   -- node [arrowtxt, below] {Visual animations, audio, etc.} (output);
+            \path [arrow] (input) -- (gui);
+            \path [arrow] (gui)   -- (output);
         \end{tikzpicture}
         \caption{Input and output of the Scratch GUI}
         \label{fig:input_and_output_of_the_scratch_gui}
@@ -78,27 +86,31 @@ but for compatibility reasons, we developed a rudimentary testing framework to g
     \begin{subfigure}[b]{\textwidth}
         \centering
         \tikzset{>=latex,
-                 put/.style={draw, text width=2.5cm, minimum height=1.7cm, minimum width=3.5cm, text centered, fill=red!20, rounded corners},
-                  vm/.style={draw, minimum height=3.0cm, minimum width=6.0cm, fill=white, rounded corners},
-                util/.style={draw, minimum height=4.2cm, minimum width=7.0cm, fill=green!20, rounded corners},
-            arrowtxt/.style={text width=3.3cm, midway}}
+               arrow/.style={draw, -{Latex[length=1.5mm, width=1.5mm]}},
+                 put/.style={draw, minimum height=1.7cm, minimum width=3.5cm, rounded corners, fill=red!20, text width=2.5cm, text centered},
+                  vm/.style={draw, minimum height=3.0cm, minimum width=6.0cm, rounded corners, fill=white},
+             whisker/.style={draw, minimum height=4.2cm, minimum width=7.0cm, rounded corners, fill=green!20},
+                 box/.style={draw, minimum height=4.2cm, minimum width=4.0cm, rounded corners, text width=3.5cm},
+              boxtxt/.style={minimum width=4.0cm, rounded corners, text width=3.5cm}}
 
          \begin{tikzpicture}[scale=0.8, every node/.style={scale=0.8}]
             \begin{scope}[on background layer]
-                \node[util]    at (  5.9,  0.4) (util)    {};
-                \node[vm]      at (  5.9,  0.0) (vm)      {};
-                \node[]        at ( -2.0,  0.4) (input)   {};
-                \node[]        at ( 14.0,  0.4) (output)  {};
+                \node[whisker] at (0.0,  0.4) (whisker) {};
+                \node[vm]      at (0.0,  0.0) (vm)      {};
             \end{scope}
 
-            \node[put]         at (  5.9, -0.4) (put)     {\textbf{Program under test}};
-            \node[]            at (  5.9,  1.0) (vmtxt)   {\textbf{Scratch Virtual Machine}};
-            \node[font=\large] at (  5.9,  2.0) (utiltxt) {\textbf{Whisker}};
+            \node[put]         at (0.0, -0.4) (put)     {\textbf{Program under test}};
+            \node[]            at (0.0,  1.0) (vmtxt)   {\textbf{Scratch Virtual Machine}};
+            \node[]            at (0.0,  2.0) (guitxt)  {\large \textbf{Scratch GUI}};
+            \node[box, left=of whisker]       (input)   {};
+            \node[box, right=of whisker]      (output)  {};
+            \node[boxtxt, below right] at ([yshift=-2mm] input.north west)  (inputtxt)
+                {\centering {\large \textbf{Input}}\\[.5\baselineskip]Calls to input simulating interface methods};
+            \node[boxtxt, below right] at ([yshift=-2mm] output.north west) (outputtxt)
+                {\centering {\large \textbf{Output}}\\[.5\baselineskip]Interface to query information about sprites and variables};
 
-            \path [draw, ->] (input) -- node [arrowtxt, above] {\textbf{Input}} (util);
-            \path [draw, ->] (util)  -- node [arrowtxt, above] {\textbf{Output}} (output);
-            \path [draw, ->] (input) -- node [arrowtxt, below] {Calls to input simulating interface methods} (util);
-            \path [draw, ->] (util)  -- node [arrowtxt, below] {Interface to query information about sprites and variables} (output);
+            \path [arrow] (input)   -- (whisker);
+            \path [arrow] (whisker) -- (output);
         \end{tikzpicture}
         \caption{Input and output of Whisker}
         \label{fig:input_and_output_of_whisker}
@@ -108,21 +120,22 @@ but for compatibility reasons, we developed a rudimentary testing framework to g
     \label{fig:comparison_of_io_mechanisms}
 \end{figure}
 
-\section{Testing Procedure}
+\section{Public Interface}
 
 \mnote{TODO: better explanations and code examples}
 Automating Scratch allows us to write tests for Scratch in a unit-test-like fashion.
-Whisker can load and start the program before each test starts.
+Whisker loads and starts the program before each test starts.
 By doing this, every test starts with a fresh instance of the program in the exact same situation.
-The test code can then interact with the program in order to produce a desired situation and check how to program behaves through assertions.
+The test code can then interact with the program in order to produce a desired situation and check how the program behaves through assertions.
 \parspace
 
-mnote{TODO: properties depend on time $\rightarrow$ ''old'' values}
+\mnote{TODO: properties depend on time $\rightarrow$ ''old'' values}
 The following list will give an overview of Whisker's basic functions.
 The Whisker instance will be denoted as $t$ in example code snippets.
 
 \begin{itemize}
     \item \textbf{Simulate Input.}
+        \mnote{TODO: check if key is pressed}
         By simulating Scratch's main input methods, the test can control the tested program.
         The goal is to simulate a user interacting with the program.
         Therefore, this is the only way the test can manipulate the program.
@@ -181,17 +194,15 @@ The Whisker instance will be denoted as $t$ in example code snippets.
         \end{javascriptcode}
 \end{itemize}
 
-\noindent Some things are, despite being possible in theory, explicitly \textbf{not} allowed in tests:
-
-\begin{itemize}
-    \item \textbf{Directly manipulate sprite attributes.}
-        The test should only interact with the program like a user would.
-        Directly manipulating sprites or variables could result in unexpected behaviour of the program.
-        Therefore, it does not make sense to directly manipulate sprites for testing Scratch.
-    \item \textbf{Execute single scripts or blocks directly}.
-        The block box approach does not allow knowledge about the code of the program.
-        Executing single scripts could also lead to unexpected behaviour from the program, because the scripts could depend on other scripts, which run parallelly.
-\end{itemize}
+\noindent Despite being possible in theory, Whisker does not provide the means to execute single scripts or blocks of the program directly.
+\mnote{TODO: really write about grading here?}
+It only allows executing the program as a whole.
+This has two reasons.
+Since the main goal for this testing approach is automated grading, one test suite is possibly executed on a large number of different implementations.
+Therefore, we don't want to concern ourselves with the internals of the program, since they may change from program to program.
+Secondly, executing single scripts could also lead to unexpected behaviour in the program, because scripts in typical Scratch programs often depend on other scripts, which run in parallel.
+% This is mainly due to the game-like nature of usual Scratch programs.
+% They often feature multiple sprites running loops in order to be interactive.
 
 \section{Advantages and Disadvantages}
 
@@ -222,20 +233,36 @@ This section will highlight some advantages and disadvantages of the presented t
         Apart from sounds and extensions, anything, which Scratch has to offer, can be tested with this approach.
         In contrast, ITCH's previous testing approach limited Scratch programs to textual IO.
     \item Tests are easily understood, because they control the program like a normal person would.
+    \mnote{Can't state this without proof $\rightarrow$ just say that test use the program like a normal person $\rightarrow$ e.g. recorded input could be used}
         This is important, because students, whose programs are supposed to be tested later,
         could be allowed to run tests on their programs themselves during development.
         This way, students could easily receive valuable feedback about the correctness of their implementations.
         Therefore, it is beneficial to use tests, whose actions and purposes are easily understood by students.
 \end{itemize}
 
+\section{Challenges of this Approach}
 
-
-
-
-
-
-
-
+% \textbf{Absolute timings.}
+% Scratch offers code blocks to delay the execution of a script, which often find use in typical game-like programs.
+% These blocks use absolute timings to implement the delay.
+% Basically, they save the current time when they pause the script,
+% then later resume the execution of the script when the difference between the current time and the saved time reached the desired delay length.
+% This means, that the execution of the Scratch program can only be paused or delayed for a very short time without interfering with these timings.
+% Pausing the execution of the Scratch program for too long, while a delay is active,
+% takes away execution time from other scripts, which are executed parallel to the delay.
+% This can potentially have an impact on the program under test.
+% % Therefore, additional computations by the testing procedure must be fast enough to avoid interfering with the program under test.
+% \mnote{TODO: Reference the evaluation section about timings here?}
+% \mnote{TODO: Rewrite this with an example so it's easier to understand}
+%
+% \begin{figure}[ht]
+%     \centering
+%     \includegraphics[width=0.30\textwidth]{code-timing}
+%     \caption{Delaying blocks}
+%     \label{fig:delaying_blocks}
+% \end{figure}
+%
+% TODO: actions don't necessarily happen in the same step -> have to track timings
 
 \chapter{Using Constraints For Flexible Test Inputs}%
 \label{cha:using_constraints_to_enable_flexible_test_inputs}
@@ -248,7 +275,7 @@ and how this can be achieved by using Whisker's  mechanism to define constraints
 Usually, tests will provide the program under test with inputs and check the resulting outputs.
 However, in many cases, a different approach is possible as well.
 Tests may use other sources of input and simply observe if the program's output is correct for the input provided by the source.
-QuickCheck~\cite{quickcheck} by Claessen et al., for example, uses this this principle, to test the correctness of Haskell programs.
+QuickCheck~\cite{quickcheck} by Claessen et al., for example, uses this principle, to test the correctness of Haskell programs.
 In order to do so, tests define conditions, which the program must comply with.
 QuickCheck then automatically generates input for the program and checks if the defined conditions hold.
 \parspace
@@ -261,8 +288,7 @@ Whisker also offers its own method of automated input generation by randomizing 
 which are either provided by the test itself, or deduced by analyzing the program code (see section~\ref{TODO} for more information on this).
 \parspace
 
-Scratch tests can be made independent of inputs.
-And Whisker provides the means to do this.
+Scratch tests can be made independent of inputs, and Whisker provides the means to do this.
 Using constraints allows us to define conditions, which the program must hold.
 Constraints check the programs compliance to the conditions by continually performing assertions throughout the program execution.
 Since this is done entirely in the background while the program under test is running, we can define some constraints and just let the program run for some time.
@@ -271,10 +297,16 @@ If a condition does not hold, the respective constraint fails.
 
 \section{Testing Procedure}
 
-\begin{wrapfigure}{r}{0.35\textwidth + 5mm}
+Figure~\ref{fig:input-independent-test-procedure} shows a testing procedure, which uses the aforementioned approach to test independently of the simulated input.
+We will go through each step of the procedure with the aid of an example.
+Consider a program with a single sprite, which is supposed to move to the right precisely when the right arrow key is pressed.
+We want to write a test to check if the sprite's movement works correctly.
+Figure~\ref{fig:normal-input-independet-test-comparison} shows the resulting test code for the example and compares it to a similar test in a more common approach without defining constraints.
+
+\begin{figure}[ht]
     \centering
-    \vspace{-5mm}
     \tikzset{>=latex,
+           arrow/.style={draw, -{Latex[length=1.5mm, width=1.5mm]}},
              box/.style={draw, text width=4.3cm, minimum height=0.7cm, text centered, rounded corners},
              num/.style={draw, circle, inner sep=0.6mm, text centered},
                h/.style={fill=blue!10}}
@@ -292,7 +324,7 @@ If a condition does not hold, the respective constraint fails.
         \node[num] at (-2.6,  1.0)  (four)  {4};
         \node[num] at (-2.6,  0.0)  (five)  {5};
 
-        \draw[->]
+        \draw[arrow]
                ( 0.2,  5.1)
             -- (tracking)
             -- (constraints)
@@ -301,15 +333,9 @@ If a condition does not hold, the respective constraint fails.
             -- (verify)
             -- ( 0.2, -0.8);
     \end{tikzpicture}
-    \vspace{-2mm}
     \caption{Input-Independent Test Procedure}
     \label{fig:input-independent-test-procedure}
-\end{wrapfigure}
-Figure~\ref{fig:input-independent-test-procedure} shows a testing procedure, which uses the aforementioned approach to test independently of the simulated input.
-We will go through each step of the procedure with the aid of an example.
-Consider program with a single sprite, which is supposed to move to the right precisely when the right arrow key is pressed.
-We want to write a test to check if the sprite's movement works correctly.
-Figure~\ref{fig:normal-input-independet-test-comparison} shows the resulting test code for the example and compares it to a similar test in a more common approach without defining constraints.
+\end{figure}
 
 \begin{enumerate}
     \item \textbf{Setup information tracking.}
@@ -363,7 +389,7 @@ Figure~\ref{fig:normal-input-independet-test-comparison} shows the resulting tes
         \end{javascriptcode}
 \end{enumerate}
 
-\begin{figure}[h]
+\begin{listing}[ht]
     \centering
     \begin{subfigure}[b]{.43\textwidth}
         \centering
@@ -399,7 +425,7 @@ Figure~\ref{fig:normal-input-independet-test-comparison} shows the resulting tes
             const sprite = t.getSprite('Sprite1');
 
             /* Detect if the right key is pressed.
-               Optional, if  the used input guaranties,
+               Optional, if  the used input guarantees,
                that the right arrow key is pressed. */
             let rightPressed = false;
             const detectRight = t.addCallback(() => {
@@ -436,28 +462,27 @@ Figure~\ref{fig:normal-input-independet-test-comparison} shows the resulting tes
             await t.runForTime(5000);
 
             /* (5) Optional, if  the used input
-               guaranties, that the right arrow key
+               guarantees, that the right arrow key
                is pressed. */
             t.assume.ok(rightPressed);
         \end{minted}
         \caption{Input-independent test}
     \end{subfigure}
-    \caption{Comparison of normal tests and an input-independent test using constraints}
+    \caption{Comparison of normal tests and an input-independent tests}
     \label{fig:normal-input-independet-test-comparison}
-\end{figure}
+\end{listing}
 
 \section{Combining Tests}
 
 Apart from being independent of their test input, a second advantage of this approach is that it allows tests to easily be combined.
 By copying constraints and their necessary tracking from one test to another, the checks of one test can be combined with the other's checks.
 Depending on the program, it may be possible to perform many tests with a single program execution.
-In case tests are expected to fail, for example for automated assessment of student assignments,
-Whisker also offers the option to simply disable failed constraints instead of failing the test.
-This way, one can simply check which constraints failed at the end of the test, and generate some kind of test report about which of the checks failed.
+In case tests are expected to fail, Whisker also offers the option to simply disable failed constraints instead of failing the test.
+This way, the test can simply check which constraints failed at the end, and let Whisker generate a test report from them.
 
 \mnote{TODO: figure}
 
-% \begin{figure}[h]
+% \begin{figure}[ht]
 %     \centering
 %     \begin{subfigure}[b]{.45\textwidth}
 %         \centering

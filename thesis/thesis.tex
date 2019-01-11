@@ -25,7 +25,7 @@
 
 % Tikz diagrams
 \usepackage{tikz}
-\usetikzlibrary{fit, backgrounds, shapes, arrows, chains}
+\usetikzlibrary{fit, backgrounds, shapes, arrows, arrows.meta, chains}
 
 % Tables
 \usepackage{booktabs}
@@ -50,9 +50,12 @@
 \newmintinline{javascript}{}
 
 % Figures
-\usepackage{wrapfig}
 \usepackage[justification=centering, font=small]{caption}
 \usepackage{subcaption}
+\usepackage[section]{placeins}
+
+% Line spacing
+\renewcommand{\baselinestretch}{1.1}
 
 % Page style
 \usepackage{fancyhdr}
@@ -66,11 +69,18 @@
 \setlength{\headheight}{20pt}
 
 % Space between paragraphs
-\newcommand{\parspace}{\medskip}
+\newcommand{\parspace}{\bigskip}
 
 % Notes
 \usepackage{marginnote}
 \newcommand{\mnote}[1]{\marginnote{\parbox{2cm}{\raggedright\scriptsize #1}}}
+
+% Tables and listings all in the same list
+\def\table{\def\figurename{Table}\figure}
+\let\endtable\endfigure
+\def\listing{\def\figurename{Listing}\figure}
+\let\endlisting\endfigure
+\renewcommand\listfigurename{List of Figures, Tables and Listings}
 
 % Calculate sizes
 \usepackage{calc}
@@ -93,7 +103,7 @@
 % Title
 \maketitle
 
-\setlength{\parskip}{.5\smallskipamount}
+% \setlength{\parskip}{.5\smallskipamount}
 
 % Table of Contents
 \tableofcontents
@@ -102,11 +112,10 @@
 % \let\oldclearpage=\clearpage
 % \renewcommand{\clearpage}{}
 \listoffigures
-\listoftables
-\listoflistings
+%\listoflistings
 % \let\clearpage=\oldclearpage
 
-\setlength{\parskip}{\medskipamount}
+% \setlength{\parskip}{\bigskipamount}
 
 % Abstract
 \input{chapters/abstract}
@@ -144,6 +153,10 @@
 %    Provide a conclusion to the research questions.
 
 \input{chapters/future-work}
+
+TODO: REMOVE THIS
+\label{TODO}
+TODO: REMOVE THIS
 
 % Bibliography
 \clearpage
