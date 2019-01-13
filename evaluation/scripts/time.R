@@ -90,3 +90,22 @@ for (component in names(data_sets)) {
 
 data = data[-1,];
 print(data);
+
+################################################################################
+
+example_times_1 = csvs.time[["tests-constraint"]][["sample"]];
+example_times_2 = csvs.time[["tests-constraint"]][["sample-2"]];
+
+example_times = rbind(example_times_1, example_times_2);
+
+data = data.frame(time = rowSums(example_times),
+                  step = c(1:nrow(example_times_1), 1:nrow(example_times_1)),
+                  run = rep(c("1", "2"), c(nrow(example_times_1), nrow(example_times_2))));
+
+line = ggplot(data = data, aes(x = step, y = time, color = run, group = run)) +
+    geom_line() +
+    labs(x = "Step (30 per second)", y = "Step execution time (in ms)", color = "Run") +
+    theme_light() +
+    scale_x_continuous(breaks = c(0, 250, 500, 750, 1000, 1250));
+
+ggsave("time-tests-constraint.pdf", plot = line, width = 15, height = 6.5, units = "cm");
