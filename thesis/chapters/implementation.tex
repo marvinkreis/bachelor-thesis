@@ -1,10 +1,6 @@
 % REMEMBER: Write the thesis from the view of the reader. How would I like to READ the thesis?
 % WHY -> WHAT -> HOW structure
 
-% TODO: Explain Whisker GUI (or in approach?)
-    % Whisker can theoretically be run on any instance of the Scratch VM
-    % We implement a simple GUI which also shows loaded tests and their output
-% TODO: Explain test output, TAP13 report (or in approach?)
 % TODO: Explain general design
     % In theory, Whisker can be used with any instance of the Scratch virtual machine.
     % In order to make testing more convenient, we developed a small web interface with its own testing framework, which also
@@ -13,7 +9,7 @@
 % ES6 + webpack
 % ...
 
-% General Design
+% General Architecture
 %   - interact with the VM
 %   - doesn't change the VM
 %   - works with any working Scratch 3.0 VM instance
@@ -23,103 +19,88 @@
 
 % Step Loop: explain steps, explain order of steps
 % Outputs: Sprites and variables
-% Inputs
+% Inputs: particularly automated input generation
 % Constraints
 
-
 % Scratch 3.0 implementation details
+%   - Step loop -> explain when Whisker step loop is explained
+%   - Sequencer -> mention when Scratch step is explained (step loop)
+%   - Sprites vs. Targets -> explain when outputs are explained
+%   - etc.
+
+% Scratch's interpreter sequentializes the execution.
+% This is necessary for the single-threaded JavaScript environment Scratch is run in.
+% This means that no race-conditions can occur on a language level.
 
 
 \chapter{Implementation}
 
-TODO: keyword "automation"
+% \section{Scratch Implementation Details}
+%
+% \begin{tikzpicture}[sibling distance=10em,
+%   every node/.style = {draw, text width=3.2cm, minimum height=0.7cm, text centered, rounded corners}]
+%   edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}]
+%
+%   \node {\textbf{Virtual Machine}}
+%     child { node {Storage} }
+%     child { node {Renderer} }
+%     child { node {SVG Renderer} }
+%     child { node {Audio Engine} }
+% \end{tikzpicture}
 
-- This section shows a implementation of a testing utility for Scratch
-- Uses the approach described above
-- Implemented in JavaScript (ES6) for compatibility with Scratch 3.0, which is implemented in JavaScript
+\section{Implementation Environment}
 
-\section {Scratch 3.0 Implementation Details}
+Whisker is implemented in JavaScript (ECMAScript 6 standard) for compatibility with Scratch 3.0's virtual machine (VM), which is also implemented in JavaScript.
+One restriction of Whisker is Scratch's dependence on a renderer.
+In order to operate to operate properly, Scratch needs a HTML canvas to render to.
+This limits Scratch, and consequently Whisker, to run inside a web environment.
+Therefore, we use webpack~\cite{webpack} to transpile Whisker into browser-runnable JavaScript.
 
-Scratch's interpreter sequentializes the execution.
-This is necessary for the single-threaded JavaScript environment Scratch is run in.
-This means that no race-conditions can occur on a language level.
+\section{General Architecture}
 
-\section{General Design}
+% Currently, Whisker is only available through its own web GUI, % which displays a list of tests, as well as the test report next to Scratch's stage.
+% but it may also be possible to create a Electron standalone application for Whisker, or even a browser addon which adds Whisker to the original Scratch web page.
 
-- TODO explain Scratch's design?
-- TODO explain why it's possible to execute code before and after Scratch's step without interfering with the Scratch program
+One of Whisker's main design goals is to implement it as an external program, which uses Scratch's virtual machine without modifying it.
+There are two reasons for this decision.
+For one thing, if Whisker used a modified version of Scratch, this modified version would need to be updated regularly as the original version of Scratch receives updates.
+Secondly, it allows Whisker to be used with any instance of the Scratch 3.0 VM.
+Any web page, which runs Scratch can theoretically add Whisker's functionality to it.
+For example, this makes it possible to write a browser addon, which adds Whisker to the original Scratch web page.
+\parspace
 
-- Tests are written in JavaScript
-- Usually one test is a function of a .js file
-
-- Does not change the virtual machine in any way
-    $\rightarrow$ designed so it can be used with any instance of the Scratch virtual machine
-    $\rightarrow$ same version of Whisker can be used with different versions of the Scratch virtual machine
-    $\rightarrow$ even something like a browser addon for the original Scratch page would be possible
-
-- Whisker is designed to be a layer between test code and the scratch virtual machine
-- Allows to interact with the VM in a test-friendly way
-- The main class VM Wrapper and its components make up a wrapper around the scratch virtual machine,
-  which offers extra functionality for testing
-- Test Driver offers a user-friendly interface between the test code and the VM Wrapper
-- Test uses Test Driver to simulate input, get information about sprites
-
-- Test Driver could be acquired through a helper method or passed to the test method
-- Up to the testing framework to provide the test driver
-- The examples in this chapter will refer to the test driver with the variable \texttt{t}
-
-\begin{listing}[ht]
-    \centering
-    \begin{minipage}[t]{.45\textwidth}
-        \begin{javascriptcode}
-            async function test (t) {
-                ...
-            }
-        \end{javascriptcode}
-        \vspace{-\bigskipamount}
-        Getting the test driver as a parameter to the test function
-    \end{minipage}
-    ~
-    \begin{minipage}[t]{.45\textwidth}
-        \begin{javascriptcode}
-            async function test () {
-                const t = acquireTestDriver();
-            }
-        \end{javascriptcode}
-        \vspace{-\bigskipamount}
-        Getting the test driver through some helper method
-    \end{minipage}
-    \caption{Examples of how to acquire the test driver}
-    \label{fig:examples_of_how_to_acquire_the_test_driver}
-\end{listing}
-
-=== Limitations
-- Scratch depends on the renderer
-    - Some functionality of the Scratch virtual machine depends on the renderer
-    - Headless tests are impossible without restricting the Scratch program to a subset of available blocks
-- Therefore Whisker assumes the VM is always run with a renderer in place
+Figure~\ref{fig:general-architecture} shows Whisker's general architecture.
+It is designed to be a layer between test code and the scratch virtual machine.
+% It controls the execution of the Scratch program, simulates inputs and exposes information about sprites and variables.
+The main class makes up a wrapper around the scratch virtual machine,
+and its components each implement one piece of Whisker's functionality.
+The test code uses a test driver object, which gives access to the public methods in the VM wrapper and its components.
+Tests use the test driver instead of directly interacting with the VM wrapper,
+because the test driver offers a simpler interface and prevents access to Whisker's private methods.
+\parspace
 
 \begin{figure}[ht]
     \centering
     \tikzset{>=latex,
              arrow/.style={-{Latex[length=1.5mm, width=1.5mm]}},
              label/.style={draw=none, text width=5.3cm, minimum height=0.5cm, text centered},
-               box/.style={draw,      text width=2.5cm, minimum height=0.7cm, text centered, rounded corners},
+               box/.style={draw,      text width=3.2cm, minimum height=0.7cm, text centered, rounded corners},
                  h/.style={fill=blue!10}}
 
     \begin{tikzpicture}
-        \node[box]   at ( 0.0,  3.0) (testcode)      {Test Code};
-        \node[box]   at ( 0.0,  1.5) (testdriver)    {Test Driver};
-        \node[label] at ( 0.0,  0.0) (vmwrapper)     {VM Wrapper};
-        \node[box]   at (-1.4, -0.7) (sprites)       {Sprites};
-        \node[box]   at (-1.4, -1.6) (inputs)        {Inputs};
-        \node[box]   at ( 1.5, -0.7) (callbacks)     {Callbacks};
-        \node[box]   at ( 1.5, -1.6) (constraints)   {Constraints};
-        \node[box]   at (-2.0, -3.2) (scratchvm)     {Scratch VM};
-        \node[box]   at ( 2.2, -3.2) (scratchrender) {Renderer};
+        \node[box]   at ( 0.00,  3.0) (testcode)      {Test Code};
+        \node[box]   at ( 0.00,  1.5) (testdriver)    {Test Driver};
+        \node[label] at ( 0.00,  0.0) (vmwrapper)     {\textbf{VM Wrapper}};
+        \node[box]   at (-1.80, -0.7) (inputs)        {Inputs};
+        \node[box]   at ( 1.85, -0.7) (random-inputs) {Random Inputs};
+        \node[box]   at (-1.80, -1.6) (sprites)       {Sprites};
+        \node[box]   at ( 1.85, -1.6) (callbacks)     {Callbacks};
+        \node[box]   at (-1.80, -2.5) (constraints)   {Constraints};
+        \node[box]   at (-2.00, -4.1) (scratchvm)     {Scratch VM};
+        \node[box]   at ( 2.20, -4.1) (scratchrender) {Renderer};
 
         \begin{scope}[on background layer]
-            \node[draw, h, rounded corners, fit=(vmwrapper)(sprites)(inputs)(callbacks)(constraints)] (container) {};
+            \node[draw, h, rounded corners, fit=(vmwrapper)(sprites)(inputs)(callbacks)(constraints)(random-inputs)] (container) {};
         \end{scope}
 
         \foreach \pp/\pf/\pt in {--/testcode/testdriver,
@@ -137,68 +118,67 @@ This means that no race-conditions can occur on a language level.
         % \draw[dashed, -] (callbacks) -- ( 3.5, -0.7);
     \end{tikzpicture}
 
-    \caption{Components of Whisker, TODO: put testing framework in the diagram}
-    \label{fig:components_of_whisker}
+    \caption{The general architecture of Whisker}
+    \label{fig:general-architecture}
 \end{figure}
 
 \section{The Step Loop}
 
-- The core of the Scratch virtual machine is a step-function, which is called at a constant interval (using JavaScript's \texttt{setInterval()})
-- Interval of 30 times / second for Scratch 2.0, 60 times / second for Scratch 3.0
-- The function executes the program until a time limit is reached and then redraws the scene
-- If some visual change occurs in the project, the program execution is stopped earlier and the scene is rendered
+The core of the Scratch virtual machine is a ''step'' function,
+which is called at a constant frequency of 30 times per second using JavaScript's \texttt{setInterval()} function.
+Figure~\ref{fig:simplified-scratch-step} shows a simplified version of this function.
+It executes the program's scripts sequentially until a time limit is reached, then it draws the scene using the renderer.
+If some visual change occurs, i.e. when a sprite changes appearance or position, a redraw is requested,
+and the program execution is stopped earlier (in turbo mode redraw requests are ignored).
 
 \begin{listing}[ht]
     \centering
-    \begin{javascriptcode}
-        STEP_TIME = 1000 / STEPS_PER_SECOND;
-        WORK_TIME = 0.75 * STEP_TIME;
+    \begin{minipage}[t]{.5\textwidth}
+        \begin{javascriptcode}
+            STEP_TIME = 1000 / STEPS_PER_SECOND;
+            WORK_TIME = 0.75 * STEP_TIME;
 
-        while (running &&
-               timeElapsed < WORK_TIME &&
-               !redrawRequested) {
-            for (thread of threads) {
-                stepThread(thread);
+            while (running &&
+                   timeElapsed < WORK_TIME &&
+                   !redrawRequested) {
+                for (thread of threads) {
+                    stepThread(thread);
+                }
             }
-        }
 
-        renderer.draw();
-    \end{javascriptcode}
-    \vspace{-\bigskipamount}
+            renderer.draw();
+        \end{javascriptcode}
+    \end{minipage}
     \caption{Simplified Scratch Step Procedure}
-    \label{fig:simplified_scratch_step_procedure}
+    \label{fig:simplified-scratch-step}
 \end{listing}
 
-- Instead of executing the step function via interval, Whisker executes its own step loop, which calls Scratch's step function
-- Before and after the step of the Scratch program, test code is run, registered inputs are performed and sprite objects are updated
-
-- This should either not affect the Scratch program, or only affect it minimally
-    - Renderer might not need to use the entire allocated rendering time
-    - If something changes in a Scratch program, usually a sprite moves $\rightarrow$ Scratch will only use a fraction of the entire allocated work time in most cases
-    - Scratch uses real time to track wait times $\rightarrow$ not affected much by a step that takes longer that normally
-
-=== Scratch programs depend on real time
-- Possible problem: additional computations could cause the program to run slower
-- Scratch blocks that involve timings, like "wait" or "say for secs" use real time to delay execution
-$\rightarrow$ If the additional computations take too long, they could influence the program
+For the purpose of controlling the execution of the program, and to run multiple functions alongside the step loop,
+Whisker stops Scratch's loop and replaces it with its own, which in turn calls Scratch's step function.
+In order to achieve this, Whisker clears the interval, which periodically executes Scratch's step function,
+and registers and interval which runs the step function of Whisker's VM wrapper instead.
+% To make it possible to run and pause the program on demand, we implemented a ''stepper'' class, which queues and periodically executes callbacks in a fixed frequency,
+% and automatically clears and registers intervals as needed.
+Figure~\ref{fig:whisker-step-procedure} shows the procedure of Whisker's step loop.
+In addition to running the Scratch program, it performs other tasks which have to be executed periodically.
+\parspace
 
 \begin{figure}[ht]
     \centering
     \tikzset{>=latex,
            arrow/.style={draw, -{Latex[length=1.5mm, width=1.5mm]}},
-             box/.style={draw, text width=4.3cm, minimum height=0.7cm, text centered, rounded corners},
+             box/.style={draw, text width=4.5cm, minimum height=0.7cm, text centered, rounded corners},
              num/.style={draw, circle, inner sep=0.6mm, text centered},
                h/.style={fill=blue!10}}
 
-    \begin{tikzpicture}
+     \begin{tikzpicture}[scale=0.8, every node/.style={scale=0.8}]
         \node[box]    at ( 0.2,  5.0) (callbacksbefore) {Call Callbacks (before)};
-        \node[box]    at ( 0.2,  4.0) (inputs)          {Perform Inputs};
-        \node[box]    at ( 0.2,  3.0) (sprites)         {Update Sprites};
-        \node[box, h] at ( 0.2,  2.0) (step)            {Step Scratch Program};
-        \node[box]    at ( 0.2,  1.0) (callbacksafter)  {Call Callbacks (after)};
-        \node[box]    at ( 0.2,  0.0) (constraints)     {Check Constraints};
-
-        \node[text width=2cm] at (-4.5, 2.5) (wait)  {Wait until next step is due};
+        \node[box]    at ( 0.2,  4.0) (random-inputs)   {Perform Random Inputs};
+        \node[box]    at ( 0.2,  3.0) (inputs)          {Perform Inputs};
+        \node[box]    at ( 0.2,  2.0) (sprites)         {Update Sprites};
+        \node[box, h] at ( 0.2,  1.0) (step)            {Step Scratch Program};
+        \node[box]    at ( 0.2,  0.0) (callbacksafter)  {Call Callbacks (after)};
+        \node[box]    at ( 0.2, -1.0) (constraints)     {Check Constraints};
 
         \node[num] at (-2.6,  5.0) (one)   {1};
         \node[num] at (-2.6,  4.0) (two)   {2};
@@ -206,27 +186,56 @@ $\rightarrow$ If the additional computations take too long, they could influence
         \node[num] at (-2.6,  2.0) (four)  {4};
         \node[num] at (-2.6,  1.0) (five)  {5};
         \node[num] at (-2.6,  0.0) (six)   {6};
+        \node[num] at (-2.6, -1.0) (seven) {7};
 
-        \draw[arrow]
+        \draw[shorten >= 2pt, rounded corners, arrow]
                (callbacksbefore)
+            -- (random-inputs)
             -- (inputs)
             -- (sprites)
             -- (step)
             -- (callbacksafter)
             -- (constraints)
-            -- ( 0.2, -1.5);
-
-        \draw[shorten >= 2pt, rounded corners, dashed, arrow]
-               ( 0.2, -1.0)
-            -- (-3.4, -1.0)
+            -- ( 0.2, -2.0)
+            -- (-3.4, -2.0)
             -- (-3.4,  6.0)
             -- ( 0.2,  6.0)
             -- (callbacksbefore);
     \end{tikzpicture}
 
-    \caption{Whisker Step Procedure}
-    \label{fig:whisker_step_procedure}
+    \caption{Whisker's Step Procedure}
+    \label{fig:whisker-step-procedure}
 \end{figure}
+
+\mnote{TODO: Explain the procedure steps?}
+
+Running other code before and after Scratch's step could theoretically be problematic in a single-threaded environment like JavaScript,
+because it could take longer than the allowed 1/30 second and therefore slow the Scratch program down.
+But in reality, most Scratch programs will only use a fraction of the allocated work time for the step,
+because they visually change sprites in every step, which makes the step finish earlier due to the redraw request.
+
+\section{Sprites}
+
+% Stuff to write about
+%   Inputs:
+%       - How they are simulated
+%       - Durations
+%   Automated Inputs:
+%       - How static analysis is done
+%       - How inputs are randomized
+%       - What blocks correspond to what random input
+%   Sprites:
+%       - Caching, always give the same instance of sprite / variable
+%       - How they are implemented as wrappers
+%   Execution:
+%       - asynchronous calls, await
+%       - stepper
+
+\section{Inputs}
+
+\section{Automated Input Generation}
+
+\section{Callbacks and Constraints}
 
 % \section{Basic Testing Functionality}
 %
@@ -444,21 +453,124 @@ $\rightarrow$ If the additional computations take too long, they could influence
 %     \label{fig:example_code_for_constraints}
 % \end{listing}
 
-\section{Automated Test Input Generation}
-
 \section{Coverage Measurement}
-- Whisker can measure simple statement coverage
-- Project wide and for single sprites / the stage
 
-- Only measures blocks that are part of a script / connected to a hat (this includes procedure definitions)
-- Other blocks are obviously not reachable
+Whisker can be used to measure statement coverage on a Scratch program.
+It does this by temporarily modifying Scratch's \texttt{Thread} class.
+This class has two methods \texttt{pushStack} and \texttt{reuseStackForNextBlock},
+which push blocks on top of the execution stack.
+Whisker intercepts these methods by replacing them with a version,
+which saves the unique id of the executed blocks and then calls the respective original method.
+This way, Whisker can track which blocks are executed by the program.
+\parspace
 
-- Useful to detect if a project has been properly captured by a test
-    - If coverage is low, there is a problem with the test or project
-    - Or the project contains unnecessary code
+In order to calculate he coverage, Whisker also needs a list of the program's blocks.
+To compose this list, Whisker traverses all scripts of the program currently loaded by the virtual machine,
+and saves each block's unique id.
+Because Whisker traverses the scripts, blocks, which are not part of a script with a hat,
+are ignored for the coverage measurement.
+However, these blocks will never be covered anyways, because they are not reachable by the program.
+\parspace
 
-- Initialized by traversing the scripts and noting each block id of the blocks in a project
-- Coverage is simply measured by tracking which block ids are put on top of the stack of the threads in the Scratch virtual machine
+Coverage is measured per sprite, but program wide coverage can also be calculated.
+Figure~\ref{fig:example_coverage_report} shows an example coverage report in JSON format.
+Figure~\ref{fig:measuring_coverage} shows a code example of how to measure statement coverage with Whisker.
+\parspace
+
+\begin{figure}[ht]
+    \centering
+
+    \begin{minipage}{.5\textwidth}
+        \begin{javascriptcode}
+            {
+                stage: { covered: 0, total: 0},
+                bowl: { covered: 16, total: 16},
+                bananas: { covered: 12, total: 24},
+                apple: { covered: 15, total: 18}
+            }
+        \end{javascriptcode}
+    \end{minipage}
+
+    \caption{Example Coverage Report}
+    \label{fig:example_coverage_report}
+\end{figure}
+
+% \begin{enumerate}[(1)]
+%     \item \texttt{prepareThread} replaces methods in \texttt{Thread}, so coverage can be tracked.
+%     \item \texttt{prepare} traverses the program and gathers a list of all reachable blocks.
+%     \item \texttt{getCoverage} calculates the coverage and returns it.
+%     \item \texttt{restoreThread} restores \texttt{Thread}'s original method implementations.
+% \end{enumerate}
+
+% \begin{enumerate}[(1)]
+%     \item \texttt{prepareThread} replaces the \texttt{pushStack} and \texttt{reuseStackForNextBlock} methods of the \texttt{Thread} class.
+%         The new methods simply track the block, which is put on the execution stack, and then call the respective original method.
+%     \item \texttt{prepare} traverses the scripts of the program, which is currently loaded by the virtual machine, and gathers a list of the program's blocks.
+%         Whisker only gathers reachable blocks, i.e. blocks, which are part of a script equipped with a hat.
+%         Therefore, unreachable blocks are ignored for the coverage measurement.
+%     \item \texttt{getCoverage} calculates the coverage based on the program's blocks and the blocks, which are known to be used by a thread.
+%     \item \texttt{restoreThread} restores the original method implementations of the \texttt{Thread} class.
+% \end{enumerate}
+
+\begin{figure}[ht]
+    \centering
+
+    \begin{minipage}{.75\textwidth}
+        \begin{javascriptcode}
+            /* (1) Replace pushStack and reuseStackForNextBlock,
+               so the executed blocks can be tracked. */
+            CoverageGenerator.prepareThread(Thread);
+
+            /* (2) Traverse the scripts of the currently loaded program
+               and gather a list of all reachable blocks. */
+            CoverageGenerator.prepare(vm);
+
+            /* Run the Scratch program. */
+            ...
+
+            /* (3) Retrieve the current statement coverage. */
+            const coverage = CoverageGenerator.getCoverage();
+
+            /* (4) Restore real implementations of pushStack and
+               reuseStackForNextBlock. */
+            CoverageGenerator.restoreThread(Thread);
+        \end{javascriptcode}
+    \end{minipage}
+
+    \caption{Example of how to measure coverage using Whisker}
+    \label{fig:measuring_coverage}
+\end{figure}
+
+In order to measure coverage, one has to gain access to Scratch's Thread class.
+This can be achieved either at compile time or at runtime.
+Figure~\ref{fig:acquiring_thread_class} shows how this can be done.
+\parspace
+
+\begin{figure}[ht]
+    \centering
+
+    \begin{subfigure}[b]{.7\textwidth}
+        \begin{javascriptcode}
+            const VirtualMachine = require('scratch-vm');
+            const Thread = require('scratch-vm/src/engine/thread');
+        \end{javascriptcode}
+        \vspace{-\bigskipamount}
+        \caption{At compile time using JavaScript's module system}
+    \end{subfigure}
+
+    \bigskip
+
+    \begin{subfigure}[b]{.7\textwidth}
+        \begin{javascriptcode}
+            const Thread = vm.runtime.threads[0].__proto__
+        \end{javascriptcode}
+        \vspace{-\bigskipamount}
+        \caption{At runtime by getting the class of a running Thread instance}
+    \end{subfigure}
+
+    \caption{Examples of how to acquire Scratch's Thread class}
+    \label{fig:acquiring_thread_class}
+\end{figure}
 
 \section{Running Tests}
 \label{sec:running_tests}

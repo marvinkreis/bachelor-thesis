@@ -122,7 +122,70 @@ but for compatibility reasons, we developed a rudimentary testing framework to g
 
 \section{Public Interface}
 
+% \begin{enumerate}[(1)]
+%     \item Registered callbacks are executed.
+%         This is done before anything else, so they can register (or unregister) inputs before the program is run.
+%     \item Random inputs are chosen, randomized, and then registered as normal inputs.
+%     \item Inputs, which are due, are performed.
+%     \item Sprites' \texttt{old} values, which contain attributes from the last step, are updated.
+%         This is done right before the Scratch program is stepped, so the program can change the sprites right after,
+%         and no code has to deal with incorrect \texttt{old} values.
+%     \item Scratch's step function is called to advance the program.
+%     \item Callbacks, which are registered to run after the Scratch step, are executed.
+%         With this, callbacks can unregister constraints after the program was stepped.
+% \end{enumerate}
+
+\begin{figure}[ht]
+    \centering
+    \tikzset{>=latex,
+           arrow/.style={draw, -{Latex[length=1.5mm, width=1.5mm]}},
+             box/.style={draw, text width=4.5cm, minimum height=0.7cm, text centered, rounded corners},
+             num/.style={draw, circle, inner sep=0.6mm, text centered},
+               h/.style={fill=blue!10}}
+
+     \begin{tikzpicture}[scale=0.8, every node/.style={scale=0.8}]
+        \node[box]    at ( 0.2,  5.0) (callbacksbefore) {Call Callbacks (before)};
+        \node[box]    at ( 0.2,  4.0) (random-inputs)   {Perform Random Inputs};
+        \node[box]    at ( 0.2,  3.0) (inputs)          {Perform Inputs};
+        \node[box]    at ( 0.2,  2.0) (sprites)         {Update Sprites};
+        \node[box, h] at ( 0.2,  1.0) (step)            {Step Scratch Program};
+        \node[box]    at ( 0.2,  0.0) (callbacksafter)  {Call Callbacks (after)};
+        \node[box]    at ( 0.2, -1.0) (constraints)     {Check Constraints};
+
+        \node[num] at (-2.6,  5.0) (one)   {1};
+        \node[num] at (-2.6,  4.0) (two)   {2};
+        \node[num] at (-2.6,  3.0) (three) {3};
+        \node[num] at (-2.6,  2.0) (four)  {4};
+        \node[num] at (-2.6,  1.0) (five)  {5};
+        \node[num] at (-2.6,  0.0) (six)   {6};
+        \node[num] at (-2.6, -1.0) (seven) {7};
+
+        \draw[arrow]
+               (callbacksbefore)
+            -- (random-inputs)
+            -- (inputs)
+            -- (sprites)
+            -- (step)
+            -- (callbacksafter)
+            -- (constraints)
+            -- ( 0.2, -2.5);
+
+        \draw[shorten >= 2pt, rounded corners, dashed, arrow]
+               ( 0.2, -2.0)
+            -- (-3.4, -2.0)
+            -- (-3.4,  6.0)
+            -- ( 0.2,  6.0)
+            -- (callbacksbefore);
+    \end{tikzpicture}
+
+    \caption{Whisker's Step Procedure}
+    \label{fig:whisker-step-procedure}
+\end{figure}
+
+\mnote{TODO: explain how to acquire the test driver}
 \mnote{TODO: better explanations and code examples}
+\mnote{Tests are written in JavaScript}
+\mnote{Usually one test is a function of a .js file}
 Automating Scratch allows us to write tests for Scratch in a unit-test-like fashion.
 Whisker loads and starts the program before each test starts.
 By doing this, every test starts with a fresh instance of the program in the exact same situation.
@@ -132,6 +195,34 @@ The test code can then interact with the program in order to produce a desired s
 \mnote{TODO: properties depend on time $\rightarrow$ ''old'' values}
 The following list will give an overview of Whisker's basic functions.
 The Whisker instance will be denoted as $t$ in example code snippets.
+
+- Test Driver could be acquired through a helper method or passed to the test method
+- Up to the testing framework to provide the test driver
+- The examples in this chapter will refer to the test driver with the variable \texttt{t}
+\begin{listing}[ht]
+    \centering
+    \begin{minipage}[t]{.45\textwidth}
+        \begin{javascriptcode}
+            async function test (t) {
+                ...
+            }
+        \end{javascriptcode}
+        \vspace{-\bigskipamount}
+        Getting the test driver as a parameter to the test function
+    \end{minipage}
+    ~
+    \begin{minipage}[t]{.45\textwidth}
+        \begin{javascriptcode}
+            async function test () {
+                const t = acquireTestDriver();
+            }
+        \end{javascriptcode}
+        \vspace{-\bigskipamount}
+        Getting the test driver through some helper method
+    \end{minipage}
+    \caption{Examples of how to acquire the test driver}
+    \label{fig:examples_of_how_to_acquire_the_test_driver}
+\end{listing}
 
 \begin{itemize}
     \item \textbf{Simulate Input.}
@@ -337,7 +428,7 @@ We want to write a test to check if the sprite's movement works correctly.
 \end{figure}
 
 \begin{enumerate}
-    \item \textbf{Setup information tracking.}
+    \item[(1)] \textbf{Setup information tracking.}
         \mnote{TODO: Update for new example}
         The constraint, which we will have to define later, will depend on information, which is not always available.
         Because we need to determine the sprite's movement direction, we have to know the position of the sprite from the last rendered frame.
@@ -349,7 +440,7 @@ We want to write a test to check if the sprite's movement works correctly.
                 oldX = sprite.x;
             });
         \end{javascriptcode}
-    \item \textbf{Register constraints.}
+    \item[(2)] \textbf{Register constraints.}
         Now, that we know the sprite's last position, we can determine if, and in which direction, it has moved since the last frame.
         We check its movement dependent on what key is currently pressed.
         \begin{javascriptcode}
@@ -361,7 +452,7 @@ We want to write a test to check if the sprite's movement works correctly.
                 }
             });
         \end{javascriptcode}
-    \item[3+4.] \textbf{Simulate Inputs, Run the program.}
+    \item[(3,4)] \textbf{Simulate Inputs, Run the program.}
         \setcounter{enumi}{4}
         Now we can register inputs if we want to, and then we can run the program.
         How we simulate inputs, or if we perform inputs manually, does not matter for the test, of course.
@@ -369,7 +460,7 @@ We want to write a test to check if the sprite's movement works correctly.
             t.detectRandomInputs();
             await t.runForTime(5000);
         \end{javascriptcode}
-    \item \textbf{Verify tested situation.}
+    \item[(5)] \textbf{Verify tested situation.}
         If our source of input does not guarantee, that the right arrow key gets pressed at all, we risk the chance of a false positive test result,
         because then, part of our constraint does not ever get checked.
         In this case, we also want set up tracking for the key press in the beginning,
