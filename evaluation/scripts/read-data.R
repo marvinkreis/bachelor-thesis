@@ -10,7 +10,7 @@ dirs        = list.files(dir, full.names=TRUE);
 names(dirs) = lapply(dirs, basename);
 
 # Comment this out to read the results for random input on the catching game
-dirs = Filter(function(x) regexpr("random", x) == -1, dirs);
+# dirs = Filter(function(x) regexpr("random", x) == -1, dirs);
 
 csvs.test_results  = list();
 csvs.test_coverage = list();

@@ -40,9 +40,9 @@ for (set_name in names(data_sets)) {
 
     inconsistencies_per_project = rowSums(differences);
 
-    print(set_name);
-    print(inconsistencies_per_project);
-    print(mean(inconsistencies_per_project));
+    # print(set_name);
+    # print(inconsistencies_per_project);
+    # print(mean(inconsistencies_per_project));
 
     data = data.frame(inconsistencies = inconsistencies_per_project,
                       projects = names(inconsistencies_per_project));
@@ -54,4 +54,22 @@ for (set_name in names(data_sets)) {
         theme(text = element_text(size=10), axis.text.x = element_text(size = 6, angle = 90, hjust = 1));
 
     ggsave(paste("consistency-per-project-", set_name, ".pdf", sep=""), plot = bar_project, width = 12.5, height = 5, units = "cm");
+
+    inconsistencies_per_test = colSums(differences);
+    inconsistencies_per_test = inconsistencies_per_test[order(as.numeric(names(inconsistencies_per_test)))];
+
+    # print(set_name);
+    # print(inconsistencies_per_test);
+    # print(mean(inconsistencies_per_test));
+
+    data = data.frame(inconsistencies = inconsistencies_per_test,
+                      tests = as.numeric(names(inconsistencies_per_test)));
+
+    bar_project = ggplot(data = data, aes(x = reorder(tests, tests), y = inconsistencies)) +
+        geom_col(width = 0.8) +
+        labs(x = "Test", y = "Inconsistencies") +
+        theme_light() +
+        theme(text = element_text(size=10), axis.text.x = element_text(size = 6, angle = 90, hjust = 1));
+
+    ggsave(paste("consistency-per-test-", set_name, ".pdf", sep=""), plot = bar_project, width = 12.5, height = 5, units = "cm");
 }
