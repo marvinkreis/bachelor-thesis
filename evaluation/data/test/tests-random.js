@@ -51,42 +51,6 @@ const getSpritesAndVariables = function (t, request) {
 };
 
 /**
- * Follows a sprite with the bowl by simulating left and right arrow key presses.
- * Tries to move the bowl to the same x position as the sprite.
- * Works with "good" movement (i.e. "if key pressed" in a loop) and "bad" movement (i.e. "when key pressed" hats).
- * @param {TestDriver} t The test driver.
- * @param {number} bowlX The x coordinate of the bowl,
- * @param {number} spriteX The x coordinate of the sprite to follow.
- */
-const followSprite = function (t, bowlX, spriteX) {
-    /* Stop if the bowl is near enough. */
-    if (Math.abs(bowlX - spriteX) <= 10) {
-        if (t.isKeyDown('Left')) {
-            t.inputImmediate({device: 'keyboard', key: 'Left', isDown: false});
-        }
-        if (t.isKeyDown('Right')) {
-            t.inputImmediate({device: 'keyboard', key: 'Right', isDown: false});
-        }
-
-    } else if (bowlX > spriteX) {
-        t.inputImmediate({device: 'keyboard', key: 'Right', isDown: false});
-        t.inputImmediate({device: 'keyboard', key: 'Left', isDown: true});
-
-        /* Trick "when key pressed" hats to fire by letting go of the key and immediately pressing it again. */
-        t.inputImmediate({device: 'keyboard', key: 'Left', isDown: false});
-        t.inputImmediate({device: 'keyboard', key: 'Left', isDown: true});
-
-    } else if (bowlX < spriteX) {
-        t.inputImmediate({device: 'keyboard', key: 'Left', isDown: false});
-        t.inputImmediate({device: 'keyboard', key: 'Right', isDown: true});
-
-        /* Trick "when key pressed" hats to fire by letting go of the key and immediately pressing it again. */
-        t.inputImmediate({device: 'keyboard', key: 'Right', isDown: false});
-        t.inputImmediate({device: 'keyboard', key: 'Right', isDown: true});
-    }
-};
-
-/**
  * Returns the newest clone of the given sprite/clone, or the sprite/clone itself, if it is the newest clone or there
  * are no clones of the sprite.
  * @param {Sprite} sprite The sprite.
@@ -145,7 +109,7 @@ const test = async function (t) {
     t.onConstraintFailure('nothing');
 
     /* Give the program some time to initialize. */
-    await t.runForTime(5000);
+    await t.runForTime(500);
 
     // ==================== Information Tracking ===================================
 
@@ -520,18 +484,12 @@ const test = async function (t) {
     }, 'Timer Game Over Message Constraint');
     constraints.push(timerGameOverMessage);
 
-    const scoreNotChanging = t.addConstraint(() => {
-        const timeElapsed = t.getRunTimeElapsed();
-        if (timeElapsed - appleTouched[0].time >= 200 && timeElapsed - bananaTouched[0].time >= 200) {
-            t.assert.equal(score.value, score.old.value,
-                'Score must not change if no fruit touches the bowl or the ground.');
-        }
-    }, 'Score Not Changing Constraint');
-    constraints.push(scoreNotChanging);
-
     // ==================== Test ===================================================
 
     t.setRandomInputInterval(150);
+    t.detectRandomInputs({duration: [50, 100]});
+
+    /*
     t.registerRandomInputs([
         {
             device: 'keyboard',
@@ -544,6 +502,7 @@ const test = async function (t) {
             duration: [50, 100]
         }
     ]);
+    */
 
     /* Always use the newest apple and banana if clones are used. */
     t.addCallback(() => {

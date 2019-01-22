@@ -109,7 +109,7 @@ const test = async function (t) {
     t.onConstraintFailure('nothing');
 
     /* Give the program some time to initialize. */
-    await t.runForTime(5000);
+    await t.runForTime(500);
 
     // ==================== Information Tracking ===================================
 
@@ -344,18 +344,12 @@ const test = async function (t) {
     }, 'Timer Tick Constraint');
     constraints.push(timerTick);
 
-    const scoreNotChanging = t.addConstraint(() => {
-        const timeElapsed = t.getRunTimeElapsed();
-        if (timeElapsed - appleTouched[0].time >= 200 && timeElapsed - bananaTouched[0].time >= 200) {
-            t.assert.equal(score.value, score.old.value,
-                'Score must not change if no fruit touches the bowl or the ground.');
-        }
-    }, 'Score Not Changing Constraint');
-    constraints.push(scoreNotChanging);
-
     // ==================== Test ===================================================
 
     t.setRandomInputInterval(150);
+    t.detectRandomInputs({duration: [50, 100]});
+
+    /*
     t.registerRandomInputs([
         {
             device: 'keyboard',
@@ -368,6 +362,7 @@ const test = async function (t) {
             duration: [50, 100]
         }
     ]);
+    */
 
     /* Always use the newest apple and banana if clones are used. */
     t.addCallback(() => {

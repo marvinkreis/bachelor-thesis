@@ -520,32 +520,7 @@ const test = async function (t) {
     }, 'Timer Game Over Message Constraint');
     constraints.push(timerGameOverMessage);
 
-    const scoreNotChanging = t.addConstraint(() => {
-        const timeElapsed = t.getRunTimeElapsed();
-        if (timeElapsed - appleTouched[0].time >= 200 && timeElapsed - bananaTouched[0].time >= 200) {
-            t.assert.equal(score.value, score.old.value,
-                'Score must not change if no fruit touches the bowl or the ground.');
-        }
-    }, 'Score Not Changing Constraint');
-    constraints.push(scoreNotChanging);
-
     // ==================== Test ===================================================
-
-    /*
-    t.setRandomInputInterval(150);
-    t.registerRandomInputs([
-        {
-            device: 'keyboard',
-            key: 'Left',
-            duration: [50, 100]
-        },
-        {
-            device: 'keyboard',
-            key: 'Right',
-            duration: [50, 100]
-        }
-    ]);
-    */
 
     /* Catch apples with the bowl. Always use the newest apple and banana if clones are used. */
     t.addCallback(() => {
@@ -697,5 +672,4 @@ module.exports = [
  * 18: timerTick
  * 19: timerGameOver
  * 20: timerGameOverMessage
- * 21: scoreNotChanging
  */
