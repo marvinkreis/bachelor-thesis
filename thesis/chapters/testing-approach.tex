@@ -30,7 +30,7 @@ Whisker offers a programmable interface for Scratch, which makes automated testi
 % uses a similar approach to automate web browsers.
 Figure~\ref{fig:comparison_of_io_mechanisms} illustrates the difference between Scratch's IO mechanisms and Whisker's automated input and output.
 
-\begin{figure}[ht]
+\begin{figure}[htpb]
     \centering
 
     \begin{subfigure}[b]{\textwidth}
@@ -119,7 +119,7 @@ In the future, we also plan on implementing a standalone Electron application fo
 This would facilitate batch testing many programs,
 and would also make it possible to test programs in parallel and in a headless environment.
 
-\begin{figure}[ht]
+\begin{figure}[htpb]
     \centering
     \includegraphics[width=0.85\textwidth]{whisker-gui}
     \caption{Screenshot of Whisker's web GUI}
@@ -165,7 +165,7 @@ Whisker offers an interface to create and configure the test driver object for t
 Listing~\ref{fig:examples_of_how_to_acquire_the_test_driver} shows code examples for both possibilities.
 \parspace
 
-\begin{listing}[ht]
+\begin{listing}[htpb]
     \centering
     \begin{subfigure}[b]{.35\textwidth}
         \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, framesep=2mm, frame=lines]{javascript}
@@ -321,7 +321,7 @@ This section will highlight some advantages and disadvantages of the presented t
 % \mnote{TODO: Reference the evaluation section about timings here?}
 % \mnote{TODO: Rewrite this with an example so it's easier to understand}
 %
-% \begin{figure}[ht]
+% \begin{figure}[htpb]
 %     \centering
 %     \includegraphics[width=0.30\textwidth]{code-timing}
 %     \caption{Delaying blocks}
@@ -330,14 +330,15 @@ This section will highlight some advantages and disadvantages of the presented t
 %
 % TODO: actions don't necessarily happen in the same step -> have to track timings
 
-\chapter{Using Constraints For Flexible Test Inputs}%
+\chapter{Using Constraints For Flexible Test Inputs}
 \label{cha:using_constraints_to_enable_flexible_test_inputs}
 
 This section will describe why separating control of the program under test from the test code can be beneficial,
 and how this can be achieved by using Whisker's  mechanism to define constraints.
 
-\section{Input-Independent Tests}
+\section{Input-Independent / Constraint-only Tests}
 
+\mnote{TODO: ''constraint-only''}
 Usually, tests will provide the program under test with inputs and check the resulting outputs.
 However, in many cases, a different approach is possible as well.
 Tests may use other sources of input and simply observe if the program's output is correct for the input provided by the source.
@@ -368,7 +369,7 @@ We will go through each step of the procedure with the aid of an example.
 Consider a program with a single sprite, which is supposed to move to the right precisely when the right arrow key is pressed.
 We want to write a test to check if the sprite's movement works correctly.
 
-\begin{figure}[ht]
+\begin{figure}[htpb]
     \centering
     \tikzset{>=latex,
            arrow/.style={draw, -{Latex[length=1.5mm, width=1.5mm]}},
@@ -455,7 +456,7 @@ We want to write a test to check if the sprite's movement works correctly.
         \end{javascriptcode}
 \end{enumerate}
 
-\begin{listing}[ht]
+\begin{listing}[htpb]
     \centering
     \begin{subfigure}[b]{.35\textwidth}
         \centering
@@ -626,7 +627,7 @@ Hence, the test can simply check which constraints failed at the end, and let Wh
 
 \mnote{TODO: figure}
 
-% \begin{figure}[ht]
+% \begin{figure}[htpb]
 %     \centering
 %     \begin{subfigure}[b]{.45\textwidth}
 %         \centering

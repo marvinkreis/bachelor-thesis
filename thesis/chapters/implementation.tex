@@ -87,7 +87,7 @@ Tests use the test driver instead of directly interacting with the VM wrapper,
 because the test driver offers a simpler interface and prevents access to Whisker's private methods.
 \parspace
 
-\begin{figure}[ht]
+\begin{figure}[htpb]
     \centering
     \tikzset{>=latex,
              arrow/.style={-{Latex[length=1.5mm, width=1.5mm]}},
@@ -139,7 +139,7 @@ It executes the program's scripts sequentially until a time limit is reached, th
 If some visual change occurs, i.e. when a sprite changes appearance or position, a redraw is requested,
 and the program execution step is stopped earlier (in turbo mode redraw requests are ignored).
 
-\begin{listing}[ht]
+\begin{listing}[htpb]
     \centering
     \begin{minipage}[t]{.5\textwidth}
         \begin{javascriptcode}
@@ -168,7 +168,7 @@ Figure~\ref{fig:whisker_step_procedure} shows the procedure of Whisker's step lo
 In addition to running the Scratch program, it performs other tasks which have to be executed periodically.
 \parspace
 
-\begin{figure}[ht]
+\begin{figure}[htpb]
     \centering
 
     \tikzset{>=latex,
@@ -228,7 +228,7 @@ Whisker prevents multiple runs of the Scratch program at the same time by throwi
 when a run of the program is being started, while another one is still going on.
 \parspace
 
-\begin{figure}[ht]
+\begin{figure}[htpb]
     \centering
 
     \begin{minipage}{.9\textwidth}
@@ -340,7 +340,7 @@ Listing~\ref{fig:input_conversion_example} shows a mouse input in Whisker's form
 Answers to Scratch's \texttt{ask} blocks, are simulated in a similar way, but though the VM's event system instead of \texttt{postIOData}.
 \parspace
 
-\begin{listing}[ht]
+\begin{listing}[htpb]
     \centering
 
     \begin{subfigure}[b]{.25\textwidth}
@@ -420,7 +420,7 @@ Listing~\ref{fig:input_randomization_example} shows an example of an input befor
 After the input is randomized, it is registered and executed like a normal, non-random, input.
 \parspace
 
-\begin{listing}[ht]
+\begin{listing}[htpb]
     \centering
 
     \begin{subfigure}[b]{.35\textwidth}
@@ -557,7 +557,7 @@ Listing~\ref{fig:example_coverage_report} shows an example coverage report.
 Listing~\ref{fig:measuring_coverage} gives a code example of how to measure statement coverage with Whisker.
 \parspace
 
-\begin{listing}[ht]
+\begin{listing}[htpb]
     \centering
 
     \begin{minipage}{.5\textwidth}
@@ -592,7 +592,7 @@ Listing~\ref{fig:measuring_coverage} gives a code example of how to measure stat
 %     \item \texttt{restoreThread} restores the original method implementations of the \texttt{Thread} class.
 % \end{enumerate}
 
-\begin{listing}[ht]
+\begin{listing}[htpb]
     \centering
 
     \begin{minipage}{.75\textwidth}
@@ -626,7 +626,7 @@ This can be achieved either at compile time or at runtime.
 Listing~\ref{fig:acquiring_thread_class} shows example code of how this can be done.
 \parspace
 
-\begin{listing}[ht]
+\begin{listing}[htpb]
     \centering
 
     \begin{subfigure}[b]{.7\textwidth}
@@ -690,7 +690,7 @@ Listing~\ref{fig:acquiring_thread_class} shows example code of how this can be d
 % - Cancel a run
 % - Uses JavaScript's Promise API to wait until a run is finished
 %
-% \begin{listing}[ht]
+% \begin{listing}[htpb]
 %     \centering
 %     \begin{javascriptcode}
 %         await t.runForTime(500);
@@ -726,7 +726,7 @@ Listing~\ref{fig:acquiring_thread_class} shows example code of how this can be d
 % - Helps, for example, with programs that spawn a lot of clones (could pose a performance problem otherwise)
 %
 %
-% \begin{listing}[ht]
+% \begin{listing}[htpb]
 %     \centering
 %     \begin{javascriptcode}
 %         const sprite = t.getSprite('Sprite1');
@@ -763,7 +763,7 @@ Listing~\ref{fig:acquiring_thread_class} shows example code of how this can be d
 %     - toggle mouse button
 %     - Press / release mouse button for a certain duration
 %
-% \begin{listing}[ht]
+% \begin{listing}[htpb]
 %     \centering
 %     \begin{javascriptcode}
 %         t.inputImmediate({
@@ -800,7 +800,7 @@ Listing~\ref{fig:acquiring_thread_class} shows example code of how this can be d
 %
 % - TODO table of detected blocks and resulting inputs ?
 %
-% \begin{listing}[ht]
+% \begin{listing}[htpb]
 %     \centering
 %     \begin{javascriptcode}
 %         t.setRandomInputInterval(150);
@@ -836,7 +836,7 @@ Listing~\ref{fig:acquiring_thread_class} shows example code of how this can be d
 %         - Control the program like a player would
 %         - e.g. follow a sprite with the mouse cursor
 %
-% \begin{listing}[ht]
+% \begin{listing}[htpb]
 %     \centering
 %     \begin{javascriptcode}
 %         const sprite = t.getSprite('Sprite1');
@@ -877,7 +877,7 @@ Listing~\ref{fig:acquiring_thread_class} shows example code of how this can be d
 %     - Problem: most constraints still hold if the tested property is not implemented at all
 %         - e.g. constraint that checks that a sprite never moves left will hold if the sprite doesn't move at all
 %
-% \begin{listing}[ht]
+% \begin{listing}[htpb]
 %     \centering
 %     \begin{javascriptcode}
 %         const sprite = t.getSprite('Sprite1');

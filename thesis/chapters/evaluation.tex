@@ -25,12 +25,11 @@ TODO: Introduction
 We used Whisker through its web GUI to execute test suites on several Scratch programs.
 The software and hardware we used are listed in Figure~\ref{tab:evaluation_setup}.
 All test executions were performed on the same machine.
-Any programs running in the background were closed before running tests.
 For two parts of the evaluation,
 specifically to measure execution time and to measure coverage over time,
 we used slightly modified versions of Whisker as well as its GUI.
 
-\begin{table}[ht]
+\begin{table}[htpb]
     \centering
     \scriptsize \tt
     \begin{tabular}{ll}
@@ -74,16 +73,21 @@ Additionally, a summary of the full program specification from the assignment ma
 \mnote{TODO: assignment in the appendix?}
 \parspace
 
-\begin{figure}[ht]
+\begin{figure}[htpb]
     \centering
     \includegraphics[width=0.35\textwidth]{scratch-stage}
     \caption{Screenshot of the sample implementation}
     \label{fig:screenshot_of_the_sample_implementation}
 \end{figure}
 
-We will execute different test suites on these programs to analyze the quality of test results.
-The projects are suitable for this task because of two reasons.
-The task description specifies the program well, which enables us to write automated tests according to the specification.
+We will execute various test suites on these programs to analyze their results.
+The Scratch projects in this set were manually evaluated and scored for the students course.
+This enables us to determine the quality of our test results by using the manually assigned scores as ground truth,
+and comparing the results of automated testing to them.
+\parspace
+
+The projects are suitable for this evaluation because of two reasons.
+Firstly, the task description specifies the program well, which enables us to write automated tests according to the specification.
 Secondly, the student solutions are of varying degrees of quality,
 which is desirable, so automated tests produce a range of different outcomes.
 % Some of the projects implement the game almost perfectly,
@@ -98,7 +102,7 @@ when an apple touches the ground, also makes automated testing more difficult.
 \parspace
 
 Since the students didn't write the programs with automated testing in mind,
-some of the projects were unusable for our evaluation, so we excluded them from the statistics.
+some of the projects were unusable for our evaluation for various reasons, so we excluded them from the statistics.
 Table~\ref{tab:excluded_projects} shows the excluded projects together with the reasons for excluding them.
 The projects are named K6\_S01 through K6\_S33 for 6th grade student solutions
 and K7\_S02 through K7\_S27 for 7th grade student solutions respectively (with many numbers being skipped).
@@ -162,17 +166,36 @@ because code might depend on a feature, that is not implemented correctly.
 
 \subsection{Test Suites}
 
-The set of catching game projects (P1) will be tested with three different test suites.
+The set of catching game projects (P1) will be tested with three different test suites in order to analyze the quality of test results.
 Table~\ref{tab:project_specification} lists which part of the project specification is covered by each test suite.
+Additionally, the number of tests or constraints and the size of the test suite in lines of code can be found in Table~\ref{tab:test_suite_statistics}.
 
-\begin{table}
+\begin{table}[htpb]
+    \centering
+    \scriptsize
+    \begin{tabular}{rlrr}
+        \toprule
+        Test Suite & Type       & \texttt{\#}Tests / \texttt{\#}Constraints & LOC \\
+        \midrule
+        T1         & Normal     & 28 Tests                                  & 852 \\
+        T2         & Constraint & 20 Constraints                            & 515 \\
+        T3         & Constraint & 20 Constraints                            & 496 \\
+        T4         & Constraint & 12 Constraints                            & 360 \\
+        \bottomrule
+    \end{tabular}
+
+    \caption{Number of tests and LOC per test suite}
+    \label{tab:test_suite_statistics}
+\end{table}
+
+\begin{table}[htpb]
     \centering
     \scriptsize
     \begin{tabular}{rlccc}
         \toprule
-        \texttt{\#} & Specification                                                                & T1     & T2, T3                    & T4                        \\
+        \texttt{\#} & Specification                                                                & T1     & T2,T3                    & T4                        \\
         \midrule
-           & \textbf{Initialization} \\
+           & \textbf{Initialization}                                                                                                                                \\
          1 & Timer starts at 30 seconds                                                            & \cmark & \xmark                    & \xmark                    \\
          2 & Bowl starts at $X = 0$ / $Y = -145$                                                   & \cmark & \xmark                    & \xmark                    \\
          3 & Fruits have a size of 50\%                                                            & \cmark & \cmark                    & \cmark                    \\[\medskipamount]
@@ -228,7 +251,7 @@ Listing~\ref{lst:example_test_case_normal} shows a shortened example of a simple
 The test suite encompasses 28 test cases, which correspond to the specification in Table~\ref{tab:project_specification}.
 \parspace
 
-\begin{listing}[ht]
+\begin{listing}[htpb]
     \centering
     \begin{minipage}{.70\textwidth}
         \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, framesep=2mm, frame=lines]{javascript}
@@ -273,7 +296,7 @@ which takes the x coordinates of the apple and bowl sprites and
 simulates arrow key presses to move the bowl towards the apple's position.
 This function, as well as a usage example, are shown in Listing~\ref{lst:simulating_catching_game}.
 
-\begin{listing}[ht]
+\begin{listing}[htpb]
     \centering
     \begin{minipage}{.85\textwidth}
         \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, framesep=2mm, frame=lines]{javascript}
@@ -319,6 +342,7 @@ This function, as well as a usage example, are shown in Listing~\ref{lst:simulat
 
 \subsubsection{(T2) Input-Independent / Constraint-Only Test Suite}
 
+\mnote{Another difference: T1 accepts ''bad'' movement, T2, T3, T4 does not}
 This test suite implements the input-independent testing approach from Chapter~\ref{cha:using_constraints_to_enable_flexible_test_inputs}.
 With this test suite, we tried to test the program with only one execution in total.
 Therefore, this test suite only has one test case, which registers 20 constraints to check various parts of the specification
@@ -331,15 +355,14 @@ Because of this, the bowl should always catch the apple in working implementatio
 and the program should never go game over because of an apple touching the ground.
 Nevertheless, we register constraints, which check the game over state in case an apple does reach the ground in a buggy implementation.
 
-\subsubsection{(T3) Random Input Tests}
+\subsubsection{(T3) Random Input Test Suite}
 
-\mnote{TODO: table with number of tests and LOC of each test suite}
 Test suite T3 is exactly identical to test suite T2,
 but uses Whisker's automated test input generation instead of deliberately simulating inputs.
 Listing~\ref{lst:automated_input_random_tests} shows the exact code snippet, which simulates input for the test case.
 \parspace
 
-\begin{listing}[ht]
+\begin{listing}[htpb]
     \centering
     \begin{minipage}{.45\textwidth}
         \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, framesep=2mm, frame=lines]{javascript}
@@ -351,74 +374,173 @@ Listing~\ref{lst:automated_input_random_tests} shows the exact code snippet, whi
     \label{lst:automated_input_random_tests}
 \end{listing}
 
-\subsubsection{(T4) Lite Random Input Tests}
+\subsubsection{(T4) Random Input Test Suite Lite}
 
 Since performing inputs randomly will likely result in the falling apple touching the ground,
 we added T4 as a variant of T3.
 T4 works on the assumption, that the first apple will touch the ground and cause a game over.
-Therefore, T4 doesn't test anything, which requires the test to successfully catch the apple with the bowl.
+Therefore, the test suite doesn't test anything, which requires the test to successfully catch the apple with the bowl.
 It only registers the 12 of T3's 20 constraints, that are relevant for the first few seconds of the program execution.
 Otherwise, T4 is identical to T3.
 
-\section{RQ1: Interference with the Program Under Test}
+\section{RQ1: Accuracy of Test Results}
 
-Since the tests execute code between steps in a single threaded environment,
-they could, in theory, interfere with the program by slowing down the step cycle.
-This can make the program behave differently, because Scratch programs use absolute timings (TODO figure).
+In this part of the evaluation, we will analyze the quality of test results from our test suites to answer the following research question:
 
-~\\~\\
-\textbf{RQ1.} typical tests don't interfere with the execution of typical Scratch programs
-$\rightarrow$ measure how long Scratch takes for a step (WORK\_TIME AND time to render)
-$\rightarrow$ measure how long each operation in the Whisker step procedure takes (e.g. callbacks, sprites, constraints)
-$\rightarrow$ Explain how the times are measured
+\begin{center}\begin{minipage}{.9\textwidth}
+Can results of automated testing be accurate enough to aid in grading Scratch assignments?
+\end{minipage}\end{center}
 
-TODO: explain why testing procedure might interfere with Scratch programs (absolute timings)
-TODO: timing diagram and table of timings for real tests
-TODO: example code for tests that interfere and their test data
+\noindent In order to useful for grading,
+test results have to indicate the same grades,
+which one would assign the programs through manual assessment.
+Test outcome also have to be consistent over multiple runs,
+since inconsistent results would lead to unfair grades.
+Therefore, we executed test suites T1 and T2 on the catching game projects (P1),
+and analyzed the results with respect to two indicators:
+\parspace
 
-~\\~\\
-\paragraph{Null hypothesis ($H_0$)}
-Additional computations for testing are to slow to be executed while the program is running and stretch out the average time a step takes.
-\paragraph{Alternative hypothesis ($H_1$)}
-Additional computations for testing can be fast enough to not affect the average step time.
+\textbf{Correlation of tests results and manual scoring.}
+Firstly, we compared the test results to manually assigned scores, which we use as ground truth.
+Intuitively, a higher score means that more tests (or constraints) should pass,
+while a lower score should result in fewer test (or constraint) passes.
+Therefore, we use the correlation between test passes and manual scores as an indicator.
+We measure the correlation through Pearson's correlation coefficient, which is denoted be $r$.
+$r$ can take on values in the range of $[-1, 1]$.
+A high correlation coefficient indicates a strong relationship between two values,
+while lower correlation coefficients indicate a weaker relationship.
+Usually a value of $r \ge 0.5$ is considered to indicate a strong correlation.
+Negative values indicate a reverse relationship, which is not relevant for our observations.
+\parspace
 
-\section{RQ2: Accuracy of Test Results}
+\textbf{Consistency of test outcomes over multiple runs.}
+Secondly, we analyzed how consistent the test cases are.
+In automated testing, test cases can often yield different results when executed multiple times.
+Test cases like this are known as ''flaky tests''.
+This inconsistency of test results can be caused either by the program under test or by the test case itself.
+We measure the number of inconsistent results over multiple test executions.
+We use the average number of inconsistencies per project and the average number of inconsistencies per test case to
+indicate the flakiness of our test suites.
+
+\subsection{Correlation of tests results and manual scoring}
+
+\paragraph{Null hypothesis ($H_0$):}
+The number of test passes and the results of manual scoring show only a weak correlation or no correlation at all.
+\vspace{-\medskipamount}
+\paragraph{Alternative hypothesis ($H_1$):}
+The number of test passes closely match manually assigned scores.
+They have a strong correlation.
+\parspace
+
+\noindent Figure~\ref{fig:scatter_normal} compares the test results of test suite T1 to scores from a manual evaluation of projects P1.
+The number of passing test cases are strongly correlated to the manual scores,
+with a correlation coefficient of $r = 0.8918$ for the first run and $r = 0.8913$ for the average over 3 runs.
+Except for few irregularities, the test results closely resemble the manually assigned scores.
+
+\begin{figure}[htpb]
+    \centering
+    \begin{subfigure}{.50\textwidth}
+        \includegraphics[width=\textwidth]{r/scatter-normal-1}
+        \caption{First run}
+        \label{fig:scatter_normal_1}
+    \end{subfigure}%
+    \begin{subfigure}{.50\textwidth}
+        \includegraphics[width=\textwidth]{r/scatter-normal-avg}
+        \caption{Average over 3 runs}
+        \label{fig:scatter_normal_avg}
+    \end{subfigure}
+    \caption{Comparison between test results of test suite T1 (normal) and manually assigned scores}
+    \label{fig:scatter_normal}
+\end{figure}
+
+Figure~\ref{fig:scatter_constraint} shows the same statistic for the test outcomes of test suite T2.
+We can, again, observe a strong correlation between the two scores,
+with a correlation coefficient of $r = 0.8877$ for the first run and $r = 0.8968$ for the average over 3 runs.
+
+
+\begin{figure}[htpb]
+    \centering
+    \begin{subfigure}{.50\textwidth}
+        \includegraphics[width=\textwidth]{r/scatter-constraint-1}
+        \caption{First run}
+        \label{fig:scatter_constraint_1}
+    \end{subfigure}%
+    \begin{subfigure}{.50\textwidth}
+        \includegraphics[width=\textwidth]{r/scatter-constraint-avg}
+        \caption{Average over 3 runs}
+        \label{fig:scatter_constraint_avg}
+    \end{subfigure}
+    \caption{Comparison between test results of test suite T2 (input-indepent / constraint-only) and manually assigned scores}
+    \label{fig:scatter_constraint}
+\end{figure}
+
+\mnote{TODO: Move this into discussion}
+This shows that both test suites implementing the ''normal'' testing approach and
+test suites implementing the ''input-indepent'' / ''constraint-only'' testing approach
+can produce accurate test results.
+
+\subsection{Consistency of test outcomes over multiple runs}
+
+\mnote{TODO: percentage of inconsistent results instead of absolute number}
+
+\paragraph{Null hypothesis ($H_0$):}
+Automated test results show very different results each run and are thus not accurate enough for grading purposes.
+\vspace{-\medskipamount}
+\paragraph{Alternative hypothesis ($H_1$):}
+Test results are consistent enough over multiple runs to provide accurate information for grading.
+
+\begin{figure}[htpb]
+    \centering
+    \begin{subfigure}{.8\textwidth}
+        \includegraphics[width=\textwidth]{r/consistency-per-test-normal}
+        \caption{Inconsistencies per test case}
+        \label{fig:consistency_per_test_normal}
+    \end{subfigure}
+
+    \bigskip
+
+    \begin{subfigure}{.8\textwidth}
+        \includegraphics[width=\textwidth]{r/consistency-per-project-normal}
+        \caption{Inconsistencies per project}
+        \label{fig:consistency_per_project_normal}
+    \end{subfigure}
+    \caption{Inconsistent test outcomes of test suite T1 (normal) over 3 test executions}
+    \label{fig:consistency_normal}
+\end{figure}
+
+\begin{figure}[htpb]
+    \centering
+    \begin{subfigure}{.8\textwidth}
+        \includegraphics[width=\textwidth]{r/consistency-per-test-constraint}
+        \caption{Inconsistencies per test case}
+        \label{fig:consistency_per_test_constraint}
+    \end{subfigure}
+
+    \bigskip
+
+    \begin{subfigure}{.8\textwidth}
+        \includegraphics[width=\textwidth]{r/consistency-per-project-constraint}
+        \caption{Inconsistencies per project}
+        \label{fig:consistency_per_project_constraint}
+    \end{subfigure}
+    \caption{Inconsistent test outcomes of test suite T2 (input-independent / constraint-only) over 3 test executions}
+    \label{fig:consistency_constraint}
+\end{figure}
+
+% We base our observations (?) on two different key indicators.
+% - Automatic testing can facilitate grading of Scratch assignments
+%     (1) test results (normal tests and constraint tests) match the results of manual evaluation
+%     (3) test results (normal tests and constraint tests) are consistent enough to be used for grading
+%         $\rightarrow$ Plot difference number of test passes per project
+%         $\rightarrow$ Check average difference
+
+\section{RQ2: Testing with Automated Test Input Generation}
 % \subsection{Evaluation Method}
 % \subsection{Data Selection}
 % \subsection{Threats to Validity}
 
-\textbf{RQ2.}
-- Automatic testing can facilitate grading of Scratch assignments
-    (1) test results (normal tests and constraint tests) match the results of manual evaluation
-    (3) test results (normal tests and constraint tests) are consistent enough to be used for grading
-        $\rightarrow$ Plot difference number of test passes per project
-        $\rightarrow$ Check average difference
-
-- Manual analysis is used as ground truth
-
-TODO: explain why accuracy is evaluated in this way
-    - attention to automated grading
-TODO: discuss scatter and bar plots
-
-~\\~\\
-=== (1)
-\paragraph{Null hypothesis ($H_0$)}
-Test results have no strong relation to the scores that were given to the projects manually.
-\paragraph{Alternative hypothesis ($H_1$)}
-The results of automated tests closely match the results of manual scoring.
-
-~\\~\\
-=== (2)
-\paragraph{Null hypothesis ($H_0$)}
-Automated test results show very different results each run and are thus not accurate enough to use them for grading.
-\paragraph{Alternative hypothesis ($H_1$)}
-Test results are consistent enough over multiple runs to provide accurate information for grading.
-
-\section{RQ3: Testing with Random Inputs}
-
 \mnote{Add the random input ''test''}
 
-\textbf{RQ3.}
 - The testing process can be done entirely in the background independent of testing scenarios (?)
     $\rightarrow$ Random input can be used for the test
     $\rightarrow$ The test can involve the user using the program like they normally would
@@ -443,6 +565,29 @@ Test results are consistent enough over multiple runs to provide accurate inform
 TODO: discuss test results
 TODO: discuss coverage results
 
+\section{RQ3: Interference with Programs Under Test}
+
+Since the tests execute code between steps in a single threaded environment,
+they could, in theory, interfere with the program by slowing down the step cycle.
+This can make the program behave differently, because Scratch programs use absolute timings (TODO figure).
+
+~\\~\\
+Typical tests don't interfere with the execution of typical Scratch programs
+$\rightarrow$ measure how long Scratch takes for a step (WORK\_TIME AND time to render)
+$\rightarrow$ measure how long each operation in the Whisker step procedure takes (e.g. callbacks, sprites, constraints)
+$\rightarrow$ Explain how the times are measured
+
+TODO: explain why testing procedure might interfere with Scratch programs (absolute timings)
+TODO: timing diagram and table of timings for real tests
+TODO: example code for tests that interfere and their test data
+
+~\\~\\
+\paragraph{Null hypothesis ($H_0$)}
+Additional computations for testing are to slow to be executed while the program is running and stretch out the average time a step takes.
+\paragraph{Alternative hypothesis ($H_1$)}
+Additional computations for testing can be fast enough to not affect the average step time.
+
+
 
 \section{Threats to validity}
 - Students often deliberately changed their programs from the specification (e.g. different fall speeds)
@@ -458,16 +603,146 @@ TODO: discuss coverage results
 
 - Browser JavaScript could be problematic
 
+
+TODO: pick a time length and execute random tests multiple times at that length
+
 % \begin{figure}
 %     \centering
-%     \includegraphics[width=.65\textwidth]{scatter-normal-1}
-%     \caption{Results of the normal test suite (1)}
-%     \label{fig:scatter_normal_1}
+%     \begin{subfigure}{.50\textwidth}
+%         \includegraphics[width=\textwidth]{r/scatter-randoml-1}
+%         \caption{First run}
+%         \label{fig:scatter_random_1}
+%     \end{subfigure}%
+%     \begin{subfigure}{.50\textwidth}
+%         \includegraphics[width=\textwidth]{r/scatter-random-avg}
+%         \caption{Average over 3 runs}
+%         \label{fig:scatter_random_avg}
+%     \end{subfigure}
+%     \caption{Correlation between test results of test suite T3 (random) and manual scoring}
+%     \label{fig:scatter_random}
 % \end{figure}
 %
 % \begin{figure}
 %     \centering
-%     \includegraphics[width=.65\textwidth]{scatter-constraint-1}
-%     \caption{Results of the constraint test suite (2) \\ with deliberately simulated input}
-%     \label{fig:scatter_constraint_1}
+%     \begin{subfigure}{.50\textwidth}
+%         \includegraphics[width=\textwidth]{r/scatter-random-lite-1}
+%         \caption{First run}
+%         \label{fig:scatter_random_lite_1}
+%     \end{subfigure}%
+%     \begin{subfigure}{.50\textwidth}
+%         \includegraphics[width=\textwidth]{r/scatter-random-lite-avg}
+%         \caption{Average over 3 runs}
+%         \label{fig:scatter_random_lite_avg}
+%     \end{subfigure}
+%     \caption{Correlation between test results of test suite T4 (lite random) and manual scoring}
+%     \label{fig:scatter_random_lite}
 % \end{figure}
+
+\begin{figure}[htpb]
+    \centering
+    \begin{subfigure}{.90\textwidth}
+        \includegraphics[width=\textwidth]{r/coverage-bar-run-1}
+        \caption{Coverage per project}
+        \label{fig:coverage_bar}
+    \end{subfigure}
+
+    \bigskip
+
+    \begin{subfigure}{.90\textwidth}
+        \includegraphics[width=\textwidth]{r/coverage-line-run-1}
+        \caption{Coverage per time}
+        \label{fig:coverage_line}
+    \end{subfigure}
+    \caption{Achieved Coverage of Automated Input}
+    \label{fig:coverage}
+\end{figure}
+
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=.9\textwidth]{r/time-tests-constraint}
+    \caption{Execution time of Whisker's step procedure over time}
+    \label{fig:time_tests_constraint}
+\end{figure}
+
+
+%                test avg-callbacks-before max-callbacks-before avg-random-inputs
+% 2      tests-normal               0.0395                  0.8            0.0018
+% 3      tests-normal               0.0315                  0.9            0.0018
+% 4  tests-constraint               0.0601                  2.1            0.0023
+% 5  tests-constraint               0.0499                  1.4            0.0015
+% 6      tests-random               0.0525                  0.3            0.0151
+% 7      tests-random               0.0468                  0.2            0.0115
+% 8 tests-random-lite               0.0309                  0.2            0.0158
+% 9 tests-random-lite               0.0288                  0.1            0.0158
+%   max-random-inputs avg-inputs max-inputs avg-sprites max-sprites avg-scratch
+% 2               0.3     0.0043        0.4      0.0146         1.4      0.7164
+% 3               0.1     0.0022        0.2      0.0102         0.3      0.6668
+% 4               0.1     0.0041        0.1      0.0165         0.9       0.761
+% 5               0.1     0.0029        0.1      0.0078         1.3      0.6947
+% 6               0.2     0.0129        0.1      0.0216         0.1      0.7014
+% 7               0.2     0.0115        0.2      0.0353         0.1      1.0115
+% 8               0.2     0.0079        0.1      0.0273         0.2      0.8906
+% 9               0.2     0.0086        0.1      0.0201         0.1      0.6417
+%   max-scratch avg-callbacks-after max-callbacks-after avg-constraints
+% 2        29.9              0.0041                 0.5          0.0064
+% 3        25.7              0.0029                 0.1          0.0071
+% 4         7.3              0.0047                 0.1          0.7969
+% 5         3.3              0.0037                 0.1          0.8395
+% 6         6.6              0.0058                 0.1           0.236
+% 7         7.4              0.0079                 0.1          0.1921
+% 8         8.3               0.005                 0.1          0.0468
+% 9         4.3               0.005                 0.1          0.0439
+%   max-constraints avg-total max-total avg-total-no-scratch max-total-no-scratch
+% 2             0.3    0.7871      30.1               0.0707                  1.5
+% 3             0.5    0.7225      25.8               0.0557                    1
+% 4               2    1.6456       7.7               0.8846                  3.4
+% 5             1.8    1.5999       3.8               0.9052                  2.7
+% 6               1    1.0453         7               0.3439                  1.1
+% 7             0.6    1.3165       7.8                0.305                  0.8
+% 8             0.3    1.0245       8.5               0.1338                  0.5
+% 9             0.3     0.764       4.3               0.1223                  0.4
+%           component     project avg-component avg-scratch
+% 2  callbacks-before       empty       40.9867      0.1692
+% 3  callbacks-before        noop       40.8885      24.668
+% 4  callbacks-before        spin       40.7708      0.2052
+% 5     random-inputs       empty       12.4011      0.2168
+% 6     random-inputs        noop       13.4226     24.8801
+% 7     random-inputs        spin       12.3544      0.2664
+% 8            inputs       empty       28.8516      0.2069
+% 9            inputs        noop       27.4212     25.2577
+% 10           inputs        spin       28.5867      0.2794
+% 11          sprites clones-spin        0.0026      1.1669
+% 12          sprites      clones        0.0033     13.6255
+% 13  callbacks-after       empty       41.0278      0.2129
+% 14  callbacks-after        noop       40.5967     24.7311
+% 15  callbacks-after        spin       40.9498      0.3124
+% 16      constraints       empty       41.2029      0.2389
+% 17      constraints        noop       40.5213     24.7057
+% 18      constraints        spin       40.9971      0.3144
+
+\ref{fig:whisker_step_procedure}
+
+\begin{table}[htpb]
+    \centering
+    \small
+    \begin{tabular}{l|rr|rr|rr|rr}
+        \toprule
+        Component            &       & T1   &       & T2   &        & T3   &       & T4   \\
+                             & avg   & max  & avg   & max  & avg    & max  & avg   & max  \\
+        \midrule
+        Callbacks Before     & 0.040 &  0.8 &       &      &        &      &       &      \\
+        Random Inputs        & 0.002 &  0.3 &       &      &        &      &       &      \\
+        Inputs               & 0.004 &  0.2 &       &      &        &      &       &      \\
+        Sprites              & 0.015 &  1.4 &       &      &        &      &       &      \\
+        Scratch              & 0.716 & 29.9 &       &      &        &      &       &      \\
+        Callbacks After      & 0.004 &  0.5 &       &      &        &      &       &      \\
+        Constraints          & 0.006 &  0.3 &       &      &        &      &       &      \\
+        \midrule
+        Total                & 0.071 &  1.5 &       &      &        &      &       &      \\
+        Total (Whisker only) & 0.787 & 30.1 &       &      &        &      &       &      \\
+        \bottomrule
+    \end{tabular}
+    \caption{Time measurements for every component in Whisker's step procedure}
+    \label{tab:component_time_measurements}
+\end{table}
