@@ -630,23 +630,23 @@ which introduces inconsistency to tests, which rely on the behaviour of the bana
 \parspace
 
 \begin{table}[htpb]
-    \mnote{Only list some examples or list everything?\\TODO: consistent writing style}
     \centering
-    \tiny
+
+    \scriptsize
     \begin{tabular}{lrlp{10.5cm}}
         \toprule
         Project & Test & Cause   & Description \\
         \midrule
         K7\_S16 & 4    & Project & Program sometimes goes game over directly after being started. \\
 
-        K6\_S03 & 8    & Project & Program moves banana to a random position on the ground when right arrow key is pressed, and banana sometimes get stuck there. \\
+        K6\_S03 & 8    & Project & Program moves banana to a random position on the ground when right arrow key is pressed.
+                                   Therefore the test has different outcomes depending if the apple spawns left or right of the bowl. \\
         K6\_S33 & 8    & Both    & Test waits for 250ms to let the program initialize, then waits for a banana to appear at the top of the screen.
                                    K6\_S33 lets the banana fall instantly instead of waiting for a second (as specified),
                                    causing the banana to be below the tests threshold for detecting the banana ($y > 100$) after 250ms. \\
 
-        K6\_S03 & 13   & Project & See K6\_S03, test 8. \\
         K6\_S10 & 13   & Project & Program checks if the apple touches the ground with Scratch's "touching edge" primitive.
-                                   Therefore, the program sometimes goes game over when an apple randomly spawns too much to the side of the screen. \\
+                                   Therefore, the program sometimes goes game over when an apple randomly spawns too much to the side of the screen and touches a vertical edge. \\
         K7\_S03 & 13   & Project & Program does not move banana to the top of the screen when it touches the ground, only when it touches the bowl.
                                    Therefore, the banana stays on the ground and is moved only when bowl moves over it, making banana re-spawns dependent on apple spawn locations. \\
         K7\_S07 & 13   & Project & Test checks if a certain number of bananas spawn in 30 seconds.
@@ -655,59 +655,64 @@ which introduces inconsistency to tests, which rely on the behaviour of the bana
                                    but too few bananas spawn if bananas fall to the ground instead, because they have to travel more distance before they re-appear. \\
 
         K6\_S02 & 14   & Project & Banana get stuck in the ground and only re-spawns if touched by the bowl. \\
-        K6\_S03 & 14   & Project & See K6\_S03, test 8. \\
         K6\_S10 & 14   & Test    & Test checks if bananas spawn at random x coordinates.
                                    The program uses clones for fruit sprites.
                                    The test detects the original sprite and the clone as two banana instances at the same x coordinate concludes that bananas spawn at the same x coordinate. \\
-        K7\_S03 & 14   & Project & See K7\_S03, test 13. \\
-        K7\_S07 & 14   & Project & See K7\_S07, test 13. \\
         K7\_S12 & 14   & Unknown & Test failed because it detected three bananas spawning in the same position.
                                    We are unsure why this happened, and could not reproduce the test outcome. \\
-
-        K6\_S02 & 15   & Project & See K6\_S02, test 14. \\
-        K6\_S03 & 15   & Project & See K6\_S03, test 8. \\
-        K7\_S07 & 15   & Project & See K7\_S07, test 13. \\
-
-        K6\_S02 & 17   & Project & See K6\_S02, test 14. \\
-        K6\_S03 & 17   & Project & See K6\_S03, test 8. \\
-        K7\_S03 & 17   & Project & See K7\_S03, test 8. \\
-        K7\_S07 & 17   & Project & See K7\_S07, test 13. \\
 
         K7\_S17 & 19   & Project & Programs are supposed to check if the apple touches the color of the red stripe at the bottom to detect when the apple touches the ground.
                                    K7\_S17 checks for the wrong shade of red which is only present in some places, at the transition of the background and the red line.
                                    Therefore sprites are sometimes not detected touching the ground, and simply stay at the bottom of the screen. \\
 
         K6\_S05 & 20   & Project & To move the banana to a random position whenever it spawns,
-                                   the program uses Scratch's builtin ''random position'', which moves it to a random y coordinate as well.
+                                   the program uses Scratch's builtin ''go to random position'', which moves it to a random y coordinate as well.
                                    Afterwards, it immediately adjusts the bananas y coordinate.
                                    But for a split second, the banana may touch the bowl or the ground without interaction, which the test detects. \\
 
-        K7\_S02 & 21   & Both    & Moves the apple to a random position on the ground 2 seconds after game over, causing the test to recognize it as not game over.
+        K7\_S02 & 21   & Both    & Program moves the apple to a random position on the ground 2 seconds after game over, causing the test to recognize it as not game over.
                                    The test could wait longer before performing checks to circumvent this problem. \\
         K7\_S10 & 21   & Project & Banana sometimes re-appears one more time after game over. \\
-        K7\_S17 & 21   & Project & See K7\_S17, test 19. \\
-
-        K6\_S05 & 23   & Project & See K6\_S05, test 20. \\
-        K6\_S10 & 23   & Test    & Test relies on the banana touching the bowl, but only follows the apple with the bowl.
+        K6\_S10 & 23   & Test    & Test relies on the banana touching the bowl, but only follows the apple with the bowl in order to not go game over.
                                    Therefore, sometimes the banana does not touch the bowl at all, resulting in a failing test. \\
         K6\_S19 & 23   & Test    & The test checks if score is added when the apple touches the bowl.
-                                   It is skipped if apple and banana touch the bowl / ground in quick succession,
+                                   It is skipped if the apple and the banana touch the bowl / ground in quick succession,
                                    because the wrong score change might be considered, or the two score changes might happen in the same step. \\
-        K7\_S07 & 23   & Test    & See K6\_S10, test 23. \\
-        K7\_S17 & 23   & Test    & See K6\_S19, test 23. \\
-        K7\_S17 & 23   & Test    & See K6\_S10, test 23. \\
 
-        K6\_S05 & 24   & Project & See K6\_S05, test 20. \\
-        K7\_S15 & 24   & Test    & See K6\_S19, test 23. \\
-
-        K7\_S17 & 24   & Project & See K7\_S17, test 19. \\
-        K7\_S26 & 24   & Project & See K6\_S19, test 23. \\
-
-        K6\_S05 & 25   & Project & See K6\_S05, test 20. \\
-
-        K6\_S02 & 27   & Both    & See K6\_S02, test 14, banana can get stuck in the ground and continually subtract points for a short time after the time is up. \\
-
+        K6\_S02 & 27   & Both    & Banana can get stuck in the ground and continually subtract points for a short time after the time is up. \\
         K6\_S19 & 27   & Both    & Banana sometimes still falls for a short time after time is up. \\
+        \bottomrule
+    \end{tabular}
+
+    \bigskip
+
+    \tiny
+    \begin{tabular}{lrlp{3.65cm}|lrlp{3.65cm}}
+        \toprule
+        Project & Test & Cause   & Description &
+        Project & Test & Cause   & Description \\
+        \midrule
+        K6\_S03 & 14   & Project & See K6\_S03, test 8. &
+        K7\_S03 & 14   & Project & See K7\_S03, test 13. \\
+        K7\_S07 & 14   & Project & See K7\_S07, test 13. &
+        K6\_S02 & 15   & Project & See K6\_S02, test 14. \\
+        K6\_S03 & 15   & Project & See K6\_S03, test 8. &
+        K7\_S07 & 15   & Project & See K7\_S07, test 13. \\
+        K6\_S02 & 17   & Project & See K6\_S02, test 14. &
+        K6\_S03 & 17   & Project & See K6\_S03, test 8. \\
+        K7\_S03 & 17   & Project & See K7\_S03, test 8. &
+        K7\_S07 & 17   & Project & See K7\_S07, test 13. \\
+        K7\_S17 & 21   & Project & See K7\_S17, test 19. &
+        K6\_S05 & 23   & Project & See K6\_S05, test 20. \\
+        K7\_S07 & 23   & Test    & See K6\_S10, test 23. &
+        K7\_S17 & 23   & Test    & See K6\_S19, test 23. \\
+        K7\_S17 & 23   & Test    & See K6\_S10, test 23. &
+        K6\_S05 & 24   & Project & See K6\_S05, test 20. \\
+        K7\_S15 & 24   & Test    & See K6\_S19, test 23. &
+        K7\_S17 & 24   & Project & See K7\_S17, test 19. \\
+        K7\_S26 & 24   & Project & See K6\_S19, test 23. &
+        K6\_S05 & 25   & Project & See K6\_S05, test 20. \\
+        K6\_S03 & 13   & Project & See K6\_S03, test 8. \\
         \bottomrule
     \end{tabular}
     \caption{Inconsistent outcomes of test suite T1 on projects P1 and their causes}
