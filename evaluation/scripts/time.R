@@ -12,6 +12,11 @@ data_sets = list("tests-normal"      = list("sample", "sample-2"),
                  "tests-random"      = list("sample", "sample-2"),
                  "tests-random-lite" = list("sample", "sample-2"));
 
+# data_sets = list("tests-normal"      = list("sample", "sample-2", "sample-3"),
+#                  "tests-constraint"  = list("sample", "sample-2", "sample-3"),
+#                  "tests-random"      = list("sample", "sample-2", "sample-3"),
+#                  "tests-random-lite" = list("sample", "sample-2", "sample-3"));
+
 data = data.frame(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA);
 names(data) = c("test",
                 "avg-callbacks-before",
@@ -51,8 +56,8 @@ for (test in names(data_sets)) {
         line[13] = round( max(times[,"callbacks-after"] ), digits = 4);
         line[14] = round(mean(times[,"constraints"]     ), digits = 4);
         line[15] = round( max(times[,"constraints"]     ), digits = 4);
-        line[16] = round(mean(rowSums(times)        ), digits = 4);
-        line[17] = round( max(rowSums(times)        ), digits = 4);
+        line[16] = round(mean(rowSums(times)            ), digits = 4);
+        line[17] = round( max(rowSums(times)            ), digits = 4);
         line[18] = round(mean(rowSums(times) - times[,"scratch"]), digits = 4);
         line[19] = round( max(rowSums(times) - times[,"scratch"]), digits = 4);
         data = rbind(data, line);
