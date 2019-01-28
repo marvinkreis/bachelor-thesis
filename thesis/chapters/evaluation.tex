@@ -126,15 +126,17 @@ which we will compare our results to later.
 \begin{table}
     \centering
     \scriptsize
-    \begin{tabular}{ll}
+    \begin{tabular}{lp{10.5cm}}
         \toprule
         Project & Reason                                                                          \\
         \midrule
-        \multicolumn{2}{l}{\textbf{Detected through the test report}}                             \\
+        \multicolumn{2}{l}{\textbf{Detected through test reports}}                                \\
         K6\_S12 & Deleted variable from template: ''Zeit''                                        \\
         K6\_S17 & Renamed variable from template: ''Punkte'' to ''Bunkte''                        \\
         K7\_S24 & Deleted variable from template: ''Zeit''                                        \\
-        K7\_S27 & Renamed sprite from template: ''Bowl'' to ''Figur2''                            \\[\medskipamount]
+        K7\_S27 & Renamed sprite from template: ''Bowl'' to ''Figur2''                            \\
+        K7\_S07 & Resets all sprite positions when the "a" key is pressed.
+                  Problematic, because automated test input generation will press the "a" key     \\[1.4\bigskipamount]
 
         \multicolumn{2}{l}{\textbf{Detected through zero statement coverage}}                     \\
         K6\_S01 & Starts on up arrow key press instead of green flag                              \\
@@ -173,14 +175,13 @@ Additionally, the number of tests or constraints and the size of the test suite 
 \begin{table}[htpb]
     \centering
     \scriptsize
-    \begin{tabular}{rlrr}
+    \begin{tabular}{rlrlr}
         \toprule
         Test Suite & Type       & \texttt{\#}Tests / \texttt{\#}Constraints & LOC \\
         \midrule
         T1         & Normal     & 28 Tests                                  & 852 \\
         T2         & Constraint & 20 Constraints                            & 515 \\
-        T3         & Constraint & 20 Constraints                            & 496 \\
-        T4         & Constraint & 12 Constraints                            & 360 \\
+        T3         & Constraint & 18 Constraints                            & 539 \\
         \bottomrule
     \end{tabular}
 
@@ -193,43 +194,43 @@ Additionally, the number of tests or constraints and the size of the test suite 
     \scriptsize
     \begin{tabular}{rl|cr|cr|cr}
         \toprule
-        \texttt{\#} & Specification                                                    & \multicolumn{6}{c}{Covered? (\xmark/\cmark), Test number}                      \\
-                                                                                      && \multicolumn{2}{l|}{T1} & \multicolumn{2}{l|}{T2, T3} & \multicolumn{2}{l}{T4} \\
+        \texttt{\#} & Specification                                                    & \multicolumn{6}{c}{Covered? (\xmark/\cmark), Test number}                     \\
+                                                                                      && \multicolumn{2}{l|}{T1} & \multicolumn{2}{l|}{T2} & \multicolumn{2}{l}{T3}    \\
         \midrule
            & \textbf{Initialization} &&&&&&\\
-         1 & Timer starts at 30 seconds                                                & \cmark & 1  & \xmark                    &    & \xmark                    &     \\
-         2 & Bowl starts at $X = 0$ / $Y = -145$                                       & \cmark & 2  & \xmark                    &    & \xmark                    &     \\
-         3 & Fruits have a size of 50\%                                                & \cmark & 3  & \cmark                    & 1  & \cmark                    & 1   \\[\medskipamount]
+         1 & Timer starts at 30 seconds                                                & \cmark & 1  & \xmark                    &    & \xmark                    &    \\
+         2 & Bowl starts at $X = 0$ / $Y = -145$                                       & \cmark & 2  & \xmark                    &    & \xmark                    &    \\
+         3 & Fruits have a size of 50\%                                                & \cmark & 3  & \cmark                    & 1  & \cmark                    & 1  \\[\medskipamount]
            & \textbf{Bowl Movement} &&&&&&\\
-         4 & Bowl moves left/right when corresponding arrow key is pressed             & \cmark & 4  & \cmark                    & 2  & \cmark                    & 2   \\
-         5 & Bowl can only move horizontally with a speed of 10                        & \cmark & 5  & \cmark                    & 3  & \cmark                    & 3   \\[\medskipamount]
+         4 & Bowl moves left/right when corresponding arrow key is pressed             & \cmark & 4  & \cmark                    & 2  & \cmark                    & 2  \\
+         5 & Bowl can only move horizontally with a speed of 10                        & \cmark & 5  & \cmark                    & 3  & \cmark                    & 3  \\[\medskipamount]
            & \textbf{Fruit Falling} &&&&&&\\
-         6 & Apples fall down                                                          & \cmark & 6  & \textasteriskcentered$^1$ &    & \textasteriskcentered$^1$ &     \\
-         7 & Apples fall in a straight line with a speed of -5                         & \cmark & 7  & \cmark                    & 4  & \cmark                    & 4   \\
-         8 & Bananas fall down                                                         & \cmark & 8  & \textasteriskcentered$^2$ &    & \textasteriskcentered$^2$ &     \\
-         9 & Bananas fall in a straight line with a speed of -7                        & \cmark & 9  & \cmark                    & 5  & \cmark                    & 5   \\[\medskipamount]
+         6 & Apples fall down                                                          & \cmark & 6  & \textasteriskcentered$^1$ &    & \textasteriskcentered$^1$ &    \\
+         7 & Apples fall in a straight line with a speed of -5                         & \cmark & 7  & \cmark                    & 4  & \cmark                    & 4  \\
+         8 & Bananas fall down                                                         & \cmark & 8  & \textasteriskcentered$^2$ &    & \textasteriskcentered$^2$ &    \\
+         9 & Bananas fall in a straight line with a speed of -7                        & \cmark & 9  & \cmark                    & 5  & \cmark                    & 5  \\[\medskipamount]
            & \textbf{Fruit Spawn} &&&&&&\\
-        10 & Apples spawn again at the top of the screen after touching the bowl       & \cmark & 10 & \textasteriskcentered$^3$ &    & \xmark                    &     \\
-        11 & Apples spawn at random $X$ position                                       & \cmark & 11 & \cmark                    & 6  & \xmark                    &     \\
-        12 & Apples spawn at $Y = 170$                                                 & \cmark & 12 & \cmark                    & 7  & \xmark                    &     \\
-        13 & Bananas spawn again at the top of the screen after touching the bowl      & \cmark & 13 & \textasteriskcentered$^4$ &    & \xmark                    &     \\
-        14 & Bananas spawn at random $X$ position                                      & \cmark & 14 & \cmark                    & 8  & \xmark                    &     \\
-        15 & Bananas spawn at $Y = 170$                                                & \cmark & 15 & \cmark                    & 9  & \xmark                    &     \\
-        16 & Only one apple must fall down at a time                                   & \cmark & 16 & \cmark                    & 10 & \xmark                    &     \\
-        17 & Only one banana must fall down at a time                                  & \cmark & 17 & \cmark                    & 11 & \xmark                    &     \\
-        18 & Banana must wait for a second before falling down in the beginning        & \cmark & 18 & \xmark                    &    & \xmark                    &     \\
-        19 & Banana must wait for a second before falling down after displaying ''-8'' & \cmark & 19 & \xmark                    &    & \xmark                    &     \\[\medskipamount]
+        10 & Apples spawn again at the top of the screen after touching the bowl       & \cmark & 10 & \textasteriskcentered$^3$ &    & \textasteriskcentered$^3$ &    \\
+        11 & Apples spawn at random $X$ position                                       & \cmark & 11 & \cmark                    & 6  & \cmark                    & 6  \\
+        12 & Apples spawn at $Y = 170$                                                 & \cmark & 12 & \cmark                    & 7  & \cmark                    & 7  \\
+        13 & Bananas spawn again at the top of the screen after touching the bowl      & \cmark & 13 & \textasteriskcentered$^4$ &    & \textasteriskcentered$^4$ &    \\
+        14 & Bananas spawn at random $X$ position                                      & \cmark & 14 & \cmark                    & 8  & \cmark                    & 8  \\
+        15 & Bananas spawn at $Y = 170$                                                & \cmark & 15 & \cmark                    & 9  & \cmark                    & 9  \\
+        16 & Only one apple must fall down at a time                                   & \cmark & 16 & \cmark                    & 10 & \cmark                    & 10 \\
+        17 & Only one banana must fall down at a time                                  & \cmark & 17 & \cmark                    & 11 & \cmark                    & 11 \\
+        18 & Banana must wait for a second before falling down in the beginning        & \cmark & 18 & \xmark                    &    & \xmark                    &    \\
+        19 & Banana must wait for a second before falling down after displaying ''-8'' & \cmark & 19 & \xmark                    &    & \xmark                    &    \\[\medskipamount]
            & \textbf{Fruit Interaction} &&&&&&\\
-        20 & Apple gives 5 points when it touches the bowl                             & \cmark & 20 & \cmark                    & 12 & \cmark                    & 6   \\
-        21 & Game over when the apple touches the ground                               & \cmark & 21 & \textasteriskcentered$^5$ & 13 & \cmark                    & 7   \\
-        22 & Apple displays ''Game Over!'' message when it touches the ground          & \cmark & 22 & \textasteriskcentered$^5$ & 14 & \cmark                    & 8   \\
-        23 & Banana gives 8 points when it touches the bowl                            & \cmark & 23 & \cmark                    & 15 & \cmark                    & 9   \\
-        24 & Banana subtracts 8 points when it touches the ground                      & \cmark & 24 & \cmark                    & 16 & \cmark                    & 10  \\
-        25 & Banana displays ''-8'' message when it touches the ground                 & \cmark & 25 & \cmark                    & 17 & \cmark                    & 11  \\[\medskipamount]
+        20 & Apple gives 5 points when it touches the bowl                             & \cmark & 20 & \cmark                    & 12 & \cmark                    & 12 \\
+        21 & Game over when the apple touches the ground                               & \cmark & 21 & \textasteriskcentered$^5$ & 13 & \cmark                    & 13 \\
+        22 & Apple displays ''Game Over!'' message when it touches the ground          & \cmark & 22 & \textasteriskcentered$^5$ & 14 & \cmark                    & 14 \\
+        23 & Banana gives 8 points when it touches the bowl                            & \cmark & 23 & \cmark                    & 15 & \cmark                    & 15 \\
+        24 & Banana subtracts 8 points when it touches the ground                      & \cmark & 24 & \cmark                    & 16 & \cmark                    & 16 \\
+        25 & Banana displays ''-8'' message when it touches the ground                 & \cmark & 25 & \cmark                    & 17 & \cmark                    & 17 \\[\medskipamount]
            & \textbf{Timer} &&&&&&\\
-        26 & Timer ticks down                                                          & \cmark & 26 & \cmark                    & 18 & \cmark                    & 12  \\
-        27 & Game stops when timer reaches 0                                           & \cmark & 27 & \cmark                    & 19 & \xmark                    &     \\
-        28 & Bowl must display ''Ende!'' message when timer reaches 0                  & \cmark & 28 & \cmark                    & 20 & \xmark                    &     \\
+        26 & Timer ticks down                                                          & \cmark & 26 & \cmark                    & 18 & \cmark                    & 18 \\
+        27 & Game stops when timer reaches 0                                           & \cmark & 27 & \cmark                    & 19 & \xmark                    &    \\
+        28 & Bowl must display ''Ende!'' message when timer reaches 0                  & \cmark & 28 & \cmark                    & 20 & \xmark                    &    \\
         \bottomrule \\
         \multicolumn{1}{r}{\textasteriskcentered$^1$} & \multicolumn{1}{l}{Not covered directly, because indirectly covered by (7)        } \\
         \multicolumn{1}{r}{\textasteriskcentered$^2$} & \multicolumn{1}{l}{Not covered directly, because indirectly covered by (9)        } \\
@@ -343,7 +344,6 @@ This function, as well as a usage example, are shown in Listing~\ref{lst:simulat
 
 \subsubsection{(T2) Input-Independent / Constraint-Only Test Suite}
 
-\mnote{Another difference: T1 accepts ''bad'' movement, T2, T3, T4 does not}
 This test suite implements the input-independent testing approach from Chapter~\ref{cha:using_constraints_to_enable_flexible_test_inputs}.
 With this test suite, we tried to test the program with only one execution in total.
 Therefore, this test suite only has one test case, which registers 20 constraints to check various parts of the specification
@@ -358,47 +358,43 @@ Nevertheless, we register constraints, which check the game over state in case a
 
 \subsubsection{(T3) Random Input Test Suite}
 
-Test suite T3 is exactly identical to test suite T2,
-but uses Whisker's automated test input generation instead of deliberately simulating inputs.
-Listing~\ref{lst:automated_input_random_tests} shows the exact code snippet, which simulates input for the test case.
+This test suite uses the same constraints as T2, but uses Whisker's automated input generation to control the program with random inputs.
+It resets the program multiple times in order to increase the likelihood of multiple apples getting caught in one of the runs.
+But, since it is nevertheless very unlikely to have the apple not touch the ground at all with random inputs,
+we don't for check for a game over after 30 seconds, and only let the program run for 15 seconds a time.
+We reset the program 20 times during the test, resulting in an execution time of $20 \cdot 15s = 300s$.
+Listing~\ref{lst:automated_input_random_tests} shows the exact configuration, which use to simulate input for the test case.
 \parspace
 
 \begin{listing}[htpb]
     \centering
-    \begin{minipage}{.45\textwidth}
-        \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, framesep=2mm, frame=lines]{javascript}
+    \begin{minipage}{.55\textwidth}
+        \begin{javascriptcode}
             t.setRandomInputInterval(150);
             t.detectRandomInputs({duration: [50, 100]});
-        \end{minted}
+        \end{javascriptcode}
     \end{minipage}
     \caption{Automated input generation for random test suites}
     \label{lst:automated_input_random_tests}
 \end{listing}
 
-\subsubsection{(T4) Random Input Test Suite Lite}
-
-Since performing inputs randomly will likely result in the falling apple touching the ground,
-we added T4 as a variant of T3.
-T4 works on the assumption, that the first apple will touch the ground and cause a game over.
-Therefore, the test suite doesn't test anything, which requires the test to successfully catch the apple with the bowl.
-It only registers the 12 of T3's 20 constraints, that are relevant for the first few seconds of the program execution.
-Otherwise, T4 is identical to T3.
-
 \section{RQ1: Accuracy of Test Results}
 
-In this part of the evaluation, we will analyze the quality of test results from our test suites to answer the following research question:
+In this part of the evaluation, we will try to answer the following research question:
 
 \begin{center}\begin{minipage}{.9\textwidth}
 Can results of automated testing be accurate enough to aid in grading Scratch assignments?
 \end{minipage}\end{center}
 
-\noindent In order to useful for grading,
+\noindent In order to answer this question,
+executed test suites T1-T3 on the catching game projects (P1) five times,
+and analyzed the quality of the results.
+In order to useful for grading,
 test results have to indicate the same grades,
 which one would assign the programs through manual assessment.
-Test outcome also have to be consistent over multiple runs,
+Test outcomes also have to be consistent over multiple runs,
 since inconsistent results would lead to unfair grades.
-Therefore, we executed test suites T1 and T2 on the catching game projects (P1) five times,
-and analyzed the results with respect to two indicators:
+Therefore, we analyzed the results with respect to two indicators:
 \parspace
 
 \textbf{Correlation of tests results and manual scoring.}
@@ -414,13 +410,13 @@ Usually a value of $r \ge 0.5$ is considered to indicate a strong correlation.
 Negative values indicate a reverse relationship, which is not relevant for our observations.
 \parspace
 
-\textbf{Consistency of test outcomes over multiple runs.}
-Secondly, we analyzed how consistent the test cases are.
-In automated testing, test cases can often yield different results when executed multiple times.
-Test cases like this are known as ''flaky tests''.
-This inconsistency of test results can be caused either by the program under test or by the test case itself.
-We measure the number of test-project pairs with inconsistent results over multiple test executions,
-and use their percentage of all test-project pairs to indicate the flakiness of our test suites.
+% \textbf{Average consistency of test outcomes over multiple runs.}
+% Secondly, we analyzed how consistent the test cases are.
+% In automated testing, test cases can often yield different results when executed multiple times.
+% Test cases like this are known as ''flaky tests''.
+% This inconsistency of test results can be caused either by the program under test or by the test case itself.
+% We measure the number of test-project pairs with inconsistent results over multiple test executions,
+% and use their percentage of all test-project pairs to indicate the flakiness of our test suites.
 
 \subsection{Correlation of tests results and manual scoring}
 
@@ -432,7 +428,9 @@ The number of test passes closely match manually assigned scores.
 They have a strong correlation.
 \parspace
 
-\noindent Figure~\ref{fig:scatter_normal} compares the test results of test suite T1 to scores from a manual evaluation of projects P1.
+\subsubsection{Normal Test Suite (T1)}
+
+Figure~\ref{fig:scatter_normal} compares the test results of test suite T1 to scores from a manual evaluation of projects P1.
 Possible values for the manual scores are in the range of $[0, 30]$ and possible values for the number of test passes are in the range of $[0, 28]$.
 We can observe, that the number of passing test cases are strongly correlated to the manual scores,
 with a correlation coefficient of $r = 0.8918$ for the first run and $r = 0.8913$ for the average over 3 runs.
@@ -440,12 +438,12 @@ Except for few irregularities, the test results closely resemble the manually as
 
 \begin{figure}[htpb]
     \centering
-    \begin{subfigure}{.50\textwidth}
+    \begin{subfigure}{.40\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-normal-1}
         \caption{First run}
         \label{fig:scatter_normal_1}
     \end{subfigure}%
-    \begin{subfigure}{.50\textwidth}
+    \begin{subfigure}{.40\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-normal-avg}
         \caption{Average over 3 runs}
         \label{fig:scatter_normal_avg}
@@ -454,19 +452,21 @@ Except for few irregularities, the test results closely resemble the manually as
     \label{fig:scatter_normal}
 \end{figure}
 
-Figure~\ref{fig:scatter_constraint} shows the same statistic for the test outcomes of test suite T2.
+\subsubsection{Input-Independent / Constraint-Only Test Suite (T2)}
+
+Figure~\ref{fig:scatter_constraint} compares the test outcomes of test suite T2 to the manual scores.
 Possible values for the number of constraint passes are in the range of $[0, 20]$.
 We can, again, observe a strong correlation between the two scores,
 with a correlation coefficient of $r = 0.8877$ for the first run and $r = 0.8968$ for the average over 3 runs.
 
 \begin{figure}[htpb]
     \centering
-    \begin{subfigure}{.50\textwidth}
+    \begin{subfigure}{.40\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-constraint-1}
         \caption{First run}
         \label{fig:scatter_constraint_1}
     \end{subfigure}%
-    \begin{subfigure}{.50\textwidth}
+    \begin{subfigure}{.40\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-constraint-avg}
         \caption{Average over 3 runs}
         \label{fig:scatter_constraint_avg}
@@ -475,10 +475,27 @@ with a correlation coefficient of $r = 0.8877$ for the first run and $r = 0.8968
     \label{fig:scatter_constraint}
 \end{figure}
 
-\mnote{TODO: Move this into discussion}
-This shows that both test suites implementing the ''normal'' testing approach and
-test suites implementing the ''input-indepent'' / ''constraint-only'' testing approach
-are able to produce accurate test results.
+\subsubsection{Random Input Test Suite (T3)}
+
+Figure~\ref{fig:scatter_constraint} compares the test outcomes of test suite T2 to the manual scores.
+Possible values for the number of constraint passes are in the range of $[0, 18]$.
+The result, again, indicate a strong correlation with a correlation coefficient of $r = 0.8629$ for the first run and $r = TODO$ for the average over 3 runs.
+
+\begin{figure}[htpb]
+    \centering
+    \begin{subfigure}{.40\textwidth}
+        \includegraphics[width=\textwidth]{r/scatter-random-1}
+        \caption{First run}
+        \label{fig:scatter_random_1}
+    \end{subfigure}%
+    \begin{subfigure}{.40\textwidth}
+        \includegraphics[width=\textwidth]{r/scatter-random-1}
+        \caption{Average over 3 runs}
+        \label{fig:scatter_random_avg}
+    \end{subfigure}
+    \caption{Comparison between test results of test suite T3 (random input) and manually assigned scores}
+    \label{fig:scatter_random}
+\end{figure}
 
 \subsection{Consistency of test outcomes over multiple runs}
 
@@ -489,13 +506,16 @@ Automated test results show very different results each run and are thus not acc
 Test results are consistent enough over multiple runs to provide accurate information for grading.
 \parspace
 
-In order to analyze inconsistent test-project pairs,
-we construct matrices over the test cases in T1 and T2, and the projects in P1.
+In order to analyze which test cases where inconsistent for each project, and vice versa,
+we construct matrices over the test cases in T1-T3, and the projects in P1.
 If a test case shows inconsistent results on a certain project over five test executions,
 we assign a $1$ to the respective cell in the matrix, otherwise we assign a 0.
 For this, we consider both ''skipped'' and ''failed'' to be the same test outcome, since both are non-passing test results.
+The matrix's sum of rows then shows us how may projects showed inconsistent test results for each test case,
+and the sum of columns shows the number of test cases with inconsistent outcomes for each project.
 Table~\ref{tab:inconsistencies_matrices_excerpt} shows excerpts of the resulting matrices for demonstration.
-The full matrices can be found in the appendix in Table~\ref{tab:inconsistencies_matrices}.
+The full matrices can be found in the appendix in Section~\ref{sec:inconsistencies_matrices}.
+\parspace
 
 \begin{figure}[htpb]
     \centering
@@ -549,37 +569,27 @@ The full matrices can be found in the appendix in Table~\ref{tab:inconsistencies
     \label{tab:inconsistencies_matrices_excerpt}
 \end{figure}
 
+\subsubsection{Normal Test Suite (T1)}
+
 \mnote{Is there a threshold above which a test suite is considered too flaky}
-\noindent Figure~\ref{fig:consistency_per_test_normal} shows the number of inconsistent test-project pairs per test case of T1,
-which is the sum of rows from matrix \ref{tab:inconsistencies_matrix_excerpt_normal}.
+\noindent Figure~\ref{fig:consistency_per_test_normal} shows the number of inconsistent test-project pairs per test case of T1.
 The horizontal line displays the average number of inconsistencies per test case.
-Figure~\ref{fig:consistency_per_project_normal} shows the number of inconsistent test-projects pairs per project,
-the sum of columns from the matrix.
+Figure~\ref{fig:consistency_per_project_normal} shows the number of inconsistent test-projects pairs per project.
 We can observe that some test cases and some projects tend to be rather inconsistent,
 with a maximum of $6$ inconsistent projects ($18.75\%$ of projects) per test case and $5$ inconsistent test cases ($17.86\%$ of test cases) per project.
 However, on average only $1.36$ projects per test case and $1.19$ test cases per project show inconsistent results.
 This amounts to $4.24\%$ of all test-project pairs, which is still consistent enough for grading purposes.
 \parspace
 
-\noindent Figure~\ref{fig:consistency_per_test_constraint} shows the same statistic for test suite T2.
-We observe similar results.
-The data shows a maximum of $5$ inconsistent projects ($TODO\%$ of projects) per constraint and $5$ inconsistent constraints ($TODO\%$ of constraints) per project.
-On average, $TODO$ projects per constraint and $TODO$ constraints per project show inconsistent results,
-which amounts to $4.24\%$ of all constraint-project pairs.
-\parspace
-
 \begin{figure}[htpb]
     \centering
-    \begin{subfigure}{.7\textwidth}
+    \begin{subfigure}{.475\textwidth}
         \includegraphics[width=\textwidth]{r/consistency-per-test-normal}%
         \vspace{-\medskipamount}
         \caption{Number of projects with inconsistent outcomes, per test case}
         \label{fig:consistency_per_test_normal}
     \end{subfigure}
-
-    \bigskip
-
-    \begin{subfigure}{.7\textwidth}
+    \begin{subfigure}{.475\textwidth}
         \includegraphics[width=\textwidth]{r/consistency-per-project-normal}%
         \vspace{-\medskipamount}
         \caption{Number of test cases with inconsistent outcomes, per project}
@@ -590,28 +600,62 @@ which amounts to $4.24\%$ of all constraint-project pairs.
     \label{fig:consistency_normal}
 \end{figure}
 
+\subsubsection{Input-Independent / Constraint-Only Test Suite (T2)}
+
+Figure~\ref{fig:consistency_per_test_constraint} shows the number of inconsistencies for test suite T2.
+We observe similar results to T1.
+The data shows a maximum of $5$ inconsistent projects ($TODO\%$ of projects) per constraint and $5$ inconsistent constraints ($TODO\%$ of constraints) per project.
+On average, $TODO$ projects per constraint and $TODO$ constraints per project show inconsistent results,
+which amounts to $4.24\%$ of all constraint-project pairs.
+\parspace
+
 \begin{figure}[htpb]
     \centering
-    \begin{subfigure}{.7\textwidth}
+    \begin{subfigure}{.475\textwidth}
         \includegraphics[width=\textwidth]{r/consistency-per-test-constraint}%
         \vspace{-\medskipamount}
         \caption{Number of projects with inconsistent outcomes, per constraint}
         \label{fig:consistency_per_test_constraint}
     \end{subfigure}
-
-    \bigskip
-
-    \begin{subfigure}{.7\textwidth}
+    \begin{subfigure}{.475\textwidth}
         \includegraphics[width=\textwidth]{r/consistency-per-project-constraint}%
         \vspace{-\medskipamount}
         \caption{Number of constraints with inconsistent outcomes, per project}
         \label{fig:consistency_per_project_constraint}
     \end{subfigure}
 
-    \caption{Inconsistent outcomes of test suite T2 over 3 runs}
+    \caption{Inconsistent outcomes of test suite T2 over 5 runs}
     \label{fig:consistency_constraint}
 \end{figure}
 
+\subsubsection{Random Input Test Suite (T3)}
+
+Figure~\ref{fig:consistency_per_test_constraint} shows the number of inconsistencies for test suite T3.
+We observed a maximum of $5$ inconsistent projects ($TODO\%$ of projects) per constraint and $5$ inconsistent constraints ($TODO\%$ of constraints) per project.
+On average, $TODO$ projects per constraint and $TODO$ constraints per project show inconsistent results,
+which amounts to $4.24\%$ of all constraint-project pairs.
+\parspace
+
+\begin{figure}[htpb]
+    \centering
+    \begin{subfigure}{.475\textwidth}
+        \includegraphics[width=\textwidth]{r/consistency-per-test-random}%
+        \vspace{-\medskipamount}
+        \caption{Number of projects with inconsistent outcomes, per constraint}
+        \label{fig:consistency_per_test_random}
+    \end{subfigure}
+    \begin{subfigure}{.475\textwidth}
+        \includegraphics[width=\textwidth]{r/consistency-per-project-random}%
+        \vspace{-\medskipamount}
+        \caption{Number of constraints with inconsistent outcomes, per project}
+        \label{fig:consistency_per_project_random}
+    \end{subfigure}
+
+    \caption{Inconsistent outcomes of test suite T3 over 2 runs}
+    \label{fig:consistency_random}
+\end{figure}
+
+\subsection{Causes for inconsistent test outcomes}
 
 \mnote{In the discussion, write that Scratch programs tend to be inconsistent / non-deterministic because of their multimedia nature}
 Inconsistent test outcomes can be caused by either the test or the project under test.
@@ -632,8 +676,9 @@ which introduces inconsistency to tests, which rely on the behaviour of the bana
 \begin{table}[htpb]
     \centering
 
+    \scalebox{0.95}{
     \scriptsize
-    \begin{tabular}{lrlp{10.5cm}}
+    \begin{tabular}{lrlp{11.25cm}}
         \toprule
         Project & Test & Cause   & Description \\
         \midrule
@@ -658,8 +703,9 @@ which introduces inconsistency to tests, which rely on the behaviour of the bana
         K6\_S10 & 14   & Test    & Test checks if bananas spawn at random x coordinates.
                                    The program uses clones for fruit sprites.
                                    The test detects the original sprite and the clone as two banana instances at the same x coordinate concludes that bananas spawn at the same x coordinate. \\
-        K7\_S12 & 14   & Unknown & Test failed because it detected three bananas spawning in the same position.
-                                   We are unsure why this happened, and could not reproduce the test outcome. \\
+        K7\_S12 & 14   & Test    & Test checks if bananas spawn in random positions, and failed because it detected two bananas spawning in the same position.
+                                   In order to speed up test executions, we decided to wait for only two bananas to spawn and compare their positions.
+                                   Therefore, while unlikely, it is possible that two bananas spawn in the same place by random chance, which fails the test. \\
 
         K7\_S17 & 19   & Project & Programs are supposed to check if the apple touches the color of the red stripe at the bottom to detect when the apple touches the ground.
                                    K7\_S17 checks for the wrong shade of red which is only present in some places, at the transition of the background and the red line.
@@ -680,14 +726,16 @@ which introduces inconsistency to tests, which rely on the behaviour of the bana
                                    because the wrong score change might be considered, or the two score changes might happen in the same step. \\
 
         K6\_S02 & 27   & Both    & Banana can get stuck in the ground and continually subtract points for a short time after the time is up. \\
-        K6\_S19 & 27   & Both    & Banana sometimes still falls for a short time after time is up. \\
+        K6\_S19 & 27   & Both    & Banana sometimes still falls for a short time after the time is up. \\
         \bottomrule
     \end{tabular}
+    }
 
-    \bigskip
+    \medskip
 
+    \scalebox{0.95}{
     \tiny
-    \begin{tabular}{lrlp{3.65cm}|lrlp{3.65cm}}
+    \begin{tabular}{lrlp{3.875cm}|lrlp{3.875cm}}
         \toprule
         Project & Test & Cause   & Description &
         Project & Test & Cause   & Description \\
@@ -715,6 +763,8 @@ which introduces inconsistency to tests, which rely on the behaviour of the bana
         K6\_S03 & 13   & Project & See K6\_S03, test 8. \\
         \bottomrule
     \end{tabular}
+    }
+
     \caption{Inconsistent outcomes of test suite T1 on projects P1 and their causes}
     \label{tab:inconsistencies_causes_normal}
 \end{table}
@@ -753,84 +803,204 @@ which introduces inconsistency to tests, which rely on the behaviour of the bana
 % K7_S20
 % K7_S26                                                              1
 
-% We base our observations (?) on two different key indicators.
-% - Automatic testing can facilitate grading of Scratch assignments
-%     (1) test results (normal tests and constraint tests) match the results of manual evaluation
-%     (3) test results (normal tests and constraint tests) are consistent enough to be used for grading
-%         $\rightarrow$ Plot difference number of test passes per project
-%         $\rightarrow$ Check average difference
-
-\section{RQ2: Testing with Automated Test Input Generation}
+\section{RQ3: Automated Input Generation}
 % \subsection{Evaluation Method}
 % \subsection{Data Selection}
 % \subsection{Threats to Validity}
 
-\mnote{Add the random input ''test''}
+\mnote{For random tests, expect only average results to be usable, because of how the caching game works\\TODO: add the coverage ''test''}
 
-- The testing process can be done entirely in the background independent of testing scenarios (?)
-    $\rightarrow$ Random input can be used for the test
-    $\rightarrow$ The test can involve the user using the program like they normally would
+For this part of the evaluation, we will consider following research question:
 
-% - Constraint Tests
-%     - Different approach: One test executes the program only once and checks defined constraints in the background, see Section \ref{sec:constraint_only_tests}
-%     - Deliberately control the bowl to win the game
-%     - faster, but can be less accurate (show difference of average runtime)
-%     - not everything in this project can be tested in a single run
-%     - Better for quickly checking the program
-%     - Example of a constraint test (or put it somewhere else?)
-%     - Can be used with different sources of input (manual / simulated / random)
-%     - Instead of passing tests, passing constraints are measured
-%     - Tests with wrong sprite names are completely excluded in the evaluation
+\begin{center}\begin{minipage}{.9\textwidth}
+Is automated test input generation a viable method to control Scratch programs for testing purposes?
+\end{minipage}\end{center}
 
-- Automatic test input generation
-- Same constraints as the constraint tests vs. only constraints that can hold in the first few seconds every time
-    - Random input instead of deliberately controlling the bowl
-    - Useful to test the stability of the program (like Android Monkey \cite{androidmonkey})
-    - The catching game is not well suited for this approach since random input will quickly result in a game over
+\noindent In order to answer this question, we will consider two indicators:
+\textbf{Achieved statement coverage.}
+Firstly, we want to find out how much of a typical Scratch program's functionality can be reached by using generated user inputs.
+Intuitively, the more of a program gets executed, the more of the its functionality can be checked by tests that run it.
+To evaluate this, we ran Whisker's automated input generation algorithm on the Code Club Scratch projects (P2) for ten minutes
+and measured the current statement coverage each second during the execution.
+\mnote{TODO: we did not press the green flag again during the ten minutes}
+We will use the average of the final statement coverage to indicate how much of the projects is reached by automated input.
+Listing~\ref{lst:coverage_test} shows the test case we executed on the projects.
+In order to access the coverage during the execution we implemented a function called \texttt{logCoverage},
+which saves the current statement coverage of the program and outputs all saved coverage records once the test is over.
+\parspace
 
-TODO: discuss test results
-TODO: discuss coverage results
+% \mnote{TODO: remove?}
+% \textbf{Correlation of test results and manual scoring.}
+% Secondly, we want to determine how accurate results from tests with automatically generated input are.
+% For this purpose, we tested the catching game projects (P1) with test suites T3 and T4,
+% which are variations of the input-independent test suite T2, that uses Whisker's automated input generation to control the program.
+% The catching game projects are especially challenging to be tested with automated input,
+% since the catching game has a game over state, which is difficult to avoid.
+% Like in RQ1, we use the correlation between test results and manual scores as an indicator of the test results' quality.
+% \parspace
 
-\section{RQ3: Interference with Programs Under Test}
+\begin{listing}
+    \centering
 
-Since the tests execute code between steps in a single threaded environment,
-they could, in theory, interfere with the program by slowing down the step cycle.
-This can make the program behave differently, because Scratch programs use absolute timings (TODO figure).
+    \begin{minipage}{.9\textwidth}
+        \begin{javascriptcode}
+            for (let i = 0; i < 5; i++) {
+                t.greenFlag();
+                let start = 6000 * i;
+                for (let time = start + 1000; time <= start + 60000; time += 1000) {
+                    await t.runUntil(() => t.getTotalTimeElapsed() >= time);
+                    t.logCoverage(time, t.isProjectRunning());
+                }
+                t.greenFlag();
+            }
+        \end{javascriptcode}
+    \end{minipage}
 
-~\\~\\
-Typical tests don't interfere with the execution of typical Scratch programs
-$\rightarrow$ measure how long Scratch takes for a step (WORK\_TIME AND time to render)
-$\rightarrow$ measure how long each operation in the Whisker step procedure takes (e.g. callbacks, sprites, constraints)
-$\rightarrow$ Explain how the times are measured
+    \caption{Test case to measure the coverage of automatically generated input}
+    \label{lst:coverage_test}
+\end{listing}
 
-TODO: explain why testing procedure might interfere with Scratch programs (absolute timings)
-TODO: timing diagram and table of timings for real tests
-TODO: example code for tests that interfere and their test data
+\subsection{Achieved statement coverage}
 
-~\\~\\
-\paragraph{Null hypothesis ($H_0$)}
-Additional computations for testing are to slow to be executed while the program is running and stretch out the average time a step takes.
-\paragraph{Alternative hypothesis ($H_1$)}
-Additional computations for testing can be fast enough to not affect the average step time.
+\mnote{TODO: What coverage threshold?}
+
+\paragraph{Null hypothesis ($H_0$):}
+Automated input generation can only cover a small fraction of typical Scratch programs, making it unfeasible for testing purposes.
+\paragraph{Alternative hypothesis ($H_1$):}
+Automated input generation is able to reach most of typical Scratch programs' functionality, making it a viable method to control the Scratch programs for testing.
+\parspace
+
+\noindent Figure~\ref{fig:coverage} shows the statement coverage, which we were able to achieve on the Code Club projects (P2) by using Whisker's automatically generated input,
+as well as the execution time at which the coverage was achieved.
+The black line in Figure~\ref{fig:coverage_line} displays the mean coverage of the projects over time.
+After ten minutes of run time, we were able to achieve an average coverage of $95.25\%$ with the lowest coverage for a project being $74\%$ and the highest being $100\%$.
+We repeated this experiment five times and got similar results, with the mean final coverage over five runs being $TODO\%$.
+In comparison, Figure~\ref{fig:coverage_no_input} shows the achieved coverage without simulating any inputs.
+Here, we only got an average of $47.04\%$ per project on our first run, and $TODO\%$ averaged over five runs.
+\parspace
+
+\begin{figure}[htpb]
+    \centering
+    \begin{subfigure}{\textwidth}
+        \includegraphics[width=\textwidth]{r/coverage-bar-run-1}
+        \caption{Coverage per project}
+        \label{fig:coverage_bar}
+    \end{subfigure}
+
+    \bigskip
+
+    \begin{subfigure}{\textwidth}
+        \includegraphics[width=\textwidth]{r/coverage-line-run-1}
+        \caption{Coverage over time}
+        \label{fig:coverage_line}
+    \end{subfigure}
+
+    \caption{Achieved coverage with automated input}
+    \label{fig:coverage}
+\end{figure}
+
+\begin{figure}[htpb]
+    \centering
+    \begin{subfigure}{\textwidth}
+        \includegraphics[width=\textwidth]{r/coverage-bar-no-input-run-1}
+        \caption{Coverage per project}
+        \label{fig:coverage_no_input_bar}
+    \end{subfigure}
+
+    \bigskip
+
+    \begin{subfigure}{\textwidth}
+        \includegraphics[width=\textwidth]{r/coverage-line-no-input-run-1}
+        \caption{Coverage over time}
+        \label{fig:coverage_no_input_line}
+    \end{subfigure}
+
+    \caption{Achieved coverage without input}
+    \label{fig:coverage_no_input}
+\end{figure}
 
 
+Over the five runs with generated input, we observed ''Create Your Own World'' and ''Memory'' to consistently have the lowest coverage of the projects.
+% A screenshot of both these programs can be seen in Figure~\ref{fig:difficult_code_club_projects}.
+We are going to take a quick look at the reasons, why these projects are difficult to cover by using random input.
+
+\begin{itemize}
+    \item ''Create Your Own World'' implements a little adventure game with a player sprite, which starts on the left of the screen and is able to move through several rooms through a portal on the right side of the screen.
+        This project is difficult to cover, because the sprite needs to move a long way in one direction, to reach a screen transition.
+        But because each arrow key has equal probability to be simulated by Whisker, the sprite will likely only hover over a small area around its start position.
+    \item In ''Memory'' the player can hit 4 different colored drums.
+        The player has to hit them in an order, which is randomly determined by the program.
+        If the player hits one drum incorrectly, which includes hitting a drum while no sequence is active, the game goes into a game over state,
+        and can only be restarted by pressing the green flag.
+        Therefore using random inputs quickly results in an irrecoverable game over,
+        because a wrong drum is hit, which renders much of the program's code unreachable.
+\end{itemize}
+
+% \begin{figure}[htpb]
+%     \centering
+%
+%     \begin{subfigure}{.3\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{code-club-create-your-own-world}
+%         \caption{Create Your Own World}
+%     \end{subfigure}
+%     \hspace{1mm}
+%     \begin{subfigure}{.3\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{code-club-memory}
+%         \caption{Memory}
+%     \end{subfigure}%
+%
+%     \caption{Difficult to cover Code Club projects}
+%     \label{fig:difficult_code_club_projects}
+% \end{figure}
+
+
+\section{RQ4: Interference with Programs Under Test}
+
+% Since the tests execute code between steps in a single threaded environment,
+% they could, in theory, interfere with the program by slowing down the step cycle.
+% This can make the program behave differently, because Scratch programs use absolute timings (TODO figure).
+%
+% ~\\~\\
+% Typical tests don't interfere with the execution of typical Scratch programs
+% $\rightarrow$ measure how long Scratch takes for a step (WORK\_TIME AND time to render)
+% $\rightarrow$ measure how long each operation in the Whisker step procedure takes (e.g. callbacks, sprites, constraints)
+% $\rightarrow$ Explain how the times are measured
+%
+% TODO: explain why testing procedure might interfere with Scratch programs (absolute timings)
+% TODO: timing diagram and table of timings for real tests
+% TODO: example code for tests that interfere and their test data
+%
+% ~\\~\\
+% \paragraph{Null hypothesis ($H_0$):}
+% Additional computations for testing are to slow to be executed while the program is running and stretch out the average time a step takes.
+% \paragraph{Alternative hypothesis ($H_1$):}
+% Additional computations for testing can be fast enough to not affect the average step time.
+
+\section{Discussion}
+
+% \mnote{TODO: Move this into discussion}
+% This shows that both test suites implementing the ''normal'' testing approach and
+% test suites implementing the ''input-indepent'' / ''constraint-only'' testing approach
+% are able to produce accurate test results.
 
 \section{Threats to validity}
-- Students often deliberately changed their programs from the specification (e.g. different fall speeds)
-    - Tests were adjusted to allow a little more than the specification (e.g. different message)
-
-- For each tests suite, many / all projects were executed in a row
-    - Could have a performance impact (?), but Scratch doesn't need a lot of resources
-    - If anything, it could have a negative impact on the results, but results are very positive
-
-- Tests could interfere with the program under test (see prev. section)
-    - But Scratch programs don't usually do calculations without moving any sprite
-    - Most time related functionality is based on absolute time, slow-down would not affect it
-
-- Browser JavaScript could be problematic
-
-
-TODO: pick a time length and execute random tests multiple times at that length
+% - Students often deliberately changed their programs from the specification (e.g. different fall speeds)
+%     - Tests were adjusted to allow a little more than the specification (e.g. different message)
+%
+% - For each tests suite, many / all projects were executed in a row
+%     - Could have a performance impact (?), but Scratch doesn't need a lot of resources
+%     - If anything, it could have a negative impact on the results, but results are very positive
+%
+% - Tests could interfere with the program under test (see prev. section)
+%     - But Scratch programs don't usually do calculations without moving any sprite
+%     - Most time related functionality is based on absolute time, slow-down would not affect it
+%
+% - Browser JavaScript could be problematic
+%
+%
+% TODO: pick a time length and execute random tests multiple times at that length
 
 % \begin{figure}
 %     \centering
@@ -863,25 +1033,6 @@ TODO: pick a time length and execute random tests multiple times at that length
 %     \caption{Correlation between test results of test suite T4 (lite random) and manual scoring}
 %     \label{fig:scatter_random_lite}
 % \end{figure}
-
-\begin{figure}[htpb]
-    \centering
-    \begin{subfigure}{.90\textwidth}
-        \includegraphics[width=\textwidth]{r/coverage-bar-run-1}
-        \caption{Coverage per project}
-        \label{fig:coverage_bar}
-    \end{subfigure}
-
-    \bigskip
-
-    \begin{subfigure}{.90\textwidth}
-        \includegraphics[width=\textwidth]{r/coverage-line-run-1}
-        \caption{Coverage per time}
-        \label{fig:coverage_line}
-    \end{subfigure}
-    \caption{Achieved Coverage of Automated Input}
-    \label{fig:coverage}
-\end{figure}
 
 
 \begin{figure}[htpb]

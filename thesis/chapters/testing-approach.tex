@@ -3,8 +3,7 @@
 
 \chapter{Testing With Whisker}
 
-\mnote{TODO: explain automated test input generation}
-\mnote{TODO: explain why the program is loaded before each test}
+\mnote{TODO: explain automated test input generation\\TODO: explain why the program is loaded before each test}
 % - Before starting a test case, the project is loaded to make sure that every test starts with the same program state
 %     - If this would not be done, it would be very hard to test programs that don't do proper initialization
 %     - Tests would depend on the state the previous test leaves the program in, since Scratch programs don't reset when being stopped
@@ -151,7 +150,6 @@ and would also make it possible to test programs in parallel and in a headless e
 %         With this, callbacks can unregister constraints after the program was stepped.
 % \end{enumerate}
 
-\mnote{TODO: better explanations and code examples}
 Automating Scratch allows us to write tests for Scratch in a unit-test-like fashion.
 Whisker loads and starts the program before each test starts.
 By doing this, every test starts with a fresh instance of the program in the exact same situation.
@@ -194,7 +192,7 @@ Listing~\ref{fig:examples_of_how_to_acquire_the_test_driver} shows code examples
     \label{fig:examples_of_how_to_acquire_the_test_driver}
 \end{listing}
 
-\mnote{TODO: properties depend on time $\rightarrow$ ''old'' values}
+\mnote{TODO: rewrite this, better explanations and code examples\\TODO: properties depend on time $\rightarrow$ ''old'' values}
 The following list will give an overview of Whisker's basic functions.
 The test driver will be denoted as $t$ in example code snippets.
 
@@ -299,7 +297,7 @@ This section will highlight some advantages and disadvantages of the presented t
         Apart from sounds and extensions, anything, which Scratch has to offer, can be tested with this approach.
         In contrast, ITCH's previous testing approach limited Scratch programs to textual IO.
     \item Tests are easily understood, because they control the program like a normal person would.
-    \mnote{Can't state this without proof $\rightarrow$ just say that test use the program like a normal person $\rightarrow$ e.g. recorded input could be used}
+    \mnote{Can't state this without proof $\rightarrow$ "we believe" or similar}
         This is important, because students, whose programs are supposed to be tested later,
         could be allowed to run tests on their programs themselves during development.
         This way, students could easily receive valuable feedback about the correctness of their implementations.
@@ -488,7 +486,6 @@ We want to write a test to check if the sprite's movement works correctly.
     \hspace{.08\textwidth}
     \begin{subfigure}[b]{.55\textwidth}
         \centering
-        \mnote{TODO: update comments}
         \begin{minted}[autogobble, breaklines, linenos, fontsize=\tiny, framesep=2mm, frame=lines]{javascript}
             const sprite = t.getSprite('Sprite1');
 
@@ -619,13 +616,29 @@ many constraints can possibly be combined into a single test.
 For this purpose, Whisker offers an option to disable failed constraints instead of failing the entire test.
 Hence, the test can simply check which constraints failed at the end, and let Whisker generate a test report from them.
 
-% Apart from being independent of their test input, a second advantage of this approach is that it allows tests to easily be combined.
-% By copying constraints and their necessary tracking from one test to another, the checks of one test can be combined with the other's checks.
-% Depending on the program, it may be possible to perform many tests with a single program execution.
-% In case tests are expected to fail, Whisker also offers the option to simply disable failed constraints instead of failing the test.
-% This way, the test can simply check which constraints failed at the end, and let Whisker generate a test report from them.
+\section{Resetting the program during a test}
 
-\mnote{TODO: figure}
+% Register Callbacks for Information Tracking (per run for constraints and across runs to rule out constraints in the end)
+% Register Constraints
+%
+% repeat:
+%     Suspend Information Tracking Callbacks
+%     Suspend Constraints
+%
+%     Reset Per Run Information
+%
+%     Press Green Flag
+%     Run the Program For Short Time to Initialize It
+%
+%     Activate Information Tracking Callbacks
+%     Activate Constraints
+%
+%     Run the Program
+%
+% Check Across-Run Information to Disable Constraints, whose situation to check did not occur
+% Generate test report
+
+For random testing, programs often need to be reset multiple times inside of one test execution...
 
 % \begin{figure}[htpb]
 %     \centering

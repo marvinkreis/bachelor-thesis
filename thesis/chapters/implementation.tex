@@ -69,11 +69,8 @@ One of Whisker's main design goals is not to modify the Scratch virtual machine.
 There are two reasons for this decision.
 For one thing, if Whisker used a modified version of Scratch,
 the modified version would need to be updated regularly as the original version of Scratch receives updates.
-But the main reason for this decision is, that it allows Whisker to be attached to any instance of the Scratch 3.0 VM,
-which opens up some usage possibilities for Whisker.
-\mnote{TODO: check if this is actually possible, should be}
-For example, it should be possible to create a browser addon to add Whisker to the original Scratch page in the future.
-% Any web page, which runs Scratch can theoretically add Whisker's functionality to it.
+But the main reason for this decision is, that it allows Whisker to be attached to any instance of the Scratch 3.0 VM.
+Therefore, any web page, which runs Scratch can theoretically add Whisker's functionality to it.
 % For example, this makes it possible to write a browser addon, which adds Whisker to the original Scratch web page.
 \parspace
 
@@ -327,8 +324,7 @@ Each sprite wrapper keeps track of its own variables.
 
 \section{Simulating Inputs}
 
-\mnote{TODO: Write about the user interacts with the inputs (input objects)?}
-\mnote{TODO: Explain how inputs are saved}
+\mnote{TODO: Explain how inputs are saved\\Inputs are not repeated (e.g. input block + holding key down)}
 
 Scratch's virtual machine provides an API to perform input events on the Scratch program through its \texttt{postIOData} method.
 This method is usually used by Scratch's GUI, which forwards input events from the web browser to the virtual machine.
@@ -457,11 +453,13 @@ After the input is randomized, it is registered and executed like a normal, non-
 
 \section{Automated Input Generation}
 
+\mnote{Rename ''random inputs'', name is confusing}
 We implemented a simple form of automated input generation by making use of Whisker's randomized inputs.
 Whisker can automatically detect which inputs the program under test responds to,
 and register random inputs accordingly.
 To determine the inputs,
-Whisker simply iterates through the blocks of the program and checks for certain block types and block configurations.
+Whisker simply iterates through the blocks of the program and checks for certain block types and block configurations,
+which detect user inputs.
 Then it registers a random input for each found configuration.
 \parspace
 
