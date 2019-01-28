@@ -306,13 +306,6 @@ const test = async function (t) {
 
     // -------------------- Fruit Spawn --------------------------------------
 
-    const appleSpawnYPosition = t.addConstraint(() => {
-        for (const applePos of appleSpawnPositions) {
-            t.assert.ok(applePos.y === 170 || applePos.y === 165, 'Apples must spawn at y = 170.');
-        }
-    }, 'Apple Spawn Y Position Constraint');
-    constraints.push(appleSpawnYPosition);
-
     const appleSpawnRandomXPosition = t.addConstraint(() => {
         if (appleSpawnPositions.length >= 3) {
             const firstAppleX = appleSpawnPositions[0].x;
@@ -329,12 +322,12 @@ const test = async function (t) {
     }, 'Apple Spawn Random X Position Constraint');
     constraints.push(appleSpawnRandomXPosition);
 
-    const bananaSpawnYPosition = t.addConstraint(() => {
-        for (const bananaPos of bananaSpawnPositions) {
-            t.assert.ok(bananaPos.y === 170 || bananaPos.y === 163, 'Bananas must spawn at y = 170.');
+    const appleSpawnYPosition = t.addConstraint(() => {
+        for (const applePos of appleSpawnPositions) {
+            t.assert.ok(applePos.y === 170 || applePos.y === 165, 'Apples must spawn at y = 170.');
         }
-    }, 'Banana Spawn Y Position Constraint');
-    constraints.push(bananaSpawnYPosition);
+    }, 'Apple Spawn Y Position Constraint');
+    constraints.push(appleSpawnYPosition);
 
     const bananaSpawnRandomXPosition = t.addConstraint(() => {
         if (bananaSpawnPositions.length >= 3) {
@@ -352,31 +345,34 @@ const test = async function (t) {
     }, 'Banana Spawn Random X Position Constraint');
     constraints.push(bananaSpawnRandomXPosition);
 
+    const bananaSpawnYPosition = t.addConstraint(() => {
+        for (const bananaPos of bananaSpawnPositions) {
+            t.assert.ok(bananaPos.y === 170 || bananaPos.y === 163, 'Bananas must spawn at y = 170.');
+        }
+    }, 'Banana Spawn Y Position Constraint');
+    constraints.push(bananaSpawnYPosition);
+
     const onlyOneApple = t.addConstraint(() => {
-        t.addConstraint(() => {
-            const apples = t.getSprites(s => s.visible && isApple(s));
-            if (apples.length > 2) {
-                const fruitPos = apples[0].pos;
-                for (let i = 1; i < apples.length; i++) {
-                    t.assert.ok(apples[i].x === fruitPos.x && apples[i].y === fruitPos.y,
-                        'There can only be one apple on the screen at a time.');
-                }
+        const apples = t.getSprites(s => s.visible && isApple(s));
+        if (apples.length > 2) {
+            const fruitPos = apples[0].pos;
+            for (let i = 1; i < apples.length; i++) {
+                t.assert.ok(apples[i].x === fruitPos.x && apples[i].y === fruitPos.y,
+                    'There can only be one apple on the screen at a time.');
             }
-        });
+        }
     }, 'Only One Apple Constraint');
     constraints.push(onlyOneApple);
 
     const onlyOneBanana = t.addConstraint(() => {
-        t.addConstraint(() => {
-            const bananas = t.getSprites(s => s.visible && isBanana(s));
-            if (bananas.length > 2) {
-                const fruitPos = bananas[0].pos;
-                for (let i = 1; i < bananas.length; i++) {
-                    t.assert.ok(bananas[i].x === fruitPos.x && bananas[i].y === fruitPos.y,
-                        'There can only be one banana on the screen at a time.');
-                }
+        const bananas = t.getSprites(s => s.visible && isBanana(s));
+        if (bananas.length > 2) {
+            const fruitPos = bananas[0].pos;
+            for (let i = 1; i < bananas.length; i++) {
+                t.assert.ok(bananas[i].x === fruitPos.x && bananas[i].y === fruitPos.y,
+                    'There can only be one banana on the screen at a time.');
             }
-        });
+        }
     }, 'Only One Banana Constraint');
     constraints.push(onlyOneBanana);
 

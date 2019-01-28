@@ -106,25 +106,26 @@ const assertGameOver = function (t, apple, banana, time, score) {
 const test = async function (t) {
     let {bowl, apple, banana, time, score} = getSpritesAndVariables(t, ['bowl', 'apple', 'banana', 'time', 'score']);
 
-    t.onConstraintFailure('nothing');
+    // ==================== Information Tracking over multiple runs ================
 
-    /* Give the program some time to initialize. */
-    await t.runForTime(500);
+    let appleTouchedBowl = false;
+    let appleTouchedGround = false;
+    let bananaTouchedBowl = false;
+    let bananaTouchedGround = false;
+    const appleSpawnPositions = [];
+    const bananaSpawnPositions = [];
+    let appleFell = false;
+    let bananaFell = false;
+    let timeChanged = false;
+    let movedLeft = false;
+    let movedRight = false;
 
-    // ==================== Information Tracking ===================================
+    // ==================== Information Tracking during one run ====================
 
     /* Track when which fruit touched which object (nothing, bowl, ground). */
-    const appleTouched = [{
-        object: spriteTouchingGround(apple, bowl),
-        time: t.getTotalTimeElapsed(),
-        score: score.value
-    }];
-    const bananaTouched = [{
-        object: spriteTouchingGround(banana, bowl),
-        time: t.getTotalTimeElapsed(),
-        score: score.value
-    }];
-    t.onSpriteMoved(sprite => {
+    let appleTouched = [];
+    let bananaTouched = [];
+    const trackFruitTouches = sprite => {
         const spriteIsApple = isApple(sprite);
         const spriteIsBanana = isBanana(sprite);
         if (spriteIsApple || spriteIsBanana) {
@@ -133,19 +134,30 @@ const test = async function (t) {
             if (spriteTouching !== spriteTouched[spriteTouched.length - 1].object) {
                 spriteTouched.unshift({ // unshift instead of push so we can iterate backwards with a for-each loop
                     object: spriteTouchingGround(sprite, bowl),
-                    time: t.getTotalTimeElapsed(),
+                    time: t.getRunTimeElapsed(),
                     score: score.value
                 });
+                if (spriteIsApple) {
+                    if (spriteTouching === 'ground') {
+                        appleTouchedGround = true;
+                    } else if (spriteTouching === 'bowl') {
+                        appleTouchedBowl = true;
+                    }
+                } else if (spriteIsBanana) {
+                    if (spriteTouching === 'ground') {
+                        bananaTouchedGround = true;
+                    } else if (spriteTouching === 'bowl') {
+                        bananaTouchedBowl = true;
+                    }
+                }
             }
         }
-    });
+    }
 
     /* Track the spawn position of fruits. */
-    let oldApples = t.getSprites(sprite => sprite.visible && isApple(sprite) && sprite.y > 100);
-    let oldBananas = t.getSprites(sprite => sprite.visible && isApple(sprite) && sprite.y > 100);
-    const appleSpawnPositions = [];
-    const bananaSpawnPositions = [];
-    t.addCallback(() => {
+    let oldApples;
+    let oldBananas;
+    const trackFruitSpawns = t.addCallback(() => {
         let apples = t.getSprites(sprite => isApple(sprite) && sprite.visible && sprite.y > 100);
         let bananas = t.getSprites(sprite => isBanana(sprite) && sprite.visible && sprite.y > 100);
 
@@ -171,22 +183,22 @@ const test = async function (t) {
         oldBananas = bananas;
     });
 
-
-    /* Track if apples / bananas fall at all. */
-    let appleFellTimestamp = -1;
-    let bananaFellTimestamp = -1;
-    t.addCallback(() => {
+    /* Track when apples / bananas fall. */
+    let appleFellTimestamp;
+    let bananaFellTimestamp;
+    const trackFruitFalling = t.addCallback(() => {
         if (apple.y !== apple.old.y) {
-            appleFellTimestamp = t.getTotalTimeElapsed();
+            appleFell = true;
+            appleFellTimestamp = t.getRunTimeElapsed();
         }
         if (banana.y !== banana.old.y) {
-            bananaFellTimestamp = t.getTotalTimeElapsed();
+            bananaFell = true;
+            bananaFellTimestamp = t.getRunTimeElapsed();
         }
     });
 
     /* Track if the time ever changed. */
-    let timeChanged = false;
-    t.addCallback(() => {
+    const trackTimeChange = t.addCallback(() => {
         if (time.value !== time.old.value) {
             timeChanged = true;
         }
@@ -194,7 +206,10 @@ const test = async function (t) {
 
     // ==================== Constraints ============================================
 
+    /* All constraints. */
     const constraints = [];
+    /* All constraints that were still active after the last run. */
+    let activeConstraints = [];
 
     // -------------------- Initialization -----------------------------------------
 
@@ -207,14 +222,16 @@ const test = async function (t) {
     // -------------------- Bowl Movement ------------------------------------------
 
     const bowlMove = t.addConstraint(() => {
-        if (t.getTotalTimeElapsed() <= 20000) {
+        if (!appleTouchedGround) {
             const leftDown = t.isKeyDown('Left');
             const rightDown = t.isKeyDown('Right');
 
             if (leftDown && !rightDown) {
                 t.assert.less(bowl.x, bowl.old.x, 'Bowl must move left when left arrow key is pressed.');
+                movedLeft = true;
             } else if (rightDown && !leftDown) {
                 t.assert.greater(bowl.x, bowl.old.x, 'Bowl must move right when right arrow key is pressed.');
+                movedRight = true;
             } else if (!leftDown && !rightDown) {
                 t.assert.equal(bowl.x, bowl.old.x, 'Bowl must not move when no arrow key is pressed.');
             }
@@ -225,7 +242,7 @@ const test = async function (t) {
     constraints.push(bowlMove);
 
     const bowlMoveDetails = t.addConstraint(() => {
-        if (t.getTotalTimeElapsed() <= 20000) {
+        if (!appleTouchedGround) {
             const leftDown = t.isKeyDown('Left');
             const rightDown = t.isKeyDown('Right');
 
@@ -317,37 +334,33 @@ const test = async function (t) {
     constraints.push(bananaSpawnRandomXPosition);
 
     const onlyOneApple = t.addConstraint(() => {
-        t.addConstraint(() => {
-            const apples = t.getSprites(s => s.visible && isApple(s));
-            if (apples.length > 2) {
-                const fruitPos = apples[0].pos;
-                for (let i = 1; i < apples.length; i++) {
-                    t.assert.ok(apples[i].x === fruitPos.x && apples[i].y === fruitPos.y,
-                        'There can only be one apple on the screen at a time.');
-                }
+        const apples = t.getSprites(s => s.visible && isApple(s));
+        if (apples.length > 2) {
+            const fruitPos = apples[0].pos;
+            for (let i = 1; i < apples.length; i++) {
+                t.assert.ok(apples[i].x === fruitPos.x && apples[i].y === fruitPos.y,
+                    'There can only be one apple on the screen at a time.');
             }
-        });
+        }
     }, 'Only One Apple Constraint');
     constraints.push(onlyOneApple);
 
     const onlyOneBanana = t.addConstraint(() => {
-        t.addConstraint(() => {
-            const bananas = t.getSprites(s => s.visible && isBanana(s));
-            if (bananas.length > 2) {
-                const fruitPos = bananas[0].pos;
-                for (let i = 1; i < bananas.length; i++) {
-                    t.assert.ok(bananas[i].x === fruitPos.x && bananas[i].y === fruitPos.y,
-                        'There can only be one banana on the screen at a time.');
-                }
+        const bananas = t.getSprites(s => s.visible && isBanana(s));
+        if (bananas.length > 2) {
+            const fruitPos = bananas[0].pos;
+            for (let i = 1; i < bananas.length; i++) {
+                t.assert.ok(bananas[i].x === fruitPos.x && bananas[i].y === fruitPos.y,
+                    'There can only be one banana on the screen at a time.');
             }
-        });
+        }
     }, 'Only One Banana Constraint');
     constraints.push(onlyOneBanana);
 
     // -------------------- Fruit Interaction ---------------------------------
 
     const applePoints = t.addConstraint(() => {
-        const timeElapsed = t.getTotalTimeElapsed();
+        const timeElapsed = t.getRunTimeElapsed();
         if (timeElapsed <= 20000) {
             for (const touched of appleTouched) {
                 if (timeElapsed - touched.time >= 200) {
@@ -365,7 +378,7 @@ const test = async function (t) {
     constraints.push(applePoints);
 
     const appleGameOver = t.addConstraint(() => {
-        const timeElapsed = t.getTotalTimeElapsed();
+        const timeElapsed = t.getRunTimeElapsed();
         if (timeElapsed <= 20000) {
             for (const touched of appleTouched) {
                 if (timeElapsed - touched.time >= 4000) {
@@ -380,7 +393,7 @@ const test = async function (t) {
     constraints.push(appleGameOver);
 
     const appleGameOverMessage = t.addConstraint(() => {
-        const timeElapsed = t.getTotalTimeElapsed();
+        const timeElapsed = t.getRunTimeElapsed();
         if (timeElapsed <= 20000) {
             for (const touched of appleTouched) {
                 if (timeElapsed - touched.time >= 600) {
@@ -396,7 +409,7 @@ const test = async function (t) {
     constraints.push(appleGameOverMessage);
 
     const bananaBowlPoints = t.addConstraint(() => {
-        const timeElapsed = t.getTotalTimeElapsed();
+        const timeElapsed = t.getRunTimeElapsed();
         if (timeElapsed <= 20000) {
             for (const touched of bananaTouched) {
                 if (timeElapsed - touched.time >= 200) {
@@ -414,7 +427,7 @@ const test = async function (t) {
     constraints.push(bananaBowlPoints);
 
     const bananaGroundPoints = t.addConstraint(() => {
-        const timeElapsed = t.getTotalTimeElapsed();
+        const timeElapsed = t.getRunTimeElapsed();
         if (timeElapsed <= 20000) {
             for (const touched of bananaTouched) {
                 if (timeElapsed - touched.time >= 200) {
@@ -431,7 +444,7 @@ const test = async function (t) {
     constraints.push(bananaGroundPoints);
 
     const bananaGroundMessage = t.addConstraint(() => {
-        const timeElapsed = t.getTotalTimeElapsed();
+        const timeElapsed = t.getRunTimeElapsed();
         if (timeElapsed <= 20000) {
             for (const touched of bananaTouched) {
                 if (timeElapsed - touched.time >= 600) {
@@ -452,57 +465,7 @@ const test = async function (t) {
     }, 'Timer Tick Constraint');
     constraints.push(timerTick);
 
-    const timerGameOver = t.addConstraint(() => {
-        const timeElapsed = t.getTotalTimeElapsed();
-        if (timeElapsed >= 40000) {
-            assertGameOver(t, apple, banana, time, score);
-        } else if (timeElapsed >= 30000) {
-            t.assert.ok(appleFellTimestamp >= 20000 || bananaFellTimestamp >= 20000,
-                'The game must run for at least 20 seconds.');
-        }
-    }, 'Timer Game Over Constraint');
-    constraints.push(timerGameOver);
-
-    let bowlMessageTimestamp = -1;
-    const timerGameOverMessage = t.addConstraint(() => {
-        if (bowlMessageTimestamp === -1) {
-            if (bowl.sayText) {
-                bowlMessageTimestamp = t.getTotalTimeElapsed();
-                t.assert.greaterOrEqual(bowlMessageTimestamp, 20000,
-                    'Bowl must not display a message before 20 seconds.');
-            } else {
-                t.assert.lessOrEqual(t.getRunTimeElapsed(), 40000, 'Bowl must display a message after 30 seconds.');
-            }
-        } else {
-            const timeElapsed = t.getTotalTimeElapsed();
-            if (timeElapsed - bowlMessageTimestamp >= 500 && timeElapsed - bowlMessageTimestamp <= 600) {
-                t.assert.ok(bowl.sayText, 'Bowl must display a message when the time is up.');
-                t.assert.matches(bowl.sayText.toLowerCase(), gameOverRegex,
-                    'Bowl must display \'Ende!\' when the time is up.');
-            }
-        }
-    }, 'Timer Game Over Message Constraint');
-    constraints.push(timerGameOverMessage);
-
     // ==================== Test ===================================================
-
-    t.setRandomInputInterval(150);
-    t.detectRandomInputs({duration: [50, 100]});
-
-    /*
-    t.registerRandomInputs([
-        {
-            device: 'keyboard',
-            key: 'Left',
-            duration: [50, 100]
-        },
-        {
-            device: 'keyboard',
-            key: 'Right',
-            duration: [50, 100]
-        }
-    ]);
-    */
 
     /* Always use the newest apple and banana if clones are used. */
     t.addCallback(() => {
@@ -510,16 +473,83 @@ const test = async function (t) {
         banana = getNewestClone(banana);
     });
 
-    await t.runForTime(5000);
+    const init = function () {
+        appleTouched = [{
+            object: spriteTouchingGround(apple, bowl),
+            time: t.getRunTimeElapsed(),
+            score: score.value
+        }];
+        bananaTouched = [{
+            object: spriteTouchingGround(banana, bowl),
+            time: t.getRunTimeElapsed(),
+            score: score.value
+        }];
+        oldApples = t.getSprites(sprite => sprite.visible && isApple(sprite) && sprite.y > 100);
+        oldBananas = t.getSprites(sprite => sprite.visible && isApple(sprite) && sprite.y > 100);
+        appleFellTimestamp = -1;
+        bananaFellTimestamp = -1;
+        bowlMessageTimestamp = -1;
+
+        t.onSpriteMoved(trackFruitTouches);
+        trackFruitSpawns.enable();
+        trackFruitFalling.enable();
+        trackTimeChange.enable();
+
+        for (const constraint of activeConstraints) {
+            constraint.enable();
+        }
+        activeConstraints = [];
+    };
+
+    const prepareForReset = function () {
+        t.onSpriteMoved(() => {});
+        trackFruitSpawns.disable();
+        trackFruitFalling.disable();
+        trackTimeChange.enable();
+
+        for (const constraint of constraints) {
+            if (constraint.isActive()) {
+                activeConstraints.push(constraint);
+                constraint.disable();
+            }
+        }
+    }
+
+    t.onConstraintFailure('nothing');
+    t.setRandomInputInterval(150);
+    t.detectRandomInputs({duration: [50, 100]});
+
+    for (let i = 0; i < 30; i++) {
+        prepareForReset();
+
+        t.greenFlag();
+        bowl = getSpritesAndVariables(t, ['bowl']).bowl;
+        apple = getSpritesAndVariables(t, ['apple']).apple;
+        banana = getSpritesAndVariables(t, ['banana']).banana;
+        time = getSpritesAndVariables(t, ['time']).time;
+        score = getSpritesAndVariables(t, ['score']).score;
+
+        /* Give the program some time to initialize. */
+        await t.runForTime(500);
+
+        init();
+
+        await t.runForTime(9500);
+    }
 
     // ==================== Filter Constraints =====================================
 
-    if (appleFellTimestamp === -1) {
+    if (!movedLeft || !movedRight) {
+        bowlMove.disable();
+        bowlMoveDetails.disable();
+    }
+
+    if (!appleFell) {
         appleFallingDetails.disable();
         appleFallingDetails.skip = 'Apple did not fall';
     }
 
-    if (bananaFellTimestamp === -1) {
+    if (!bananaFell) {
         bananaFallingDetails.disable();
         bananaFallingDetails.skip = 'Banana did not fall.';
     }
@@ -542,40 +572,22 @@ const test = async function (t) {
         onlyOneBanana.skip = 'Too few bananas spawned.';
     }
 
-    let appleTouchedBowl = false;
-    let appleTouchedGround = false;
-    for (const touched of appleTouched) {
-        if (touched.object === 'bowl') {
-            appleTouchedBowl = true;
-        } else if (touched.object === 'ground') {
-            appleTouchedGround = true;
-        }
-    }
-    if (appleFellTimestamp === -1 || !appleTouchedBowl) {
+    if (!appleTouchedBowl) {
         applePoints.disable();
         applePoints.skip = 'Apple did not touch the bowl.';
     }
-    if (appleFellTimestamp === -1 || !appleTouchedGround) {
+    if (!appleTouchedGround) {
         appleGameOver.disable();
         appleGameOver.skip = 'Apple did not touch the ground.';
         appleGameOverMessage.disable();
         appleGameOverMessage.skip = 'Apple did not touch the ground.';
     }
 
-    let bananaTouchedBowl = false;
-    let bananaTouchedGround = false;
-    for (const touched of bananaTouched) {
-        if (touched.object === 'bowl') {
-            bananaTouchedBowl = true;
-        } else if (touched.object === 'ground') {
-            bananaTouchedGround = true;
-        }
-    }
-    if (bananaFellTimestamp === -1 || !bananaTouchedBowl) {
+    if (!bananaTouchedBowl) {
         bananaBowlPoints.disable();
         bananaBowlPoints.skip = 'Banana did not touch the bowl.';
     }
-    if (bananaFellTimestamp === -1 || !bananaTouchedGround) {
+    if (!bananaTouchedGround) {
         bananaGroundPoints.disable();
         bananaGroundPoints.skip = 'Banana did not touch the ground.';
         bananaGroundMessage.disable();
