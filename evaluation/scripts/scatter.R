@@ -14,9 +14,8 @@ ids = projects.filtered;
 
 # The names of the data sets for which to make scatter plots for
 data_sets = list(normal = c("normal-1", "normal-2", "normal-3", "normal-4", "normal-5"),
-                 constraint = c("constraint-1", "constraint-2", "constraint-3"),
-                 random = c("random-0250", "random-0500", "random-0750", "random-1000", "random-1250", "random-1500", "random-1750", "random-2000", "random-2500", "random-3000", "random-3500", "random-4000", "random-4500", "random-5000", "random-lite-0250"),
-                 random_lite = c( "random-lite-0500", "random-lite-0750", "random-lite-1000", "random-lite-1250", "random-lite-1500", "random-lite-1750", "random-lite-2000", "random-lite-2500", "random-lite-3000", "random-lite-3500", "random-lite-4000", "random-lite-4500", "random-lite-5000"));
+                 constraint = c("constraint-1", "constraint-2", "constraint-3", "constraint-4", "constraint-5"),
+                 random = c("random-1", "random-2", "random-3", "random-4", "random-5"));
 
 make_scatter_plot = function(data, name) {
     correlation = cor(data$points, data$passes);
@@ -33,7 +32,7 @@ make_scatter_plot = function(data, name) {
 
     scatter = ggplot(data = data, aes(x = points, y = passes, color = coverage)) +
         geom_point(size = 2) +
-        geom_smooth(method = lm, se = FALSE) +
+        geom_smooth(method = lm, se = FALSE, color = "blue", size = 1) +
         scale_color_gradient(low = "red", high = "green", limits = c(0.0, 1.0), labels = percent) +
         labs(x = "Points (Manual Evaluation)", y = paste(test_name, "Passes"), color = "Coverage") +
         theme_light();

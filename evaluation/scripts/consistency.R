@@ -9,7 +9,8 @@ ids = projects.filtered;
 
 # The names of the data sets for which to make scatter plots for
 data_sets = list(normal = c("normal-1", "normal-2", "normal-3", "normal-4", "normal-5"),
-                 constraint = c("constraint-1", "constraint-2", "constraint-3"));
+                 constraint = c("constraint-1", "constraint-2", "constraint-3"),
+                 random = c("random-1", "random-2", "random-3", "random-4", "random-5"));
 
 
 percent_format = function(total) {
@@ -20,7 +21,7 @@ make_bar_plot = function(data, total, xlabel, file_name) {
 
     bar = ggplot(data = data, aes(x = items, y = inconsistencies)) +
           geom_col(width = 0.8) +
-          geom_hline(aes(yintercept = mean(inconsistencies))) +
+          geom_hline(aes(yintercept = mean(inconsistencies)), color = "blue", size = 1) +
           scale_y_continuous(breaks = 0:10, labels = percent_format(total)) +
           labs(x = xlabel, y = "Inconsistencies") +
           theme_light() +
@@ -68,9 +69,6 @@ main = function() {
         }
 
         inconsistencies_per_project = rowSums(differences);
-        print(set_name);
-        print(inconsistencies_per_project);
-        print(mean(inconsistencies_per_project));
         data = data.frame(inconsistencies = inconsistencies_per_project,
                           items = names(inconsistencies_per_project));
         file_name = paste("consistency-per-project-", set_name, ".pdf", sep="")
@@ -78,14 +76,27 @@ main = function() {
 
         inconsistencies_per_test = colSums(differences);
         inconsistencies_per_test = inconsistencies_per_test[order(as.numeric(names(inconsistencies_per_test)))];
-        print(set_name);
-        print(inconsistencies_per_test);
-        print(mean(inconsistencies_per_test));
         data = data.frame(inconsistencies = inconsistencies_per_test,
                           items = reorder(as.numeric(names(inconsistencies_per_test)), as.numeric(names(inconsistencies_per_test))));
         file_name = paste("consistency-per-test-", set_name, ".pdf", sep="")
         make_bar_plot(data, num_projects, test_name, file_name);
 
+        print(set_name);
+        print(inconsistencies_per_test);
+        print(mean(inconsistencies_per_test));
+        print(mean(inconsistencies_per_test) / num_projects);
+
+        print(set_name);
+        print(inconsistencies_per_project);
+        print(mean(inconsistencies_per_project));
+        print(mean(inconsistencies_per_project) / num_tests);
+
+        print(set_name);
+        print(sum(rowSums(differences)));
+        print(sum(colSums(differences)));
+        print(sum(colSums(differences) / (num_tests * num_projects)));
+
+        print(set_name);
         print(differences);
     }
 }

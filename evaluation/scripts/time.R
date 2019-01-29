@@ -3,114 +3,115 @@
 source("scripts/read-data.R");
 source("scripts/annotate-plot.R");
 
-# The names of the projects to be used in the scatter plot
-ids = projects.filtered;
 
 
-data_sets = list("tests-normal"      = list("sample", "sample-2"),
-                 "tests-constraint"  = list("sample", "sample-2"),
-                 "tests-random"      = list("sample", "sample-2"),
-                 "tests-random-lite" = list("sample", "sample-2"));
+#max_time = sum(lapply(csvs.time[[set_name]], function(x) x[1:len]));
 
-# data_sets = list("tests-normal"      = list("sample", "sample-2", "sample-3"),
-#                  "tests-constraint"  = list("sample", "sample-2", "sample-3"),
-#                  "tests-random"      = list("sample", "sample-2", "sample-3"),
-#                  "tests-random-lite" = list("sample", "sample-2", "sample-3"));
+data_sets = c("normal",
+              "constraint",
+              "random");
 
-data = data.frame(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA);
-names(data) = c("test",
-                "avg-callbacks-before",
-                "max-callbacks-before",
-                "avg-random-inputs",
-                "max-random-inputs",
-                "avg-inputs",
-                "max-inputs",
-                "avg-sprites",
-                "max-sprites",
-                "avg-scratch",
-                "max-scratch",
-                "avg-callbacks-after",
-                "max-callbacks-after",
-                "avg-constraints",
-                "max-constraints",
-                "avg-total",
-                "max-total",
-                "avg-total-no-scratch",
-                "max-total-no-scratch");
+for (set_name in data_sets) {
+    data = data.frame(NA, NA, NA, NA, NA, NA, NA);
+    names(data) = c("callbacks-before",
+                    "random-inputs",
+                    "inputs",
+                    "sprites",
+                    "scratch",
+                    "callbacks-after",
+                    "constraints");
 
-for (test in names(data_sets)) {
-    for (project in data_sets[[test]]) {
-        times = csvs.time[[test]][[project]][-1:-30,];
-        line = c(test);
-        line[2]  = round(mean(times[,"callbacks-before"]), digits = 4);
-        line[3]  = round( max(times[,"callbacks-before"]), digits = 4);
-        line[4]  = round(mean(times[,"random-inputs"]   ), digits = 4);
-        line[5]  = round( max(times[,"random-inputs"]   ), digits = 4);
-        line[6]  = round(mean(times[,"inputs"]          ), digits = 4);
-        line[7]  = round( max(times[,"inputs"]          ), digits = 4);
-        line[8]  = round(mean(times[,"sprites"]         ), digits = 4);
-        line[9]  = round( max(times[,"sprites"]         ), digits = 4);
-        line[10] = round(mean(times[,"scratch"]         ), digits = 4);
-        line[11] = round( max(times[,"scratch"]         ), digits = 4);
-        line[12] = round(mean(times[,"callbacks-after"] ), digits = 4);
-        line[13] = round( max(times[,"callbacks-after"] ), digits = 4);
-        line[14] = round(mean(times[,"constraints"]     ), digits = 4);
-        line[15] = round( max(times[,"constraints"]     ), digits = 4);
-        line[16] = round(mean(rowSums(times)            ), digits = 4);
-        line[17] = round( max(rowSums(times)            ), digits = 4);
-        line[18] = round(mean(rowSums(times) - times[,"scratch"]), digits = 4);
-        line[19] = round( max(rowSums(times) - times[,"scratch"]), digits = 4);
-        data = rbind(data, line);
+    for (times in csvs.time[[set_name]]) {
+        data = rbind(data, times);
     }
+
+    data = data[-1,];
+
+    print(set_name);
+    print("--------------------");
+    print(paste("mean callbacks-before", round(mean(data[,"callbacks-before"]), digits = 3)));
+    print(paste("mean random-inputs"   , round(mean(data[,"random-inputs"]   ), digits = 3)));
+    print(paste("mean inputs"          , round(mean(data[,"inputs"]          ), digits = 3)));
+    print(paste("mean sprites"         , round(mean(data[,"sprites"]         ), digits = 3)));
+    print(paste("mean scratch"         , round(mean(data[,"scratch"]         ), digits = 3)));
+    print(paste("mean callbacks-after" , round(mean(data[,"callbacks-after"] ), digits = 3)));
+    print(paste("mean constraints"     , round(mean(data[,"constraints"]     ), digits = 3)));
+    print(paste("mean total"           , round(mean(rowSums(data)            ), digits = 4)));
+    print(paste("mean whisker"         , round(mean(rowSums(data) - data[,"scratch"]), digits = 3)));
+    print(paste("max callbacks-before" , round( max(data[,"callbacks-before"]), digits = 3)));
+    print(paste("max random-inputs"    , round( max(data[,"random-inputs"]   ), digits = 3)));
+    print(paste("max inputs"           , round( max(data[,"inputs"]          ), digits = 3)));
+    print(paste("max sprites"          , round( max(data[,"sprites"]         ), digits = 3)));
+    print(paste("max scratch"          , round( max(data[,"scratch"]         ), digits = 3)));
+    print(paste("max callbacks-after"  , round( max(data[,"callbacks-after"] ), digits = 3)));
+    print(paste("max constraints"      , round( max(data[,"constraints"]     ), digits = 3)));
+    print(paste("max total"            , round( max(rowSums(data)            ), digits = 4)));
+    print(paste("max whisker"          , round( max(rowSums(data) - data[,"scratch"]), digits = 3)));
+    print("");
 }
 
-data = data[-1,];
-print(data);
+###############################################################################
 
-################################################################################
+data_sets = c("normal",
+              "constraint",
+              "random");
 
-data = data.frame(NA, NA, NA, NA);
-names(data) = c("component",
-                "project",
-                "avg-component",
-                "avg-scratch");
+for (set_name in data_sets) {
+    data = data.frame(NA, NA, NA);
+    names(data) = c("time",
+                    "step",
+                    "run");
 
-data_sets = list("callbacks-before"  = list("empty", "noop", "spin"),
-                 "random-inputs"     = list("empty", "noop", "spin"),
-                 "inputs"            = list("empty", "noop", "spin"),
-                 "sprites"           = list("clones-spin", "clones"),
-                 "callbacks-after"   = list("empty", "noop", "spin"),
-                 "constraints"       = list("empty", "noop", "spin"))
-
-for (component in names(data_sets)) {
-    for (project in data_sets[[component]]) {
-        times = csvs.time[[component]][[project]][-1:-30,];
-        line = c(component,
-                 project,
-                 round(mean(times[,component]), digits = 4),
-                 round(mean(times[,"scratch"]), digits = 4));
-        data = rbind(data, line);
+    for (times in csvs.time[[set_name]]) {
+        new_data = data.frame(time = rowSums(times),
+                              step = 1:nrow(times),
+                              run  = set_name);
+        data = rbind(data, new_data);
+        break;
     }
+
+    data = data[-1,];
+
+    line = ggplot(data = data, aes(x = step, y = time)) +
+        geom_line() +
+        geom_hline(aes(yintercept = 1000/30), color = "darkgray", size = 1) +
+        labs(x = "Step (30 per second)", y = "Step execution time (in ms)") +
+        theme_light() +
+        scale_y_continuous(breaks = c(0, 5, 10, 15, 20, 25, 30, 35)) +
+        coord_cartesian(ylim=c(0, 35));
+
+    ggsave(paste("time-", set_name, ".pdf", sep=""), plot = line, width = 15, height = 6.5, units = "cm");
 }
 
-data = data[-1,];
-print(data);
 
-################################################################################
 
-example_times_1 = csvs.time[["tests-constraint"]][["sample"]];
-example_times_2 = csvs.time[["tests-constraint"]][["sample-2"]];
-
-example_times = rbind(example_times_1, example_times_2);
-
-data = data.frame(time = rowSums(example_times),
-                  step = c(1:nrow(example_times_1), 1:nrow(example_times_1)),
-                  run = rep(c("1", "2"), c(nrow(example_times_1), nrow(example_times_2))));
-
-line = ggplot(data = data, aes(x = step, y = time, color = run, group = run)) +
-    geom_line() +
-    labs(x = "Step (30 per second)", y = "Step execution time (in ms)", color = "Run") +
-    theme_light() +
-    scale_x_continuous(breaks = c(0, 250, 500, 750, 1000, 1250));
-
-ggsave("time-tests-constraint.pdf", plot = line, width = 15, height = 6.5, units = "cm");
+# data_sets = c("normal",
+#               "constraint",
+#               "random",
+#               "random-exp");
+#
+# data = data.frame(NA, NA, NA);
+# names(data) = c("time",
+#                 "step",
+#                 "run");
+#
+# for (set_name in data_sets) {
+#     i = 1;
+#     for (times in csvs.time[[set_name]]) {
+#         new_data = data.frame(time = rowSums(times),
+#                               step = 1:nrow(times),
+#                               run  = set_name);
+#         i = i + 1;
+#         data = rbind(data, new_data);
+#     }
+# }
+#
+# data = data[-1,];
+#
+# line = ggplot(data = data, aes(x = step, y = time, color = run, group = run)) +
+#     geom_line(size = 0.25, alpha = 0.4) +
+#     labs(x = "Step (30 per second)", y = "Step execution time (in ms)", color = "Run") +
+#     theme_light();
+#     #scale_x_continuous(breaks = c(0, 250, 500, 750, 1000, 1250));
+#
+# ggsave("time-tests.pdf", plot = line, width = 15, height = 6.5, units = "cm");

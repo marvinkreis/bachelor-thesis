@@ -110,7 +110,10 @@ projects.filter = c(
 
     # Game Over on startup
     "K6_S20", # Has to be started twice
-    "K7_S18"  # Sprites have to be dragged up to make it work
+    "K7_S18", # Sprites have to be dragged up to make it work
+
+    # Other reasons
+    "K7_S07"  # Resets all position when the "a" key is pressed, which gets picked up by random input generation
 );
 
 # Properly working projects for which the project file exists and which were scored manually
@@ -119,76 +122,76 @@ projects.filtered = setdiff(projects.intersect, projects.filter);
 
 ########## Mapping between categories of manual evaluation and tests ##########
 
-# Normal Tests
-
-# How many points for each category
-mapping.normal.points = list();
-# What tests correspond to each category
-mapping.normal.tests = list();
-
-mapping.normal.points[[1]]  = 2;
-mapping.normal.points[[2]]  = 2;
-mapping.normal.points[[3]]  = 3;
-mapping.normal.points[[4]]  = 3;
-mapping.normal.points[[5]]  = 2;
-mapping.normal.points[[6]]  = 1;
-mapping.normal.points[[7]]  = 2;
-mapping.normal.points[[8]]  = 2;
-mapping.normal.points[[9]]  = 2;
-mapping.normal.points[[10]] = 3;
-mapping.normal.points[[11]] = 3;
-mapping.normal.points[[12]] = 3;
-mapping.normal.points[[13]] = 4;
-
-mapping.normal.tests[[1]]  = c(20, 23);
-mapping.normal.tests[[2]]  = c(07, 09);
-mapping.normal.tests[[3]]  = c(21, 22);
-mapping.normal.tests[[4]]  = c(24, 25);
-mapping.normal.tests[[5]]  = c(01, 26);
-mapping.normal.tests[[6]]  = c(16, 17);
-mapping.normal.tests[[7]]  = c(03);
-mapping.normal.tests[[8]]  = c();
-mapping.normal.tests[[9]]  = c(07, 09);
-mapping.normal.tests[[10]] = c(27, 28);
-mapping.normal.tests[[11]] = c(10, 11, 12, 13, 14, 15);
-mapping.normal.tests[[12]] = c(02, 04, 05);
-mapping.normal.tests[[13]] = c(18, 19);
-
-names(mapping.normal.tests) = 1:13;
-
-# Constraint-only tests
-
-# How many points for each category
-mapping.constraint.points = list();
-# What tests correspond to each category
-mapping.constraint.tests = list();
-
-mapping.constraint.points[[1]]  = 2;
-mapping.constraint.points[[2]]  = 2;
-mapping.constraint.points[[3]]  = 3;
-mapping.constraint.points[[4]]  = 3;
-mapping.constraint.points[[5]]  = 2;
-mapping.constraint.points[[6]]  = 1;
-mapping.constraint.points[[7]]  = 2;
-mapping.constraint.points[[8]]  = 2;
-mapping.constraint.points[[9]]  = 2;
-mapping.constraint.points[[10]] = 3;
-mapping.constraint.points[[11]] = 3;
-mapping.constraint.points[[12]] = 3;
-mapping.constraint.points[[13]] = 4;
-
-mapping.constraint.tests[[1]]  = c(12, 15);
-mapping.constraint.tests[[2]]  = c(04, 05);
-mapping.constraint.tests[[3]]  = c(13, 14);
-mapping.constraint.tests[[4]]  = c(16, 17);
-mapping.constraint.tests[[5]]  = c(18);
-mapping.constraint.tests[[6]]  = c(10, 11);
-mapping.constraint.tests[[7]]  = c(01);
-mapping.constraint.tests[[8]]  = c();
-mapping.constraint.tests[[9]]  = c(04, 05);
-mapping.constraint.tests[[10]] = c(19, 20);
-mapping.constraint.tests[[11]] = c(06, 07, 08, 09);
-mapping.constraint.tests[[12]] = c(02, 03);
-mapping.constraint.tests[[13]] = c();
-
-names(mapping.normal.tests) = 1:13;
+## Normal Tests
+#
+## How many points for each category
+#mapping.normal.points = list();
+## What tests correspond to each category
+#mapping.normal.tests = list();
+#
+#mapping.normal.points[[1]]  = 2;
+#mapping.normal.points[[2]]  = 2;
+#mapping.normal.points[[3]]  = 3;
+#mapping.normal.points[[4]]  = 3;
+#mapping.normal.points[[5]]  = 2;
+#mapping.normal.points[[6]]  = 1;
+#mapping.normal.points[[7]]  = 2;
+#mapping.normal.points[[8]]  = 2;
+#mapping.normal.points[[9]]  = 2;
+#mapping.normal.points[[10]] = 3;
+#mapping.normal.points[[11]] = 3;
+#mapping.normal.points[[12]] = 3;
+#mapping.normal.points[[13]] = 4;
+#
+#mapping.normal.tests[[1]]  = c(20, 23);
+#mapping.normal.tests[[2]]  = c(07, 09);
+#mapping.normal.tests[[3]]  = c(21, 22);
+#mapping.normal.tests[[4]]  = c(24, 25);
+#mapping.normal.tests[[5]]  = c(01, 26);
+#mapping.normal.tests[[6]]  = c(16, 17);
+#mapping.normal.tests[[7]]  = c(03);
+#mapping.normal.tests[[8]]  = c();
+#mapping.normal.tests[[9]]  = c(07, 09);
+#mapping.normal.tests[[10]] = c(27, 28);
+#mapping.normal.tests[[11]] = c(10, 11, 12, 13, 14, 15);
+#mapping.normal.tests[[12]] = c(02, 04, 05);
+#mapping.normal.tests[[13]] = c(18, 19);
+#
+#names(mapping.normal.tests) = 1:13;
+#
+## Constraint-only tests
+#
+## How many points for each category
+#mapping.constraint.points = list();
+## What tests correspond to each category
+#mapping.constraint.tests = list();
+#
+#mapping.constraint.points[[1]]  = 2;
+#mapping.constraint.points[[2]]  = 2;
+#mapping.constraint.points[[3]]  = 3;
+#mapping.constraint.points[[4]]  = 3;
+#mapping.constraint.points[[5]]  = 2;
+#mapping.constraint.points[[6]]  = 1;
+#mapping.constraint.points[[7]]  = 2;
+#mapping.constraint.points[[8]]  = 2;
+#mapping.constraint.points[[9]]  = 2;
+#mapping.constraint.points[[10]] = 3;
+#mapping.constraint.points[[11]] = 3;
+#mapping.constraint.points[[12]] = 3;
+#mapping.constraint.points[[13]] = 4;
+#
+#mapping.constraint.tests[[1]]  = c(12, 15);
+#mapping.constraint.tests[[2]]  = c(04, 05);
+#mapping.constraint.tests[[3]]  = c(13, 14);
+#mapping.constraint.tests[[4]]  = c(16, 17);
+#mapping.constraint.tests[[5]]  = c(18);
+#mapping.constraint.tests[[6]]  = c(10, 11);
+#mapping.constraint.tests[[7]]  = c(01);
+#mapping.constraint.tests[[8]]  = c();
+#mapping.constraint.tests[[9]]  = c(04, 05);
+#mapping.constraint.tests[[10]] = c(19, 20);
+#mapping.constraint.tests[[11]] = c(06, 07, 08, 09);
+#mapping.constraint.tests[[12]] = c(02, 03);
+#mapping.constraint.tests[[13]] = c();
+#
+#names(mapping.normal.tests) = 1:13;

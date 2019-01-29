@@ -14,7 +14,7 @@ source("scripts/annotate-plot.R");
 ids = projects.filtered;
 
 # The names of the data sets for which to make plots for
-data_sets = list("run-1", "run-2", "run-3");
+data_sets = list("run-1", "run-2", "run-3", "run-5", "no-input-run-1");
 
 breaks = c(1, 2, 4, 8, 16, 32, 64, 128, 256, 600);
 
