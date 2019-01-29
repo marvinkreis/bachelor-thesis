@@ -361,8 +361,8 @@ Nevertheless, we register constraints, which check the game over state in case a
 This test suite uses the same constraints as T2, but uses Whisker's automated input generation to control the program with random inputs.
 It resets the program multiple times in order to increase the likelihood of multiple apples getting caught in one of the runs.
 But, since it is nevertheless very unlikely to have the apple not touch the ground at all with random inputs,
-we don't for check for a game over after 30 seconds, and only let the program run for 15 seconds a time.
-We reset the program 20 times during the test, resulting in an execution time of $20 \cdot 15s = 300s$.
+we don't for check for a game over after 30 seconds, and only let the program run for 10 seconds a time.
+We reset the program 30 times during the test, resulting in an execution time of $30 \cdot 10s = 300s$.
 Listing~\ref{lst:automated_input_random_tests} shows the exact configuration, which use to simulate input for the test case.
 \parspace
 
@@ -380,10 +380,10 @@ Listing~\ref{lst:automated_input_random_tests} shows the exact configuration, wh
 
 \section{RQ1: Accuracy of Test Results}
 
-In this part of the evaluation, we will try to answer the following research question:
+In this part of the evaluation, we will answer the following research question:
 
 \begin{center}\begin{minipage}{.9\textwidth}
-Can results of automated testing be accurate enough to aid in grading Scratch assignments?
+    \textbf{RQ1: Can results of automated testing be accurate enough to aid in grading Scratch assignments?}
 \end{minipage}\end{center}
 
 \noindent In order to answer this question,
@@ -432,18 +432,19 @@ They have a strong correlation.
 
 Figure~\ref{fig:scatter_normal} compares the test results of test suite T1 to scores from a manual evaluation of projects P1.
 Possible values for the manual scores are in the range of $[0, 30]$ and possible values for the number of test passes are in the range of $[0, 28]$.
+The blue line displays the linear regression.
 We can observe, that the number of passing test cases are strongly correlated to the manual scores,
 with a correlation coefficient of $r = 0.8918$ for the first run and $r = 0.8913$ for the average over 3 runs.
 Except for few irregularities, the test results closely resemble the manually assigned scores.
 
 \begin{figure}[htpb]
     \centering
-    \begin{subfigure}{.40\textwidth}
+    \begin{subfigure}{.50\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-normal-1}
         \caption{First run}
         \label{fig:scatter_normal_1}
     \end{subfigure}%
-    \begin{subfigure}{.40\textwidth}
+    \begin{subfigure}{.50\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-normal-avg}
         \caption{Average over 3 runs}
         \label{fig:scatter_normal_avg}
@@ -461,12 +462,12 @@ with a correlation coefficient of $r = 0.8877$ for the first run and $r = 0.8968
 
 \begin{figure}[htpb]
     \centering
-    \begin{subfigure}{.40\textwidth}
+    \begin{subfigure}{.50\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-constraint-1}
         \caption{First run}
         \label{fig:scatter_constraint_1}
     \end{subfigure}%
-    \begin{subfigure}{.40\textwidth}
+    \begin{subfigure}{.50\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-constraint-avg}
         \caption{Average over 3 runs}
         \label{fig:scatter_constraint_avg}
@@ -483,12 +484,12 @@ The result, again, indicate a strong correlation with a correlation coefficient 
 
 \begin{figure}[htpb]
     \centering
-    \begin{subfigure}{.40\textwidth}
+    \begin{subfigure}{.50\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-random-1}
         \caption{First run}
         \label{fig:scatter_random_1}
     \end{subfigure}%
-    \begin{subfigure}{.40\textwidth}
+    \begin{subfigure}{.50\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-random-1}
         \caption{Average over 3 runs}
         \label{fig:scatter_random_avg}
@@ -576,20 +577,20 @@ The full matrices can be found in the appendix in Section~\ref{sec:inconsistenci
 The horizontal line displays the average number of inconsistencies per test case.
 Figure~\ref{fig:consistency_per_project_normal} shows the number of inconsistent test-projects pairs per project.
 We can observe that some test cases and some projects tend to be rather inconsistent,
-with a maximum of $6$ inconsistent projects ($18.75\%$ of projects) per test case and $5$ inconsistent test cases ($17.86\%$ of test cases) per project.
-However, on average only $1.36$ projects per test case and $1.19$ test cases per project show inconsistent results.
-This amounts to $4.24\%$ of all test-project pairs, which is still consistent enough for grading purposes.
+with a maximum of $5$ inconsistent projects ($16.13\%$ of projects) per test case and $5$ inconsistent test cases ($17.86\%$ of test cases) per project.
+However, on average only $1.06$ projects per test case and $1.18$ test cases per project show inconsistent results.
+This amounts to $3.80\%$ of all test-project pairs, which is still consistent enough for grading purposes.
 \parspace
 
 \begin{figure}[htpb]
     \centering
-    \begin{subfigure}{.475\textwidth}
+    \begin{subfigure}{.65\textwidth}
         \includegraphics[width=\textwidth]{r/consistency-per-test-normal}%
         \vspace{-\medskipamount}
         \caption{Number of projects with inconsistent outcomes, per test case}
         \label{fig:consistency_per_test_normal}
     \end{subfigure}
-    \begin{subfigure}{.475\textwidth}
+    \begin{subfigure}{.65\textwidth}
         \includegraphics[width=\textwidth]{r/consistency-per-project-normal}%
         \vspace{-\medskipamount}
         \caption{Number of test cases with inconsistent outcomes, per project}
@@ -604,20 +605,20 @@ This amounts to $4.24\%$ of all test-project pairs, which is still consistent en
 
 Figure~\ref{fig:consistency_per_test_constraint} shows the number of inconsistencies for test suite T2.
 We observe similar results to T1.
-The data shows a maximum of $5$ inconsistent projects ($TODO\%$ of projects) per constraint and $5$ inconsistent constraints ($TODO\%$ of constraints) per project.
-On average, $TODO$ projects per constraint and $TODO$ constraints per project show inconsistent results,
-which amounts to $4.24\%$ of all constraint-project pairs.
+The data shows a maximum of $5$ inconsistent projects ($16.13\%$ of projects) per constraint and $5$ inconsistent constraints ($25.00\%$ of constraints) per project.
+On average, $1.38$ projects per constraint and $0.94$ constraints per project show inconsistent results,
+which amounts to $4.45\%$ of all constraint-project pairs.
 \parspace
 
 \begin{figure}[htpb]
     \centering
-    \begin{subfigure}{.475\textwidth}
+    \begin{subfigure}{.65\textwidth}
         \includegraphics[width=\textwidth]{r/consistency-per-test-constraint}%
         \vspace{-\medskipamount}
         \caption{Number of projects with inconsistent outcomes, per constraint}
         \label{fig:consistency_per_test_constraint}
     \end{subfigure}
-    \begin{subfigure}{.475\textwidth}
+    \begin{subfigure}{.65\textwidth}
         \includegraphics[width=\textwidth]{r/consistency-per-project-constraint}%
         \vspace{-\medskipamount}
         \caption{Number of constraints with inconsistent outcomes, per project}
@@ -631,27 +632,29 @@ which amounts to $4.24\%$ of all constraint-project pairs.
 \subsubsection{Random Input Test Suite (T3)}
 
 Figure~\ref{fig:consistency_per_test_constraint} shows the number of inconsistencies for test suite T3.
-We observed a maximum of $5$ inconsistent projects ($TODO\%$ of projects) per constraint and $5$ inconsistent constraints ($TODO\%$ of constraints) per project.
-On average, $TODO$ projects per constraint and $TODO$ constraints per project show inconsistent results,
-which amounts to $4.24\%$ of all constraint-project pairs.
+We observed a maximum of $7$ inconsistent projects ($22.58\%$ of projects) per constraint and $5$ inconsistent constraints ($27.78\%$ of constraints) per project.
+On average, $2.94$ projects per constraint and $1.71$ constraints per project show inconsistent results,
+which amounts to $9.58\%$ of all constraint-project pairs.
+Since this test suite is non-deterministic and executed the program under test multiple times, this increase in inconsistent outcomes is expected.
+
 \parspace
 
 \begin{figure}[htpb]
     \centering
-    \begin{subfigure}{.475\textwidth}
+    \begin{subfigure}{.65\textwidth}
         \includegraphics[width=\textwidth]{r/consistency-per-test-random}%
         \vspace{-\medskipamount}
         \caption{Number of projects with inconsistent outcomes, per constraint}
         \label{fig:consistency_per_test_random}
     \end{subfigure}
-    \begin{subfigure}{.475\textwidth}
+    \begin{subfigure}{.65\textwidth}
         \includegraphics[width=\textwidth]{r/consistency-per-project-random}%
         \vspace{-\medskipamount}
         \caption{Number of constraints with inconsistent outcomes, per project}
         \label{fig:consistency_per_project_random}
     \end{subfigure}
 
-    \caption{Inconsistent outcomes of test suite T3 over 2 runs}
+    \caption{Inconsistent outcomes of test suite T3 over 5 runs}
     \label{fig:consistency_random}
 \end{figure}
 
@@ -803,7 +806,7 @@ which introduces inconsistency to tests, which rely on the behaviour of the bana
 % K7_S20
 % K7_S26                                                              1
 
-\section{RQ3: Automated Input Generation}
+\section{RQ2: Automated Input Generation}
 % \subsection{Evaluation Method}
 % \subsection{Data Selection}
 % \subsection{Threats to Validity}
@@ -813,18 +816,23 @@ which introduces inconsistency to tests, which rely on the behaviour of the bana
 For this part of the evaluation, we will consider following research question:
 
 \begin{center}\begin{minipage}{.9\textwidth}
-Is automated test input generation a viable method to control Scratch programs for testing purposes?
+    \textbf{RQ2: Is automated test input generation a viable method to control Scratch programs for testing purposes?}
 \end{minipage}\end{center}
 
-\noindent In order to answer this question, we will consider two indicators:
-\textbf{Achieved statement coverage.}
-Firstly, we want to find out how much of a typical Scratch program's functionality can be reached by using generated user inputs.
-Intuitively, the more of a program gets executed, the more of the its functionality can be checked by tests that run it.
-To evaluate this, we ran Whisker's automated input generation algorithm on the Code Club Scratch projects (P2) for ten minutes
+\noindent In RQ1, we already showed, that getting accurate test results with random input is possible.
+In order to get good test results generally, the generated input needs to be able to execute as much of the program as possible.
+Intuitively, the more of a program gets executed, the more of the its functionality can be checked by tests running on it.
+Therefore, we want to find out how much of a typical Scratch program's functionality can be reached by controlling it through Whisker's generated user input.
+In order to measure how much of the program is reached, we will use the achieved statement coverage as an indicator.
+\parspace
+
+We ran Whisker's automated input generation algorithm on the Code Club Scratch projects (P2),
 and measured the current statement coverage each second during the execution.
-\mnote{TODO: we did not press the green flag again during the ten minutes}
-We will use the average of the final statement coverage to indicate how much of the projects is reached by automated input.
-Listing~\ref{lst:coverage_test} shows the test case we executed on the projects.
+Each program was run for five minutes and was reset five times during that time,
+resulting five one-minute executions of the program.
+We use the mean final statement coverage on the projects to indicate how much of the programs is reached by the automated input.
+To get more consistent results, we ran this experiment five times, and took the average of the final coverage scores.
+Listing~\ref{lst:coverage_test} shows the code, which we used to run the programs.
 In order to access the coverage during the execution we implemented a function called \texttt{logCoverage},
 which saves the current statement coverage of the program and outputs all saved coverage records once the test is over.
 \parspace
@@ -839,7 +847,7 @@ which saves the current statement coverage of the program and outputs all saved 
 % Like in RQ1, we use the correlation between test results and manual scores as an indicator of the test results' quality.
 % \parspace
 
-\begin{listing}
+\begin{listing}[ht]
     \centering
 
     \begin{minipage}{.9\textwidth}
@@ -860,10 +868,6 @@ which saves the current statement coverage of the program and outputs all saved 
     \label{lst:coverage_test}
 \end{listing}
 
-\subsection{Achieved statement coverage}
-
-\mnote{TODO: What coverage threshold?}
-
 \paragraph{Null hypothesis ($H_0$):}
 Automated input generation can only cover a small fraction of typical Scratch programs, making it unfeasible for testing purposes.
 \paragraph{Alternative hypothesis ($H_1$):}
@@ -881,15 +885,12 @@ Here, we only got an average of $47.04\%$ per project on our first run, and $TOD
 
 \begin{figure}[htpb]
     \centering
-    \begin{subfigure}{\textwidth}
+    \begin{subfigure}{.8\textwidth}
         \includegraphics[width=\textwidth]{r/coverage-bar-run-1}
         \caption{Coverage per project}
         \label{fig:coverage_bar}
     \end{subfigure}
-
-    \bigskip
-
-    \begin{subfigure}{\textwidth}
+    \begin{subfigure}{.8\textwidth}
         \includegraphics[width=\textwidth]{r/coverage-line-run-1}
         \caption{Coverage over time}
         \label{fig:coverage_line}
@@ -901,15 +902,12 @@ Here, we only got an average of $47.04\%$ per project on our first run, and $TOD
 
 \begin{figure}[htpb]
     \centering
-    \begin{subfigure}{\textwidth}
+    \begin{subfigure}{.8\textwidth}
         \includegraphics[width=\textwidth]{r/coverage-bar-no-input-run-1}
         \caption{Coverage per project}
         \label{fig:coverage_no_input_bar}
     \end{subfigure}
-
-    \bigskip
-
-    \begin{subfigure}{\textwidth}
+    \begin{subfigure}{.8\textwidth}
         \includegraphics[width=\textwidth]{r/coverage-line-no-input-run-1}
         \caption{Coverage over time}
         \label{fig:coverage_no_input_line}
@@ -919,6 +917,7 @@ Here, we only got an average of $47.04\%$ per project on our first run, and $TOD
     \label{fig:coverage_no_input}
 \end{figure}
 
+\subsection{Reasons for low coverage on certain projects}
 
 Over the five runs with generated input, we observed ''Create Your Own World'' and ''Memory'' to consistently have the lowest coverage of the projects.
 % A screenshot of both these programs can be seen in Figure~\ref{fig:difficult_code_club_projects}.
@@ -955,8 +954,154 @@ We are going to take a quick look at the reasons, why these projects are difficu
 %     \label{fig:difficult_code_club_projects}
 % \end{figure}
 
+\section{Interference with Programs Under Test}
+\label{sec:time_evaluation}
 
-\section{RQ4: Interference with Programs Under Test}
+\mnote{No RQ, just another question. Is that ok?}
+In the following section, we want to answer another important question:
+
+\begin{center}\begin{minipage}{.9\textwidth}
+    \textbf{Does the testing process interfere with the program under test?}
+\end{minipage}\end{center}
+
+\subsection{Problem statement}
+
+\noindent Since JavaScript is executed in a single-threaded environment,
+Whisker executing code in between steps of the Scratch program can possibly be problematic.
+Additional computations could take too long and delay the next step of the program.
+Scratch offers blocks which delay the execution of a script for a set amount of time.
+These blocks save the current time when called and wait until a certain time difference between the current time and the saved time is reached.
+Therefore, if the program is executed too slowly, fewer blocks are executed while the delay is active,
+which can make a difference if the program expects to get a certain amount of work done during the wait.
+However, we suspect that this will not be a concern for most Scratch programs.
+\parspace
+
+Scratch's step function has to be called 30 times per second.
+Therefore, the execution time of Whisker's step function, which includes the execution of Scratch's step function,
+should not exceed $1000\text{ms}/30 = 33.33\text{ms}$.
+Scratch allocates $0.75 * 33.33\text{ms} = 25.0\text{ms}$ of the $33.33\text{ms}$ to execute the program.
+If no sprite changes in the program during the step,
+the Scratch VM will execute the program for the allocated amount of time.
+But if some sprite's position or appearance changes, the VM will stop executing the program earlier.
+Afterwards, Scratch draws the new frame in the GUI.
+In the worst case, i.e. if no sprite changes and the whole time interval is used to execute the program,
+$0.25 * 33.33\text{ms} = 8.33\text{ms}$ will be left to render the new frame.
+Most modern hardware will take less time than $8.33\text{ms}$ to render the picture,
+which leaves time for Whisker to execute other tasks.
+\parspace
+
+We should also note that some of Whisker's optional functionality gets executed during Scratch's step,
+which will slow the program down as well, if the full $25\text{ms}$ of execution time are used by Scratch.
+This includes coverage measurement and callbacks for sprite changes (e.g. \texttt{t.onSpriteMoved} and \texttt{spite.onMoved}).
+However the Scratch GUI itself also registers code to update the GUI, which is run during the step of the VM,
+so this should not affect the program, unless the registered callbacks are very expensive to execute.
+
+\subsection{Time measurements}
+
+To evaluate this, we measured the execution time of Whisker's components (see Figure~\ref{fig:whisker_step_procedure})
+as well as the execution time of Scratch during each step.
+Since we execute Whisker in a web browser,
+we were limited to JavaScript's \texttt{performance.now} method to measure execution times.
+\texttt{performance.now} returns the time, since which the current web page is open,
+with an accuracy of $0.1\text{ms}$.
+The code that we used for measuring the execution times can be found in Listing~\ref{lst:time_measurement_code} in the appendix.
+\parspace
+
+We executed our test suites T1-T3 on the sample solution of the catching game (P1) ten times,
+and measured the execution times of each step.
+We will consider the mean times, as well as the maximum times from the ten runs
+to decide if the test execution could interfere with the program or not.
+
+\paragraph{Null hypothesis ($H_0$):}
+The execution of additional code delays the execution of Scratch's steps, which possibly interferes with the program execution.
+\vspace{-\medskipamount}
+\paragraph{Alternative hypothesis ($H_1$):}
+The execution of additional code introduces no delay. It will therefore not interfere with the program execution.
+\parspace
+
+Figure \ref{fig:time_line_plot} shows execution times from the first run of each test suite on the program.
+It displays the total execution time of Whisker's step procedure over time.
+The time measurements include both the execution time of Whisker and Scratch.
+We can see that the execution time is mostly far beneath the limit of $33.33\text{ms}$
+and only rarely spikes to higher for short periods of time.
+
+\begin{figure}[htpb]
+    \centering
+
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{r/time-normal}
+        \vspace{-\medskipamount}
+        \caption{T1 (normal)}
+    \end{subfigure}
+
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{r/time-constraint}
+        \vspace{-\medskipamount}
+        \caption{T2 (input-independent / constraint-only)}
+    \end{subfigure}
+
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=.7\textwidth]{r/time-random}
+        \vspace{-\medskipamount}
+        \caption{T3 (random input)}
+    \end{subfigure}
+
+    \caption{Measured execution time of Whisker's step procedure during first test execution}
+    \label{fig:time_line_plot}
+\end{figure}
+
+Figure \ref{tab:time_measurements} shows the average and maximum executions times for each part of Whisker's step procedure.
+This data is taken from ten consecutive executions of the respective test suite on the program under test.
+Again, the average total execution time is far beneath $33.33\text{ms}$.
+The execution of test suite T1 spiked over the $33.33\text{ms}$ with a maximum of $35.1\text{ms}$,
+but this only happened in one step, with the second longest step execution time for T1 being $31.1\text{ms}$.
+
+% round((0.071 + 0.102 + 0.068) / 3, digits = 3)
+% round((0.004 + 0.004 + 0.024) / 3, digits = 3)
+% round((0.005 + 0.005 + 0.023) / 3, digits = 3)
+% round((0.022 + 0.022 + 0.022) / 3, digits = 3)
+% round((1.852 + 2.054 + 1.129) / 3, digits = 3)
+% round((0.007 + 0.006 + 0.005) / 3, digits = 3)
+% round((0.012 + 0.078 + 0.058) / 3, digits = 3)
+% round((1.972 + 2.272 + 1.330) / 3, digits = 3)
+% round((0.12  + 0.218 + 0.201) / 3, digits = 3)
+%
+% round(max(4.8  , 7.3  , 9.7 ), digits=3)
+% round(max(1.3  , 3.1  , 6.4 ), digits=3)
+% round(max(2    , 1.6  , 8.6 ), digits=3)
+% round(max(6.4  , 4.2  , 4.8 ), digits=3)
+% round(max(35.1 , 24.6 , 32.7), digits=3)
+% round(max(1.1  , 0.3  , 1.8 ), digits=3)
+% round(max(2.9  , 3.2  , 12.5), digits=3)
+% round(max(35.1 , 24.9 , 33.1), digits=3)
+% round(max(6.5  , 7.6  , 13.1), digits=3)
+
+\begin{table}[htpb]
+    \centering
+    \footnotesize
+    \begin{tabular}{l|rr|rr|rr|rr}
+        \toprule
+                             &       & T1   &       & T2   &       & T3   &       & all   \\
+                             & mean  & max  & mean  & max  & mean  & max  & mean  & max  \\
+        \midrule
+        Callbacks (Before)   & 0.071 & 4.8  & 0.102 & 7.3  & 0.068 & 9.7  & 0.080 & 9.7  \\
+        Random Inputs        & 0.004 & 1.3  & 0.004 & 3.1  & 0.024 & 6.4  & 0.011 & 6.4  \\
+        Inputs               & 0.005 & 2    & 0.005 & 1.6  & 0.023 & 8.6  & 0.011 & 8.6  \\
+        Sprites              & 0.022 & 6.4  & 0.022 & 4.2  & 0.022 & 4.8  & 0.022 & 6.4  \\
+        Scratch              & 1.852 & 35.1 & 2.054 & 24.6 & 1.129 & 32.7 & 1.678 & 35.1 \\
+        Callbacks (After)    & 0.007 & 1.1  & 0.006 & 0.3  & 0.005 & 1.8  & 0.006 & 1.8  \\
+        Constraints          & 0.012 & 2.9  & 0.078 & 3.2  & 0.058 & 12.5 & 0.049 & 12.5 \\
+        \midrule
+        Total                & 1.972 & 35.1 & 2.272 & 24.9 & 1.330 & 33.1 & 1.858 & 35.1 \\
+        Total (Whisker only) & 0.12  & 6.5  & 0.218 & 7.6  & 0.201 & 13.1 & 0.180 & 13.1 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Measured execution time (in ms) for every part of Whisker's step procedure}
+    \label{tab:time_measurements}
+\end{table}
 
 % Since the tests execute code between steps in a single threaded environment,
 % they could, in theory, interfere with the program by slowing down the step cycle.
@@ -1033,36 +1178,3 @@ We are going to take a quick look at the reasons, why these projects are difficu
 %     \caption{Correlation between test results of test suite T4 (lite random) and manual scoring}
 %     \label{fig:scatter_random_lite}
 % \end{figure}
-
-
-\begin{figure}[htpb]
-    \centering
-    \includegraphics[width=.9\textwidth]{r/time-tests-constraint}
-    \caption{Execution time of Whisker's step procedure over time}
-    \label{fig:time_tests_constraint}
-\end{figure}
-
-\ref{fig:whisker_step_procedure}
-\begin{table}[htpb]
-    \centering
-    \small
-    \begin{tabular}{l|rr|rr|rr|rr}
-        \toprule
-        Component            &       & T1   &       & T2   &        & T3   &       & T4   \\
-                             & avg   & max  & avg   & max  & avg    & max  & avg   & max  \\
-        \midrule
-        Callbacks Before     & 0.040 &  0.8 &       &      &        &      &       &      \\
-        Random Inputs        & 0.002 &  0.3 &       &      &        &      &       &      \\
-        Inputs               & 0.004 &  0.2 &       &      &        &      &       &      \\
-        Sprites              & 0.015 &  1.4 &       &      &        &      &       &      \\
-        Scratch              & 0.716 & 29.9 &       &      &        &      &       &      \\
-        Callbacks After      & 0.004 &  0.5 &       &      &        &      &       &      \\
-        Constraints          & 0.006 &  0.3 &       &      &        &      &       &      \\
-        \midrule
-        Total                & 0.071 &  1.5 &       &      &        &      &       &      \\
-        Total (Whisker only) & 0.787 & 30.1 &       &      &        &      &       &      \\
-        \bottomrule
-    \end{tabular}
-    \caption{Time measurements (in ms) for every component in Whisker's step procedure}
-    \label{tab:component_time_measurements}
-\end{table}

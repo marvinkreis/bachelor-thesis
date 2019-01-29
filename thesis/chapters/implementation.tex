@@ -248,7 +248,7 @@ when a run of the program is being started, while another one is still going on.
     \label{fig:run_method_excerpt}
 \end{figure}
 
-\begin{listing}
+\begin{listing}[htpb]
     \centering
 
     \begin{minipage}{.9\textwidth}
@@ -274,7 +274,7 @@ because they visually change sprites in every step, which makes the step finish 
 And even when no redraw is requested,
 the allocated time interval for rendering the picture is long enough to allow Whisker to run its other tasks without exceeding the time limit of 1/30 second.
 Therefore, Whisker can run other tasks in between the Scratch steps without interfering with the program.
-In section~\ref{TODO}, we will prove this empirically by measuring how long Scratch steps take to execute.
+In section~\ref{sec:time_evaluation}, we will prove this empirically by measuring how long Scratch's steps and Whisker's other tasks take to execute.
 
 % Stuff to write about
 %   Inputs:

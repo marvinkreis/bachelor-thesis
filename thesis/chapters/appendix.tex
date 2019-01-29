@@ -171,4 +171,100 @@
 
 
 
+\begin{listing}
+    \centering
 
+    \begin{subfigure}[b]{.45\textwidth}
+        \begin{minted}[autogobble, breaklines, linenos, fontsize=\tiny, framesep=2mm, frame=lines]{javascript}
+            const names = [
+                'callbacks-before',
+                'random-inputs',
+                'inputs',
+                'sprites',
+                'scratch',
+                'callbacks-after',
+                'constraints'
+            ];
+
+            let currentTimestamp;
+            let currentRecord;
+            let records;
+
+            const resetRecords = function () {
+                records = [];
+            };
+
+            const startRecord = function () {
+                currentTimestamp = window.performance.now();
+                currentRecord = [];
+            };
+
+            const record = function () {
+                currentRecord.push(window.performance.now() - currentTimestamp);
+            };
+
+            const endRecord = function () {
+                records.push(currentRecord);
+            };
+
+            const getRecords = function () {
+                return {
+                    names,
+                    records
+                };
+            };
+        \end{minted}
+        \caption{Helper methods}
+    \end{subfigure}
+    \hspace{.08\textwidth}
+    \begin{subfigure}[b]{.45\textwidth}
+        \begin{minted}[autogobble, breaklines, linenos, fontsize=\tiny, framesep=2mm, frame=lines]{javascript}
+            step () {
+                startRecord();
+
+                this.callbacks.callCallbacks(false);
+                record();
+
+                if (!this.running) {
+                    endRecord();
+                    return;
+                }
+
+                this.randomInputs.performRandomInput();
+                record();
+
+                this.inputs.performInputs();
+                record();
+
+                this.sprites.update();
+                record();
+
+                this.vm.runtime._step();
+                record();
+
+                if (!this.running) {
+                    endRecord();
+                    return;
+                }
+
+                this.callbacks.callCallbacks(true);
+                record();
+
+                if (!this.running) {
+                    endRecord();
+                    return;
+                }
+
+                const rv = this.constraints.checkConstraints();
+                record();
+
+                endRecord();
+
+                return rv;
+            }
+        \end{minted}
+        \caption{Step procedure}
+    \end{subfigure}
+    \caption{Modified Whisker step procedure for execution time measurement}
+    \label{lst:time_measurement_code}
+\end{listing}
