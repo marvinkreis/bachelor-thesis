@@ -6,23 +6,55 @@
 \chapter{Evaluation}%
 \label{cha:evaluation}
 
-TODO: Introduction
+In this chapter, Whisker will be evaluated.
+We will conduct three experiments to answer the following research questions.
 
-- In this chapter, the Whisker testing utility is evaluated
+{
+    \parspace
 
-- 3 Parts
-- TODO: explain RQs
-    - 1. First it is shown that it is possible to run Whisker tests without interfering with the execution of the Scratch program
-    - 2. The main part of the evaluation focuses on finding out how accurate Whisker's test results can be compared to manual assessment (normal + constraint tests)
-    - 3. Then Whiskers random input is evaluated
+    \centering
+    \begin{minipage}{.9\textwidth}
+        \textbf{RQ1: Can results of automated testing be accurate enough to aid in grading Scratch assignments?}
+        \parspace
 
-- Chapter outline
+        \noindent \textbf{RQ2: Is automated test input generation a viable method to control Scratch programs for testing purposes?}
+        \parspace
+
+        \noindent \textbf{RQ3: Does the testing process slow down the program under test?}
+    \end{minipage}
+
+    \parspace
+}
+
+
+\noindent In the first experiment we will execute three different test suites on a set of Scratch projects,
+then examine the test results to determine their accuracy.
+For the second experiment, we will execute automated input generation on a variety of projects,
+and measure the achieved statement coverage to find out how much of ordinary Scratch programs
+can be reached by automatically generated input.
+Finally, in the third experiment we will measure execution times
+to check if the testing process slows down the program under test.
+\parspace
+
+
+Initially, Section 4.1 describes the evaluation method used in this work.
+Afterwards, the strategy used for comparing both approaches is explained in Section
+4.2. Section 4.3 describes which subjects are used for the evaluation and why, before
+the actual results are shown in Section 4.5. Finally, Section 4.6 discusses the results und
+points out possible threats to validity.
+4.1
+Method Selection
+When performing empirical evaluations, a variety of possibilities to measure the quality
+
+
+
 
 \section{Experimental Setup}
+\label{sec:experimental_setup}
 
 \subsection{Testing Environment}
 
-We used Whisker through its web GUI to execute test suites on several Scratch programs.
+We executed test suites on several Scratch programs through Whisker's web interface.
 The software and hardware we used are listed in Figure~\ref{tab:evaluation_setup}.
 All test executions were performed on the same machine.
 For two parts of the evaluation,
@@ -67,7 +99,7 @@ Students were given a project as a template to fill with their implementation.
 In this game, apples and bananas periodically fall from the top of the screen.
 The player earns points by catching these fruits with a bowl at the bottom of the screen,
 which is controlled with the left and right arrow keys.
-The game ends when 30 seconds have passed or if an apple touches the ground.
+The game ends when 30 seconds have passed or if an apple touches the ground (a game over).
 A screenshot of the sample implementation of this program can be seen in Figure~\ref{fig:screenshot_of_the_sample_implementation}.
 Additionally, a summary of the full program specification from the assignment may be found in Table~\ref{tab:project_specification}.
 \mnote{TODO: assignment in the appendix?}
@@ -123,7 +155,7 @@ which we will compare our results to later.
 %         - One project work if green flag is pressed multiple times
 %         - One project only worked if the sprites were manually dragged to a different position
 
-\begin{table}
+\begin{table}[htpb]
     \centering
     \scriptsize
     \begin{tabular}{lp{10.5cm}}
@@ -164,13 +196,14 @@ We use these projects to evaluate Whisker's automated test input generation by m
 The projects work well for this task since they implement a variety of different programs with different input methods.
 We chose the sample solutions of the exercises since measuring coverage on working implementation will yield better results.
 Broken implementations may be more likely to have unreachable code,
-because code might depend on a feature, that is not implemented correctly.
+because some code might depend on a feature, that is not implemented correctly.
 
 \subsection{Test Suites}
 
 The set of catching game projects (P1) will be tested with three different test suites in order to analyze the quality of test results.
-Table~\ref{tab:project_specification} lists which part of the project specification is covered by each test suite.
-Additionally, the number of tests or constraints and the size of the test suite in lines of code can be found in Table~\ref{tab:test_suite_statistics}.
+Table~\ref{tab:project_specification} lists which part of the specification is covered by each test suite.
+Additionally, the number of tests or constraints and the size of the test suite, measured in lines of code (LOC),
+can be found in Table~\ref{tab:test_suite_statistics}.
 
 \begin{table}[htpb]
     \centering
@@ -346,7 +379,7 @@ This function, as well as a usage example, are shown in Listing~\ref{lst:simulat
 
 This test suite implements the input-independent testing approach from Chapter~\ref{cha:using_constraints_to_enable_flexible_test_inputs}.
 With this test suite, we tried to test the program with only one execution in total.
-Therefore, this test suite only has one test case, which registers 20 constraints to check various parts of the specification
+Therefore, this test suite has only one test case, which registers 20 constraints to check various parts of the specification
 (again corresponding to Table~\ref{tab:project_specification}).
 \parspace
 
@@ -362,8 +395,9 @@ This test suite uses the same constraints as T2, but uses Whisker's automated in
 It resets the program multiple times in order to increase the likelihood of multiple apples getting caught in one of the runs.
 But, since it is nevertheless very unlikely to have the apple not touch the ground at all with random inputs,
 we don't for check for a game over after 30 seconds, and only let the program run for 10 seconds a time.
-We reset the program 30 times during the test, resulting in an execution time of $30 \cdot 10s = 300s$.
-Listing~\ref{lst:automated_input_random_tests} shows the exact configuration, which use to simulate input for the test case.
+We chose to reset the program 30 times during the test, resulting in an execution time of $30 \cdot 10s = 300s$.
+Listing~\ref{lst:automated_input_random_tests} shows the exact configuration we used to simulate input for the test case.
+We chose to simulate random inputs with a duration between $50\text{ms}$ and $100\text{ms}$ in an interval of $150\text{ms}$.
 \parspace
 
 \begin{listing}[htpb]
@@ -379,6 +413,7 @@ Listing~\ref{lst:automated_input_random_tests} shows the exact configuration, wh
 \end{listing}
 
 \section{RQ1: Accuracy of Test Results}
+\label{sec:rq1}
 
 In this part of the evaluation, we will answer the following research question:
 
@@ -389,7 +424,7 @@ In this part of the evaluation, we will answer the following research question:
 \noindent In order to answer this question,
 executed test suites T1-T3 on the catching game projects (P1) five times,
 and analyzed the quality of the results.
-In order to useful for grading,
+In order to be useful for grading,
 test results have to indicate the same grades,
 which one would assign the programs through manual assessment.
 Test outcomes also have to be consistent over multiple runs,
@@ -402,21 +437,21 @@ Firstly, we compared the test results to manually assigned scores, which we use 
 Intuitively, a higher score means that more tests (or constraints) should pass,
 while a lower score should result in fewer test (or constraint) passes.
 Therefore, we use the correlation between test passes and manual scores as an indicator.
-We measure the correlation through Pearson's correlation coefficient, which is denoted be $r$.
+We measure the correlation through Pearson's correlation coefficient, which is denoted as $r$.
 $r$ can take on values in the range of $[-1, 1]$.
 A high correlation coefficient indicates a strong relationship between two values,
 while lower correlation coefficients indicate a weaker relationship.
-Usually a value of $r \ge 0.5$ is considered to indicate a strong correlation.
+Usually, a value of $r \ge 0.5$ is considered to indicate a strong correlation.
 Negative values indicate a reverse relationship, which is not relevant for our observations.
 \parspace
 
-% \textbf{Average consistency of test outcomes over multiple runs.}
-% Secondly, we analyzed how consistent the test cases are.
-% In automated testing, test cases can often yield different results when executed multiple times.
-% Test cases like this are known as ''flaky tests''.
-% This inconsistency of test results can be caused either by the program under test or by the test case itself.
-% We measure the number of test-project pairs with inconsistent results over multiple test executions,
-% and use their percentage of all test-project pairs to indicate the flakiness of our test suites.
+\textbf{Average inconsistency of test outcomes over multiple runs.}
+Secondly, we analyzed how consistent the test cases are.
+In automated testing, test cases can often yield different results when executed multiple times.
+Test cases like this are known as ''flaky tests''.
+This inconsistency of test results can be caused either by the program under test or by the test case itself.
+We measure the number of test-project pairs with inconsistent results over multiple test executions,
+and use their percentage of all test-project pairs to indicate the flakiness of our test suites.
 
 \subsection{Correlation of tests results and manual scoring}
 
@@ -480,7 +515,7 @@ with a correlation coefficient of $r = 0.8877$ for the first run and $r = 0.8968
 
 Figure~\ref{fig:scatter_constraint} compares the test outcomes of test suite T2 to the manual scores.
 Possible values for the number of constraint passes are in the range of $[0, 18]$.
-The result, again, indicate a strong correlation with a correlation coefficient of $r = 0.8629$ for the first run and $r = TODO$ for the average over 3 runs.
+The result indicate a strong correlation with a correlation coefficient of $r = 0.8629$ for the first run and $r = TODO$ for the average over 5 runs.
 
 \begin{figure}[htpb]
     \centering
@@ -635,7 +670,8 @@ Figure~\ref{fig:consistency_per_test_constraint} shows the number of inconsisten
 We observed a maximum of $7$ inconsistent projects ($22.58\%$ of projects) per constraint and $5$ inconsistent constraints ($27.78\%$ of constraints) per project.
 On average, $2.94$ projects per constraint and $1.71$ constraints per project show inconsistent results,
 which amounts to $9.58\%$ of all constraint-project pairs.
-Since this test suite is non-deterministic and executed the program under test multiple times, this increase in inconsistent outcomes is expected.
+Since this test suite is non-deterministic and executes the programs longer than the other test suites,
+this increase in inconsistent outcomes is expected.
 
 \parspace
 
@@ -667,13 +703,13 @@ Most of them are caused by projects behaving in a non-deterministic manner,
 tough some are caused by test cases themselves.
 We noticed that tests, which deal with the banana sprite, i.e. test cases $13, 14, 15, 17, 23, 24, 25$ all have a high number of inconsistent results.
 We observed two reasons for this:
-Firstly, we suspect that students did not pay much attention to the banana sprite, since it is not essential to play the game.
+Firstly, the banana sprite is often poorly implemented, which causes it to be Inconsistent.
+We suspect that students did not pay much attention to the banana sprite, since it is not essential to play the game.
 A banana, which touches the ground, just subtracts points, while an apple, that falls to the ground, ends the game.
-Therefore, the banana sprite is often poorly implemented, which causes it to be inconsistent.
 Secondly, tests, which deal with the banana sprite are more likely to be inconsistent.
 In order to not go game over, tests have to periodically catch the falling apple with the bowl.
 This means, that the tests do not always, and are not always even able to, catch bananas with the bowl,
-which introduces inconsistency to tests, which rely on the behaviour of the banana.
+which introduces inconsistency to tests, that rely on the behaviour of the banana.
 \parspace
 
 \begin{table}[htpb]
@@ -807,9 +843,7 @@ which introduces inconsistency to tests, which rely on the behaviour of the bana
 % K7_S26                                                              1
 
 \section{RQ2: Automated Input Generation}
-% \subsection{Evaluation Method}
-% \subsection{Data Selection}
-% \subsection{Threats to Validity}
+\label{sec:rq2}
 
 \mnote{For random tests, expect only average results to be usable, because of how the caching game works\\TODO: add the coverage ''test''}
 
@@ -819,20 +853,25 @@ For this part of the evaluation, we will consider following research question:
     \textbf{RQ2: Is automated test input generation a viable method to control Scratch programs for testing purposes?}
 \end{minipage}\end{center}
 
-\noindent In RQ1, we already showed, that getting accurate test results with random input is possible.
+\noindent In RQ1, we already showed, that accurate test results with random input are possible.
 In order to get good test results generally, the generated input needs to be able to execute as much of the program as possible.
 Intuitively, the more of a program gets executed, the more of the its functionality can be checked by tests running on it.
 Therefore, we want to find out how much of a typical Scratch program's functionality can be reached by controlling it through Whisker's generated user input.
 In order to measure how much of the program is reached, we will use the achieved statement coverage as an indicator.
 \parspace
 
-We ran Whisker's automated input generation algorithm on the Code Club Scratch projects (P2),
-and measured the current statement coverage each second during the execution.
-Each program was run for five minutes and was reset five times during that time,
-resulting five one-minute executions of the program.
+We ran Whisker's automated input generation algorithm on each of the Code Club Scratch projects (P2) for ten minutes,
+and measured the current statement coverage every second during the execution.
+We chose not to reset the programs during the execution time,
+since some of Code Club's projects require much execution time to be covered.
+In fact, we also tried a configuration of $4 * 2.5\text{min}$ (ten minutes with four resets)
+and got worse results.
+% Each program was run for five minutes and was reset five times during that time,
+% resulting five one-minute executions of the program.
 We use the mean final statement coverage on the projects to indicate how much of the programs is reached by the automated input.
 To get more consistent results, we ran this experiment five times, and took the average of the final coverage scores.
 Listing~\ref{lst:coverage_test} shows the code, which we used to run the programs.
+We chose to simulate random inputs with a duration between $100\text{ms}$ and $1000\text{ms}$ in an interval of $250\text{ms}$.
 In order to access the coverage during the execution we implemented a function called \texttt{logCoverage},
 which saves the current statement coverage of the program and outputs all saved coverage records once the test is over.
 \parspace
@@ -852,14 +891,16 @@ which saves the current statement coverage of the program and outputs all saved 
 
     \begin{minipage}{.9\textwidth}
         \begin{javascriptcode}
-            for (let i = 0; i < 5; i++) {
-                t.greenFlag();
-                let start = 6000 * i;
-                for (let time = start + 1000; time <= start + 60000; time += 1000) {
-                    await t.runUntil(() => t.getTotalTimeElapsed() >= time);
-                    t.logCoverage(time, t.isProjectRunning());
+            const coverageTest = async function (t) {
+                t.detectRandomInputs({duration: [100, 1000]});
+                t.setRandomInputInterval(250);
+
+                for (let timestamp = 1000; timestamp <= 600000; timestamp += 1000) {
+                    await t.runUntil(() => t.getTotalTimeElapsed() >= timestamp);
+                    t.logCoverage(timestamp, t.isProjectRunning());
                 }
-                t.greenFlag();
+
+                t.end();
             }
         \end{javascriptcode}
     \end{minipage}
@@ -868,13 +909,18 @@ which saves the current statement coverage of the program and outputs all saved 
     \label{lst:coverage_test}
 \end{listing}
 
+\subsection{Coverage Measurements}
+
 \paragraph{Null hypothesis ($H_0$):}
-Automated input generation can only cover a small fraction of typical Scratch programs, making it unfeasible for testing purposes.
+Automated input generation can only cover a small fraction of typical Scratch programs' code, making it infeasible for testing purposes.
+Program coverage with automated input is not better than coverage without any input.
 \paragraph{Alternative hypothesis ($H_1$):}
 Automated input generation is able to reach most of typical Scratch programs' functionality, making it a viable method to control the Scratch programs for testing.
+Program coverage with automated input is much higher than coverage without input.
 \parspace
 
-\noindent Figure~\ref{fig:coverage} shows the statement coverage, which we were able to achieve on the Code Club projects (P2) by using Whisker's automatically generated input,
+\noindent Figure~\ref{fig:coverage} shows the statement coverage, which we were able to achieve on the Code Club projects (P2)
+with Whisker's automatically generated input,
 as well as the execution time at which the coverage was achieved.
 The black line in Figure~\ref{fig:coverage_line} displays the mean coverage of the projects over time.
 After ten minutes of run time, we were able to achieve an average coverage of $95.25\%$ with the lowest coverage for a project being $74\%$ and the highest being $100\%$.
@@ -931,7 +977,7 @@ We are going to take a quick look at the reasons, why these projects are difficu
         The player has to hit them in an order, which is randomly determined by the program.
         If the player hits one drum incorrectly, which includes hitting a drum while no sequence is active, the game goes into a game over state,
         and can only be restarted by pressing the green flag.
-        Therefore using random inputs quickly results in an irrecoverable game over,
+        Therefore, using random inputs quickly results in an irrecoverable game over,
         because a wrong drum is hit, which renders much of the program's code unreachable.
 \end{itemize}
 
@@ -954,17 +1000,14 @@ We are going to take a quick look at the reasons, why these projects are difficu
 %     \label{fig:difficult_code_club_projects}
 % \end{figure}
 
-\section{Interference with Programs Under Test}
-\label{sec:time_evaluation}
+\section{RQ3: Interference with Programs Under Test}
+\label{sec:rq3}
 
-\mnote{No RQ, just another question. Is that ok?}
-In the following section, we want to answer another important question:
+In the following section, we want to answer another research question:
 
 \begin{center}\begin{minipage}{.9\textwidth}
-    \textbf{Does the testing process interfere with the program under test?}
+    \textbf{RQ3: Does the testing process slow down the program under test?}
 \end{minipage}\end{center}
-
-\subsection{Problem statement}
 
 \noindent Since JavaScript is executed in a single-threaded environment,
 Whisker executing code in between steps of the Scratch program can possibly be problematic.
@@ -995,8 +1038,7 @@ which will slow the program down as well, if the full $25\text{ms}$ of execution
 This includes coverage measurement and callbacks for sprite changes (e.g. \texttt{t.onSpriteMoved} and \texttt{spite.onMoved}).
 However the Scratch GUI itself also registers code to update the GUI, which is run during the step of the VM,
 so this should not affect the program, unless the registered callbacks are very expensive to execute.
-
-\subsection{Time measurements}
+\parspace
 
 To evaluate this, we measured the execution time of Whisker's components (see Figure~\ref{fig:whisker_step_procedure})
 as well as the execution time of Scratch during each step.
@@ -1004,13 +1046,15 @@ Since we execute Whisker in a web browser,
 we were limited to JavaScript's \texttt{performance.now} method to measure execution times.
 \texttt{performance.now} returns the time, since which the current web page is open,
 with an accuracy of $0.1\text{ms}$.
-The code that we used for measuring the execution times can be found in Listing~\ref{lst:time_measurement_code} in the appendix.
+The code we used for measuring the execution times can be found in Listing~\ref{lst:time_measurement_code} in the appendix.
 \parspace
 
 We executed our test suites T1-T3 on the sample solution of the catching game (P1) ten times,
-and measured the execution times of each step.
+and measured the execution times.
 We will consider the mean times, as well as the maximum times from the ten runs
 to decide if the test execution could interfere with the program or not.
+
+\subsection{Time measurements}
 
 \paragraph{Null hypothesis ($H_0$):}
 The execution of additional code delays the execution of Scratch's steps, which possibly interferes with the program execution.
@@ -1024,6 +1068,7 @@ It displays the total execution time of Whisker's step procedure over time.
 The time measurements include both the execution time of Whisker and Scratch.
 We can see that the execution time is mostly far beneath the limit of $33.33\text{ms}$
 and only rarely spikes to higher for short periods of time.
+\parspace
 
 \begin{figure}[htpb]
     \centering
@@ -1053,7 +1098,7 @@ and only rarely spikes to higher for short periods of time.
     \label{fig:time_line_plot}
 \end{figure}
 
-Figure \ref{tab:time_measurements} shows the average and maximum executions times for each part of Whisker's step procedure.
+Figure \ref{tab:time_measurements} shows the mean and maximum of executions times for each part of Whisker's step procedure.
 This data is taken from ten consecutive executions of the respective test suite on the program under test.
 Again, the average total execution time is far beneath $33.33\text{ms}$.
 The execution of test suite T1 spiked over the $33.33\text{ms}$ with a maximum of $35.1\text{ms}$,
@@ -1082,99 +1127,153 @@ but this only happened in one step, with the second longest step execution time 
 \begin{table}[htpb]
     \centering
     \footnotesize
-    \begin{tabular}{l|rr|rr|rr|rr}
+    \begin{tabular}{l|rr|rr|rr}
         \toprule
-                             &       & T1   &       & T2   &       & T3   &       & all   \\
-                             & mean  & max  & mean  & max  & mean  & max  & mean  & max  \\
+                             &       & T1   &       & T2   &       & T3   \\
+                             & mean  & max  & mean  & max  & mean  & max  \\
         \midrule
-        Callbacks (Before)   & 0.071 & 4.8  & 0.102 & 7.3  & 0.068 & 9.7  & 0.080 & 9.7  \\
-        Random Inputs        & 0.004 & 1.3  & 0.004 & 3.1  & 0.024 & 6.4  & 0.011 & 6.4  \\
-        Inputs               & 0.005 & 2    & 0.005 & 1.6  & 0.023 & 8.6  & 0.011 & 8.6  \\
-        Sprites              & 0.022 & 6.4  & 0.022 & 4.2  & 0.022 & 4.8  & 0.022 & 6.4  \\
-        Scratch              & 1.852 & 35.1 & 2.054 & 24.6 & 1.129 & 32.7 & 1.678 & 35.1 \\
-        Callbacks (After)    & 0.007 & 1.1  & 0.006 & 0.3  & 0.005 & 1.8  & 0.006 & 1.8  \\
-        Constraints          & 0.012 & 2.9  & 0.078 & 3.2  & 0.058 & 12.5 & 0.049 & 12.5 \\
+        Callbacks (Before)   & 0.071 & 4.8  & 0.102 & 7.3  & 0.068 & 9.7  \\
+        Random Inputs        & 0.004 & 1.3  & 0.004 & 3.1  & 0.024 & 6.4  \\
+        Inputs               & 0.005 & 2    & 0.005 & 1.6  & 0.023 & 8.6  \\
+        Sprites              & 0.022 & 6.4  & 0.022 & 4.2  & 0.022 & 4.8  \\
+        Scratch              & 1.852 & 35.1 & 2.054 & 24.6 & 1.129 & 32.7 \\
+        Callbacks (After)    & 0.007 & 1.1  & 0.006 & 0.3  & 0.005 & 1.8  \\
+        Constraints          & 0.012 & 2.9  & 0.078 & 3.2  & 0.058 & 12.5 \\
         \midrule
-        Total                & 1.972 & 35.1 & 2.272 & 24.9 & 1.330 & 33.1 & 1.858 & 35.1 \\
-        Total (Whisker only) & 0.12  & 6.5  & 0.218 & 7.6  & 0.201 & 13.1 & 0.180 & 13.1 \\
+        Total                & 1.972 & 35.1 & 2.272 & 24.9 & 1.330 & 33.1 \\
+        Total (Whisker only) & 0.12  & 6.5  & 0.218 & 7.6  & 0.201 & 13.1 \\
         \bottomrule
     \end{tabular}
     \caption{Measured execution time (in ms) for every part of Whisker's step procedure}
     \label{tab:time_measurements}
 \end{table}
 
-% Since the tests execute code between steps in a single threaded environment,
-% they could, in theory, interfere with the program by slowing down the step cycle.
-% This can make the program behave differently, because Scratch programs use absolute timings (TODO figure).
-%
-% ~\\~\\
-% Typical tests don't interfere with the execution of typical Scratch programs
-% $\rightarrow$ measure how long Scratch takes for a step (WORK\_TIME AND time to render)
-% $\rightarrow$ measure how long each operation in the Whisker step procedure takes (e.g. callbacks, sprites, constraints)
-% $\rightarrow$ Explain how the times are measured
-%
-% TODO: explain why testing procedure might interfere with Scratch programs (absolute timings)
-% TODO: timing diagram and table of timings for real tests
-% TODO: example code for tests that interfere and their test data
-%
-% ~\\~\\
-% \paragraph{Null hypothesis ($H_0$):}
-% Additional computations for testing are to slow to be executed while the program is running and stretch out the average time a step takes.
-% \paragraph{Alternative hypothesis ($H_1$):}
-% Additional computations for testing can be fast enough to not affect the average step time.
+{\Huge redo this on the laptop for external validity}
 
 \section{Discussion}
+\label{sec:discussion}
 
-% \mnote{TODO: Move this into discussion}
-% This shows that both test suites implementing the ''normal'' testing approach and
-% test suites implementing the ''input-indepent'' / ''constraint-only'' testing approach
-% are able to produce accurate test results.
+In this evaluation, we conducted three separate experiments to prove the usefulness of Whisker.
+\parspace
 
-\section{Threats to validity}
-% - Students often deliberately changed their programs from the specification (e.g. different fall speeds)
-%     - Tests were adjusted to allow a little more than the specification (e.g. different message)
-%
-% - For each tests suite, many / all projects were executed in a row
-%     - Could have a performance impact (?), but Scratch doesn't need a lot of resources
-%     - If anything, it could have a negative impact on the results, but results are very positive
-%
-% - Tests could interfere with the program under test (see prev. section)
-%     - But Scratch programs don't usually do calculations without moving any sprite
-%     - Most time related functionality is based on absolute time, slow-down would not affect it
-%
-% - Browser JavaScript could be problematic
-%
-%
-% TODO: pick a time length and execute random tests multiple times at that length
+In the first experiment, we analyzed test results of three different test suites and compared them to a ground truth.
+We found out, that all of the results consistently show a strong correlation to the ground truth.
+Therefore, the null hypothesis is rejected.
+We proved, that the input-independent / constraint-only testing approach can deliver accurate test results,
+both with deliberate input and with generated input.
+Then, we analyzed the flakiness of the test suites and found several reasons,
+why certain tests and certain programs can be inconsistent.
+We measured the average number of these inconsistencies,
+and found it low enough to reject the null hypothesis.
+We suspect that simpler programs can be tested with much fewer inconsistencies.
+At the same time, more experience in automated testing for Scratch will lead to more robust and less flaky test suites.
+The test suites we used were written pretty early in development.
+\parspace
 
-% \begin{figure}
-%     \centering
-%     \begin{subfigure}{.50\textwidth}
-%         \includegraphics[width=\textwidth]{r/scatter-randoml-1}
-%         \caption{First run}
-%         \label{fig:scatter_random_1}
-%     \end{subfigure}%
-%     \begin{subfigure}{.50\textwidth}
-%         \includegraphics[width=\textwidth]{r/scatter-random-avg}
-%         \caption{Average over 3 runs}
-%         \label{fig:scatter_random_avg}
-%     \end{subfigure}
-%     \caption{Correlation between test results of test suite T3 (random) and manual scoring}
-%     \label{fig:scatter_random}
-% \end{figure}
-%
-% \begin{figure}
-%     \centering
-%     \begin{subfigure}{.50\textwidth}
-%         \includegraphics[width=\textwidth]{r/scatter-random-lite-1}
-%         \caption{First run}
-%         \label{fig:scatter_random_lite_1}
-%     \end{subfigure}%
-%     \begin{subfigure}{.50\textwidth}
-%         \includegraphics[width=\textwidth]{r/scatter-random-lite-avg}
-%         \caption{Average over 3 runs}
-%         \label{fig:scatter_random_lite_avg}
-%     \end{subfigure}
-%     \caption{Correlation between test results of test suite T4 (lite random) and manual scoring}
-%     \label{fig:scatter_random_lite}
-% \end{figure}
+The second experiment dealt with automated input generation.
+We let Whisker's automated input generation algorithm run on several Scratch programs,
+then we ran the same programs without any input.
+We compared measured the statement coverage we achieved on the programs during both runs,
+and compared their averages.
+Since the coverage with automated input was much higher that coverage without input,
+we rejected the null hypothesis.
+\parspace
+
+Aside from the research questions, we conducted another experiment to find out,
+if the testing process interferes with the program under test.
+For this purpose, we measured the execution time of Whisker's step procedure on the execution of our test suites
+to find out if it slowed down the Scratch program.
+We found out that Scratch's allocated time interval for computations is large enough to
+allow executing both the Scratch program and test code.
+Programs under test are not affected by Whisker, therefore, we can reject the null hypothesis.
+
+
+
+For the generated random input, we reset the program under test 30 times and let it run for a total of $30 * 10\text{s} = 300\text{s}$.
+Of course, other configurations are possible.
+We chose this configuration, because the program under test will go game over in the first ten seconds most of the time.
+- other configurations of time * iterations possible for random tests and coverage measurement
+- execution times can be forced to be high, but aren't for normal programs / tests
+
+\section{Threats to Validity}
+\label{sec:threats_to_validity}
+
+As is usual, the empirical studies we conducted in this work must confront certain threats to validity.
+Possible threats fall into one of two categories.
+On the one hand, threats to internal validity represent factors which provide alternative explanations for the presented results.
+On the other hand, threats to external validity deal with the generalizability of our approach.
+
+\subsection{Internal validity}
+
+Conditions, which could influence any test outcomes, coverage measurements,
+or time measurements are possible threads to internal validity.
+\parspace
+
+\textbf{Independence of ground truth.}
+One threat to validity arises from our use of the manual scores as
+ground truth to assess the quality of test results.
+If we assigned the scores ourselves,
+a comparison to them would not be adequate to give evidence about the quality of results.
+\mnote{TODO: name}
+However, the manual scores were assigned by TODO after the course was held,
+before work on Whisker was even started.
+Therefore, the manual scores are completely independent from our test results,
+and a comparison between the two is adequate.
+\parspace
+
+\textbf{Randomness.}
+Another threat is, of course, random chance.
+Many scratch programs use randomness, which can make test outcomes inconsistent.
+To eliminate the possibility of random chance affecting our test results as much as possible, we executed each test suite ten times,
+and considered the average results in addition to results from single executions.
+\parspace
+
+\textbf{RAM usage.}
+% Another possible threat comes from the execution order of the programs.
+One more possible threat comes from an issue of Scratch itself.
+At the time of the evaluation, Scratch had a problem of consuming increasing amounts of RAM when loading many programs in succession,
+which, in theory, could have interfered with the execution of our test suites.
+However, we payed close attention to the RAM usage of the machine, which executed the tests.
+We also performed some of our test suite executions on all projects sequentially,
+and some on one half of the programs, then later on the other half.
+We observed similar results with both methods, therefore this issue did not have any impact on our test results.
+% This could be problematic if we executed the programs in order of descending manual scores.
+% However, we executed each test suite on the projects in alphabetical order,
+% and the manual scores actually show a weak positive correlation ($r = 0.43$) to the indexes of the execution order,
+% meaning that the alphabetical order is closer to the order of ascending manual scores.
+
+\subsection{External Validity}
+
+Any factors which limit the generalizability of the results in this work are threats to external validity.
+\parspace
+
+\textbf{Programs under test.} For one thing, the program under test could be chosen poorly,
+making the results not applicable for other Scratch programs.
+Therefore, we tried to choose programs that are representative of Whisker's target usage in the field of education.
+To evaluate the test results we chose Scratch projects from an actual Scratch course for students.
+The program has user interaction, uses randomness, and has a game over state,
+which are all important challenges for testing Scratch programs.
+To evaluate the automated input generation,
+we again went with programs from Scratch courses.
+The programs feature many different input methods and interactions,
+which make them suitable to evaluate automated input on.
+\parspace
+
+\textbf{Test subjects for time measurements.}
+To find out if Whisker would slow down programs under test,
+we executed our test suites and measured the execution times of Whisker's step procedure.
+One could argue that the execution times can be raised by a variety factors.
+More, as well as more computationally expensive, callbacks and constraints can be registered.
+More random inputs and inputs can be registered.
+And a Scratch program with more sprites can be chosen.
+Therefore, tests suites can interfere with the program under tests, if they do it purposefully.
+However, we wanted to measure the execution time of a realistic test suite on a realistic program.
+This setup did not slow the program down,
+and the measurements indicate that more expensive test suites (e.g. with a factor of x10) will still be fine as well.
+\parspace
+
+\textbf{Hardware for time measurements.}
+Since the measurements of step execution times depend on the used hardware,
+it is important to use a realistic testing environment for that purpose.
+Therefore, we did not only perform measurements on the main computer we used for other experiments,
+but also on a less powerful laptop, which we suspect is a more realistic hardware configuration for Whisker.

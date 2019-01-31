@@ -31,8 +31,10 @@
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{array}
-\usepackage{makecell}
-\renewcommand{\cellalign}{l}
+\newlength{\defaulttabcolsep}
+\setlength{\defaulttabcolsep}{\tabcolsep}
+%\usepackage{makecell}
+%\renewcommand{\cellalign}{l}
 
 % Checkmarks and crosses
 \usepackage{pifont}
@@ -94,7 +96,7 @@
 % Information
 \title{Whisker: Automated Testing of Scratch Programs}
 \author{Marvin Lorenz Kreis}
-\date{DATE TBD}
+\date{2019-02-21}
 
 \begin{document}
 
@@ -160,16 +162,16 @@
 
 \input{chapters/future-work}
 
-\input{chapters/appendix}
-
-TODO: REMOVE THIS
-\label{TODO}
-TODO: REMOVE THIS
-
 % Bibliography
 \clearpage
 %\bibliographystyle{apalike}
 \bibliographystyle{acm}
 \bibliography{references}
+
+\appendix
+\input{chapters/appendix}
+
+TODO: REMOVE THIS LABEL
+\label{TODO}
 
 \end{document}
