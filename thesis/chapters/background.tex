@@ -127,6 +127,7 @@ An example for this is BlockPy~\cite{blockpy}, which translates its block-based 
 % \label{sec:automatic_test_generation}
 
 \section{Challenges of Testing Scratch Programs}
+\label{sec:challenges_of_testing_scratch_programs}
 
 Dynamically testing Scratch programs is not a straightforward task.
 There exist multiple challenges, that have to be overcome in order to test Scratch programs accurately.
@@ -184,7 +185,7 @@ In the Scratch GUI, sprites can initially be positioned on the stage via drag an
 Also, instead of comparing exact positions, Scratch offers built in blocks to directly check for sprite collisions.
 \parspace
 
-\textbf{Properties need to be observed over time.}
+\textbf{Tracking of properties.}
 In order to test movement or animations, we need to track sprite information over a period of time.
 Hence, we need a way to periodically access sprite attributes (and variables) during the program execution.
 \parspace

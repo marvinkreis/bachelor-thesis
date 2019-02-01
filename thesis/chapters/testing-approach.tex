@@ -2,6 +2,7 @@
 % WHY -> WHAT -> HOW structure
 
 \chapter{Testing With Whisker}
+\label{cha:appraoch}
 
 \mnote{TODO: explain automated test input generation\\TODO: explain why the program is loaded before each test}
 % - Before starting a test case, the project is loaded to make sure that every test starts with the same program state
@@ -10,6 +11,7 @@
 %     $\rightarrow$ Very inconsistent, therefore desirable to load the program before each test
 
 \section{General Approach}
+\label{sec:general_appraoch}
 
 In this work, we propose a way to perform dynamic testing on Scratch programs.
 The main goal of this approach is to be able to automatically assess student's solutions to Scratch assignments.
@@ -103,6 +105,7 @@ Figure~\ref{fig:comparison_of_io_mechanisms} illustrates the difference between 
 \end{figure}
 
 \section{Testing Environment}
+\label{sec:testing_environment}
 
 Whisker is, like Scratch 3.0, implemented in JavaScript (JS).
 Hence, test code is also written in JavaScript.
@@ -136,6 +139,7 @@ and would also make it possible to test programs in parallel and in a headless e
 % Therefore, additional computations by the testing procedure must be fast enough to avoid interfering with the program under test.
 
 \section{Public Interface}
+\label{sec:public_interface}
 
 % \begin{enumerate}[(1)]
 %     \item Registered callbacks are executed.
@@ -269,6 +273,7 @@ Secondly, executing single scripts could also lead to unexpected behaviour in th
 % They often feature multiple sprites running loops in order to be interactive.
 
 \section{Advantages and Disadvantages}
+\label{sec:appoach_advantages_disadvantages}
 
 \mnote{TODO: better explanations, better intro, small discussion}
 This section will highlight some advantages and disadvantages of the presented testing approach.
@@ -305,6 +310,7 @@ This section will highlight some advantages and disadvantages of the presented t
 \end{itemize}
 
 \section{Challenges of this Approach}
+\label{sec:appraoch_challenges}
 
 % \textbf{Absolute timings.}
 % Scratch offers code blocks to delay the execution of a script, which often find use in typical game-like programs.
@@ -329,12 +335,13 @@ This section will highlight some advantages and disadvantages of the presented t
 % TODO: actions don't necessarily happen in the same step -> have to track timings
 
 \chapter{Using Constraints For Flexible Test Inputs}
-\label{cha:using_constraints_to_enable_flexible_test_inputs}
+\label{cha:using_constraints_for_flexible_test_inputs}
 
 This section will describe why separating control of the program under test from the test code can be beneficial,
 and how this can be achieved by using Whisker's  mechanism to define constraints.
 
 \section{Input-Independent / Constraint-only Tests}
+\label{sec:input_independent_constraint_only_tests}
 
 \mnote{TODO: ''constraint-only''}
 Usually, tests will provide the program under test with inputs and check the resulting outputs.
@@ -360,7 +367,8 @@ Since this is done entirely in the background while the program under test is ru
 This way, it does not matter in what state the program is during its execution, or what inputs it is receiving.
 If a condition does not hold, the respective constraint fails.
 
-\section{Input-Independent Testing Procedure}
+\section{Testing Procedure}
+\label{sec:constraint_testing_procedure}
 
 Figure~\ref{fig:input-independent-testing-procedure} shows a testing procedure, which uses the aforementioned approach to test independently of the simulated input.
 We will go through each step of the procedure with the aid of an example.
@@ -617,6 +625,9 @@ For this purpose, Whisker offers an option to disable failed constraints instead
 Hence, the test can simply check which constraints failed at the end, and let Whisker generate a test report from them.
 
 \section{Resetting the program during a test}
+\label{sec:resetting_the_program_during_a_test}
+
+TODO: don't put this in its own section, write it in the previous section instead
 
 % Register Callbacks for Information Tracking (per run for constraints and across runs to rule out constraints in the end)
 % Register Constraints

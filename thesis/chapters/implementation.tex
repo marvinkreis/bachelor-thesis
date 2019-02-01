@@ -34,6 +34,7 @@
 
 
 \chapter{Implementation}
+\label{cha:implementation}
 
 This chapter will provide an overview over Whisker's implementation.
 Whisker is still in early development, and its implementation may change later.
@@ -52,6 +53,7 @@ Whisker is still in early development, and its implementation may change later.
 % \end{tikzpicture}
 
 \section{Implementation Environment}
+\label{sec:implementation_environment}
 
 Scratch code is executed inside of Scratch's virtual machine (VM), which is implemented in JavaScript.
 Therefore, Whisker is also implemented in JavaScript (ES6) for compatibility.
@@ -61,6 +63,7 @@ This limits Scratch, and consequently Whisker, to run inside a web environment.
 Therefore, we use webpack~\cite{webpack} to transpile Whisker's source code into browser-runnable JavaScript.
 
 \section{General Architecture}
+\label{sec:general_architecture}
 
 % Currently, Whisker is only available through its own web GUI, % which displays a list of tests, as well as the test report next to Scratch's stage.
 % but it may also be possible to create a Electron standalone application for Whisker, or even a browser addon which adds Whisker to the original Scratch web page.
@@ -128,6 +131,7 @@ because the test driver offers a simpler interface and prevents access to Whiske
 \end{figure}
 
 \section{Scratch Program Execution and the Step Loop}
+\label{sec:scratch_program_execution_and_the_step_loop}
 
 The core of Scratch's virtual machine is a function called \texttt{step},
 which is called at a constant frequency of 30 times per second using JavaScript's \texttt{setInterval} function.
@@ -292,6 +296,7 @@ In section~\ref{sec:rq3}, we will prove this empirically by measuring how long S
 %       - stepper
 
 \section{Accessing Sprites and Variables}
+\label{sec:accessing_sprites_and_variables}
 
 % For the purpose of providing access to sprite attributes, Whisker provides a wrapper for Scratch's sprites.
 Scratch's implementation differentiates between \texttt{Sprites} and \texttt{RenderedTargets}.
@@ -323,6 +328,7 @@ The same thing is done with variables.
 Each sprite wrapper keeps track of its own variables.
 
 \section{Simulating Inputs}
+\label{sec:simulating_inputs}
 
 \mnote{TODO: Explain how inputs are saved\\Inputs are not repeated (e.g. input block + holding key down)}
 
@@ -388,6 +394,7 @@ which indicates how much of the input was already performed,
 and what action has to be carried out next.
 
 \section{Randomized Inputs}
+\label{sec:randomized_inputs}
 
 Whisker offers a mechanism to periodically perform random inputs.
 It chooses an input from a pool of registered inputs during Whisker's step procedure.
@@ -452,6 +459,7 @@ After the input is randomized, it is registered and executed like a normal, non-
 \end{listing}
 
 \section{Automated Input Generation}
+\label{sec:automated_input_generation}
 
 \mnote{Rename ''random inputs'', name is confusing}
 We implemented a simple form of automated input generation by making use of Whisker's randomized inputs.
@@ -510,6 +518,7 @@ We set the weight of each input with a string constant to $1 / \log_2(\text{\tex
 \end{table}
 
 \section{Callbacks and Constraints}
+\label{sec:callbacks_and_constraints}
 
 Callbacks and constraints are both JavaScript functions,
 which are registered to be called periodically during the program execution.
@@ -531,6 +540,7 @@ stop the current run of the program,
 or ignore the constraint failure entirely.
 
 \section{Coverage Measurement}
+\label{sec:coverage_measurement}
 
 Whisker can be used to measure statement coverage on a Scratch program.
 It does this by temporarily modifying Scratch's \texttt{Thread} class.

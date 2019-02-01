@@ -71,7 +71,50 @@ The results provide the following insights:
 \end{enumerate}
 
 \section{Outline}
-...
+
+Chapter~\ref{cha:background} provides a small overview over the Scratch programming language (Section~\ref{sec:scratch}),
+and shows previous approaches towards automated testing of Scratch programs (Section~\ref{sec:previous_testing_approaches}).
+Section~\ref{sec:challenges_of_testing_scratch_programs} then explains some challenges,
+which have to be overcome in order to implement automated testing for Scratch.
+\parspace
+
+In Chapter~\ref{cha:appraoch}, we explain our approach towards testing Scratch programs (Section~\ref{sec:general_appraoch}),
+and how we realized this approach with Whisker.
+Section~\ref{sec:testing_environment} explains the environment, in which tests are executed.
+Then, we explain how tests are written and what functionality Whisker provides for testing in Section~\ref{sec:public_interface}.
+Afterwards, Sections~\ref{sec:appoach_advantages_disadvantages} and \ref{sec:appraoch_challenges} explain advantages, disadvantages,
+and various challenges of our testing approach.
+\parspace
+
+Chapter~\ref{cha:using_constraints_for_flexible_test_inputs} describes how Scratch programs can be tested
+independently of the input provided to the program by checking constraints in the background.
+Section~\ref{sec:input_independent_constraint_only_tests} describes the general idea of this approach and
+Section~\ref{sec:constraint_testing_procedure} shows the testing procedure we use to achieve this.
+\parspace
+
+Furthermore, the implementation of Whisker is described in Chapter~\ref{cha:implementation}.
+After Section~\ref{sec:implementation_environment} describes the implementation environment,
+and Section~\ref{sec:general_architecture} explains the general architecture,
+the controlled execution of Scratch programs for testing is explained in Section~\ref{sec:scratch_program_execution_and_the_step_loop}.
+The following sections then each describe the implementation of one of Whisker's features.
+Finally, measuring statement coverage is explained Section~\ref{sec:coverage_measurement}.
+\parspace
+
+In Chapter~\ref{cha:evaluation}, we perform an empirical evaluation of Whisker.
+In the beginning, the research questions are listed, and an overview of the experiments is given.
+Afterwards, in Section~\ref{sec:experimental_setup}, we describe the projects and test suites we use for the evaluation.
+Then, the following sections take on the experiments we conducted to answer each research question.
+Each of the sections explains the purpose of the experiment and which indicators we use to answer the research question,
+then the results are described.
+Firstly, we analyze the quality of test results from our test suites in Section~\ref{sec:rq1},
+then we evaluate our algorithm for generating automated input in Section~\ref{sec:rq2}.
+Finally we examine if programs under tests are somehow influenced by the testing process in Section~\ref{sec:rq3}.
+Afterwards, we discuss the results in Section~\ref{sec:discussion},
+and list possible threats to validity in Section~\ref{sec:threats_to_validity}.
+\parspace
+
+Finally, in Chapter~\ref{cha:future_work} we describe how Whisker could be extended in the future,
+and we conclude in Chapter~\ref{cha:conclusion}.
 
 %     Overview of the main points.
 %     Discuss the research questions.
