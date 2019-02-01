@@ -36,18 +36,13 @@ Finally, in the third experiment we will measure execution times
 to check if the testing process slows down the program under test.
 \parspace
 
-
-Initially, Section 4.1 describes the evaluation method used in this work.
-Afterwards, the strategy used for comparing both approaches is explained in Section
-4.2. Section 4.3 describes which subjects are used for the evaluation and why, before
-the actual results are shown in Section 4.5. Finally, Section 4.6 discusses the results und
-points out possible threats to validity.
-4.1
-Method Selection
-When performing empirical evaluations, a variety of possibilities to measure the quality
-
-
-
+Firstly, Section~\ref{sec:experimental_setup} describes the test suites as well as the programs under test we will use for the evaluation.
+It also describes the software and hardware of our testing setup.
+Then, Sections~\ref{sec:rq1},~\ref{sec:rq2},~and~\ref{sec:rq3} describe the results to one research question each.
+Each of the sections describes the experiment we conducted and the indicators we used
+to answer the respective question.
+Afterwards, we discuss the results in Section~\ref{sec:discussion}.
+Finally, Section~\ref{sec:threats_to_validity} points out possible threats to validity.
 
 \section{Experimental Setup}
 \label{sec:experimental_setup}
@@ -1270,10 +1265,10 @@ Therefore, tests suites can interfere with the program under tests, if they do i
 However, we wanted to measure the execution time of a realistic test suite on a realistic program.
 This setup did not slow the program down,
 and the measurements indicate that more expensive test suites (e.g. with a factor of x10) will still be fine as well.
-\parspace
-
-\textbf{Hardware for time measurements.}
-Since the measurements of step execution times depend on the used hardware,
-it is important to use a realistic testing environment for that purpose.
-Therefore, we did not only perform measurements on the main computer we used for other experiments,
-but also on a less powerful laptop, which we suspect is a more realistic hardware configuration for Whisker.
+% \parspace
+%
+% \textbf{Hardware for time measurements.}
+% Since the measurements of step execution times depend on the used hardware,
+% it is important to use a realistic testing environment for that purpose.
+% Therefore, we did not only perform measurements on the main computer we used for other experiments,
+% but also on a less powerful laptop, which we suspect is a more realistic hardware configuration for Whisker.
