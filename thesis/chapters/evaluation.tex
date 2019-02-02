@@ -372,7 +372,7 @@ This function, as well as a usage example, are shown in Listing~\ref{lst:simulat
 
 \subsubsection{(T2) Input-Independent / Constraint-Only Test Suite}
 
-This test suite implements the input-independent testing approach from Chapter~\ref{cha:using_constraints_to_enable_flexible_test_inputs}.
+This test suite implements the input-independent testing approach from Chapter~\ref{cha:using_constraints_for_flexible_test_inputs}.
 With this test suite, we tried to test the program with only one execution in total.
 Therefore, this test suite has only one test case, which registers 20 constraints to check various parts of the specification
 (again corresponding to Table~\ref{tab:project_specification}).
@@ -544,8 +544,8 @@ we assign a $1$ to the respective cell in the matrix, otherwise we assign a 0.
 For this, we consider both ''skipped'' and ''failed'' to be the same test outcome, since both are non-passing test results.
 The matrix's sum of rows then shows us how may projects showed inconsistent test results for each test case,
 and the sum of columns shows the number of test cases with inconsistent outcomes for each project.
-Table~\ref{tab:inconsistencies_matrices_excerpt} shows excerpts of the resulting matrices for demonstration.
-The full matrices can be found in the appendix in Section~\ref{sec:inconsistencies_matrices}.
+Table~\ref{tab:inconsistency_matrices_excerpt} shows excerpts of the resulting matrices for demonstration.
+The full matrices can be found in the appendix in Section~\ref{TODO}.
 \parspace
 
 \begin{figure}[htpb]
@@ -569,7 +569,7 @@ The full matrices can be found in the appendix in Section~\ref{sec:inconsistenci
             \bottomrule
         \end{tabular}
         \caption{Inconsistent test-project pairs for test suite T1}
-        \label{tab:inconsistencies_matrix_excerpt_normal}
+        \label{tab:inconsistency_matrix_excerpt_normal}
         \setlength{\tabcolsep}{\defaulttabcolsep}
     \end{subfigure}
     \vspace{.08\textwidth}
@@ -591,13 +591,13 @@ The full matrices can be found in the appendix in Section~\ref{sec:inconsistenci
             \bottomrule
         \end{tabular}
         \caption{Inconsistent constraint-project pairs for test suite T2}
-        \label{tab:inconsistencies_matrix_excerpt_constraint}
+        \label{tab:inconsistency_matrix_excerpt_constraint}
         \setlength{\tabcolsep}{\defaulttabcolsep}
     \end{subfigure}
 
     \vspace{-3\bigskipamount}
     \caption{Excerpt from the test-project matrices of inconsistent test outcomes}
-    \label{tab:inconsistencies_matrices_excerpt}
+    \label{tab:inconsistency_matrices_excerpt}
 \end{figure}
 
 \subsubsection{Normal Test Suite (T1)}

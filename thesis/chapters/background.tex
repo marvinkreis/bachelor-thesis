@@ -13,28 +13,31 @@ It will also highlight some previous approaches to automated assessment for Scra
 % Scratch heavily focuses on multimedia, as graphics and audio can easily be integrated into Scratch projects.
 % Whenever a sprite is cloned, it runs all of its scripts, which have a ''when I start as a clone'' hat.
 
-\mnote{TODO: Scratch is run and developed inside a GUI, run with a VM\\TODO:explain ask blocks}
-
 Scratch~\cite{scratch} is a programming language developed by the MIT Media Lab.
 Its main goal is to offer an intuitive programming language suited for programming novices and children.
 Scratch implements a block-based code system, which eliminates the possibility of syntax errors.
 It also allows users to easily integrate graphics and audio into their programs.
+Code is run inside a special Scratch VM.
+Therefore, Scratch is usually exclusively developed and run through Scratch's web interface, which can be seen in Figure~\ref{fig:scratch_gui}.
 \parspace
 
-\begin{figure}[h]
+\begin{figure}[htpb]
     \centering
-    \includegraphics[width=0.85\textwidth]{scratch-gui}
+    \includegraphics[width=0.75\textwidth]{scratch-gui}
     \caption{A catching game implemented in Scratch}
-    \label{fig:scratch-gui}
+    \label{fig:scratch_gui}
 \end{figure}
 
-\mnote{TODO: reference all figures in the text}
-\textbf{Input and output.}
-Scratch programs create interactive two-dimensional animations through a number of visual objects (the \textit{sprites}) on a background (the \textit{stage}).
-The program manipulates sprites' appearance, position, size, rotation, visual effects and sounds.
-Furthermore, Sprites can also display messages and ask the user to type answers into a text box.
-Programs can react to user input like keyboard key presses, mouse clicks or mouse cursor movement.
-Figure~\ref{fig:scratch-gui} shows a screenshot of an example program.
+\textbf{Code.}
+Programming in Scratch is done by sticking together a structure of pre-defined blocks, which are equivalent to statements in traditional programming languages.
+Multiple blocks are combined together with a \textit{hat} to make up a \textit{script} (see Figure~\ref{fig:scratch_code}).
+Scripts are called through a event, which is defined by their hat.
+There are a variety of different events in Scratch.
+The main event is the \textit{green flag}, which is the entry point of the program.
+This event is emitted when the user starts the program by pressing the start button.
+The program then starts by executing all scripts, which are equipped with a ''when green flag is pressed'' hat.
+Other events include key presses on the keyboard, clicks on a specific sprite, and events sent from different scripts.
+Active scripts effectively run in parallel until the end of each script is reached, or until the script is stopped by itself or another script.
 \parspace
 
 \begin{figure}[htpb]
@@ -49,18 +52,14 @@ Figure~\ref{fig:scratch-gui} shows a screenshot of an example program.
     \caption{Scratch code}
     \label{fig:scratch_code}
 \end{figure}
-\mnote{TODO: move scripts in figure further apart}
 
-\textbf{Code.}
-Programming in Scratch is done by sticking together a structure of pre-defined blocks, which are equivalent to statements in traditional programming languages.
-Multiple blocks are combined together with a \textit{hat} to make up a \textit{script}.
-Scripts are called through a event, which is defined by their hat. % TODO show hat, code, script region in figure
-There are a variety of different events in Scratch.
-The main event is the \textit{green flag}, which is the entry point of the program.
-This event is emitted when the user starts the program by pressing the start button.
-The program then starts by executing all scripts, which are equipped with a ''when green flag is pressed'' hat.
-Other events include key presses on the keyboard, clicks on a specific sprite, and events sent from different scripts.
-Active scripts effectively run in parallel until the end of each script is reached, or until the script is stopped by itself or another script.
+\textbf{Input and output.}
+Scratch programs create interactive two-dimensional animations through a number of visual objects (the \textit{sprites}) on a background (the \textit{stage}).
+The program manipulates sprites' appearance, position, size, rotation, visual effects and sounds.
+Furthermore, sprites can also display messages and ask the user to type answers into a text box through \texttt{say} and \texttt{ask} blocks.
+Programs can react to user input like keyboard key presses, mouse clicks or mouse cursor movement.
+Scratch's visual output is rendered in a constant frequency of 30 times per second.
+We will call each of the rendered pictures a \textit{frame} and the program execution in between two frames a \textit{step}.
 \parspace
 
 \textbf{Sprite and variables.}
@@ -122,9 +121,6 @@ An example for this is BlockPy~\cite{blockpy}, which translates its block-based 
 %     - Test only what the user sees
 %         - Only information about sprites and variables (both can be shown on screen)
 %         - Sprite positions, movement, looks, etc.
-%
-% \section{Automatic Test Generation}%
-% \label{sec:automatic_test_generation}
 
 \section{Challenges of Testing Scratch Programs}
 \label{sec:challenges_of_testing_scratch_programs}

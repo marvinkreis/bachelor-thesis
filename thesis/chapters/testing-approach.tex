@@ -338,7 +338,7 @@ This section will highlight some advantages and disadvantages of the presented t
 \label{cha:using_constraints_for_flexible_test_inputs}
 
 This section will describe why separating control of the program under test from the test code can be beneficial,
-and how this can be achieved by using Whisker's  mechanism to define constraints.
+and how this can be achieved by defining constraint, that are checked in the background.
 
 \section{Input-Independent / Constraint-only Tests}
 \label{sec:input_independent_constraint_only_tests}
@@ -354,23 +354,23 @@ QuickCheck then automatically generates input for the program and checks if the 
 
 Scratch programs can often be tested in a similar way.
 But in order to be able to do this, tests have to be made independent of the simulated input on the program.
-This will not just enable us to test with random input, but with other input sources as well.
+This will not just enable us to test with generated input, but with other input sources as well.
 For example, the program could be manually controlled by a person, or input could be recorded and played back.
 Whisker also offers its own method of automated input generation by randomizing a set of inputs,
-which are either provided by the test itself, or deduced by analyzing the program code (see section~\ref{TODO} for more information on this).
+which are either provided by the test itself, or deduced by analyzing the program code (see section~\ref{sec:automated_input_generation} for more information on this).
 \parspace
 
-Scratch tests can be made independent of inputs, and Whisker provides the means to do this.
+Scratch tests can often be made independent of inputs, and Whisker provides the means to do this.
 Using constraints allows us to define conditions, which the program must hold.
-Constraints check the programs compliance to the conditions by continually performing assertions throughout the program execution.
-Since this is done entirely in the background while the program under test is running, we can define some constraints and just let the program run for some time.
+Constraints check the program's compliance to the conditions by continually performing assertions throughout the program execution.
+Since this is done entirely in the background while the program under test is running, we can define constraints and just let the program run for some time.
 This way, it does not matter in what state the program is during its execution, or what inputs it is receiving.
 If a condition does not hold, the respective constraint fails.
 
 \section{Testing Procedure}
 \label{sec:constraint_testing_procedure}
 
-Figure~\ref{fig:input-independent-testing-procedure} shows a testing procedure, which uses the aforementioned approach to test independently of the simulated input.
+Figure~\ref{fig:input_independent_testing_procedure} shows a testing procedure, which uses the aforementioned approach to test independently of the simulated input.
 We will go through each step of the procedure with the aid of an example.
 Consider a program with a single sprite, which is supposed to move to the right precisely when the right arrow key is pressed.
 We want to write a test to check if the sprite's movement works correctly.
@@ -383,30 +383,34 @@ We want to write a test to check if the sprite's movement works correctly.
              num/.style={draw, circle, inner sep=0.6mm, text centered},
                h/.style={fill=blue!10}}
 
-     \begin{tikzpicture}[scale=0.9, every node/.style={scale=0.9}]
-        \node[box, h] at ( 0.2,  4.25) (tracking)    {Setup information tracking};
-        \node[box, h] at ( 0.2,  3.0)  (constraints) {Register constraints};
-        \node[box]    at ( 0.2,  2.0)  (inputs)      {(Simulate Inputs)};
-        \node[box]    at ( 0.2,  1.0)  (run)         {Run the program};
-        \node[box, h] at ( 0.2,  0.0)  (verify)      {Verify tested situation};
+    \begin{tikzpicture}[scale=0.9, every node/.style={scale=0.9}]
+        \node[box]    at (0.2, 5.75) (initialize)  {Give the program some time to Initialize};
+        \node[box, h] at (0.2, 4.25) (tracking)    {Setup information tracking};
+        \node[box, h] at (0.2, 3.0)  (constraints) {Register constraints};
+        \node[box]    at (0.2, 2.0)  (inputs)      {(Simulate Inputs)};
+        \node[box]    at (0.2, 1.0)  (run)         {Run the program};
+        \node[box, h] at (0.2, 0.0)  (verify)      {Verify tested situation};
 
-        \node[num] at (-2.6,  4.25) (one)   {1};
-        \node[num] at (-2.6,  3.0)  (two)   {2};
-        \node[num] at (-2.6,  2.0)  (three) {3};
-        \node[num] at (-2.6,  1.0)  (four)  {4};
-        \node[num] at (-2.6,  0.0)  (five)  {5};
+        \node[num] at (-2.6, 5.75) (one)   {1};
+        \node[num] at (-2.6, 4.25) (two)   {2};
+        \node[num] at (-2.6, 3.0)  (three) {3};
+        \node[num] at (-2.6, 2.0)  (four)  {4};
+        \node[num] at (-2.6, 1.0)  (five)  {5};
+        \node[num] at (-2.6, 0.0)  (six)   {6};
 
         \draw[arrow]
-               ( 0.2,  5.1)
+               (0.2,  6.6)
+            -- (initialize)
             -- (tracking)
             -- (constraints)
             -- (inputs)
             -- (run)
             -- (verify)
-            -- ( 0.2, -0.8);
+            -- (0.2, -0.8);
     \end{tikzpicture}
+
     \caption{Input-independent testing procedure}
-    \label{fig:input-independent-testing-procedure}
+    \label{fig:input_independent_testing_procedure}
 \end{figure}
 
 \begin{enumerate}
@@ -467,7 +471,10 @@ We want to write a test to check if the sprite's movement works correctly.
     \begin{subfigure}[b]{.35\textwidth}
         \centering
         \begin{minted}[autogobble, breaklines, linenos, fontsize=\tiny, framesep=2mm, frame=lines]{javascript}
-            const sp = t.getSprite('Sprite1');
+            const sprite = t.getSprite('Sprite1');
+
+            /* Give the program some time to initialize. */
+            await t.runForTime(100);
 
             let oldX = sprite.x;
 
@@ -495,38 +502,46 @@ We want to write a test to check if the sprite's movement works correctly.
     \begin{subfigure}[b]{.55\textwidth}
         \centering
         \begin{minted}[autogobble, breaklines, linenos, fontsize=\tiny, framesep=2mm, frame=lines]{javascript}
-            const sprite = t.getSprite('Sprite1');
+            let sprite = t.getSprite('Sprite1');
 
-            /* Give the program some time to initialize itself. */
+            /* (1) Give the program some time to initialize. */
             await t.runForTime(100);
 
-            /* (1) Track when the right arrow key is being pressed,
+            /* When the last right arrow key press started. */
+            let startPressedTime, startReleasedTime;
+            /* When the right arrow key was last recorded as pressed / released. */
+            let pressedTime, releasedTime;
+            /* When the sprite was last recorded as moving right / staying still. */
+            let movedRightTime, stayedStillTime;
+            /* If the right arrow key was pressed in the previous step. */
+            let previouslyPressed = t.isKeyDown('right arrow');
+            /* If the right arrow key was pressed at all. */
+            let pressed = false, released = false;
+
+            /* (2) Track when the right arrow key is being pressed,
              * and when it is released. */
-            let startPressedTime,  pressedTime;
-            let startReleasedTime, releasedTime;
-            let currentlyPressed = t.isKeyDown('right arrow');
-            t.addCallback(() => {
+            const trackArrowPressCb = t.addCallback(() => {
                 const currentTime = t.getTotalTimeElapsed();
                 if (t.isKeyDown('right arrow')) {
+                    pressed = true;
                     pressedTime = currentTime;
-                    if (!currentlyPressed) {
+                    if (!previouslyPressed) {
                         startPressedTime = currentTime;
-                        currentlyPressed = true;
+                        previouslyPressed = true;
                     }
                 } else {
+                    pressed = false;
                     releasedTime = currentTime;
-                    if (currentlyPressed) {
+                    if (previouslyPressed) {
                         startReleasedTime = currentTime;
-                        currentlyPressed = false;
+                        previouslyPressed = false;
                     }
                 }
             });
 
-            /* (1) Track when the sprite is moving to the right,
+            /* (2) Track when the sprite is moving to the right,
              * and when it is staying still. */
-            let movedRightTime;
-            let stayedStillTime;
-            t.addCallback(() => {
+            const trackSpriteMoveCb = t.addCallback(() => {
                 if (sprite.x > sprite.old.x) {
                     movedRightTime = t.getTotalTimeElapsed();
                 } else if (sprite.x === sprite.old.x) {
@@ -534,10 +549,10 @@ We want to write a test to check if the sprite's movement works correctly.
                 }
             });
 
-            /* (2) Check if the sprite only moves when the right arrow
+            /* (3) Check if the sprite only moves when the right arrow
              * key was pressed, and if it doesn't move when the key was
              * not pressed. */
-            t.addConstraint(() => {
+            const spriteMoveConstraint = t.addConstraint(() => {
                 const currentTime = t.getTotalTimeElapsed();
                 if (currentTime > startPressedTime + 100) {
                     t.assert.ok(pressedTime - movedRightTime <= 100,
@@ -549,72 +564,28 @@ We want to write a test to check if the sprite's movement works correctly.
                 }
             });
 
-            /* (3) Some code, which registers inputs. Or nothing if
+            /* (4) Some code, which registers inputs. Or nothing if
              * inputs are done manually. For example, generated input: */
             t.setRandomInputInterval(250);
             t.detectRandomInputs();
 
-            /* (4) Run the program. */
+            /* (5) Run the program. */
             await t.runForTime(5000);
 
-            /* (5) Check if the right arrow key was pressed at all,
+            /* (6) Check if the right arrow key was pressed at all,
              * and if it was ever released. */
-            t.assume.ok(pressedTime > 0, 'Right arrow key must be pressed.');
-            t.assume.ok(releasedTime > 0, 'Right arrow key must be released.');
+            t.assume.ok(pressedTime >= 0, 'Right arrow key must be pressed.');
+            t.assume.ok(releasedTime >= 0, 'Right arrow key must be released.');
         \end{minted}
-        % \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, framesep=2mm, frame=lines]{javascript}
-        %     const sprite = t.getSprite('Sprite1');
-        %
-        %     /* Detect if the right key is pressed.
-        %        Optional, if  the used input guarantees,
-        %        that the right arrow key is pressed. */
-        %     let rightPressed = false;
-        %     const detectRight = t.addCallback(() => {
-        %         if (t.isKeyDown("right arrow")) {
-        %             rightPressed = true;
-        %             detectRight.disable();
-        %         }
-        %     });
-        %
-        %     /* (1) Track the x position of the sprite, so
-        %        horizantal movement can be checked. */
-        %     let oldX;
-        %     t.addCallback(() => {
-        %         oldX = sprite.x;
-        %     });
-        %
-        %     /* (2) Sprite should move right when the
-        %        right arrow key is pressed. Sprite
-        %        should not move when no key is pressed. */
-        %     t.addConstraint(() => {
-        %         if (t.isKeyDown("right arrow")) {
-        %             t.assert.ok(sprite.x > oldX);
-        %         } else {
-        %             t.assert.ok(sprite.x === oldX);
-        %         }
-        %     });
-        %
-        %     /* (3) Some code, which registers inputs.
-        %        Or nothing if inputs are done manually.
-        %        For example: */
-        %     t.detectRandomInputs();
-        %
-        %     /* (4) */
-        %     await t.runForTime(5000);
-        %
-        %     /* (5) Optional, if  the used input
-        %        guarantees, that the right arrow key
-        %        is pressed. */
-        %     t.assume.ok(rightPressed);
-        % \end{minted}
         \caption{Input-independent test}
+        \label{fig:normal_input_independent_test_comparison_constraint}
     \end{subfigure}
     \caption{Comparison of normal tests and an input-independent tests}
-    \label{fig:normal-input-independent-test-comparison}
+    \label{fig:normal_input_independent_test_comparison}
 \end{listing}
 \parspace
 
-Figure~\ref{fig:normal-input-independent-test-comparison} shows the resulting test code for the example
+Figure~\ref{fig:normal_input_independent_test_comparison} shows the resulting test code for the example
 and compares it to a similar test, which simulates inputs deliberately to check the sprite's movement.
 We can easily see, that this approach is quite a bit more costly than the more normal approach.
 But at the same time, the input-independent testing procedure is able to scale better than the other testing procedure.
@@ -624,10 +595,122 @@ many constraints can possibly be combined into a single test.
 For this purpose, Whisker offers an option to disable failed constraints instead of failing the entire test.
 Hence, the test can simply check which constraints failed at the end, and let Whisker generate a test report from them.
 
-\section{Resetting the program during a test}
+\section{Resetting the Program During a Test}
 \label{sec:resetting_the_program_during_a_test}
 
-TODO: don't put this in its own section, write it in the previous section instead
+For testing with randomly generated input, programs often need to be reset multiple times inside of one test execution,
+because the test could get stuck in some state of the program.
+To reset a Scratch program, we may simply press the green flag button again,
+but we also need to consider the tracked information as well as the registered callbacks and constraints when resetting the program under test.
+Figure~\ref{fig:resetting_the_program_under_test_procedure} shows a procedure that may be used to reset the program under test.
+This procedure replaces step $4$ (Run the program) in the input-independent testing procedure (see Figure~\ref{fig:input_independent_testing_procedure}).
+Additionally the code example in Listing~\ref{fig:resetting_the_program_under_test_example}
+implements this procedure for the example in Listing~\ref{fig:normal_input_independent_test_comparison_constraint}.
+\parspace
+
+Sometimes, information may need to be tracked across resets in order to determine what events occurred in the program during the whole test execution.
+This information may be needed to rule out constraints, whose situation never occurred, after the test execution.
+An example for this are the variables \texttt{pressed} and \texttt{released} in Listing~\ref{fig:normal_input_independent_test_comparison_constraint}.
+
+\begin{figure}[htpb]
+    \centering
+    \begin{subfigure}[m]{.3\textwidth}
+        \centering
+        \tikzset{>=latex,
+               arrow/.style={draw, -{Latex[length=1.5mm, width=1.5mm]}},
+                 box/.style={draw, text width=4.3cm, minimum height=0.7cm, text centered, rounded corners},
+                 num/.style={draw, circle, inner sep=0.6mm, text centered},
+                   h/.style={fill=blue!10}}
+
+        \begin{tikzpicture}[scale=0.9, every node/.style={scale=0.9}]
+            \node[box, h] at (0.2,  6.75) (suspendcb)  {Suspend Information Tracking};
+            \node[box, h] at (0.2,  5.50) (suspendcn)  {Suspend Constraints};
+            \node[box, h] at (0.2,  4.25) (resetinfo)  {Reset per-run information};
+            \node[box]    at (0.2,  2.25) (greenflag)  {Press the green flag and give the program some time to Initialize};
+            \node[box]    at (0.2,  0.75) (spriteref)  {Get new sprites};
+            \node[box, h] at (0.2, -0.75) (activatecb) {Activate Information Tracking};
+            \node[box, h] at (0.2, -2.00) (activatecn) {Activate Constraints};
+            \node[box]    at (0.2, -3.00) (run)        {Run the program};
+
+
+            \node[num] at (-2.6,  6.75) (one)   {1};
+            \node[num] at (-2.6,  5.50) (two)   {2};
+            \node[num] at (-2.6,  4.25) (three) {3};
+            \node[num] at (-2.6,  2.25) (four)  {4};
+            \node[num] at (-2.6,  0.75) (five)  {5};
+            \node[num] at (-2.6, -0.75) (six)   {6};
+            \node[num] at (-2.6, -2.00) (seven) {7};
+            \node[num] at (-2.6, -3.00) (eight) {8};
+
+            \draw[arrow]
+                   ( 0.2,  7.6)
+                -- (suspendcb)
+                -- (suspendcn)
+                -- (resetinfo)
+                -- (greenflag)
+                -- (spriteref)
+                -- (activatecb)
+                -- (activatecn)
+                -- (run)
+                -- ( 0.2, -3.8);
+
+            % \draw[-, rounded corners]
+            %        ( 0.2, -2.8)
+            %     -- (-3.4, -2.8)
+            %     -- (-3.4,  7.7)
+            %     -- ( 0.2,  7.7);
+        \end{tikzpicture}
+        \caption{Procedure for resetting the program under test}
+        \label{fig:resetting_the_program_under_test_procedure}
+    \end{subfigure}%
+    \hspace{.13\textwidth}%
+    \begin{subfigure}[m]{.55\textwidth}
+        \centering
+        \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, framesep=2mm, frame=lines]{javascript}
+            for (let i = 0; i < 10; i++) {
+                /* (1) Suspend information tracking. */
+                trackArrowPressCb.disable();
+                trackSpriteMoveCb.disable();
+
+                /* (2) Suspend constraints. */
+                spriteMoveConstraint.disable();
+
+                /* (3) Reset per-run information
+                   (keep values of 'pressed' and 'released'). */
+                spriteMoveConstraint.disable();
+                startPressedTime = startReleasedTime = undefined;
+                pressedTime = releasedTime = undefined;
+                movedRightTime = stayedStillTime = undefined;
+                previouslyPressed = t.isKeyDown('right arrow');
+
+                /* (4) Press the green flag and give the program
+                   some time to Initialize. */
+                t.greenFlag();
+                await t.runForTime(100);
+
+                /* (5) Get new sprites. */
+                let sprite = t.getSprite('Sprite1');
+
+                /* (6) Activate information tracking. */
+                trackArrowPressCb.enable();
+                trackSpriteMoveCb.enable();
+
+                /* (7) Activate constraints. */
+                spriteMoveConstraint.enable();
+
+                /* (8) Run the program. */
+                await t.runForTime(5000);
+            }
+        \end{minted}
+        \vspace{-\bigskipamount}
+        \caption{Example code for resetting the program under test (extends Listing~\ref{fig:normal_input_independent_test_comparison_constraint})}
+        \label{fig:resetting_the_program_under_test_example}
+    \end{subfigure}
+
+    \caption{Resetting the program under test}
+    \label{fig:resetting_the_program_under_test}
+\end{figure}
+
 
 % Register Callbacks for Information Tracking (per run for constraints and across runs to rule out constraints in the end)
 % Register Constraints
@@ -649,7 +732,6 @@ TODO: don't put this in its own section, write it in the previous section instea
 % Check Across-Run Information to Disable Constraints, whose situation to check did not occur
 % Generate test report
 
-For random testing, programs often need to be reset multiple times inside of one test execution...
 
 % \begin{figure}[htpb]
 %     \centering
