@@ -83,7 +83,7 @@ and explain, why these projects were chosen.
 
 \subsubsection{(P1) Catching Game}
 
-The first set of Scratch projects consists of 41 student implementations of a simple catching game.
+The first set of Scratch projects consists of 37 student implementations of a simple catching game.
 The projects originate from a voluntary Scratch course for 6th and 7th grade students.
 In this course, students were introduced to Scratch through several small exercises,
 % familiarized themselves with Scratch
@@ -129,50 +129,48 @@ when an apple touches the ground, also makes automated testing more difficult.
 \parspace
 
 Since the students didn't write the programs with automated testing in mind,
-some of the projects were unusable for our evaluation for various reasons, so we excluded them from the statistics.
+some of the projects were unusable for our evaluation.
+Therefore, we excluded some of the projects in our statistics.
 Table~\ref{tab:excluded_projects} shows the excluded projects together with the reasons for excluding them.
-The projects are named K6\_S01 through K6\_S33 for 6th grade student solutions
-and K7\_S02 through K7\_S27 for 7th grade student solutions respectively (with many numbers being skipped).
+% The projects are named K6\_S01 through K6\_S33 for 6th grade student solutions
+% and K7\_S02 through K7\_S27 for 7th grade student solutions respectively (with many numbers being skipped).
 Most of the excluded projects were found by analyzing the test reports and the coverage of our test suite,
-while two of them were detected manually from a discrepancy between our test results and the manual scoring,
-which we will compare our results to later.
-
-% === Excluded Projects
-% - Some of the projects were excluded from the evaluation
-% - Because they where problematic to automated testing in some way
-%     - Tests select sprites and variables by name, and some projects changed the names of sprites and variables
-%         - Detected by searching the test reports: ''grep''
-%     - Some projects used a different mechanism than the green flag to start their program
-%         - Since this is not specified, tests can not start the program
-%         - Detected by zero statement coverage
-%     - Some Projects didn't work properly because of missing initialization
-%         - Go game over on startup
-%         - One project work if green flag is pressed multiple times
-%         - One project only worked if the sprites were manually dragged to a different position
+while two of them were detected manually from a discrepancy between our test results and the manual scoring.
+Most of the projects were excluded because they don't start properly.
+This seems to be a common problem, since Scratch runs programs from where they left off in the last run.
+But to get consistent test results, we have to establish the same situation before every test case,
+which we do by loading the project again.
+Some of the projects start with a key press instead of the green flag, others need to have the green flag pressed twice,
+or require the user to move the sprites to different positions before starting the program.
+The manual scoring ignores these problems, while our tests don't.
+But the program not starting correctly is technically a fault in the implementation, so low test scores are correct for these projects.
+Hence, these projects would create a discrepancy between manual scores and test results,
+which only exists because of differences in the scoring systems.
+Therefore, we believe the statistics convey the results more clearly without these projects.
 
 \begin{table}[htpb]
     \centering
     \scriptsize
     \begin{tabular}{lp{10.5cm}}
         \toprule
-        Project & Reason                                                                          \\
+        Project & Reason                                                                           \\
         \midrule
-        \multicolumn{2}{l}{\textbf{Detected through test reports}}                                \\
-        K6\_S12 & Deleted variable from template: ''Zeit''                                        \\
-        K6\_S17 & Renamed variable from template: ''Punkte'' to ''Bunkte''                        \\
-        K7\_S24 & Deleted variable from template: ''Zeit''                                        \\
-        K7\_S27 & Renamed sprite from template: ''Bowl'' to ''Figur2''                            \\
+        \multicolumn{2}{l}{\textbf{Detected through test reports}}                                 \\
+      % K6\_S12 & Deleted variable from template: ''Zeit''                                         \\
+      % K6\_S17 & Renamed variable from template: ''Punkte'' to ''Bunkte''                         \\
+      % K7\_S24 & Deleted variable from template: ''Zeit''                                         \\
+      % K7\_S27 & Renamed sprite from template: ''Bowl'' to ''Figur2''                             \\
         K7\_S07 & Resets all sprite positions when the "a" key is pressed.
-                  Problematic, because automated test input generation will press the "a" key     \\[1.4\bigskipamount]
+                  Problematic, because automated test input generation will press the "a" key      \\[1.4\bigskipamount]
 
-        \multicolumn{2}{l}{\textbf{Detected through zero statement coverage}}                     \\
-        K6\_S01 & Starts on up arrow key press instead of green flag                              \\
-        K6\_S06 & Wrong scratch project file (scored 30 points in manual rating but has no code)  \\
-        K6\_S14 & Starts on space key press instead of green flag                                 \\[\medskipamount]
+        \multicolumn{2}{l}{\textbf{Detected through zero statement coverage}}                      \\
+        K6\_S01 & Starts on up arrow key press instead of green flag                               \\
+        K6\_S06 & Wrong scratch project file (scored 30 points in manual rating but has no code)   \\
+        K6\_S14 & Starts on space key press instead of green flag                                  \\[\medskipamount]
 
-        \multicolumn{2}{l}{\textbf{Detected manually}}                                            \\
-        K6\_S20 & Green flag has to be pressed twice to make it work properly                     \\
-        K7\_S18 & Sprites have to be repositioned manually in the editor to make it work properly \\
+        \multicolumn{2}{l}{\textbf{Detected manually}}                                             \\
+        K6\_S20 & Green flag has to be pressed twice to make it work properly                      \\
+        K7\_S18 & Sprites have to be repositioned manually in the editor to make it start properly \\
         \bottomrule
     \end{tabular}
     \caption{Excluded projects together with the reason to exclude them}
@@ -1154,6 +1152,9 @@ We found out, that all of the results consistently show a strong correlation to 
 Therefore, the null hypothesis is rejected.
 We proved, that the input-independent / constraint-only testing approach can deliver accurate test results,
 both with deliberate input and with generated input.
+For the generated random input, we reset the program under test 30 times and let it run for a total of $30 * 10\text{s} = 300\text{s}$.
+Of course, other configurations are also possible.
+We chose this configuration, because the program under test will go game over in the first ten seconds most of the time.
 Then, we analyzed the flakiness of the test suites and found several reasons,
 why certain tests and certain programs can be inconsistent.
 We measured the average number of these inconsistencies,
@@ -1172,21 +1173,19 @@ Since the coverage with automated input was much higher that coverage without in
 we rejected the null hypothesis.
 \parspace
 
-Aside from the research questions, we conducted another experiment to find out,
+We conducted another experiment to find out
 if the testing process interferes with the program under test.
 For this purpose, we measured the execution time of Whisker's step procedure on the execution of our test suites
 to find out if it slowed down the Scratch program.
 We found out that Scratch's allocated time interval for computations is large enough to
 allow executing both the Scratch program and test code.
-Programs under test are not affected by Whisker, therefore, we can reject the null hypothesis.
+Sometimes, the execution time of the step procedure spiked over the allocated time interval,
+delaying a single step.
+However, these single spikes should not affect the programs in a meaningful way.
+The execution times will only be problematic if they consistently exceed the time limit.
+Therefore, programs under test were not affected by Whisker in our tests, and we can reject the null hypothesis.
 
 
-
-For the generated random input, we reset the program under test 30 times and let it run for a total of $30 * 10\text{s} = 300\text{s}$.
-Of course, other configurations are possible.
-We chose this configuration, because the program under test will go game over in the first ten seconds most of the time.
-- other configurations of time * iterations possible for random tests and coverage measurement
-- execution times can be forced to be high, but aren't for normal programs / tests
 
 \section{Threats to Validity}
 \label{sec:threats_to_validity}
@@ -1234,6 +1233,18 @@ We observed similar results with both methods, therefore this issue did not have
 % However, we executed each test suite on the projects in alphabetical order,
 % and the manual scores actually show a weak positive correlation ($r = 0.43$) to the indexes of the execution order,
 % meaning that the alphabetical order is closer to the order of ascending manual scores.
+\parspace
+
+\textbf{Excluded Projects.}
+For RQ1 we excluded multiple Scratch projects from our statistics because they had various problems that
+prevented automated testing from producing accurate results.
+For the most part, these projects could not be started correctly,
+either because they did not use the green flag or because the projects were missing initialization and were
+saved in a state that causes an early game over.
+We conjecture that programs which were written with automated testing in mind won't have this kind of problems.
+If students are given a way to perform the tests on their program themselves, they will realize that the program is not starting correctly.
+And in most cases these problems are very easy to solve.
+Therefore we believe, that the statistics show more realistic results with these projects excluded.
 
 \subsection{External Validity}
 
