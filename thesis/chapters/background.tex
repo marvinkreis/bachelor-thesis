@@ -125,9 +125,9 @@ An example for this is BlockPy~\cite{blockpy}, which translates its block-based 
 \section{Challenges of Testing Scratch Programs}
 \label{sec:challenges_of_testing_scratch_programs}
 
-Dynamically testing Scratch programs is not a straightforward task.
+Functional testing for Scratch is not a straightforward task.
 There exist multiple challenges, that have to be overcome in order to test Scratch programs accurately.
-This section will go over these challenges and explain each one of them.
+This section will go over these challenges and explain each of them.
 % TODO: This section explains these challenges and how the presented approach overcomes them.
 \parspace
 
@@ -160,7 +160,7 @@ but Scratch programs tend to often make use of randomness,
 since it can make game-like programs more interesting.
 This is especially relevant in the context of automated grading.
 Programming tasks for students in conventional programming languages are usually deterministic.
-However, Scratch assignments may tend to feature randomness to make the task more exciting.
+However, Scratch assignments may tend to feature randomness to create game-like programs.
 \parspace
 
 \textbf{Missing Initialization.}
@@ -169,7 +169,8 @@ When the program is loaded, it loads the sprite attributes and variable values f
 Then, when the program is run, it starts with this state, but subsequent executions of the program continue with the configuration,
 which the last run of the program left after it ended.
 Scratch programs can deal with this by doing initialization in the beginning, but many don't.
-Therefore, if a program is run multiple times for testing, the initial sprite and variable configuration needs to be restored.
+% Therefore, if a program is run multiple times for testing, the initial sprite and variable configuration needs to be restored
+% so each test can start from the same state.
 \parspace
 
 \textbf{Fuzziness of properties.}

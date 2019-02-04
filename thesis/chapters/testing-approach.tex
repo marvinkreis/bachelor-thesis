@@ -156,7 +156,7 @@ and would also make it possible to test programs in parallel and in a headless e
 
 Automating Scratch allows us to write tests for Scratch in a unit-test-like fashion.
 Whisker loads and starts the program before each test starts.
-By doing this, every test starts with a fresh instance of the program in the exact same situation.
+By doing this, every test starts with a fresh instance of the program in the exact same state.
 % The test code can then interact with the program in order to produce a desired situation and check how the program behaves through assertions.
 \parspace
 
@@ -272,67 +272,64 @@ Secondly, executing single scripts could also lead to unexpected behaviour in th
 % This is mainly due to the game-like nature of usual Scratch programs.
 % They often feature multiple sprites running loops in order to be interactive.
 
-\section{Advantages and Disadvantages}
-\label{sec:appoach_advantages_disadvantages}
-
-\mnote{TODO: better explanations, better intro, small discussion}
-This section will highlight some advantages and disadvantages of the presented testing approach.
-\parspace
-
-% - Scratch programs can be pretty inconsistent
-%     - Some programs may only sometimes work and other times not
-%     $\rightarrow$ They may or may not pass the test
-
-\noindent Disadvantages:
-
-\begin{itemize}
-    \item Scratch programs have to be well specified, since testing relies on the program's specification.
-        Therefore, if the specification is too vague, testing can become difficult.
-        Tests for imprecise specifications potentially need to consider more possible cases of how the program could behave.
-        Likewise, conflicting interpretations of the specification between the test and the program may result in false negative test outcomes.
-    \item Since we only test the program as a whole, testing a single part of the program can be difficult.
-        If, for example, some functionality of a program depends on another functionality being implemented correctly,
-        but the latter does not work, we can not test the first functionality properly.
-\end{itemize}
-
-\noindent Advantages:
-
-\begin{itemize}
-    \item This approach allows to test programs with most of Scratch's functionality.
-        Apart from sounds and extensions, anything, which Scratch has to offer, can be tested with this approach.
-        In contrast, ITCH's previous testing approach limited Scratch programs to textual IO.
-    \item Tests are easily understood, because they control the program like a normal person would.
-    \mnote{Can't state this without proof $\rightarrow$ "we believe" or similar}
-        This is important, because students, whose programs are supposed to be tested later,
-        could be allowed to run tests on their programs themselves during development.
-        This way, students could easily receive valuable feedback about the correctness of their implementations.
-        Therefore, it is beneficial to use tests, whose actions and purposes are easily understood by students.
-\end{itemize}
-
 \section{Challenges of this Approach}
 \label{sec:appraoch_challenges}
 
-% \textbf{Absolute timings.}
-% Scratch offers code blocks to delay the execution of a script, which often find use in typical game-like programs.
-% These blocks use absolute timings to implement the delay.
-% Basically, they save the current time when they pause the script,
-% then later resume the execution of the script when the difference between the current time and the saved time reached the desired delay length.
-% This means, that the execution of the Scratch program can only be paused or delayed for a very short time without interfering with these timings.
-% Pausing the execution of the Scratch program for too long, while a delay is active,
-% takes away execution time from other scripts, which are executed parallel to the delay.
-% This can potentially have an impact on the program under test.
-% % Therefore, additional computations by the testing procedure must be fast enough to avoid interfering with the program under test.
-% \mnote{TODO: Reference the evaluation section about timings here?}
-% \mnote{TODO: Rewrite this with an example so it's easier to understand}
-%
-% \begin{figure}[htpb]
-%     \centering
-%     \includegraphics[width=0.30\textwidth]{code-timing}
-%     \caption{Delaying blocks}
-%     \label{fig:delaying_blocks}
-% \end{figure}
-%
-% TODO: actions don't necessarily happen in the same step -> have to track timings
+% \begin{itemize}
+%     \item This approach allows to test programs with most of Scratch's functionality.
+%         Apart from sounds and extensions, anything, which Scratch has to offer, can be tested with this approach.
+%         In contrast, ITCH's previous testing approach limited Scratch programs to textual IO.
+%     \item Tests are easily understood, because they control the program like a normal person would.
+%     \mnote{Can't state this without proof $\rightarrow$ "we believe" or similar}
+%         This is important, because students, whose programs are supposed to be tested later,
+%         could be allowed to run tests on their programs themselves during development.
+%         This way, students could easily receive valuable feedback about the correctness of their implementations.
+%         Therefore, it is beneficial to use tests, whose actions and purposes are easily understood by students.
+% \end{itemize}
+
+This section highlights various challenges that can make testing with this approach difficult.
+\parspace
+
+\textbf{General testing challenges.}
+Firstly, automated testing in general introduces some challenges.
+For one thing, programs have to be well specified, since testing relies on the program's specification.
+Therefore, if the specification is too vague, testing can become difficult.
+Tests for imprecise specifications potentially need to consider more possible cases of how the program could behave.
+Likewise, conflicting interpretations of the specification between the test and the program may result in false negative test outcomes.
+Also, since we only test the program as a whole, testing a single part of the program can be difficult.
+If some feature of the program under test depends on another feature being implemented correctly,
+but the latter does not work, the first feature can not be tested properly.
+\parspace
+
+\textbf{Addressing sprites and variables.}
+In order to access information about sprites and variables, they need to be addressed in some way.
+Sprites can be addressed by any of their attributes, for example by their position or by their name.
+Nevertheless, if a sprite, that is needed for the test, can not be found, the test can not work properly.
+This can be a problem if a Scratch program deviates from the specification or from a provided template.
+However, errors like this can easily be detected through test reports.
+% Probably the easiest way to handle this is to give students a Scratch project with the sprites and variables already in place
+% as a template so the sprites and variables have the same name in each student solution.
+\parspace
+
+\textbf{Missing initialization.}
+Another challenge are programs which are missing initialization and are saved in a bad state.
+The Scratch GUI picks up where the last execution left off when the green flag is pressed.
+Therefore, students might not initialize their program properly,
+which can cause it to behave incorrectly sometimes when the green flag is pressed..
+A program with missing initialization may be saved in a bad state,
+meaning the program will behave incorrectly the next time it is started.
+Since we restore the same state in the beginning of each test case,
+such a program will always behave incorrectly during the tests although the implementation might be mostly correct.
+\parspace
+
+\textbf{Time-displaced events.}
+Programs may have events that are supposed to trigger certain actions.
+For example, a sprite touching another sprite may cause a variable to be incremented.
+But the exact timing for the triggered action is often unknown, because the event is detected through a loop.
+Therefore, tests have to check if the action happens in a time interval after the event occurred.
+This may be done by tracking timestamps of the event and the action, and comparing these timestamps,
+but this is expensive to do.
+\parspace
 
 \chapter{Using Constraints For Flexible Test Inputs}
 \label{cha:using_constraints_for_flexible_test_inputs}
