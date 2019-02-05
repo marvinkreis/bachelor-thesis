@@ -15,7 +15,7 @@
 
 In this work, we propose a way to perform dynamic testing on Scratch programs.
 The main goal of this approach is to be able to automatically assess student's solutions to Scratch assignments.
-In order to do so, this approach makes use of an automation utility, which allows test code to interact with a running Scratch program.
+In order to do so, this approach makes use of an automation utility, which allows test code to interact with running Scratch programs through Scratch's IO.
 % To enable dynamic testing for Scratch, we propose a black-bock approach with a testing utility, which allows test code to interact with a running Scratch program.
 \parspace
 
@@ -90,7 +90,7 @@ Figure~\ref{fig:comparison_of_io_mechanisms} illustrates the difference between 
             \node[box, left=of whisker]       (input)   {};
             \node[box, right=of whisker]      (output)  {};
             \node[boxtxt, below right] at ([yshift=-2mm] input.north west)  (inputtxt)
-                {\centering {\large \textbf{Input}}\\[.5\baselineskip]Simulated user inputs through a JavaScript interface};
+                {\centering {\large \textbf{Input}}\\[.5\baselineskip]Simulated user inputs through a programmable interface};
             \node[boxtxt, below right] at ([yshift=-2mm] output.north west) (outputtxt)
                 {\centering {\large \textbf{Output}}\\[.5\baselineskip]Interface to access information about sprites and variables};
 
@@ -113,13 +113,13 @@ Whisker can theoretically be used with any JS testing framework,
 but for compatibility reasons, we developed a rudimentary testing framework to go along with Whisker.
 \parspace
 
-Currently, Whisker is only available in its own web GUI (see Figure~\ref{fig:whisker_gui}).
+Currently, Whisker is only available in its own web GUI, which can be seen in Figure~\ref{fig:whisker_gui}.
 The web page displays Scratch's stage, a table of loaded tests, and a test report in TAP13 format.
 It supports batch testing more than one program with the same test suite,
 but it doesn't support parallel tests.
-In the future, we also plan on implementing a standalone Electron application for Whisker.
+In the future, we also plan on implementing a standalone Electron~\cite{electron} application for Whisker.
 This would facilitate batch testing many programs,
-and would also make it possible to test programs in parallel and in a headless environment.
+and would also make it possible to test programs in parallel as well as in a headless environment.
 
 \begin{figure}[htpb]
     \centering
@@ -155,9 +155,9 @@ and would also make it possible to test programs in parallel and in a headless e
 % \end{enumerate}
 
 Automating Scratch allows us to write tests for Scratch in a unit-test-like fashion.
-Whisker loads and starts the program before each test starts.
-By doing this, every test starts with a fresh instance of the program in the exact same state.
-% The test code can then interact with the program in order to produce a desired situation and check how the program behaves through assertions.
+Whisker loads the program before each test case in order to create the same initial state for every test case,
+instead of going on where the last execution left off, like Scratch's GUI does it.
+It also starts the program with the green flag when the test starts.
 \parspace
 
 Tests use a test driver object to automate Scratch through Whisker.
@@ -196,79 +196,196 @@ Listing~\ref{fig:examples_of_how_to_acquire_the_test_driver} shows code examples
     \label{fig:examples_of_how_to_acquire_the_test_driver}
 \end{listing}
 
-\mnote{TODO: rewrite this, better explanations and code examples\\TODO: properties depend on time $\rightarrow$ ''old'' values}
 The following list will give an overview of Whisker's basic functions.
-The test driver will be denoted as $t$ in example code snippets.
+The test driver object will be denoted as $t$ in example code snippets.
 
 \begin{itemize}
-    \item \textbf{Simulate Input.}
-        \mnote{TODO: check if key is pressed}
-        By simulating Scratch's main input methods, the test can control the tested program.
-        The goal is to simulate a user interacting with the program.
-        Therefore, this is the only way the test can manipulate the program.
-        The possible input includes mouse movement, mouse button presses, keyboard key presses and entering answers to ask blocks.
-        \begin{javascriptcode}
-            t.addInput(1000, {
-                device: 'keyboard',
-                key: 'right arrow',
-                isDown: true
-            });
-        \end{javascriptcode}
-    \item \textbf{Access Information.}
-        \mnote{Explain how in the implementation chapter (objects)}
-        The testing utility can be used to access sprites and variables of the program.
-        This makes it possible to gather information about anything, which is displayed on the stage.
-        Analyzing Scratch's visual output would otherwise be very difficult.
-        The provided sprite attributes include the sprite's position, rotation, size, current costume, speech bubble text, etc..
-        The values of the program's variables can also be accessed.
-        These variable values can usually be displayed to the user in Scratch's graphical output, and are commonly used in Scratch programs to convey information to the user.
-        \begin{javascriptcode}
-            const sprite = t.getSprite('Sprite1');
-            const stage = t.getStage();
-            const variable = stage.getVariable('my variable');
-            console.log(sprite.x);
-            console.log(variable.value);
-        \end{javascriptcode}
     \item \textbf{Control the program execution.}
-        The test is able to control when and for how long the program under test is run.
-        In the beginning of the test, the program starts in a paused state with the green flag already pressed.
-        The test can then run (resume) the program for a certain time, or until a condition is met.
-        The green flag can also be pressed again in order to restart the program, which can, for example, be useful for testing programs, that use randomness.
+        Test are able to control when and for how long the program under test is run.
+        In the beginning of the test, the program starts in a paused state.
+        The program can then be run (resumed) for a certain time, or until a condition is met.
+        Since the Scratch program execution is asynchronous, we use JavaScript's Promise API for this purpose.
+        In order to simply execute the program and wait until the execution is done, the test can be declared as an \texttt{async function} and use the \texttt{await} keyword.
+
+        The green flag can also be pressed again in order to restart the program.
+        Additionally, tests can query the currently elapsed time,
+        either from the start of the current program execution,
+        or from the start of the test case.
         \begin{javascriptcode}
+            /* Run the program for one second (1000 ms). */
             await t.runForTime(1000);
-            await t.runUntil(() => sprite.x > 100));
+            await t.runForSteps(30);
+
+            /* Run the program until a condition is met, with a timeout after one
+             * second. The condition is given by a function that returns a boolean. */
+            await t.runUntil(() => a > b, 1000);
+
+            /* Get the total time elapsed in the current / last run. */
+            t.getRunTimeElapsed();
+
+            /* Get the total time elapsed in this test case. */
+            t.getTotalTimeElapsed();
+
+            /* Press the green flag again. */
             t.greenFlag();
         \end{javascriptcode}
-    \item \textbf{Register Callbacks.}
-        The test can register callbacks, which get called every time Scratch renders a new picture.
-        This allows the test to track the information, which the user would normally see, while the program is running.
+    \item \textbf{Simulate Input.}
+        By simulating Scratch's main input methods, tests can control the program under test.
+        The goal is to simulate a user interacting with the program.
+        The possible input includes mouse movement, mouse button presses, keyboard key presses and entering answers to \texttt{ask} blocks.
+        Inputs, that press (or release) a key or button, can specify a duration, after which the key is released (or pressed) again.
+        Inputs can be performed immediately, or registered to be performed after a delay during the next execution.
+        Inputs, that aren't performed during a run, will still trigger hats, that respond to the input.
+        Tests can also query the current mouse position and if a certain key or button is pressed.
         \begin{javascriptcode}
-            const spritePositions = [];
-            const callback = t.addCallback(() => spritePositions.push(sprite.pos));
+            /* Perform a keyboard input immediately. */
+            t.inputImmediate({
+                device: 'keyboard',
+                key: 'right arrow',
+                isDown: true,
+                duration: 100 // ms
+            });
+
+            /* Perform a mouse input one second into the next run. */
+            t.addInput(1000, { device: 'mouse', x: 100, y: 200, isDown: true });
+
+            /* Answer an ask block two seconds into the next run. */
+            t.addInput(2000, { device: 'text', text: 'some answer' });
+
+            /* Query the current state of inputs. */
+            t.getMousePos(); // {x, y}
+            t.isMouseDown();
+            t.isKeyDown('space');
+        \end{javascriptcode}
+    \item \textbf{Access Scratch's output.}
+        Whisker can be used to access sprites and variables of the program.
+        They are accessed through sprite and variable objects, which always have the latest attributes of the sprite they reference.
+        Sprite objects can be obtained by their name or by their attributes.
+        The provided sprite attributes include the sprite's position, rotation, size, current costume, speech bubble text, etc..
+        Sprites also include the attribute values from the last execution step,
+        which can be accessed through the \texttt{old} attribute of the sprite objects.
+        Additionally, sprites offer some methods for detecting collisions, and other helper methods.
+        \begin{javascriptcode}
+            /* Various getter methods for sprites. */
+            const sprite = t.getSprite('Sprite1');
+            const sprites = t.getSprites(s => s.x > 100);
+            const clones = sprite.getClones();
+            const stage = t.getStage();
+
+            /* Various getter methods for variables. */
+            const variable = stage.getVariable('my variable');
+            const variables = stage.getVariables();
+            const list = sprite.getList('my list');
+            const lists = sprite.getLists();
+
+            /* Accessing sprite attributes and variable values.
+             * Sprites and variables always have the latest values.
+             * sprite.old has the values from the last step. */
+            sprite.x;
+            sprite.old.x;
+            variable.value;
+
+            /* Some of the helper methods. */
+            sprite.isOriginal();
+            sprite.isTouchingEdge();
+            sprite.isTouchingSprite(otherSprite);
+        \end{javascriptcode}
+    \item \textbf{Register Callbacks.}
+        Tests can execute code during the program execution by registering callbacks, which get called before or after each step of the Scratch program.
+        This allows tests to react to information, which the user would normally see, while the program is running.
+        Callbacks can, for example, be used to track information, to perform inputs according to sprite information, or to cancel a run.
+        Callbacks can be enabled and disabled.
+        \begin{javascriptcode}
+            /* Add a callback to be called before each step. */
+            const callback = t.addCallback(() => {
+                if (sprite.x > 100) {
+                    t.inputImmediate({ device: 'mouse', isDown: true });
+                } else if (sprite.x < 0) {
+                    t.cancelRun();
+                }
+            });
+
+            /* Add a callback to be called after each step (true as 2nd parameter). */
+            t.addCallback(() => someList.push(sprite.x), true);
+
+            /* Enable / disable a callback, check if a callback is active. */
             callback.disable();
             callback.enable();
+            callback.isActive();
+        \end{javascriptcode}
+    \item \textbf{React to sprite movements and visual changes.}
+        In addition to callbacks, which get called before or after each Scratch program step,
+        tests can also set a function to be called whenever a sprite moves, or whenever a sprite's visuals change.
+        This can be useful for detecting events, that happen during the step, but are not displayed to the user,
+        which is needed for some edge cases.
+        For example, let's say we test a program with two scripts:
+        One of the scripts moves a sprite around.
+        The other script moves the sprite back to the center whenever it touches on of the stage's edges.
+        Therefore, whenever the sprite touches an edge, it is immediately moved to the center of the screen,
+        even before the image is rendered.
+        Therefore, a callback will never detect the sprite touching an edge.
+        But this way, detecting these collisions is possible.
+        \begin{javascriptcode}
+            let spriteTouchingEdge = false;
+
+            t.onSpriteMoved(sprite => {
+                spriteTouchingEdge = sprite.isTouchingEdge();
+            });
+
+            t.onSpriteVisualChange(sprite => { ... });
         \end{javascriptcode}
     \item \textbf{Register constraints.}
-        \mnote{''In the second and third case, it is up to the test code to check which constraints failed and react accordingly.''}
-        By registering constraints, the test can define conditions that must always hold true.
-        Constraints are done through special callbacks, which perform assertions.
-        For example, this can be used to define that a certain sprite must always be visible.
+        By registering constraints, tests can define conditions that must always hold.
+        Constraints are done through special callbacks, which perform one or more assertions.
+        Whisker can be configured to fail the test on a constraint failure (the default) or to simply disable the failed constraint.
+        In the second case, it is up to the test code to check which constraints failed and react accordingly.
         \begin{javascriptcode}
+            /* Configure the action taken when a constraint fails. */
+            t.onConstraintFailure('fail');
+            t.onConstraintFailure('nothing');
+
+            /* Check if some sprite is always visible
+             * and on the right side of the screen. */
             const constraint = t.addConstraint(() => {
-                t.assert.ok(sprite.visible === true)
+                t.assert.ok(sprite.visible === true, 'Sprite must always be visible.');
+                t.assert.ok(sprite.x > 0, 'Sprite must always be on the right side.');
             });
+
+            /* Enable / disable a constraint, check if a constraint is active. */
             constraint.disable();
             constraint.enable();
+            constraint.isActive();
+        \end{javascriptcode}
+    \item \textbf{Perform randomly generated inputs.}
+        Whisker provides random input generation by performing a random input from a pool of inputs in a constant interval during program executions.
+        If a input consists of multiple events (i.e. if it has a duration) the same input cannot be chosen again while still active.
+        The performed input can also be randomized itself by choosing its values randomly from a configured interval.
+        Tests can either provide the pool or inputs themselves or let Whisker determine what inputs the program reacts to by static analysis.
+        The time interval in which random inputs are performed can also be configured.
+        \begin{javascriptcode}
+            /* Set the interval, how often random inputs should be performed. */
+            t.setRandomInputInterval(150);
+
+            /* Register random inputs for the pool manually. */
+            t.registerRandomInputs([
+                  { device: 'keyboard', key: 'left arrow', duration: [50, 100] },
+                  { device: 'keyboard', key: 'right arrow', duration: [50, 100] },
+                  { device: 'mouse', x: [-100, 100], y: [-100, 100] }
+            ]);
+
+            /* Let Whisker detect inputs for the pool. */
+            t.detectRandomInputs({ duration: [50, 100] });
         \end{javascriptcode}
 \end{itemize}
+\parspace
 
-\noindent Despite being possible in theory, Whisker does not provide the means to execute single scripts or blocks of the program directly.
-\mnote{TODO: really write about grading here?}
-It only allows executing the program as a whole.
-This has two reasons.
-Since the main goal for this testing approach is automated grading, one test suite is possibly executed on a large number of different implementations.
-Therefore, we don't want to concern ourselves with the internals of the program, since they may change from program to program.
-Secondly, executing single scripts could also lead to unexpected behaviour in the program, because scripts in typical Scratch programs often depend on other scripts, which run in parallel.
+% \noindent Despite being possible in theory, Whisker does not provide the means to execute single scripts or blocks of the program directly.
+% \mnote{TODO: really write about grading here?}
+% It only allows executing the program as a whole.
+% This has two reasons.
+% Since the main goal for this testing approach is automated grading, one test suite is possibly executed on a large number of different implementations.
+% Therefore, we don't want to concern ourselves with the internals of the program, since they may change from program to program.
+% Secondly, executing single scripts could also lead to unexpected behaviour in the program, because scripts in typical Scratch programs often depend on other scripts, which run in parallel.
 % This is mainly due to the game-like nature of usual Scratch programs.
 % They often feature multiple sprites running loops in order to be interactive.
 

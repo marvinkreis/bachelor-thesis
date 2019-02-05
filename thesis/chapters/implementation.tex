@@ -477,10 +477,10 @@ Each resulting input depends only on the block type and its parameter.
 The only exception to this are inputs with seeded strings for \texttt{ask} blocks.
 Whisker checks for comparisons between the \texttt{answer} variable and string constants.
 These string constants are then seeded as possible answers for the \texttt{ask} blocks.
-To avoid overshadowing random answers for \texttt{ask} blocks,
-inputs with string constants are given a smaller weight depending on how many of these string comparisons were found,
-so they are less likely to be chosen individually, while still being likely to be chosen as a whole.
-We set the weight of each input with a string constant to $1 / \log_2(\text{\texttt{\#}strings})$.
+% To avoid overshadowing random answers for \texttt{ask} blocks,
+% inputs with string constants are given a smaller weight depending on how many of these string comparisons were found,
+% so they are less likely to be chosen individually, while still being likely to be chosen as a whole.
+% We set the weight of each input with a string constant to $1 / \log_2(\text{\texttt{\#}strings})$.
 
 \newcommand{\tablebox}[1]{
     \begin{tikzpicture}
