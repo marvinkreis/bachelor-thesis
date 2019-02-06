@@ -486,8 +486,9 @@ If a condition does not hold, the respective constraint fails.
 
 Figure~\ref{fig:input_independent_testing_procedure} shows a testing procedure, which uses the aforementioned approach to test independently of the simulated input.
 We will go through each step of the procedure with the aid of an example.
-Consider a program with a single sprite, which is supposed to move to the right precisely when the right arrow key is pressed.
+Consider a program with a single sprite, which is supposed to move to the right when, and only when, the right arrow key is pressed.
 We want to write a test to check if the sprite's movement works correctly.
+For the sake of simplicity we are going to ignore the edge case of the sprite not being able to move right when touching the right edge of the screen.
 
 \begin{figure}[htpb]
     \centering
@@ -498,7 +499,7 @@ We want to write a test to check if the sprite's movement works correctly.
                h/.style={fill=blue!10}}
 
     \begin{tikzpicture}[scale=0.9, every node/.style={scale=0.9}]
-        \node[box]    at (0.2, 5.75) (initialize)  {Give the program some time to Initialize};
+        \node[box]    at (0.2, 5.75) (initialize)  {(Give the program some time to Initialize)};
         \node[box, h] at (0.2, 4.25) (tracking)    {Setup information tracking};
         \node[box, h] at (0.2, 3.0)  (constraints) {Register constraints};
         \node[box]    at (0.2, 2.0)  (inputs)      {(Simulate Inputs)};
@@ -528,61 +529,97 @@ We want to write a test to check if the sprite's movement works correctly.
 \end{figure}
 
 \begin{enumerate}
-    \item[(1)] \textbf{Setup information tracking.}
-        \mnote{TODO: Update for new example}
-        The constraint, which we will have to define later, will depend on information, which is not always available.
-        Because we need to determine the sprite's movement direction, we have to know the position of the sprite from the last rendered frame.
-        In order to track this, we add a callback, which tracks the sprite's last position.
-        (Note: Whisker makes the sprites' attributes from the last rendered frame available through \texttt{sprite.old}, but we are going to ignore this for the sake of the example)
+    \item[(1)] \textbf{Give the program some time to initialize.}
+        Before setting up any tracking or registering constraints we may need to run the program for a short time.
+        Otherwise the initialization of the program might be tracked, which will lead to wrong test results.
         \begin{javascriptcode}
-            let oldX;
-            t.addCallback(() => {
-                oldX = sprite.x;
-            });
+            t.runForTime(100);
         \end{javascriptcode}
-    \item[(2)] \textbf{Register constraints.}
-        Now, that we know the sprite's last position, we can determine if, and in which direction, it has moved since the last frame.
-        We check its movement dependent on what key is currently pressed.
+    \item[(2)] \textbf{Setup information tracking.}
+        Since the sprite might not move right in the same step the right arrow key is pressed,
+        we want to accept slightly delayed movement in the test.
+        For this purpose, we track the timestamps when the key starts being pressed,
+        when the key was last pressed, and when the sprite last moved.
+        We also record if the right arrow key was pressed (and released) at all,
+        so we can verify it being pressed (and released) in the end of the test.
         \begin{javascriptcode}
-            t.addConstraint(() => {
-                if (t.isKeyDown("right arrow")) {
-                    t.assert.ok(sprite.x > oldX);
+            /* When the last right arrow key press started. */
+            let startPressedTime = undefined;
+            /* When the right arrow key was last recorded being pressed. */
+            let pressedTime = undefined;
+            /* When the sprite was last recorded moving right. */
+            let movedRightTime = undefined;
+            /* If the right arrow key was pressed in the previous step. */
+            let previouslyPressed = t.isKeyDown('right arrow');
+            /* If the right arrow key was pressed (and released) at all. */
+            let pressed = false, released = false;
+
+            const trackRightKeyCb = t.addCallback(() => {
+                const currentTime = t.getTotalTimeElapsed();
+                if (t.isKeyDown('right arrow')) {
+                    pressedTime = currentTime;
+                    if (!previouslyPressed) {
+                        startPressedTime = currentTime;
+                    }
+                    previouslyPressed = true;
+                    pressed = true;
                 } else {
-                    t.assert.ok(sprite.x === oldX);
+                    previouslyPressed = false;
+                    released = true;
+                }
+            });
+
+            const trackSpriteMoveCb = t.addCallback(() => {
+                if (sprite.x > sprite.old.x) {
+                    movedRightTime = t.getTotalTimeElapsed();
                 }
             });
         \end{javascriptcode}
-    \item[(3,4)] \textbf{Simulate Inputs, Run the program.}
-        \setcounter{enumi}{4}
+    \item[(3)] \textbf{Register constraints.}
+        Since we tracked when the time when the key was pressed and when the sprite last moved,
+        we can simply compare the timestamps to determine if the sprite moved at the correct times.
+        We chose to allow a $100 \text{ms}$ delay for the sprite to react to the right arrow key being pressed or being released.
+        We can also register a second constraint, that checks that the sprite only ever stays still or moves to the right,
+        but never moves in any other direction.
+        \begin{javascriptcode}
+            const moveTimingsConstraint = t.addConstraint(() => {
+                const currentTime = t.getTotalTimeElapsed();
+                if (currentTime > startPressedTime + 100) {
+                    t.assert.ok(Math.abs(movedRightTime - pressedTime) <= 100,
+                        'Sprite must move right when, and only when, the right arrow key is pressed.');
+                }
+            });
+
+            const moveDirectionConstraint = t.addConstraint(() => {
+                t.assert.ok(sprite.x >= sprite.old.x,
+                    'Sprite must only stand still or move right');
+                t.assert.ok(sprite.y == sprite.old.y,
+                    'Sprite must not move vertically.');
+            });
+        \end{javascriptcode}
+    \item[(4,5)] \textbf{Simulate Inputs, Run the program.}
         Now we can register inputs if we want to, and then we can run the program.
         How we simulate inputs, or if we perform inputs manually, does not matter for the test, of course.
         \begin{javascriptcode}
+            t.setRandomInputInterval(250);
             t.detectRandomInputs();
-            await t.runForTime(5000);
+
+            await t.runForTime(1000);
         \end{javascriptcode}
-    \item[(5)] \textbf{Verify tested situation.}
-        If our source of input does not guarantee, that the right arrow key gets pressed at all, we risk the chance of a false positive test result,
-        because then, part of our constraint does not ever get checked.
-        In this case, we also want set up tracking for the key press in the beginning,
-        and then skip the test if the key does not get pressed at all in the end.
+    \item[(6)] \textbf{Verify tested situation.}
+        If our source of input does not guarantee that the right arrow key gets pressed at all, we risk the chance of a false positive test result,
+        since the test did not execute all possible cases.
+        In this case, we want to skip the test if either the right arrow key was never pressed,
+        or was pressed the whole time.
         \begin{javascriptcode}
-            let rightPressed = false;
-            const detectRight = t.addCallback(() => {
-                if (t.isKeyDown("right arrow")) {
-                    rightPressed = true;
-                    detectRight.disable();
-                }
-            });
-
-            ...
-
-            t.assume.ok(rightPressed);
+            t.assume.ok(pressed, 'Right arrow key must be pressed.');
+            t.assume.ok(released, 'Right arrow key must be released.');
         \end{javascriptcode}
 \end{enumerate}
 
 \begin{listing}[htpb]
     \centering
-    \begin{subfigure}[b]{.35\textwidth}
+    \begin{subfigure}[b]{.40\textwidth}
         \centering
         \begin{minted}[autogobble, breaklines, linenos, fontsize=\tiny, framesep=2mm, frame=lines]{javascript}
             const sprite = t.getSprite('Sprite1');
@@ -592,11 +629,23 @@ We want to write a test to check if the sprite's movement works correctly.
 
             let oldX = sprite.x;
 
+            /* Check that the sprite never moves into an other
+             * direction that right. */
+            t.addConstraint(() => {
+                t.assert.ok(sprite.x >= sprite.old.x,
+                    'Sprite must only stand still or move right');
+            });
+
+            /* Run without inputs and check that the sprite
+             * doesn't move. */
+
             await t.runForTime(1000);
 
-            /* Sprite should not move when no key
-               is pressed. */
-            t.assert.ok(oldX === sprite.x);
+            t.assert.ok(oldX === sprite.x,
+                'Sprite must not move right when no key is pressed.');
+
+            /* Run with the right arrow key being pressed and
+             * check that the sprite moves to the right. */
 
             t.inputImmediate({
                 device: 'keyboard',
@@ -606,14 +655,14 @@ We want to write a test to check if the sprite's movement works correctly.
 
             await t.runForTime(1000);
 
-            /* Sprite should move right when the
-               right arrow key is pressed. */
-            t.assert.ok(oldX < sprite.x);
+            t.assert.ok(oldX < sprite.x,
+                'Sprite must move right when right arrow key is pressed.');
         \end{minted}
+        \vspace{-\bigskipamount}
         \caption{Normal test}
     \end{subfigure}
     \hspace{.08\textwidth}
-    \begin{subfigure}[b]{.55\textwidth}
+    \begin{subfigure}[b]{.50\textwidth}
         \centering
         \begin{minted}[autogobble, breaklines, linenos, fontsize=\tiny, framesep=2mm, frame=lines]{javascript}
             let sprite = t.getSprite('Sprite1');
@@ -622,60 +671,57 @@ We want to write a test to check if the sprite's movement works correctly.
             await t.runForTime(100);
 
             /* When the last right arrow key press started. */
-            let startPressedTime, startReleasedTime;
-            /* When the right arrow key was last recorded as pressed / released. */
-            let pressedTime, releasedTime;
-            /* When the sprite was last recorded as moving right / staying still. */
-            let movedRightTime, stayedStillTime;
+            let startPressedTime = undefined;
+            /* When the right arrow key was last recorded being pressed. */
+            let pressedTime = undefined;
+            /* When the sprite was last recorded moving right. */
+            let movedRightTime = undefined;
             /* If the right arrow key was pressed in the previous step. */
             let previouslyPressed = t.isKeyDown('right arrow');
-            /* If the right arrow key was pressed at all. */
+            /* If the right arrow key was pressed (and released) at all. */
             let pressed = false, released = false;
 
             /* (2) Track when the right arrow key is being pressed,
-             * and when it is released. */
-            const trackArrowPressCb = t.addCallback(() => {
+             * and when the sprite is moving to the right. */
+
+            const trackRightKeyCb = t.addCallback(() => {
                 const currentTime = t.getTotalTimeElapsed();
                 if (t.isKeyDown('right arrow')) {
-                    pressed = true;
                     pressedTime = currentTime;
                     if (!previouslyPressed) {
                         startPressedTime = currentTime;
-                        previouslyPressed = true;
                     }
+                    previouslyPressed = true;
+                    pressed = true;
                 } else {
-                    pressed = false;
-                    releasedTime = currentTime;
-                    if (previouslyPressed) {
-                        startReleasedTime = currentTime;
-                        previouslyPressed = false;
-                    }
+                    previouslyPressed = false;
+                    released = true;
                 }
             });
 
-            /* (2) Track when the sprite is moving to the right,
-             * and when it is staying still. */
             const trackSpriteMoveCb = t.addCallback(() => {
                 if (sprite.x > sprite.old.x) {
                     movedRightTime = t.getTotalTimeElapsed();
-                } else if (sprite.x === sprite.old.x) {
-                    stayedStillTime = t.getTotalTimeElapsed();
                 }
             });
 
             /* (3) Check if the sprite only moves when the right arrow
              * key was pressed, and if it doesn't move when the key was
              * not pressed. */
-            const spriteMoveConstraint = t.addConstraint(() => {
+
+            const moveTimingsConstraint = t.addConstraint(() => {
                 const currentTime = t.getTotalTimeElapsed();
                 if (currentTime > startPressedTime + 100) {
-                    t.assert.ok(pressedTime - movedRightTime <= 100,
-                                'Sprite must move right when right arrow key is pressed.');
+                    t.assert.ok(Math.abs(movedRightTime - pressedTime) <= 100,
+                        'Sprite must move right when, and only when, the right arrow key is pressed.');
                 }
-                if (currentTime > startReleasedTime + 100) {
-                    t.assert.ok(releasedTime - stayedStillTime <= 100,
-                                'Sprite must not move right when right arrow key is not pressed.');
-                }
+            });
+
+            const moveDirectionConstraint = t.addConstraint(() => {
+                t.assert.ok(sprite.x >= sprite.old.x,
+                    'Sprite must only stand still or move right');
+                t.assert.ok(sprite.y == sprite.old.y,
+                    'Sprite must not move vertically.');
             });
 
             /* (4) Some code, which registers inputs. Or nothing if
@@ -688,9 +734,10 @@ We want to write a test to check if the sprite's movement works correctly.
 
             /* (6) Check if the right arrow key was pressed at all,
              * and if it was ever released. */
-            t.assume.ok(pressedTime >= 0, 'Right arrow key must be pressed.');
-            t.assume.ok(releasedTime >= 0, 'Right arrow key must be released.');
+            t.assume.ok(pressed, 'Right arrow key must be pressed.');
+            t.assume.ok(released, 'Right arrow key must be released.');
         \end{minted}
+        \vspace{-\bigskipamount}
         \caption{Input-independent test}
         \label{fig:normal_input_independent_test_comparison_constraint}
     \end{subfigure}
@@ -740,7 +787,7 @@ An example for this are the variables \texttt{pressed} and \texttt{released} in 
             \node[box, h] at (0.2,  6.75) (suspendcb)  {Suspend Information Tracking};
             \node[box, h] at (0.2,  5.50) (suspendcn)  {Suspend Constraints};
             \node[box, h] at (0.2,  4.25) (resetinfo)  {Reset per-run information};
-            \node[box]    at (0.2,  2.25) (greenflag)  {Press the green flag and give the program some time to Initialize};
+            \node[box]    at (0.2,  2.25) (greenflag)  {Press the green flag (and give the program some time to Initialize)};
             \node[box]    at (0.2,  0.75) (spriteref)  {Get new sprites};
             \node[box, h] at (0.2, -0.75) (activatecb) {Activate Information Tracking};
             \node[box, h] at (0.2, -2.00) (activatecn) {Activate Constraints};
@@ -781,20 +828,20 @@ An example for this are the variables \texttt{pressed} and \texttt{released} in 
     \begin{subfigure}[m]{.55\textwidth}
         \centering
         \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, framesep=2mm, frame=lines]{javascript}
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 5; i++) {
                 /* (1) Suspend information tracking. */
-                trackArrowPressCb.disable();
+                trackRightKeyCb.disable();
                 trackSpriteMoveCb.disable();
 
                 /* (2) Suspend constraints. */
-                spriteMoveConstraint.disable();
+                moveTimingsConstraint.disable();
+                moveDirectionConstraint.disable();
 
                 /* (3) Reset per-run information
                    (keep values of 'pressed' and 'released'). */
-                spriteMoveConstraint.disable();
-                startPressedTime = startReleasedTime = undefined;
-                pressedTime = releasedTime = undefined;
-                movedRightTime = stayedStillTime = undefined;
+                startPressedTime = undefined;
+                pressedTime = undefined;
+                movedRightTime = undefined;
                 previouslyPressed = t.isKeyDown('right arrow');
 
                 /* (4) Press the green flag and give the program
@@ -806,14 +853,15 @@ An example for this are the variables \texttt{pressed} and \texttt{released} in 
                 let sprite = t.getSprite('Sprite1');
 
                 /* (6) Activate information tracking. */
-                trackArrowPressCb.enable();
+                trackRightKeyCb.enable();
                 trackSpriteMoveCb.enable();
 
                 /* (7) Activate constraints. */
-                spriteMoveConstraint.enable();
+                moveTimingsConstraint.enable();
+                moveDirectionConstraint.enable();
 
                 /* (8) Run the program. */
-                await t.runForTime(5000);
+                await t.runForTime(2000);
             }
         \end{minted}
         \vspace{-\bigskipamount}
