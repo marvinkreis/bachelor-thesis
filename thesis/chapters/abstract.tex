@@ -1,17 +1,16 @@
-% REMEMBER: Write the thesis from the view of the reader. How would I like to READ the thesis?
-% WHY -> WHAT -> HOW structure
-
 \begin{abstract}
     Scratch is commonly adapted by educational courses to introduce students to the principles of computer programming.
-    As some of these courses are attended by a large number of students, one big disadvantage of Scratch becomes relevant: Grading Scratch assignments can be troublesome.
+    As some of these courses are attended by a large number of students, one big disadvantage of Scratch becomes relevant: Grading Scratch assignments can be very troublesome.
     Scratch's interactive nature makes grading very time-consuming, since many key presses or clicks are required to execute a program.
     At the same time, automating this process is still an open problem, since Scratch's visual and auditory output make automation difficult.
-    Automated testing could not just aid teachers in the grading process, but it could also help students to detect errors in their own programs.
+    % Automated testing could not just aid teachers in the grading process, but it could also help students to detect errors in their own programs.
+    \parspace
 
-    In order to solve this problem, we implemented Whisker, a program, which automates Scratch 3.0's input and output mechanisms to make dynamic testing possible.
-    Whisker offers a JavaScript interface, which allows to simulate user input on programs, and to access Scratch's visual output in the form of sprite attributes and variables.
+    In order to solve this problem, we implemented Whisker, a program which automates Scratch 3.0's input and output mechanisms to make dynamic testing possible.
+    Whisker offers a JavaScript interface, which allows simulating user input on programs, and accessing Scratch's visual output in the form of sprite attributes and variables.
     Additionally, Whisker also offers automated input generation, which can be used to control Scratch programs automatically.
     With this, we explore an alternative approach to testing, which defines constraints, lets the program be controlled automatically, and checks if any of the constraints are violated by the program.
+    \parspace
 
     To evaluate Whisker, we used it to test a collection of student solutions from a 6th/7th grade Scratch workshop.
     Our test results closely match scores from independent manual grading, with an average correlation coefficient of 0.89,

@@ -1,6 +1,3 @@
-% REMEMBER: Write the thesis from the view of the reader. How would I like to READ the thesis?
-% WHY -> WHAT -> HOW structure
-
 \chapter{Background}%
 \label{cha:background}
 
@@ -17,27 +14,27 @@ Scratch~\cite{scratch} is a programming language developed by the MIT Media Lab.
 Its main goal is to offer an intuitive programming language suited for programming novices and children.
 Scratch implements a block-based code system, which eliminates the possibility of syntax errors.
 It also allows users to easily integrate graphics and audio into their programs.
-Code is run inside a special Scratch VM.
+Code is run inside a special Scratch virtual machine.
 Therefore, Scratch is usually exclusively developed and run through Scratch's web interface, which can be seen in Figure~\ref{fig:scratch_gui}.
 \parspace
 
 \begin{figure}[htpb]
     \centering
     \includegraphics[width=0.75\textwidth]{scratch-gui}
-    \caption{A catching game implemented in Scratch}
+    \caption{Scratch 3.0's web interface}
     \label{fig:scratch_gui}
 \end{figure}
 
 \textbf{Code.}
 Programming in Scratch is done by sticking together a structure of pre-defined blocks, which are equivalent to statements in traditional programming languages.
-Multiple blocks are combined together with a \textit{hat} to make up a \textit{script} (see Figure~\ref{fig:scratch_code}).
-Scripts are called through a event, which is defined by their hat.
+Multiple blocks are combined together with a \textit{hat} to make up a \textit{script}, as can be seen in Figure~\ref{fig:scratch_code}.
+Scripts are called through a type of event, which is defined by their hat.
 There are a variety of different events in Scratch.
-The main event is the \textit{green flag}, which is the entry point of the program.
-This event is emitted when the user starts the program by pressing the start button.
-The program then starts by executing all scripts, which are equipped with a ''when green flag is pressed'' hat.
+The main event is the \textit{green flag} event, the entry point of the program.
+This event is emitted when the user starts the program by pressing the green flag button.
+The program then starts by executing all scripts that are equipped with a ''when green flag is pressed'' hat.
 Other events include key presses on the keyboard, clicks on a specific sprite, and events sent from different scripts.
-Active scripts effectively run in parallel until the end of each script is reached, or until the script is stopped by itself or another script.
+Active scripts effectively run in parallel until the end of each script is reached or until the script is stopped by itself or another script.
 \parspace
 
 \begin{figure}[htpb]
@@ -80,12 +77,12 @@ at least two other projects have tackled this task through different approaches.
 \textbf{Hairball.}
 Boe et al. developed Hairball~\cite{hairball} to perform static analysis on Scratch programs.
 Hairball is implemented as a standalone Python program.
-It allows users to load a saved project file and analyze it by iterating through its blocks.
+It allows users to load a saved Scratch project file and analyze it by iterating through its blocks.
 % Example applications of Hairball are detecting code smells or finding out if a desired programming concept is implemented in the program.
-A example application of this program is the web-based assessment tool called Dr. Scratch~\cite{drscratch} by Jes\'{u}s et al..
-Dr. Scratch uses Hairball to measure the complexity of uploaded Scratch programs in various categories and scores them accordingly.
+A example application of this program is the web-based assessment tool called Dr. Scratch~\cite{drscratch} by Jes\'{u}s et al.,
+which uses Hairball to measure the complexity of uploaded Scratch programs in various categories and scores them accordingly.
 Though Hairball is very useful for analyzing programs statically, testing the functionality of a program with it would be very difficult.
-In order to do this, a dynamic testing approach is more suitable, because it can simply observe to programs behaviour instead of having to deduct it from the programs source code.
+In order to do this, a dynamic testing approach is more suitable, because tests can simply observe to programs behaviour instead of having to deduct it from the programs source code.
 \parspace
 
 \textbf{ITCH.}
@@ -93,8 +90,8 @@ ITCH (Individual Testing of Computer Homework for Scratch Assignments)~\cite{itc
 Like Hairball, it is also implemented in Python.
 But it follows an entirely different approach.
 ITCH performs functional testing on Scratch programs, which have their functionality reduced to simple textual input and output operations.
-Scratch supports these operations through "ask" and "say" blocks.
-In order to automate the input and output, ITCH replaces these blocks with structures, which give the program configured input text, and save the resulting output to the project file.
+Scratch supports these operations through \texttt{ask} and \texttt{say} blocks.
+In order to automate the IO, ITCH replaces these blocks with structures, which give the program configured input text and save the resulting output.
 ITCH then executes the program, saves it, and analyzes the saved project file to generate a test report.
 This allows simple input-output-testing for Scratch, which is useful for testing the correctness of an implemented algorithm.
 But ITCH has a major drawback: Reducing Scratch programs to textual IO means, that only a small subset of Scratch's functionality is available to the programs under test.
@@ -126,14 +123,14 @@ An example for this is BlockPy~\cite{blockpy}, which translates its block-based 
 \label{sec:challenges_of_testing_scratch_programs}
 
 Functional testing for Scratch is not a straightforward task.
-There exist multiple challenges, that have to be overcome in order to test Scratch programs accurately.
+There exist multiple challenges, that have to be overcome in order to test Scratch programs.
 This section will go over these challenges and explain each of them.
 % TODO: This section explains these challenges and how the presented approach overcomes them.
 \parspace
 
 \textbf{Scratch's code system.}
-Scratch does not have a traditional mechanism to structure code into methods, which return values.
-Unit test cases usually call methods with some input and check the returned value, but this is not possible in Scratch.
+Scratch does not have a traditional mechanism to structure code into methods, that return values.
+Unit tests often call methods with some input and check the returned value, but this is not possible in Scratch.
 Additionally, scripts run in parallel and may depend on one another.
 This makes it hard to test a part of the program in isolation from the rest of the program.
 One could circumvent this problem by restricting the tested programs, like ITCH~\cite{itch} does it,
@@ -147,7 +144,7 @@ but that defeats the purpose of using Scratch as a language.
 \textbf{GUI input and output.}
 Scratch is entirely run inside a graphical user interface and therefore lacks traditional IO mechanisms.
 Its output consists of visual animations and audio, which are difficult to analyze automatically.
-Likewise, Scratch's input, which mainly consists of keyboard and mouse input, can make interacting with the program problematic.
+Likewise, Scratch's input, which mainly consists of keyboard and mouse input, can make interacting with the program in an automated way problematic.
 % We are going to deal with this problem by creating a wrapper around Scratch,
 % which can be used to simulate input and access information about the sprites which make up the output.
 % Tests can then use methods, which the wrapper provides, instead of manually interacting with the Scratch program.
@@ -156,11 +153,11 @@ Likewise, Scratch's input, which mainly consists of keyboard and mouse input, ca
 \textbf{Randomness.}
 Scratch provides blocks to incorporate randomness into programs.
 Non-determinism is problematic for testing in general and not just for Scratch,
-but Scratch programs tend to often make use of randomness,
-since it can make game-like programs more interesting.
-This is especially relevant in the context of automated grading.
-Programming tasks for students in conventional programming languages are usually deterministic.
-However, Scratch assignments may tend to feature randomness to create game-like programs.
+but Scratch programs tend to frequently make use of randomness,
+since the programs implemented in Scratch are often of game-like nature.
+% This is especially relevant in the context of automated grading.
+% Programming tasks for students in conventional programming languages are usually deterministic.
+% However, Scratch assignments may tend to feature randomness to create game-like programs.
 \parspace
 
 \textbf{Missing Initialization.}
@@ -168,21 +165,21 @@ Scratch programs don't start with a fixed configuration of sprites and variables
 When the program is loaded, it loads the sprite attributes and variable values from the project file and restores that state.
 Then, when the program is run, it starts with this state, but subsequent executions of the program continue with the configuration,
 which the last run of the program left after it ended.
-Scratch programs can deal with this by doing initialization in the beginning, but many don't.
+Scratch programs can deal with this by doing initialization in the beginning, but many implementations don't.
 % Therefore, if a program is run multiple times for testing, the initial sprite and variable configuration needs to be restored
 % so each test can start from the same state.
 \parspace
 
 \textbf{Fuzziness of properties.}
 Scratch programs often don't deal with exact values,
-since small differences in sprite properties are generally indistinguishable in the program's output.
-This can make testing more difficult, since assertions have to take small deviations into consideration.
+since small differences in sprite properties are generally indistinguishable in the program's graphical output.
+This can make testing more difficult, since assertions may have to take small deviations into consideration.
 Scratch itself also makes dealing with exact values unattractive.
-In the Scratch GUI, sprites can initially be positioned on the stage via drag and drop.
-Also, instead of comparing exact positions, Scratch offers built in blocks to directly check for sprite collisions.
+In the Scratch GUI, sprites can initially be positioned on the stage via drag and drop,
+and instead of comparing exact positions, Scratch offers built in blocks to directly check for sprite collisions.
 \parspace
 
 \textbf{Tracking of properties.}
-In order to test movement or animations, we need to track sprite information over a period of time.
-Hence, we need a way to periodically access sprite attributes (and variables) during the program execution.
+In order to test sprite movements or animations, we need to track information over a period of time.
+Hence, it needs to be possible to periodically access sprite attributes (and variables) during the program execution.
 \parspace

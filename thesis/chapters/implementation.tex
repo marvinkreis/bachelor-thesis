@@ -1,43 +1,8 @@
-% REMEMBER: Write the thesis from the view of the reader. How would I like to READ the thesis?
-% WHY -> WHAT -> HOW structure
-
-% TODO: Explain general design
-    % In theory, Whisker can be used with any instance of the Scratch virtual machine.
-    % In order to make testing more convenient, we developed a small web interface with its own testing framework, which also
-
-% Environment:
-% ES6 + webpack
-% ...
-
-% General Architecture
-%   - interact with the VM
-%   - doesn't change the VM
-%   - works with any working Scratch 3.0 VM instance
-%   - works with any JS testing framework
-%   - Scratch needs renderer
-%       - Web GUI + Electron planned + maybe browser addon?
-
-% Step Loop: explain steps, explain order of steps
-% Outputs: Sprites and variables
-% Inputs: particularly automated input generation
-% Constraints
-
-% Scratch 3.0 implementation details
-%   - Step loop -> explain when Whisker step loop is explained
-%   - Sequencer -> mention when Scratch step is explained (step loop)
-%   - Sprites vs. Targets -> explain when outputs are explained
-%   - etc.
-
-% Scratch's interpreter sequentializes the execution.
-% This is necessary for the single-threaded JavaScript environment Scratch is run in.
-% This means that no race-conditions can occur on a language level.
-
-
 \chapter{Implementation}
 \label{cha:implementation}
 
 This chapter will provide an overview over Whisker's implementation.
-Whisker is still in early development, and its implementation may change later.
+Because Whisker is still in early development, some of its implementation may change later.
 
 % \section{Scratch Implementation Details}
 %
@@ -55,10 +20,10 @@ Whisker is still in early development, and its implementation may change later.
 \section{Implementation Environment}
 \label{sec:implementation_environment}
 
-Scratch code is executed inside of Scratch's virtual machine (VM), which is implemented in JavaScript.
-Therefore, Whisker is also implemented in JavaScript (ES6) for compatibility.
+Whisker works with Scratch 3.0, which is implemented in JavaScript.
+Therefore, it is also implemented in JavaScript (ES6) for compatibility.
 One restriction of Whisker's implementation environment is Scratch's dependence on a renderer.
-In order to operate to operate properly, the Scratch VM needs a HTML canvas to render to.
+In order to operate properly, the Scratch VM needs a HTML canvas to render to.
 This limits Scratch, and consequently Whisker, to run inside a web environment.
 Therefore, we use webpack~\cite{webpack} to transpile Whisker's source code into browser-runnable JavaScript.
 
@@ -68,12 +33,12 @@ Therefore, we use webpack~\cite{webpack} to transpile Whisker's source code into
 % Currently, Whisker is only available through its own web GUI, % which displays a list of tests, as well as the test report next to Scratch's stage.
 % but it may also be possible to create a Electron standalone application for Whisker, or even a browser addon which adds Whisker to the original Scratch web page.
 
-One of Whisker's main design goals is not to modify the Scratch virtual machine.
+One of Whisker's main design goals is to leave the Scratch virtual machine unchanged.
 There are two reasons for this decision.
 For one thing, if Whisker used a modified version of Scratch,
 the modified version would need to be updated regularly as the original version of Scratch receives updates.
-But the main reason for this decision is, that it allows Whisker to be attached to any instance of the Scratch 3.0 VM.
-Therefore, any web page, which runs Scratch can theoretically add Whisker's functionality to it.
+But the main reason for this decision is that it allows Whisker to be attached to any instance of the Scratch VM.
+Therefore, anything that runs Scratch 3.0 can theoretically use Whisker.
 % For example, this makes it possible to write a browser addon, which adds Whisker to the original Scratch web page.
 \parspace
 
@@ -81,10 +46,10 @@ Figure~\ref{fig:general_architecture} shows Whisker's general architecture.
 It is designed to be a layer between test code and the Scratch virtual machine.
 % It controls the execution of the Scratch program, simulates inputs and exposes information about sprites and variables.
 The main class \texttt{VMWrapper} makes up a wrapper around the Scratch virtual machine,
-and its components each implement one piece of Whisker's functionality.
-The test code uses a test driver object, which gives access to the public methods in the VM wrapper and its components.
-Tests use the test driver instead of directly interacting with the VM wrapper,
-because the test driver offers a simpler interface and prevents access to Whisker's private methods.
+and its components each implement one part of Whisker's functionality.
+Test code uses a test driver object, which gives access to the methods that are used for testing.
+The test driver is used instead of directly interacting with the VM wrapper,
+because it offers a simpler interface and prevents access to Whisker's private methods.
 \parspace
 
 \begin{figure}[htpb]
@@ -134,7 +99,7 @@ because the test driver offers a simpler interface and prevents access to Whiske
 \label{sec:scratch_program_execution_and_the_step_loop}
 
 The core of Scratch's virtual machine is a function called \texttt{step},
-which is called at a constant frequency of 30 times per second using JavaScript's \texttt{setInterval} function.
+which is called at a constant frequency of 30 times per second.
 Figure~\ref{fig:simplified_scratch_step} shows a simplified version of this function.
 It executes the program's scripts sequentially until a time limit is reached, then it draws the scene using the renderer.
 If some visual change occurs, i.e. when a sprite changes appearance or position, a redraw is requested,
@@ -163,8 +128,7 @@ and the program execution step is stopped earlier (in turbo mode redraw requests
 \end{listing}
 
 For the purpose of controlling the execution of the program, and to run multiple functions alongside the step loop,
-Whisker stops Scratch's loop by clearing the interval, which periodically calls Scratch's \texttt{step} function.
-Whisker then runs its own loop, which in turn calls Scratch's \texttt{step} function, instead.
+Whisker runs its own loop, which in turn calls Scratch's \texttt{step} function.
 Figure~\ref{fig:whisker_step_procedure} shows the procedure of Whisker's step loop.
 In addition to running the Scratch program, it performs other tasks which have to be executed periodically.
 \parspace
@@ -240,7 +204,7 @@ when a run of the program is being started, while another one is still going on.
                        this.getRunTimeElapsed() < timeout &&
                        this.getRunStepsExecuted() < steps &&
                        !condition()) {
-                    constraintError = await this.stepper.step(this.step.bind(this));
+                    await this.stepper.step(this.step.bind(this));
                     ...
                 }
                 ...
@@ -540,6 +504,8 @@ or ignore the constraint failure entirely.
 
 \section{Coverage Measurement}
 \label{sec:coverage_measurement}
+
+\mnote{TODO: only works with Scratch 3.0 projects}
 
 Whisker can be used to measure statement coverage on a Scratch program.
 It does this by temporarily modifying Scratch's \texttt{Thread} class.

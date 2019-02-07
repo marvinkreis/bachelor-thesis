@@ -458,11 +458,12 @@ They have a strong correlation.
 
 \subsubsection{Normal Test Suite (T1)}
 
+\mnote{Plots in one column or two columns?}
 Figure~\ref{fig:scatter_normal} compares the test results of test suite T1 to scores from a manual evaluation of projects P1.
 Possible values for the manual scores are in the range of $[0, 30]$ and possible values for the number of test passes are in the range of $[0, 28]$.
 The blue line displays the linear regression.
 We can observe, that the number of passing test cases are strongly correlated to the manual scores,
-with a correlation coefficient of $r = 0.8918$ for the first run and $r = 0.8913$ for the average over 3 runs.
+with a correlation coefficient of $r = 0.893$ for the first run and $r = 0.899$ for the average over 10 runs.
 Except for few irregularities, the test results closely resemble the manually assigned scores.
 
 \begin{figure}[htpb]
@@ -474,7 +475,7 @@ Except for few irregularities, the test results closely resemble the manually as
     \end{subfigure}%
     \begin{subfigure}{.50\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-normal-avg}
-        \caption{Average over 3 runs}
+        \caption{Average over 10 runs}
         \label{fig:scatter_normal_avg}
     \end{subfigure}
     \caption{Comparison between test results of test suite T1 (normal) and manually assigned scores}
@@ -486,7 +487,7 @@ Except for few irregularities, the test results closely resemble the manually as
 Figure~\ref{fig:scatter_constraint} compares the test outcomes of test suite T2 to the manual scores.
 Possible values for the number of constraint passes are in the range of $[0, 20]$.
 We can, again, observe a strong correlation between the two scores,
-with a correlation coefficient of $r = 0.8877$ for the first run and $r = 0.8968$ for the average over 3 runs.
+with a correlation coefficient of $r = 0.904$ for the first run and $r = 0.905$ for the average over 10 runs.
 
 \begin{figure}[htpb]
     \centering
@@ -497,7 +498,7 @@ with a correlation coefficient of $r = 0.8877$ for the first run and $r = 0.8968
     \end{subfigure}%
     \begin{subfigure}{.50\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-constraint-avg}
-        \caption{Average over 3 runs}
+        \caption{Average over 10 runs}
         \label{fig:scatter_constraint_avg}
     \end{subfigure}
     \caption{Comparison between test results of test suite T2 (input-indepent / constraint-only) and manually assigned scores}
@@ -508,7 +509,7 @@ with a correlation coefficient of $r = 0.8877$ for the first run and $r = 0.8968
 
 Figure~\ref{fig:scatter_constraint} compares the test outcomes of test suite T2 to the manual scores.
 Possible values for the number of constraint passes are in the range of $[0, 18]$.
-The result indicate a strong correlation with a correlation coefficient of $r = 0.8629$ for the first run and $r = TODO$ for the average over 5 runs.
+The result indicate a strong correlation with a correlation coefficient of $r = 0.850$ for the first run and $r = 868$ for the average over 10 runs.
 
 \begin{figure}[htpb]
     \centering
@@ -518,8 +519,8 @@ The result indicate a strong correlation with a correlation coefficient of $r = 
         \label{fig:scatter_random_1}
     \end{subfigure}%
     \begin{subfigure}{.50\textwidth}
-        \includegraphics[width=\textwidth]{r/scatter-random-1}
-        \caption{Average over 3 runs}
+        \includegraphics[width=\textwidth]{r/scatter-random-avg}
+        \caption{Average over 10 runs}
         \label{fig:scatter_random_avg}
     \end{subfigure}
     \caption{Comparison between test results of test suite T3 (random input) and manually assigned scores}
@@ -549,52 +550,23 @@ The full matrices can be found in the appendix in Section~\ref{TODO}.
 \begin{figure}[htpb]
     \centering
 
-    \begin{subfigure}{.4\textwidth}
-        \centering
+    \setlength{\tabcolsep}{0.2em}
+    \tiny
+    \begin{tabular}{l|rrrrrr}
+        \toprule
+                & 12         & 13         & 14         & 15         & 16         & 17         \\
+        \midrule
+        K6\_S02 & 0          & \textbf{1} & \textbf{1} & \textbf{1} & 0          & \textbf{1} \\
+        K6\_S03 & 0          & \textbf{1} & \textbf{1} & \textbf{1} & 0          & \textbf{1} \\
+        K6\_S05 & 0          & 0          & 0          & 0          & 0          & 0          \\
+        K6\_S10 & 0          & \textbf{1} & \textbf{1} & 0          & 0          & 0          \\
+        K6\_S11 & 0          & 0          & 0          & 0          & 0          & 0          \\
+        K6\_S13 & 0          & 0          & 0          & 0          & 0          & 0          \\
+        \bottomrule
+    \end{tabular}
+    \setlength{\tabcolsep}{\defaulttabcolsep}
 
-        \setlength{\tabcolsep}{0.2em}
-        \tiny
-        \begin{tabular}{l|rrrrrr}
-            \toprule
-                    & 12         & 13         & 14         & 15         & 16         & 17         \\
-            \midrule
-            K6\_S02 & 0          & 0          & \textbf{1} & \textbf{1} & 0          & \textbf{1} \\
-            K6\_S03 & 0          & \textbf{1} & \textbf{1} & \textbf{1} & 0          & \textbf{1} \\
-            K6\_S05 & 0          & 0          & 0          & 0          & 0          & 0          \\
-            K6\_S10 & 0          & \textbf{1} & \textbf{1} & 0          & 0          & 0          \\
-            K6\_S11 & 0          & 0          & 0          & 0          & 0          & 0          \\
-            K6\_S13 & 0          & 0          & 0          & 0          & 0          & 0          \\
-            \bottomrule
-        \end{tabular}
-        \caption{Inconsistent test-project pairs for test suite T1}
-        \label{tab:inconsistency_matrix_excerpt_normal}
-        \setlength{\tabcolsep}{\defaulttabcolsep}
-    \end{subfigure}
-    \vspace{.08\textwidth}
-    \begin{subfigure}{.4\textwidth}
-        \centering
-
-        \setlength{\tabcolsep}{0.2em}
-        \tiny
-        \begin{tabular}{l|rrrrrr}
-            \toprule
-                    & \ 7        & \ 8        & \ 9        & 10         & 11         & 12         \\
-            \midrule
-            K6\_S02 & 0          & \textbf{1} & \textbf{1} & 0          & \textbf{1} & 0          \\
-            K6\_S03 & 0          & 0          & 0          & 0          & 0          & 0          \\
-            K6\_S05 & 0          & 0          & 0          & 0          & 0          & \textbf{1} \\
-            K6\_S10 & 0          & 0          & 0          & 0          & 0          & 0          \\
-            K6\_S11 & 0          & 0          & 0          & 0          & 0          & \textbf{1} \\
-            K6\_S13 & 0          & 0          & 0          & 0          & 0          & 0          \\
-            \bottomrule
-        \end{tabular}
-        \caption{Inconsistent constraint-project pairs for test suite T2}
-        \label{tab:inconsistency_matrix_excerpt_constraint}
-        \setlength{\tabcolsep}{\defaulttabcolsep}
-    \end{subfigure}
-
-    \vspace{-3\bigskipamount}
-    \caption{Excerpt from the test-project matrices of inconsistent test outcomes}
+    \caption{Excerpt from the test-project matrix of test suite T1}
     \label{tab:inconsistency_matrices_excerpt}
 \end{figure}
 
@@ -605,9 +577,9 @@ The full matrices can be found in the appendix in Section~\ref{TODO}.
 The horizontal line displays the average number of inconsistencies per test case.
 Figure~\ref{fig:consistency_per_project_normal} shows the number of inconsistent test-projects pairs per project.
 We can observe that some test cases and some projects tend to be rather inconsistent,
-with a maximum of $5$ inconsistent projects ($16.13\%$ of projects) per test case and $5$ inconsistent test cases ($17.86\%$ of test cases) per project.
-However, on average only $1.06$ projects per test case and $1.18$ test cases per project show inconsistent results.
-This amounts to $3.80\%$ of all test-project pairs, which is still consistent enough for grading purposes.
+with a maximum of $6$ inconsistent projects ($19.35\%$ of projects) per test case and $5$ inconsistent test cases ($17.86\%$ of test cases) per project.
+However, on average only $1.36$ projects per test case and $1.23$ test cases per project show inconsistent results.
+This amounts to $4.38\%$ of all test-project pairs, which is still consistent enough for grading purposes.
 \parspace
 
 \begin{figure}[htpb]
@@ -625,7 +597,7 @@ This amounts to $3.80\%$ of all test-project pairs, which is still consistent en
         \label{fig:consistency_per_project_normal}
     \end{subfigure}
 
-    \caption{Inconsistent outcomes of test suite T1 over 5 runs}
+    \caption{Inconsistent outcomes of test suite T1 over 10 runs}
     \label{fig:consistency_normal}
 \end{figure}
 
@@ -633,9 +605,9 @@ This amounts to $3.80\%$ of all test-project pairs, which is still consistent en
 
 Figure~\ref{fig:consistency_per_test_constraint} shows the number of inconsistencies for test suite T2.
 We observe similar results to T1.
-The data shows a maximum of $5$ inconsistent projects ($16.13\%$ of projects) per constraint and $5$ inconsistent constraints ($25.00\%$ of constraints) per project.
-On average, $1.38$ projects per constraint and $0.94$ constraints per project show inconsistent results,
-which amounts to $4.45\%$ of all constraint-project pairs.
+The data shows a maximum of $6$ inconsistent projects ($19.35\%$ of projects) per constraint and $5$ inconsistent constraints ($25.00\%$ of constraints) per project.
+On average, $1.20$ projects per constraint and $0.77$ constraints per project show inconsistent results,
+which amounts to $3.87\%$ of all constraint-project pairs.
 \parspace
 
 \begin{figure}[htpb]
@@ -653,19 +625,23 @@ which amounts to $4.45\%$ of all constraint-project pairs.
         \label{fig:consistency_per_project_constraint}
     \end{subfigure}
 
-    \caption{Inconsistent outcomes of test suite T2 over 5 runs}
+    \caption{Inconsistent outcomes of test suite T2 over 10 runs}
     \label{fig:consistency_constraint}
 \end{figure}
 
 \subsubsection{Random Input Test Suite (T3)}
 
 Figure~\ref{fig:consistency_per_test_constraint} shows the number of inconsistencies for test suite T3.
-We observed a maximum of $7$ inconsistent projects ($22.58\%$ of projects) per constraint and $5$ inconsistent constraints ($27.78\%$ of constraints) per project.
-On average, $2.94$ projects per constraint and $1.71$ constraints per project show inconsistent results,
-which amounts to $9.58\%$ of all constraint-project pairs.
+We observed a maximum of $10$ inconsistent projects ($32.23\%$ of projects) per constraint and $6$ inconsistent constraints ($33.33\%$ of constraints) per project.
+On average, $4.28$ projects per constraint and $2.48$ constraints per project show inconsistent results,
+which amounts to $13.80\%$ of all constraint-project pairs.
 Since this test suite is non-deterministic and executes the programs longer than the other test suites,
 this increase in inconsistent outcomes is expected.
-
+However, the increase in inconsistent results for constraints 2 and 3 over their similar tests / constraints in the previous test suites is unexpected.
+These constraints deal with the movement of the bowl.
+The number of inconsistencies increased, because the constraints don't take the edges of the screen into account, which prevent the bowl from moving.
+The previous test suites would follow the apple with the bowl, and therefore never touch the edge of the screen with the bowl.
+However, when using randomly generated input, this can happen.
 \parspace
 
 \begin{figure}[htpb]
@@ -683,7 +659,7 @@ this increase in inconsistent outcomes is expected.
         \label{fig:consistency_per_project_random}
     \end{subfigure}
 
-    \caption{Inconsistent outcomes of test suite T3 over 5 runs}
+    \caption{Inconsistent outcomes of test suite T3 over 10 runs}
     \label{fig:consistency_random}
 \end{figure}
 
@@ -917,9 +893,9 @@ with Whisker's automatically generated input,
 as well as the execution time at which the coverage was achieved.
 The black line in Figure~\ref{fig:coverage_line} displays the mean coverage of the projects over time.
 After ten minutes of run time, we were able to achieve an average coverage of $95.25\%$ with the lowest coverage for a project being $74\%$ and the highest being $100\%$.
-We repeated this experiment five times and got similar results, with the mean final coverage over five runs being $TODO\%$.
+We repeated this experiment five times and got similar results, with the mean final coverage over ten runs being $95.25\%$.
 In comparison, Figure~\ref{fig:coverage_no_input} shows the achieved coverage without simulating any inputs.
-Here, we only got an average of $47.04\%$ per project on our first run, and $TODO\%$ averaged over five runs.
+Here, we only got an average of $47.04\%$ per project on our first run, and $47.14\%$ averaged over ten runs.
 \parspace
 
 \begin{figure}[htpb]
@@ -935,7 +911,7 @@ Here, we only got an average of $47.04\%$ per project on our first run, and $TOD
         \label{fig:coverage_line}
     \end{subfigure}
 
-    \caption{Achieved coverage with automated input}
+    \caption{Achieved coverage with automated input in the first run}
     \label{fig:coverage}
 \end{figure}
 
@@ -952,13 +928,13 @@ Here, we only got an average of $47.04\%$ per project on our first run, and $TOD
         \label{fig:coverage_no_input_line}
     \end{subfigure}
 
-    \caption{Achieved coverage without input}
+    \caption{Achieved coverage without input in the first run}
     \label{fig:coverage_no_input}
 \end{figure}
 
 \subsection{Reasons for low coverage on certain projects}
 
-Over the five runs with generated input, we observed ''Create Your Own World'' and ''Memory'' to consistently have the lowest coverage of the projects.
+Over the ten runs with generated input, we observed ''Create Your Own World'' and ''Memory'' to consistently have the lowest coverage of the projects.
 % A screenshot of both these programs can be seen in Figure~\ref{fig:difficult_code_club_projects}.
 We are going to take a quick look at the reasons, why these projects are difficult to cover by using random input.
 

@@ -1,32 +1,26 @@
-% REMEMBER: Write the thesis from the view of the reader. How would I like to READ the thesis?
-% WHY -> WHAT -> HOW structure
-
 \chapter{Testing With Whisker}
 \label{cha:appraoch}
-
-\mnote{TODO: explain automated test input generation\\TODO: explain why the program is loaded before each test}
-% - Before starting a test case, the project is loaded to make sure that every test starts with the same program state
-%     - If this would not be done, it would be very hard to test programs that don't do proper initialization
-%     - Tests would depend on the state the previous test leaves the program in, since Scratch programs don't reset when being stopped
-%     $\rightarrow$ Very inconsistent, therefore desirable to load the program before each test
 
 \section{General Approach}
 \label{sec:general_appraoch}
 
-In this work, we propose a way to perform dynamic testing on Scratch programs.
+In this work, we propose a way to perform dynamic testing on Scratch programs for Scratch 3.0.
 The main goal of this approach is to be able to automatically assess student's solutions to Scratch assignments.
-In order to do so, this approach makes use of an automation utility, which allows test code to interact with running Scratch programs through Scratch's IO.
+In order to do so, this approach makes use of an automation utility, which allows test code to
+interact with running Scratch programs through Scratch's IO mechanisms.
 % To enable dynamic testing for Scratch, we propose a black-bock approach with a testing utility, which allows test code to interact with a running Scratch program.
 \parspace
 
 Because Scratch's parallel scripts, as well as its lack of code separation, would make white-box testing difficult,
+\mnote{Does static analysis for automated input generation make it not black-box?}
 we instead chose to ignore the internals of the program and to go with a black-box approach, which only focuses on the program's input and output.
 This raises the question of how to access Scratch's IO.
 Since Scratch's input usually consists of mouse and keyboard input, and its output consists of visual animations and sound,
-they are not easily accessible in a programmable way.
+the IO is not easily accessible in a programmable way.
 To overcome this challenge, we developed an automation utility called Whisker, which acts as a wrapper around Scratch.
-It interacts with Scratch's virtual machine in order to automate its IO.
-Whisker offers a programmable interface for Scratch, which makes automated testing for Scratch possible.
+It interacts with Scratch's virtual machine in order to automate its input and output.
+Whisker offers a programmable interface for Scratch, which allows tests to simulate inputs and access information about sprites and variables.
+This makes automated testing for Scratch possible.
 % Selenium~\cite{selenium}, a popular tool for automated testing of web sites,
 % uses a similar approach to automate web browsers.
 Figure~\ref{fig:comparison_of_io_mechanisms} illustrates the difference between Scratch's IO mechanisms and Whisker's automated input and output.
@@ -114,12 +108,15 @@ but for compatibility reasons, we developed a rudimentary testing framework to g
 \parspace
 
 Currently, Whisker is only available in its own web GUI, which can be seen in Figure~\ref{fig:whisker_gui}.
-The web page displays Scratch's stage, a table of loaded tests, and a test report in TAP13 format.
+The web page displays Scratch's stage, a table of loaded tests, and a test report in TAP13~\cite{tap} format.
 It supports batch testing more than one program with the same test suite,
-but it doesn't support parallel tests.
-In the future, we also plan on implementing a standalone Electron~\cite{electron} application for Whisker.
+but it doesn't support parallel test execution.
+In the future, we plan on implementing a standalone Electron~\cite{electron} application for Whisker.
 This would facilitate batch testing many programs,
-and would also make it possible to test programs in parallel as well as in a headless environment.
+and would also make it possible to test programs in parallel.
+Unfortunately it is not possible to run tests in a headless environment,
+because Scratch depends on a HTML canvas to render its output to.
+Without a renderer, some of Scratch's blocks don't work properly.
 
 \begin{figure}[htpb]
     \centering
@@ -128,36 +125,13 @@ and would also make it possible to test programs in parallel as well as in a hea
     \label{fig:whisker_gui}
 \end{figure}
 
-
-
-% Therefore, we only concern ourselves with ...
-
-% We are going to deal with this problem by creating a wrapper around Scratch,
-% which can be used to simulate input and access information about the sprites which make up the output.
-% Tests can then use methods, which the wrapper provides, instead of manually interacting with the Scratch program.
-
-% Therefore, additional computations by the testing procedure must be fast enough to avoid interfering with the program under test.
-
 \section{Public Interface}
 \label{sec:public_interface}
-
-% \begin{enumerate}[(1)]
-%     \item Registered callbacks are executed.
-%         This is done before anything else, so they can register (or unregister) inputs before the program is run.
-%     \item Random inputs are chosen, randomized, and then registered as normal inputs.
-%     \item Inputs, which are due, are performed.
-%     \item Sprites' \texttt{old} values, which contain attributes from the last step, are updated.
-%         This is done right before the Scratch program is stepped, so the program can change the sprites right after,
-%         and no code has to deal with incorrect \texttt{old} values.
-%     \item Scratch's step function is called to advance the program.
-%     \item Callbacks, which are registered to run after the Scratch step, are executed.
-%         With this, callbacks can unregister constraints after the program was stepped.
-% \end{enumerate}
 
 Automating Scratch allows us to write tests for Scratch in a unit-test-like fashion.
 Whisker loads the program before each test case in order to create the same initial state for every test case,
 instead of going on where the last execution left off, like Scratch's GUI does it.
-It also starts the program with the green flag when the test starts.
+It also starts the program with the green flag when the test begins.
 \parspace
 
 Tests use a test driver object to automate Scratch through Whisker.
@@ -192,16 +166,17 @@ Listing~\ref{fig:examples_of_how_to_acquire_the_test_driver} shows code examples
         \vspace{-\bigskipamount}
         \caption{Manually acquiring the test driver through Whisker's interface}
     \end{subfigure}
-    \caption{Examples of how to acquire the test driver}
+    \caption{Acquiring the test driver}
     \label{fig:examples_of_how_to_acquire_the_test_driver}
 \end{listing}
 
 The following list will give an overview of Whisker's basic functions.
+Because Whisker is still in early development, some of its methods may undergo changes later.
 The test driver object will be denoted as $t$ in example code snippets.
 
 \begin{itemize}
     \item \textbf{Control the program execution.}
-        Test are able to control when and for how long the program under test is run.
+        Tests are able to control when and for how long the program under test is run.
         In the beginning of the test, the program starts in a paused state.
         The program can then be run (resumed) for a certain time, or until a condition is met.
         Since the Scratch program execution is asynchronous, we use JavaScript's Promise API for this purpose.
@@ -232,7 +207,7 @@ The test driver object will be denoted as $t$ in example code snippets.
     \item \textbf{Simulate Input.}
         By simulating Scratch's main input methods, tests can control the program under test.
         The goal is to simulate a user interacting with the program.
-        The possible input includes mouse movement, mouse button presses, keyboard key presses and entering answers to \texttt{ask} blocks.
+        The possible input includes mouse movement, mouse button presses, keyboard key presses, and entering answers to \texttt{ask} blocks.
         Inputs, that press (or release) a key or button, can specify a duration, after which the key is released (or pressed) again.
         Inputs can be performed immediately, or registered to be performed after a delay during the next execution.
         Inputs, that aren't performed during a run, will still trigger hats, that respond to the input.
@@ -243,7 +218,7 @@ The test driver object will be denoted as $t$ in example code snippets.
                 device: 'keyboard',
                 key: 'right arrow',
                 isDown: true,
-                duration: 100 // ms
+                duration: 100 // time in ms
             });
 
             /* Perform a mouse input one second into the next run. */
@@ -259,7 +234,7 @@ The test driver object will be denoted as $t$ in example code snippets.
         \end{javascriptcode}
     \item \textbf{Access Scratch's output.}
         Whisker can be used to access sprites and variables of the program.
-        They are accessed through sprite and variable objects, which always have the latest attributes of the sprite they reference.
+        They are accessed through sprite and variable objects, which always have the latest attributes of the sprite or variable they reference.
         Sprite objects can be obtained by their name or by their attributes.
         The provided sprite attributes include the sprite's position, rotation, size, current costume, speech bubble text, etc..
         Sprites also include the attribute values from the last execution step,
@@ -267,8 +242,10 @@ The test driver object will be denoted as $t$ in example code snippets.
         Additionally, sprites offer some methods for detecting collisions, and other helper methods.
         \begin{javascriptcode}
             /* Various getter methods for sprites. */
+                /* Get a sprite by its name. */
             const sprite = t.getSprite('Sprite1');
-            const sprites = t.getSprites(s => s.x > 100);
+                /* Get sprites that match a condition. */
+            const sprites = t.getSprites(sprite => sprite.x > 100);
             const clones = sprite.getClones();
             const stage = t.getStage();
 
@@ -291,7 +268,8 @@ The test driver object will be denoted as $t$ in example code snippets.
             sprite.isTouchingSprite(otherSprite);
         \end{javascriptcode}
     \item \textbf{Register Callbacks.}
-        Tests can execute code during the program execution by registering callbacks, which get called before or after each step of the Scratch program.
+        Tests can execute code during the program execution by registering callbacks, which get called every time the program renders a new frame.
+        The can be registered to be executed before or after each frame.
         This allows tests to react to information, which the user would normally see, while the program is running.
         Callbacks can, for example, be used to track information, to perform inputs according to sprite information, or to cancel a run.
         Callbacks can be enabled and disabled.
@@ -320,23 +298,23 @@ The test driver object will be denoted as $t$ in example code snippets.
         which is needed for some edge cases.
         For example, let's say we test a program with two scripts:
         One of the scripts moves a sprite around.
-        The other script moves the sprite back to the center whenever it touches on of the stage's edges.
-        Therefore, whenever the sprite touches an edge, it is immediately moved to the center of the screen,
+        The other script moves the sprite back to the center of the screen whenever it touches on of the stage's edges.
+        Therefore, whenever the sprite touches an edge, it is immediately moved to the center,
         even before the image is rendered.
-        Therefore, a callback will never detect the sprite touching an edge.
-        But this way, detecting these collisions is possible.
+        A normal callback will never detect the sprite touching an edge,
+        but this way, detecting these collisions is possible.
         \begin{javascriptcode}
-            let spriteTouchingEdge = false;
+            let touchedEdge = false;
 
             t.onSpriteMoved(sprite => {
-                spriteTouchingEdge = sprite.isTouchingEdge();
+                touchedEdge = touchedEdge || sprite.isTouchingEdge();
             });
 
             t.onSpriteVisualChange(sprite => { ... });
         \end{javascriptcode}
     \item \textbf{Register constraints.}
         By registering constraints, tests can define conditions that must always hold.
-        Constraints are done through special callbacks, which perform one or more assertions.
+        Constraints are realized through special callbacks, which perform one or more assertions.
         Whisker can be configured to fail the test on a constraint failure (the default) or to simply disable the failed constraint.
         In the second case, it is up to the test code to check which constraints failed and react accordingly.
         \begin{javascriptcode}
@@ -357,10 +335,10 @@ The test driver object will be denoted as $t$ in example code snippets.
             constraint.isActive();
         \end{javascriptcode}
     \item \textbf{Perform randomly generated inputs.}
-        Whisker provides random input generation by performing a random input from a pool of inputs in a constant interval during program executions.
+        Whisker provides random input generation by performing a random input from a pool of possible inputs in a constant interval during program executions.
         If a input consists of multiple events (i.e. if it has a duration) the same input cannot be chosen again while still active.
         The performed input can also be randomized itself by choosing its values randomly from a configured interval.
-        Tests can either provide the pool or inputs themselves or let Whisker determine what inputs the program reacts to by static analysis.
+        Tests can either provide the pool or inputs themselves or let Whisker determine what inputs the program reacts to through static analysis.
         The time interval in which random inputs are performed can also be configured.
         \begin{javascriptcode}
             /* Set the interval, how often random inputs should be performed. */
@@ -404,11 +382,11 @@ The test driver object will be denoted as $t$ in example code snippets.
 %         Therefore, it is beneficial to use tests, whose actions and purposes are easily understood by students.
 % \end{itemize}
 
-This section highlights various challenges that can make testing with this approach difficult.
+This section highlights various challenges that one can face when using this approach.%
 \parspace
 
 \textbf{General testing challenges.}
-Firstly, automated testing in general introduces some challenges.
+Firstly, automated dynamic testing in general introduces some challenges.
 For one thing, programs have to be well specified, since testing relies on the program's specification.
 Therefore, if the specification is too vague, testing can become difficult.
 Tests for imprecise specifications potentially need to consider more possible cases of how the program could behave.
@@ -420,19 +398,21 @@ but the latter does not work, the first feature can not be tested properly.
 
 \textbf{Addressing sprites and variables.}
 In order to access information about sprites and variables, they need to be addressed in some way.
-Sprites can be addressed by any of their attributes, for example by their position or by their name.
+Sprites can be addressed by their name or by any of their attributes, for example by their position.
 Nevertheless, if a sprite, that is needed for the test, can not be found, the test can not work properly.
-This can be a problem if a Scratch program deviates from the specification or from a provided template.
+This can be a problem if a Scratch program deviates from the specification.
+For example, if students are given a template with sprite names already in place,
+some students could rename the sprites form the template, causing tests to fail.
 However, errors like this can easily be detected through test reports.
 % Probably the easiest way to handle this is to give students a Scratch project with the sprites and variables already in place
 % as a template so the sprites and variables have the same name in each student solution.
 \parspace
 
 \textbf{Missing initialization.}
-Another challenge are programs which are missing initialization and are saved in a bad state.
-The Scratch GUI picks up where the last execution left off when the green flag is pressed.
+Another challenge are programs with missing initialization which are saved in a bad state.
+When the green flag is pressed, the Scratch GUI simply picks up where the last execution left off.
 Therefore, students might not initialize their program properly,
-which can cause it to behave incorrectly sometimes when the green flag is pressed..
+which can cause it to sometimes behave incorrectly when the green flag is pressed.
 A program with missing initialization may be saved in a bad state,
 meaning the program will behave incorrectly the next time it is started.
 Since we restore the same state in the beginning of each test case,
@@ -445,14 +425,14 @@ For example, a sprite touching another sprite may cause a variable to be increme
 But the exact timing for the triggered action is often unknown, because the event is detected through a loop.
 Therefore, tests have to check if the action happens in a time interval after the event occurred.
 This may be done by tracking timestamps of the event and the action, and comparing these timestamps,
-but this is expensive to do.
+but this can be expensive to do.
 \parspace
 
 \chapter{Using Constraints For Flexible Test Inputs}
 \label{cha:using_constraints_for_flexible_test_inputs}
 
 This section will describe why separating control of the program under test from the test code can be beneficial,
-and how this can be achieved by defining constraint, that are checked in the background.
+and how this can be achieved by defining constraints, that are checked in the background.
 
 \section{Input-Independent / Constraint-only Tests}
 \label{sec:input_independent_constraint_only_tests}
@@ -470,11 +450,12 @@ Scratch programs can often be tested in a similar way.
 But in order to be able to do this, tests have to be made independent of the simulated input on the program.
 This will not just enable us to test with generated input, but with other input sources as well.
 For example, the program could be manually controlled by a person, or input could be recorded and played back.
-Whisker also offers its own method of automated input generation by randomizing a set of inputs,
-which are either provided by the test itself, or deduced by analyzing the program code (see section~\ref{sec:automated_input_generation} for more information on this).
+Whisker also offers its own implementation of automated input generation.
+% Whisker also offers its own method of automated input generation by randomizing a set of inputs,
+% which are either provided by the test itself, or deduced by analyzing the program code (see section~\ref{sec:automated_input_generation} for more information on this).
 \parspace
 
-Scratch tests can often be made independent of inputs, and Whisker provides the means to do this.
+% Scratch tests can often be made independent of inputs, and Whisker provides the means to do this.
 Using constraints allows us to define conditions, which the program must hold.
 Constraints check the program's compliance to the conditions by continually performing assertions throughout the program execution.
 Since this is done entirely in the background while the program under test is running, we can define constraints and just let the program run for some time.
@@ -488,7 +469,7 @@ Figure~\ref{fig:input_independent_testing_procedure} shows a testing procedure, 
 We will go through each step of the procedure with the aid of an example.
 Consider a program with a single sprite, which is supposed to move to the right when, and only when, the right arrow key is pressed.
 We want to write a test to check if the sprite's movement works correctly.
-For the sake of simplicity we are going to ignore the edge case of the sprite not being able to move right when touching the right edge of the screen.
+For the sake of simplicity we are going to ignore the case of the sprite not being able to move right when touching the right edge of the screen.
 
 \begin{figure}[htpb]
     \centering
@@ -524,7 +505,7 @@ For the sake of simplicity we are going to ignore the edge case of the sprite no
             -- (0.2, -0.8);
     \end{tikzpicture}
 
-    \caption{Input-independent testing procedure}
+    \caption{Input-independent / constraint-only testing procedure}
     \label{fig:input_independent_testing_procedure}
 \end{figure}
 
@@ -577,9 +558,9 @@ For the sake of simplicity we are going to ignore the edge case of the sprite no
         \end{javascriptcode}
     \item[(3)] \textbf{Register constraints.}
         Since we tracked when the time when the key was pressed and when the sprite last moved,
-        we can simply compare the timestamps to determine if the sprite moved at the correct times.
-        We chose to allow a $100 \text{ms}$ delay for the sprite to react to the right arrow key being pressed or being released.
-        We can also register a second constraint, that checks that the sprite only ever stays still or moves to the right,
+        we add a constraint that simply compares the timestamps to determine if the sprite moved at the correct times.
+        We chose to allow a delay of $100~\text{ms}$ for the sprite to react to the right arrow key being pressed or being released.
+        We also register a second constraint, that checks that the sprite only ever stays still or moves to the right,
         but never moves in any other direction.
         \begin{javascriptcode}
             const moveTimingsConstraint = t.addConstraint(() => {
@@ -598,7 +579,7 @@ For the sake of simplicity we are going to ignore the edge case of the sprite no
             });
         \end{javascriptcode}
     \item[(4,5)] \textbf{Simulate Inputs, Run the program.}
-        Now we can register inputs if we want to, and then we can run the program.
+        Now we may register inputs if we want to, and then we can run the program.
         How we simulate inputs, or if we perform inputs manually, does not matter for the test, of course.
         \begin{javascriptcode}
             t.setRandomInputInterval(250);
@@ -608,14 +589,26 @@ For the sake of simplicity we are going to ignore the edge case of the sprite no
         \end{javascriptcode}
     \item[(6)] \textbf{Verify tested situation.}
         If our source of input does not guarantee that the right arrow key gets pressed at all, we risk the chance of a false positive test result,
-        since the test did not execute all possible cases.
-        In this case, we want to skip the test if either the right arrow key was never pressed,
+        since the test never expects the sprite to move right.
+        A similar problem occurs when the key is always pressed.
+        Therefore, we want to skip the test if either the right arrow key was never pressed,
         or was pressed the whole time.
         \begin{javascriptcode}
             t.assume.ok(pressed, 'Right arrow key must be pressed.');
             t.assume.ok(released, 'Right arrow key must be released.');
         \end{javascriptcode}
 \end{enumerate}
+\parspace
+
+Figure~\ref{fig:normal_input_independent_test_comparison} shows the resulting test code for the example
+and compares it to a similar test, which simulates inputs deliberately to check the sprite's movement.
+We can easily see, that this approach takes quite a bit more code than the more normal approach.
+But at the same time, the input-independent testing procedure is able to scale better than the other testing procedure.
+Once enough tracking is set up, writing constraints becomes easy and requires little code.
+At the same time, because the constraints are isolated from the program execution itself,
+many constraints can possibly be combined into a single test.
+For this purpose, Whisker offers an option to disable failed constraints instead of failing the entire test.
+In this case, tests can simply check which constraints failed, and let Whisker generate a test report from them.
 
 \begin{listing}[htpb]
     \centering
@@ -715,14 +708,14 @@ For the sake of simplicity we are going to ignore the edge case of the sprite no
                     t.assert.ok(Math.abs(movedRightTime - pressedTime) <= 100,
                         'Sprite must move right when, and only when, the right arrow key is pressed.');
                 }
-            });
+            }));
 
             const moveDirectionConstraint = t.addConstraint(() => {
                 t.assert.ok(sprite.x >= sprite.old.x,
                     'Sprite must only stand still or move right');
                 t.assert.ok(sprite.y == sprite.old.y,
                     'Sprite must not move vertically.');
-            });
+            }));
 
             /* (4) Some code, which registers inputs. Or nothing if
              * inputs are done manually. For example, generated input: */
@@ -744,34 +737,31 @@ For the sake of simplicity we are going to ignore the edge case of the sprite no
     \caption{Comparison of normal tests and an input-independent tests}
     \label{fig:normal_input_independent_test_comparison}
 \end{listing}
-\parspace
-
-Figure~\ref{fig:normal_input_independent_test_comparison} shows the resulting test code for the example
-and compares it to a similar test, which simulates inputs deliberately to check the sprite's movement.
-We can easily see, that this approach is quite a bit more costly than the more normal approach.
-But at the same time, the input-independent testing procedure is able to scale better than the other testing procedure.
-Once enough tracking is set up, writing constraints becomes easy and does not requires little code.
-At the same time, because the constraints are isolated from the program execution itself,
-many constraints can possibly be combined into a single test.
-For this purpose, Whisker offers an option to disable failed constraints instead of failing the entire test.
-Hence, the test can simply check which constraints failed at the end, and let Whisker generate a test report from them.
 
 \section{Resetting the Program During a Test}
 \label{sec:resetting_the_program_during_a_test}
 
-For testing with randomly generated input, programs often need to be reset multiple times inside of one test execution,
+When testing with randomly generated input, programs often need to be reset multiple times inside of one test execution,
 because the test could get stuck in some state of the program.
+\parspace
+
 To reset a Scratch program, we may simply press the green flag button again,
 but we also need to consider the tracked information as well as the registered callbacks and constraints when resetting the program under test.
+Any per-run information we tracked has to be cleared, and callbacks as well as constraints have to disabled before resetting the program.
+After resetting the program, callbacks and constraints have to be enabled again.
+Also, if the test configured Whisker not to fail the test when a constraint fails, then the test needs to check which constraints failed before disabling them
+and then only enable constraints which were active before.
 Figure~\ref{fig:resetting_the_program_under_test_procedure} shows a procedure that may be used to reset the program under test.
-This procedure replaces step $4$ (Run the program) in the input-independent testing procedure (see Figure~\ref{fig:input_independent_testing_procedure}).
+This procedure replaces step $5$ (Run the program) in the input-independent testing procedure (see Figure~\ref{fig:input_independent_testing_procedure}).
 Additionally the code example in Listing~\ref{fig:resetting_the_program_under_test_example}
-implements this procedure for the example in Listing~\ref{fig:normal_input_independent_test_comparison_constraint}.
+implements this procedure for the example from the previous section.
 \parspace
 
 Sometimes, information may need to be tracked across resets in order to determine what events occurred in the program during the whole test execution.
 This information may be needed to rule out constraints, whose situation never occurred, after the test execution.
 An example for this are the variables \texttt{pressed} and \texttt{released} in Listing~\ref{fig:normal_input_independent_test_comparison_constraint}.
+\parspace
+
 
 \begin{figure}[htpb]
     \centering
@@ -829,13 +819,20 @@ An example for this are the variables \texttt{pressed} and \texttt{released} in 
         \centering
         \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, framesep=2mm, frame=lines]{javascript}
             for (let i = 0; i < 5; i++) {
+                const constraints = [moveTimingsConstraint,
+                    moveDirectionConstraint];
+
                 /* (1) Suspend information tracking. */
                 trackRightKeyCb.disable();
                 trackSpriteMoveCb.disable();
 
-                /* (2) Suspend constraints. */
-                moveTimingsConstraint.disable();
-                moveDirectionConstraint.disable();
+                /* (2) Suspend constraints.
+                 * Get a list active constraints first.
+                 * (Constraints that did not fail) */
+                const ac = constraints.filter(c => c.isActive());
+                for (const constraint of ac) {
+                    constraint.disable();
+                }
 
                 /* (3) Reset per-run information
                    (keep values of 'pressed' and 'released'). */
@@ -857,8 +854,9 @@ An example for this are the variables \texttt{pressed} and \texttt{released} in 
                 trackSpriteMoveCb.enable();
 
                 /* (7) Activate constraints. */
-                moveTimingsConstraint.enable();
-                moveDirectionConstraint.enable();
+                for (const constraint of ac) {
+                    constraint.enable();
+                }
 
                 /* (8) Run the program. */
                 await t.runForTime(2000);

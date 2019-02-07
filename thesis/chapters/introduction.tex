@@ -1,6 +1,3 @@
-% REMEMBER: Write the thesis from the view of the reader. How would I like to READ the thesis?
-% WHY -> WHAT -> HOW structure
-
 \chapter{Introduction}
 
 \section{Motivation}
@@ -15,7 +12,7 @@ Scratch features a block-based programming environment, which lets users build i
 
 But Scratch's multimedia focus can also be its downfall.
 Scratch is entirely developed and executed inside of a graphical user interface (GUI), and programs usually require manual interaction with keyboard and mouse to run.
-Because of this, grading student assignments can be troublesome and particularly slow.
+Because of this, grading student assignments is troublesome and particularly slow.
 Assessment of Scratch programs involves opening, running and interacting with every program individually.
 Some courses, which use Scratch, are attended by more than 200 students~\cite{itch}.
 Therefore, manual assessment of student solutions becomes too time consuming to be feasible, and automated assessment is needed.
@@ -36,36 +33,37 @@ Likewise, dynamic testing is also helpful for self-study.
 Online tutorials for Scratch could include a test suite for learners to test their programs with.
 Learners could verify their solution, or receive feedback on possible errors in their solution.
 
-
 \section{Contributions}
 
 This thesis introduces a new approach towards dynamic testing of Scratch programs.
-The testing procedure involves an automation utility, which simulates user input (e.g. mouse movement or key presses) and allows access to Scratch's visual output through a test-friendly interface.
-This allows to test the program in traditional unit-test-like test cases.
+The testing procedure involves an automation utility, which simulates user input (e.g. mouse movement or key presses)
+and allows access to Scratch's visual output through a test-friendly interface.
+This makes is possible to test the program in traditional unit-test-like test cases.
 \parspace
 
 For these tests, we present a way to separate test code from its simulated inputs,
-which opens up the possibility to use arbitrary sources of simulated input for the test,
+which opens up the possibility to use arbitrary sources of input for the test,
 including automatically generated input.
 \parspace
 
-We introduce Whisker, an implementation of the aforementioned automation utility,
-which provides a interface to control the Scratch virtual machine through JavaScript methods.
+As the main contribution of this work, we introduce Whisker, an implementation of the aforementioned automation utility,
+which provides an interface to control the Scratch virtual machine through JavaScript methods.
 With this implementation, we also explore the possibility of automated test input generation through a combination of random input and simple static analysis on the Scratch project.
 \parspace
 
 We evaluate Whisker with realistic Scratch programs from different educational courses.
 The results provide the following insights:
 
-\mnote{Put statistics here}
-% correlation, avg. number of inconsistencies, avg. coverage
 \begin{enumerate}[(1)]
     \item Test results can be accurate enough to aid in grading Scratch assignments.
-        They can closely match the results of manual assessment and show consistent results over multiple test runs.
+        They can closely match the results of manual assessment and show fairly consistent results over multiple test runs.
+        We measured an average Pearson's correlation coefficient of $r = 0.880$ for the correlation
+        between our test results and independent manual scores and an average percentage of $7.35\%$ of test-project pairs that showed inconsistent test outcomes over ten test executions.
     \item Automated input generation is a viable method to control Scratch programs for testing purposes.
         A combination of random input generation and simple static analysis can be used to generate input, which covers a big portion of most Scratch programs' functionality.
+        We were able to achieve an average of $95.25\%$ statement coverage on a variety of projects with automatically generated input,
+        while running the projects without inputs only resulted in $47.14\%$ statement coverage.
     \item The testing process does not interfere with the execution of the programs under test.
-        \mnote{Remove this?}
         Scratch programs behave the same during testing and during normal use.
         Specifically, additional computations for testing do not slow the execution of the tested program down.
 \end{enumerate}
@@ -74,43 +72,41 @@ The results provide the following insights:
 
 Chapter~\ref{cha:background} provides a small overview over the Scratch programming language (Section~\ref{sec:scratch}),
 and shows previous approaches towards automated testing of Scratch programs (Section~\ref{sec:previous_testing_approaches}).
-Section~\ref{sec:challenges_of_testing_scratch_programs} then explains some challenges,
-which have to be overcome in order to implement automated testing for Scratch.
+Then we explain some challenges, which have to be overcome in order to perform automated testing for Scratch (Section~\ref{sec:challenges_of_testing_scratch_programs}).
 \parspace
 
 In Chapter~\ref{cha:appraoch}, we explain our approach towards testing Scratch programs (Section~\ref{sec:general_appraoch}),
 and how we realized this approach with Whisker.
-Section~\ref{sec:testing_environment} explains the environment, in which tests are executed.
-Then, we explain how tests are written and what functionality Whisker provides for testing in Section~\ref{sec:public_interface}.
-Afterwards, Sections~\ref{sec:appoach_advantages_disadvantages} and \ref{sec:appraoch_challenges} explain advantages, disadvantages,
-and various challenges of our testing approach.
+We describe the environment, in which tests are executed (Section~\ref{sec:testing_environment}),
+how tests are written, and what functionality Whisker provides for testing (Section~\ref{sec:public_interface}).
+Afterwards, we explain various challenges of our testing approach (Section~\ref{sec:appraoch_challenges}).
 \parspace
 
 Chapter~\ref{cha:using_constraints_for_flexible_test_inputs} describes how Scratch programs can be tested
 independently of the input provided to the program by checking constraints in the background.
-Section~\ref{sec:input_independent_constraint_only_tests} describes the general idea of this approach and
-Section~\ref{sec:constraint_testing_procedure} shows the testing procedure we use to achieve this.
+We describe the general idea of this approach (Section~\ref{sec:input_independent_constraint_only_tests})
+and show the testing procedure we use to achieve this (Section~\ref{sec:constraint_testing_procedure}).
 \parspace
 
 Furthermore, the implementation of Whisker is described in Chapter~\ref{cha:implementation}.
-After Section~\ref{sec:implementation_environment} describes the implementation environment,
-and Section~\ref{sec:general_architecture} explains the general architecture,
-the controlled execution of Scratch programs for testing is explained in Section~\ref{sec:scratch_program_execution_and_the_step_loop}.
+After we describe the implementation environment (Section~\ref{sec:implementation_environment}),
+and explain the general architecture (Section~\ref{sec:general_architecture}),
+the controlled execution of Scratch programs for testing is explained (Section~\ref{sec:scratch_program_execution_and_the_step_loop}).
 The following sections then each describe the implementation of one of Whisker's features.
-Finally, measuring statement coverage is explained Section~\ref{sec:coverage_measurement}.
+Finally, measuring statement coverage is explained (Section~\ref{sec:coverage_measurement}).
 \parspace
 
 In Chapter~\ref{cha:evaluation}, we perform an empirical evaluation of Whisker.
-In the beginning, the research questions are listed, and an overview of the experiments is given.
-Afterwards, in Section~\ref{sec:experimental_setup}, we describe the projects and test suites we use for the evaluation.
+In the beginning, the research questions are listed and an overview of the experiments is given.
+Afterwards, we describe the projects and test suites we use for the evaluation (Section~\ref{sec:experimental_setup}),
 Then, the following sections take on the experiments we conducted to answer each research question.
 Each of the sections explains the purpose of the experiment and which indicators we use to answer the research question,
 then the results are described.
-Firstly, we analyze the quality of test results from our test suites in Section~\ref{sec:rq1},
-then we evaluate our algorithm for generating automated input in Section~\ref{sec:rq2}.
-Finally we examine if programs under tests are somehow influenced by the testing process in Section~\ref{sec:rq3}.
-Afterwards, we discuss the results in Section~\ref{sec:discussion},
-and list possible threats to validity in Section~\ref{sec:threats_to_validity}.
+Firstly, we analyze the quality of test results from our test suites (Section~\ref{sec:rq1}),
+then we evaluate our algorithm for generating automated test input (Section~\ref{sec:rq2}).
+Finally we examine if programs under tests are somehow influenced by the testing process (Section~\ref{sec:rq3}).
+Afterwards, we discuss the results (Section~\ref{sec:discussion}),
+and list possible threats to validity (Section~\ref{sec:threats_to_validity}).
 \parspace
 
 Finally, in Chapter~\ref{cha:future_work} we describe how Whisker could be extended in the future,
