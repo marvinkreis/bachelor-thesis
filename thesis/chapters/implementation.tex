@@ -30,16 +30,12 @@ Therefore, we use webpack~\cite{webpack} to transpile Whisker's source code into
 \section{General Architecture}
 \label{sec:general_architecture}
 
-% Currently, Whisker is only available through its own web GUI, % which displays a list of tests, as well as the test report next to Scratch's stage.
-% but it may also be possible to create a Electron standalone application for Whisker, or even a browser addon which adds Whisker to the original Scratch web page.
-
 One of Whisker's main design goals is to leave the Scratch virtual machine unchanged.
 There are two reasons for this decision.
 For one thing, if Whisker used a modified version of Scratch,
 the modified version would need to be updated regularly as the original version of Scratch receives updates.
 But the main reason for this decision is that it allows Whisker to be attached to any instance of the Scratch VM.
 Therefore, anything that runs Scratch 3.0 can theoretically use Whisker.
-% For example, this makes it possible to write a browser addon, which adds Whisker to the original Scratch web page.
 \parspace
 
 Figure~\ref{fig:general_architecture} shows Whisker's general architecture.
@@ -70,7 +66,8 @@ because it offers a simpler interface and prevents access to Whisker's private m
         \node[box]   at ( 1.85, -1.6) (callbacks)     {Callbacks};
         \node[box]   at (-1.80, -2.5) (constraints)   {Constraints};
         \node[box]   at (-2.00, -4.1) (scratchvm)     {Scratch VM};
-        \node[box]   at ( 2.20, -4.1) (scratchrender) {Renderer};
+        \node[box]   at ( 2.20, -4.1) (scratchrender) {Scratch Renderer};
+        \node[box]   at (-2.00, -5.8) (otherscratch)  {Other Scratch Components};
 
         \begin{scope}[on background layer]
             \node[draw, h, rounded corners, fit=(vmwrapper)(sprites)(inputs)(callbacks)(constraints)(random-inputs)] (container) {};
@@ -80,7 +77,8 @@ because it offers a simpler interface and prevents access to Whisker's private m
                                  --/testdriver/container,
                                  --/container/scratchvm,
                                  --/container/scratchrender,
-                                 --/scratchvm/scratchrender}
+                                 --/scratchvm/scratchrender,
+                                 --/scratchvm/otherscratch}
             \draw[shorten >= 2pt, arrow] (\pf) \pp (\pt);
 
         % \draw[shorten >= 2pt, rounded corners, dashed, ->]
@@ -99,36 +97,74 @@ because it offers a simpler interface and prevents access to Whisker's private m
 \label{sec:scratch_program_execution_and_the_step_loop}
 
 The core of Scratch's virtual machine is a function called \texttt{step},
-which is called at a constant frequency of 30 times per second.
-Figure~\ref{fig:simplified_scratch_step} shows a simplified version of this function.
-It executes the program's scripts sequentially until a time limit is reached, then it draws the scene using the renderer.
+which is called at a constant frequency of 30 times per second using JavaScripts \texttt{setInterval} mechanism.
+It runs the program's threads, which each execute one instance of a script, sequentially until a time limit is reached, then it draws the scene using the renderer.
 If some visual change occurs, i.e. when a sprite changes appearance or position, a redraw is requested,
 and the program execution step is stopped earlier (in turbo mode redraw requests are ignored).
+Whenever a script is triggered by its hat, a new thread is spawned.
+Figure~\ref{fig:simplified_scratch_step} shows a simplified version of this procedure.
+\parspace
 
 \begin{listing}[htpb]
     \centering
-    \begin{minipage}[t]{.5\textwidth}
+    \begin{subfigure}{.9\textwidth}
         \begin{javascriptcode}
-            STEP_TIME = 1000 / STEPS_PER_SECOND;
-            WORK_TIME = 0.75 * STEP_TIME;
+            _step () {
+                this.threads = this.threads.filter(thread => !thread.isKilled);
 
-            while (running &&
-                   timeElapsed < WORK_TIME &&
-                   !redrawRequested) {
-                for (thread of threads) {
-                    stepThread(thread);
+                /* Execute the active scripts. */
+                this.sequencer.stepThreads();
+
+                /* Render if a renderer is attached. */
+                if (this.renderer) {
+                    this.renderer.draw();
                 }
+
+                /* Emit events. */
+                ...
             }
 
-            renderer.draw();
+            start () {
+                /* Execute the step function 30 times per second. */
+                this._steppingInterval = setInterval(() => {
+                    this._step();
+                }, THREAD_STEP_INTERVAL);
+            }
         \end{javascriptcode}
-    \end{minipage}
+        \vspace{-\bigskipamount}
+        \caption{Simplified \texttt{step} and \texttt{start} functions from the \texttt{Runtime} class}
+    \end{subfigure}
+
+    \bigskip
+
+    \begin{subfigure}{.9\textwidth}
+        \begin{javascriptcode}
+            stepThreads () {
+                WORK_TIME = 0.75 * THREAD_STEP_INTERVAL;
+                this.timer.start();
+
+                /* Execute the program until there is no more work,
+                 * the work time is up, or a redraw is requested. */
+                while (numActiveThreads > 0 &&
+                       timer.timeElapsed() < WORK_TIME &&
+                       (!this.runtime.redrawRequested || this.runtime.turboMode)) {
+
+                    /* Execute each script sequentially. */
+                    for (thread of this.runtime.threads) {
+                        this.stepThread(thread);
+                    }
+                }
+            }
+        \end{javascriptcode}
+        \vspace{-\bigskipamount}
+        \caption{Simplified \texttt{stepThreads} function from the \texttt{Sequencer} class}
+    \end{subfigure}
     \caption{Simplified Scratch step procedure}
     \label{fig:simplified_scratch_step}
 \end{listing}
 
 For the purpose of controlling the execution of the program, and to run multiple functions alongside the step loop,
-Whisker runs its own loop, which in turn calls Scratch's \texttt{step} function.
+Whisker clears the interval that runs the \texttt{step} function and runs its own loop, which in turn calls Scratch's \texttt{step} function, instead.
 Figure~\ref{fig:whisker_step_procedure} shows the procedure of Whisker's step loop.
 In addition to running the Scratch program, it performs other tasks which have to be executed periodically.
 \parspace
@@ -142,7 +178,7 @@ In addition to running the Scratch program, it performs other tasks which have t
              num/.style={draw, circle, inner sep=0.6mm, text centered},
                h/.style={fill=blue!10}}
 
-     \begin{tikzpicture}[scale=0.8, every node/.style={scale=0.8}]
+     \begin{tikzpicture}
         \node[box]    at ( 0.2,  5.0) (callbacksbefore) {Call Callbacks (before)};
         \node[box]    at ( 0.2,  4.0) (random-inputs)   {Perform Random Inputs};
         \node[box]    at ( 0.2,  3.0) (inputs)          {Perform Inputs};
@@ -179,7 +215,7 @@ In addition to running the Scratch program, it performs other tasks which have t
 \end{figure}
 
 To make it possible to run and pause the program on demand, we implemented a class called \texttt{Stepper},
-which queues and periodically executes callbacks in a fixed frequency using JavaScript's intervals as needed.
+which queues and periodically executes functions in a fixed frequency using JavaScript's intervals as needed.
 Whenever a test runs the Scratch program,
 the \texttt{Stepper} is used to execute Whisker's own \texttt{step} function periodically,
 until the execution is done.
