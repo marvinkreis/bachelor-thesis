@@ -1,0 +1,19 @@
+id,name,status,message
+1,Fruit Size Constraint,pass,
+2,Bowl Movement Constraint,pass,
+3,Bowl Movement Details Constraint,pass,
+4,Apple Falling Details,pass,
+5,Banana Falling Details,pass,
+6,Apple Spawn Y Position Constraint,pass,
+7,Apple Spawn Random X Position Constraint,pass,
+8,Banana Spawn Y Position Constraint,pass,
+9,Banana Spawn Random X Position Constraint,pass,
+10,Only One Apple Constraint,pass,
+11,Only One Banana Constraint,pass,
+12,Apple Points Constraint,fail,Apples must give 5 points when they hit the bowl.
+13,Apple Game Over Constraint,pass,
+14,Apple Game Over Message Constraint,pass,
+15,Banana Bowl Points Constraint,pass,
+16,Banana Ground Points Constraint,fail,Bananas must subtract 8 points when they hit the floor.
+17,Banana Ground Message Constraint,fail,Banana must display a message when it hits the ground.
+18,Timer Tick Constraint,pass,
