@@ -10,15 +10,17 @@ source("scripts/annotate-plot.R");
 
 
 # The names of the projects to be used in the scatter plot
-ids = projects.filtered;
+ids = projects.intersect;
 
 # The names of the data sets for which to make scatter plots for
-data_sets = list(normal = c("normal-1", "normal-2", "normal-3", "normal-4", "normal-5"),
-                 constraint = c("constraint-1", "constraint-2", "constraint-3", "constraint-4", "constraint-5"),
-                 random = c("random-1", "random-2", "random-3", "random-4", "random-5"));
+data_sets = list(normal = paste("normal-", 0:9, sep=""),
+                 constraint = paste("constraint-", 0:9, sep=""),
+                 random = paste("random-", 0:9, sep=""));
 
 make_scatter_plot = function(data, name) {
+    excluded = which(data$excluded == FALSE);
     correlation = cor(data$points, data$passes);
+    correlation_excluded = cor(data$points[excluded], data$passes[excluded])
 
     if (grepl("normal", name)) {
         test_name = "Test";
@@ -29,18 +31,22 @@ make_scatter_plot = function(data, name) {
     print(name);
     print(data);
     print(correlation);
+    print(correlation_excluded);
 
-    scatter = ggplot(data = data, aes(x = points, y = passes, color = coverage)) +
-        geom_point(size = 2) +
-        geom_smooth(method = lm, se = FALSE, color = "blue", size = 1) +
+    scatter = ggplot(data = data, aes(x = points, y = passes, color = coverage, shape = excluded)) +
+        geom_point(size = 3) +
+        geom_smooth(method = lm, se = FALSE, data = subset(data, !excluded)) +
         scale_color_gradient(low = "red", high = "green", limits = c(0.0, 1.0), labels = percent) +
-        labs(x = "Points (Manual Evaluation)", y = paste(test_name, "Passes"), color = "Coverage") +
+        scale_shape_manual(values = c(19, 1), labels = c("Included Projects", "Excluded Projects")) +
+        guides(color = guide_colorbar(order = 0), shape = guide_legend(order = 1)) +
+        labs(x = "Points (Manual Evaluation)", y = paste(test_name, "Passes"), shape = "", color = "Coverage") +
         theme_light();
 
-    label = paste("r = ", round(correlation, digits = 4));
-    scatter = annotate_plot(scatter, label);
+    label = paste("without excluded projects:\nr = ", format(round(correlation_excluded, digits = 3), nsmall = 3), "\n",
+                  "with excluded projects:\nr = ", format(round(correlation, digits = 3), nsmall = 3), sep = "");
+    scatter = annotate_plot(scatter, label, 2);
 
-    ggsave(paste("scatter-", name, ".pdf", sep=""), plot = scatter, width = 12.5, height = 10, units = "cm");
+    ggsave(paste("scatter-", name, ".pdf", sep=""), plot = scatter, width = 14.5, height = 10, units = "cm");
 }
 
 main = function () {
@@ -60,7 +66,8 @@ main = function () {
 
             data = data.frame(points = csvs.keller_points.total[ids],
                               passes = passes[ids],
-                              coverage = coverage[ids] / 100);
+                              coverage = coverage[ids] / 100,
+                              excluded = ! projects.intersect %in% projects.filtered);
 
             avg_passes = avg_passes + data$passes;
             avg_coverage = avg_coverage + data$coverage;
@@ -76,7 +83,8 @@ main = function () {
 
             data = data.frame(points = csvs.keller_points.total[ids],
                               passes = avg_passes,
-                              coverage = avg_coverage);
+                              coverage = avg_coverage,
+                              excluded = ! projects.intersect %in% projects.filtered);
 
             make_scatter_plot(data, paste(set_name, "-avg", sep = ""));
         }

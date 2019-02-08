@@ -8,9 +8,9 @@ source("scripts/read-data.R");
 ids = projects.filtered;
 
 # The names of the data sets for which to make scatter plots for
-data_sets = list(normal = c("normal-1", "normal-2", "normal-3", "normal-4", "normal-5"),
-                 constraint = c("constraint-1", "constraint-2", "constraint-3"),
-                 random = c("random-1", "random-2", "random-3", "random-4", "random-5"));
+data_sets = list(normal = paste("normal-", 1:7, sep=""),
+                 constraint = paste("constraint-", 4:7, sep=""),
+                 random = paste("random-", 0:9, sep=""));
 
 
 percent_format = function(total) {
@@ -21,7 +21,7 @@ make_bar_plot = function(data, total, xlabel, file_name) {
 
     bar = ggplot(data = data, aes(x = items, y = inconsistencies)) +
           geom_col(width = 0.8) +
-          geom_hline(aes(yintercept = mean(inconsistencies)), color = "blue", size = 1) +
+          geom_hline(aes(yintercept = mean(inconsistencies))) +
           scale_y_continuous(breaks = 0:10, labels = percent_format(total)) +
           labs(x = xlabel, y = "Inconsistencies") +
           theme_light() +
@@ -82,22 +82,25 @@ main = function() {
         make_bar_plot(data, num_projects, test_name, file_name);
 
         print(set_name);
+        print("");
+
         print(inconsistencies_per_test);
+        cat("Mean inconsistent projects per test: ");
         print(mean(inconsistencies_per_test));
+        cat("Mean inconsistent test-project pairs: ");
         print(mean(inconsistencies_per_test) / num_projects);
+        print("");
 
-        print(set_name);
         print(inconsistencies_per_project);
+        cat("Mean inconsistent tests per project: ");
         print(mean(inconsistencies_per_project));
+        cat("Mean inconsistent test-project pairs: ");
         print(mean(inconsistencies_per_project) / num_tests);
+        print("");
 
-        print(set_name);
-        print(sum(rowSums(differences)));
-        print(sum(colSums(differences)));
-        print(sum(colSums(differences) / (num_tests * num_projects)));
-
-        print(set_name);
         print(differences);
+        print("");
+        print("");
     }
 }
 

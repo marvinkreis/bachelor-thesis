@@ -14,7 +14,8 @@ source("scripts/annotate-plot.R");
 ids = projects.filtered;
 
 # The names of the data sets for which to make plots for
-data_sets = list("run-1", "run-2", "run-3", "run-5", "no-input-run-1");
+data_sets = c(paste("random-input-", 0:9, sep = ""),
+              paste("no-input-", 0:9, sep = ""));
 
 breaks = c(1, 2, 4, 8, 16, 32, 64, 128, 256, 600);
 
@@ -37,7 +38,6 @@ for (set_name in data_sets) {
     }
 
     data$time = data$time / 1000;
-
 
     mean_coverage = as.data.frame(group_by(data, time) %>%
                        summarise(percent = mean(percent)));
@@ -82,8 +82,8 @@ for (set_name in data_sets) {
 
     ggsave(paste("coverage-line-", set_name, ".pdf", sep=""), plot = line, width = 25, height = 10, units = "cm");
 
-
+    max_index = which(data$time == max(data$time));
     print(set_name);
-    print(data$percent[which(data$time == 600)]);
-    print(mean(data$percent[which(data$time == 600)]));
+    print(data$percent[max_index]);
+    print(mean(data$percent[max_index]));
 }

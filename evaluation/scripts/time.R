@@ -7,9 +7,12 @@ source("scripts/annotate-plot.R");
 
 #max_time = sum(lapply(csvs.time[[set_name]], function(x) x[1:len]));
 
-data_sets = c("normal",
-              "constraint",
-              "random");
+data_sets = c("normal-pc",
+              "normal-laptop",
+              "constraint-pc",
+              "constraint-laptop",
+              "random-pc",
+              "random-laptop");
 
 for (set_name in data_sets) {
     data = data.frame(NA, NA, NA, NA, NA, NA, NA);
@@ -36,7 +39,7 @@ for (set_name in data_sets) {
     print(paste("mean scratch"         , round(mean(data[,"scratch"]         ), digits = 3)));
     print(paste("mean callbacks-after" , round(mean(data[,"callbacks-after"] ), digits = 3)));
     print(paste("mean constraints"     , round(mean(data[,"constraints"]     ), digits = 3)));
-    print(paste("mean total"           , round(mean(rowSums(data)            ), digits = 4)));
+    print(paste("mean total"           , round(mean(rowSums(data)            ), digits = 3)));
     print(paste("mean whisker"         , round(mean(rowSums(data) - data[,"scratch"]), digits = 3)));
     print(paste("max callbacks-before" , round( max(data[,"callbacks-before"]), digits = 3)));
     print(paste("max random-inputs"    , round( max(data[,"random-inputs"]   ), digits = 3)));
@@ -45,16 +48,26 @@ for (set_name in data_sets) {
     print(paste("max scratch"          , round( max(data[,"scratch"]         ), digits = 3)));
     print(paste("max callbacks-after"  , round( max(data[,"callbacks-after"] ), digits = 3)));
     print(paste("max constraints"      , round( max(data[,"constraints"]     ), digits = 3)));
-    print(paste("max total"            , round( max(rowSums(data)            ), digits = 4)));
+    print(paste("max total"            , round( max(rowSums(data)            ), digits = 3)));
     print(paste("max whisker"          , round( max(rowSums(data) - data[,"scratch"]), digits = 3)));
+    print("");
+
+    totals = sort(rowSums(data));
+    sort(totals);
+    n = length(totals);
+    print("highest totals")
+    print(totals[(n-5):n]);
     print("");
 }
 
 ###############################################################################
 
-data_sets = c("normal",
-              "constraint",
-              "random");
+data_sets = c("normal-pc",
+              "normal-laptop",
+              "constraint-pc",
+              "constraint-laptop",
+              "random-pc",
+              "random-laptop");
 
 for (set_name in data_sets) {
     data = data.frame(NA, NA, NA);
