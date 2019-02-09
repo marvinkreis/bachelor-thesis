@@ -2,8 +2,6 @@
 
 library(ggplot2);
 library(scales);
-library(grid);
-library(gtable);
 
 source("scripts/read-data.R");
 source("scripts/annotate-plot.R");

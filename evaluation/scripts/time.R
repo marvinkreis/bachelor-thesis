@@ -1,5 +1,7 @@
 #!/usr/bin/env Rscript
 
+library(ggplot2);
+
 source("scripts/read-data.R");
 source("scripts/annotate-plot.R");
 
