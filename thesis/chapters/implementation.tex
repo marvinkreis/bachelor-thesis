@@ -272,28 +272,13 @@ when a run of the program is being started, while another one is still going on.
 \end{listing}
 
 Running other code before and after Scratch's step could theoretically be problematic in a single-threaded environment like JavaScript,
-because it could take longer than the allowed 1/30 second per step and therefore slow the Scratch program down.
+because it could take longer than the allowed 1/30 second per step and therefore slow down the Scratch program.
 But in reality, most Scratch programs will only use a fraction of the allocated work time for the step,
 because they visually change sprites in every step, which makes the step finish earlier due to the issued redraw request.
 And even when no redraw is requested,
 the allocated time interval for rendering the picture is long enough to allow Whisker to run its other tasks without exceeding the time limit of 1/30 second.
 Therefore, Whisker can run other tasks in between the Scratch steps without interfering with the program.
 In section~\ref{sec:rq3}, we will prove this empirically by measuring how long Scratch's steps and Whisker's other tasks take to execute.
-
-% Stuff to write about
-%   Inputs:
-%       - How they are simulated
-%       - Durations
-%   Automated Inputs:
-%       - How static analysis is done
-%       - How inputs are randomized
-%       - What blocks correspond to what random input
-%   Sprites:
-%       - Caching, always give the same instance of sprite / variable
-%       - How they are implemented as wrappers
-%   Execution:
-%       - asynchronous calls, await
-%       - stepper
 
 \section{Accessing Sprites and Variables}
 \label{sec:accessing_sprites_and_variables}
@@ -302,10 +287,11 @@ In section~\ref{sec:rq3}, we will prove this empirically by measuring how long S
 Scratch's implementation differentiates between \texttt{Sprites} and \texttt{RenderedTargets}.
 \texttt{Sprite} objects contain the code, costumes, and sounds of the sprite.
 They can be seen as a kind of blueprint for the actual sprite instances, which are objects of the \texttt{RenderedTarget} class.
+In contrast, we will call rendered targets sprites, since this resembles the user's view.
 \parspace
 
-Whisker implements a wrapper class around \texttt{RenderedTarget},
-and provides access to these wrappers, instead of the sprite objects themselves, in its public interface.
+Whisker implements a wrapper class around \texttt{RenderedTarget}
+and provides access to these wrappers, instead of the sprite objects themselves.
 This serves two purposes:
 Firstly, the wrapper objects offer a simpler and more test-friendly interface.
 This interface allows to access the sprite's attributes (i.e. the attributes of the \texttt{Sprite} object and the \texttt{RenderedTarget} object),
@@ -316,7 +302,7 @@ which is very useful for testing.
 These attributes are made available in the \texttt{old} attribute of the sprite wrapper.
 The \texttt{old} values are updated, i.e. replaced with the current values,
 before every step of the Scratch program.
-This is illustrated in Whisker's step procedure shown by figure~\ref{fig:whisker_step_procedure} in step 4.
+This is illustrated in Whisker's step procedure shown by Figure~\ref{fig:whisker_step_procedure} in step 4.
 \parspace
 
 In order to keep track of the sprite wrappers,
@@ -330,14 +316,12 @@ Each sprite wrapper keeps track of its own variables.
 \section{Simulating Inputs}
 \label{sec:simulating_inputs}
 
-\mnote{TODO: Explain how inputs are saved\\Inputs are not repeated (e.g. input block + holding key down)}
-
-Scratch's virtual machine provides an API to perform input events on the Scratch program through its \texttt{postIOData} method.
+Scratch's virtual machine provides an interface to perform input events on the Scratch program through its \texttt{postIOData} method.
 This method is usually used by Scratch's GUI, which forwards input events from the web browser to the virtual machine.
 But we can use this API for Whisker to simulate mouse and keyboard inputs.
 However, \texttt{postIOData} is not a very user-friendly interface,
 It requires extra information about the Scratch stage and coordinate conversion for mouse inputs.
-Because of this, Whisker takes inputs in a slightly simpler format and converts them to the format, that \texttt{postIOData} expects.
+Because of this, Whisker takes inputs in a slightly simpler format and converts them to the format that \texttt{postIOData} expects.
 Listing~\ref{fig:input_conversion_example} shows a mouse input in Whisker's format and the resulting \texttt{postIOData} call.
 Answers to Scratch's \texttt{ask} blocks, are simulated in a similar way, but though the VM's event system instead of \texttt{postIOData}.
 \parspace
@@ -361,126 +345,120 @@ Answers to Scratch's \texttt{ask} blocks, are simulated in a similar way, but th
     \begin{subfigure}[b]{.3\textwidth}
         \begin{javascriptcode}
             vm.postIOData('mouse', {
-              device: 'mouse',
-              isDown: true,
-              x: 194.09,
-              y: 53.65,
-              canvasWidth: 321.25,
-              canvasHeight: 241.43
+                device: 'mouse',
+                isDown: true,
+                x: 194.09,
+                y: 53.65,
+                canvasWidth: 321.25,
+                canvasHeight: 241.43
             });
         \end{javascriptcode}
         \vspace{-\bigskipamount}
         \caption{The resulting \texttt{postIOData} call}
     \end{subfigure}
 
-    \caption{Resulting \texttt{posIOData} call from a mouse input}
+    \caption{The resulting \texttt{postIOData} call from a mouse input}
     \label{fig:input_conversion_example}
 \end{listing}
 
 Whisker provides methods to either perform inputs immediately,
-or to queue inputs and execute them after a certain time has passed during the next run of the program under test.
+or to queue inputs and execute them after a certain time has passed during the next run of the program.
 % This allows the test to specify a chain of inputs, which are performed during a run of the program.
-For this purpose, Whisker keeps a queue of inputs, which are supposed to be performed later.
-When the program under test is executed, these inputs are checked before every Scratch step,
-and inputs, which are due, are performed.
+For this purpose, Whisker keeps a list of inputs, which are supposed to be performed later.
+When the program under test is executed, these inputs are checked before every Scratch step
+and inputs which are due, are performed.
 Figure~\ref{fig:whisker_step_procedure} illustrates when the inputs are called in Whisker's step procedure.
 \parspace
 
 Some inputs encompass multiple IO events.
-For example, pressing a key for a certain duration and then letting go of it, requires two input events,
-one for pressing the key, and one for releasing it.
+For example, pressing a key for a certain duration and then releasing it requires two input events.
 For this purpose, Whisker keeps a state for each input,
 which indicates how much of the input was already performed,
 and what action has to be carried out next.
 
-\section{Randomized Inputs}
-\label{sec:randomized_inputs}
-
-Whisker offers a mechanism to periodically perform random inputs.
-It chooses an input from a pool of registered inputs during Whisker's step procedure.
-Figure~\ref{fig:whisker_step_procedure} shows when this is done during the step.
-Random inputs are not performed every single step,
-but rather Whisker waits a configured amount of time after a random input is executed,
-before it chooses the next one.
-% Whisker waits before choosing the next random input by recording a timestamp when a random input was performed,
-% and checking if $n$ milliseconds have passed since then during every iteration of the step procedure.
-Inputs in the pool can be assigned a weight to make them more or less likely to be chosen randomly.
-\parspace
-
-If the chosen input consists of multiple input events,
-e.g. if a key has to be pressed and released later,
-then the input can not be chosen again while it is still active,
-i.e. if part of the input was performed, but not all of it.
-If all inputs in the pool are currently active,
-then Whisker executes no random input until at least one of the inputs is done.
-% Therefore, to choose an input, Whisker calculates the sum of all non-active input's weights (with the default weight being 1.0),
-% produces a random value in the range of 0 to the sum of weights, and chooses an input accordingly.
-\parspace
-
-Before a input from the pool is executed, it is randomized first.
-Random inputs can specify ranges, from which the final properties are chosen randomly.
-Listing~\ref{fig:input_randomization_example} shows an example of an input before and after randomization.
-After the input is randomized, it is registered and executed like a normal, non-random, input.
-\parspace
-
-\begin{listing}[htpb]
-    \centering
-
-    \begin{subfigure}[b]{.35\textwidth}
-        \begin{javascriptcode}
-            {
-                device: 'mouse',
-                isDown: true,
-                x: [-100, 100],
-                y: [-100, 100],
-                duration: [100, 1000]
-            }
-        \end{javascriptcode}
-        \vspace{-\bigskipamount}
-        \caption{Input before randomization}
-    \end{subfigure}
-    \hspace{.08\textwidth}
-    \begin{subfigure}[b]{.35\textwidth}
-        \begin{javascriptcode}
-            {
-                device: 'mouse',
-                isDown: true,
-                x: 30,
-                y: -57,
-                duration: 351
-            }
-        \end{javascriptcode}
-        \vspace{-\bigskipamount}
-        \caption{Input after randomization}
-    \end{subfigure}
-
-    \caption{Example of input randomization}
-    \label{fig:input_randomization_example}
-\end{listing}
+% \section{Randomized Inputs}
+% \label{sec:randomized_inputs}
+%
+% Whisker offers a mechanism to periodically perform random inputs.
+% It chooses an input from a pool of registered inputs during Whisker's step procedure.
+% Figure~\ref{fig:whisker_step_procedure} shows when this is done during the step.
+% Random inputs are not performed every single step.
+% Rather, Whisker waits a configured amount of time after a random input is executed before it chooses the next one.
+% % Whisker waits before choosing the next random input by recording a timestamp when a random input was performed,
+% % and checking if $n$ milliseconds have passed since then during every iteration of the step procedure.
+% \parspace
+%
+% If the chosen input consists of multiple input events,
+% e.g. if a key has to be pressed and released later,
+% then the input can not be chosen again while it is still active.
+% If all inputs in the pool are currently active,
+% then Whisker executes no random input until at least one of the inputs is done.
+% \parspace
+%
+% Before a input from the pool is executed, it is randomized first.
+% Random inputs can specify ranges, from which the final properties are chosen randomly.
+% Listing~\ref{fig:input_randomization_example} shows an example of an input before and after randomization.
+% After the input is randomized, it is registered and executed like a normal, non-random, input.
+% \parspace
+%
+% \begin{listing}[htpb]
+%     \centering
+%
+%     \begin{subfigure}[b]{.35\textwidth}
+%         \begin{javascriptcode}
+%             {
+%                 device: 'mouse',
+%                 isDown: true,
+%                 x: [-100, 100],
+%                 y: [-100, 100],
+%                 duration: [100, 1000]
+%             }
+%         \end{javascriptcode}
+%         \vspace{-\bigskipamount}
+%         \caption{Input before randomization}
+%     \end{subfigure}
+%     \hspace{.08\textwidth}
+%     \begin{subfigure}[b]{.35\textwidth}
+%         \begin{javascriptcode}
+%             {
+%                 device: 'mouse',
+%                 isDown: true,
+%                 x: 30,
+%                 y: -57,
+%                 duration: 351
+%             }
+%         \end{javascriptcode}
+%         \vspace{-\bigskipamount}
+%         \caption{Input after randomization}
+%     \end{subfigure}
+%
+%     \caption{Example of input randomization}
+%     \label{fig:input_randomization_example}
+% \end{listing}
 
 \section{Automated Input Generation}
 \label{sec:automated_input_generation}
 
 \mnote{Rename ''random inputs'', name is confusing}
-We implemented a simple form of automated input generation by making use of Whisker's randomized inputs.
-Whisker can automatically detect which inputs the program under test responds to,
-and register random inputs accordingly.
-To determine the inputs,
-Whisker simply iterates through the blocks of the program and checks for certain block types and block configurations,
-which detect user inputs.
+We implemented a simple form of automated input generation using of Whisker's randomized inputs.
+The algorithm detects which inputs the program under test responds to,
+and registers random inputs accordingly.
+To determine the inputs, Whisker simply iterates through the blocks of the currently loaded program
+and searches for certain block types and block configurations, which detect user inputs.
 Then it registers a random input for each found configuration.
 \parspace
 
 Table~\ref{tab:scratch_input_blocks} lists block configurations, which depend on user inputs,
 and the resulting inputs, which get registered for each block configuration.
 Each resulting input depends only on the block type and its parameter.
-The only exception to this are inputs with seeded strings for \texttt{ask} blocks.
+The only exception to this are inputs that answer seeded strings to \texttt{ask} blocks.
 Whisker checks for comparisons between the \texttt{answer} variable and string constants.
 These string constants are then seeded as possible answers for the \texttt{ask} blocks.
 % To avoid overshadowing random answers for \texttt{ask} blocks,
 % inputs with string constants are given a smaller weight depending on how many of these string comparisons were found,
 % so they are less likely to be chosen individually, while still being likely to be chosen as a whole.
 % We set the weight of each input with a string constant to $1 / \log_2(\text{\texttt{\#}strings})$.
+\parspace
 
 \newcommand{\tablebox}[1]{
     \begin{tikzpicture}
@@ -488,27 +466,29 @@ These string constants are then seeded as possible answers for the \texttt{ask} 
     \end{tikzpicture}
 }
 
-\begin{table}
+\begin{table}[htpb]
     \centering
 
     \renewcommand{\baselinestretch}{0.8}
 
-    \begin{tabular}{m{5.25cm}m{9.0cm}}
-        \toprule
-        Scratch Block & Resulting Input(s) \\
-        \midrule
-        \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-1}\vspace{2mm} & \tablebox{(1) Press the respective keyboard key}                \\
-        \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-2}\vspace{2mm} & \tablebox{(1) Click the left mouse button}                      \\
-        \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-3}\vspace{2mm} & \tablebox{(1) Move the cursor to a random position}             \\
-        \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-4}\vspace{2mm} & \tablebox{(1) Move the cursor near / onto the respective sprite \\
-                                                                                                  (2) Move the cursor to a random position}             \\
-        \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-5}\vspace{2mm} & \tablebox{(1) Click near / onto the respective sprite           \\
-                                                                                                  (2) Click on a random position}                       \\
-        \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-6}\vspace{2mm} & \tablebox{(1) Click on a random position}                       \\
-        \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-7}\vspace{2mm} & \tablebox{(1) Answer with a randomly generated string}          \\
-        \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-8}\vspace{2mm} & \tablebox{(1) Answer with the compared string constant}         \\
-        \bottomrule
-    \end{tabular}
+    \scalebox{0.875}{
+        \begin{tabular}{m{5.25cm}m{9.0cm}}
+            \toprule
+            Scratch Block & Resulting Input(s) \\
+            \midrule
+            \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-1}\vspace{2mm} & \tablebox{(1) Press the respective keyboard key}                \\
+            \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-2}\vspace{2mm} & \tablebox{(1) Click the left mouse button}                      \\
+            \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-3}\vspace{2mm} & \tablebox{(1) Move the cursor to a random position}             \\
+            \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-4}\vspace{2mm} & \tablebox{(1) Move the cursor near / onto the respective sprite \\
+                                                                                                      (2) Move the cursor to a random position}             \\
+            \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-5}\vspace{2mm} & \tablebox{(1) Click near / onto the respective sprite           \\
+                                                                                                      (2) Click on a random position}                       \\
+            \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-6}\vspace{2mm} & \tablebox{(1) Click on a random position}                       \\
+            \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-7}\vspace{2mm} & \tablebox{(1) Answer with a randomly generated string}          \\
+            \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-8}\vspace{2mm} & \tablebox{(1) Answer with the compared string constant}         \\
+            \bottomrule
+        \end{tabular}
+    }
 
     \caption{Scratch's input blocks and their resulting generated inputs}
     \label{tab:scratch_input_blocks}
@@ -519,8 +499,8 @@ These string constants are then seeded as possible answers for the \texttt{ask} 
 \section{Callbacks and Constraints}
 \label{sec:callbacks_and_constraints}
 
-Callbacks and constraints are both JavaScript functions,
-which are registered to be called periodically during the program execution.
+Callbacks and constraints are both implemented as JavaScript functions,
+that are periodically called during the program execution.
 When they are registered, they are simply put into a list.
 Then, during the step procedure,
 Whisker iterates over both lists and executes every callback and constraint.
@@ -528,10 +508,9 @@ Both callbacks and constraints can be enabled and disabled,
 which adds or removes them from their respective list.
 \parspace
 
-Constraints have on key difference to normal callbacks:
-They catch assertion errors.
-Whenever an assertion error is caught while executing a constraint,
-the constraint is removed from the list,
+Constraints have one key difference to normal callbacks.
+When constraints are executed, assertion errors are caught.
+When an error is caught, the constraint is removed from the list,
 and the error is forwarded to the VM wrapper.
 This makes it possible to react to failed constraints in different ways.
 The VM wrapper can, depending on configuration, re-throw the error to fail the test,
@@ -541,29 +520,29 @@ or ignore the constraint failure entirely.
 \section{Coverage Measurement}
 \label{sec:coverage_measurement}
 
-\mnote{TODO: only works with Scratch 3.0 projects}
+\mnote{TODO: only works with Scratch 3.0 projects, TODO: explain that Whisker does Coverage measurement earlier}
 
-Whisker can be used to measure statement coverage on a Scratch program.
+Whisker can measure statement coverage on a Scratch program.
 It does this by temporarily modifying Scratch's \texttt{Thread} class.
 This class has two methods, \texttt{pushStack} and \texttt{reuseStackForNextBlock},
-which push blocks on top of the execution stack.
-Whisker intercepts these methods by replacing them with a version,
-which saves the unique id of the executed blocks and then calls the respective original method.
+which push blocks onto the execution stack.
+Whisker intercepts these methods by replacing them with a version
+that saves the unique id of the executed blocks and then calls the respective original method.
 This way, Whisker can track which blocks are executed by the program.
 \parspace
 
-In order to calculate the coverage, Whisker also needs a list of the program's blocks.
-To compose this list, Whisker traverses all scripts of the program currently loaded by the virtual machine,
+In order to calculate the coverage, we also need a complete list of the program's blocks.
+To compose this list, Whisker traverses all scripts of the program,
 and saves each block's unique id.
-Because Whisker traverses the scripts, blocks, which are not part of a script with a hat,
+Because Whisker traverses the scripts, blocks which are not part of a script with a hat
 are ignored for the coverage measurement.
-This is not a problem, because these blocks will never be covered anyways,
-since they are not reachable by the program.
+This is not a problem, since these blocks will never be covered anyways,
+because they are not reachable by the program.
 \parspace
 
-Coverage is measured per sprite, but program wide coverage can also be calculated.
+Coverage is measured per sprite, and program wide coverage can simply be calculated from the per-sprite coverage.
 Listing~\ref{fig:example_coverage_report} shows an example coverage report.
-Listing~\ref{fig:measuring_coverage} gives a code example of how to measure statement coverage with Whisker.
+Listing~\ref{fig:measuring_coverage} gives a code example of how to measure statement coverage with Whisker.%
 \parspace
 
 \begin{listing}[htpb]
@@ -657,7 +636,7 @@ Listing~\ref{fig:acquiring_thread_class} shows example code of how this can be d
         \caption{At runtime by getting the class of a running \texttt{Thread} instance}
     \end{subfigure}
 
-    \caption{Examples of how to acquire Scratch's \texttt{Thread} class}
+    \caption{Acquiring Scratch's \texttt{Thread} class}
     \label{fig:acquiring_thread_class}
 \end{listing}
 

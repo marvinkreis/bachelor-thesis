@@ -1,4 +1,4 @@
-\chapter{Testing With Whisker}
+\chapter{Testing with Whisker}
 \label{cha:appraoch}
 
 \section{General Approach}
@@ -204,7 +204,7 @@ The test driver object will be denoted as $t$ in example code snippets.
             /* Press the green flag again. */
             t.greenFlag();
         \end{javascriptcode}
-    \item \textbf{Simulate Input.}
+    \item \textbf{Simulate Inputs.}
         By simulating Scratch's main input methods, tests can control the program under test.
         The goal is to simulate a user interacting with the program.
         The possible input includes mouse movement, mouse button presses, keyboard key presses, and entering answers to \texttt{ask} blocks.
@@ -212,6 +212,13 @@ The test driver object will be denoted as $t$ in example code snippets.
         Inputs can be performed immediately, or registered to be performed after a delay during the next execution.
         Inputs, that aren't performed during a run, will still trigger hats, that respond to the input.
         Tests can also query the current mouse position and if a certain key or button is pressed.
+
+        Note that inputs, that press a key for a duration, do not issue multiple key press events.
+        Usually, when holding down a key, the operating system repeats that key press,
+        which will trigger "when key is pressed" hats repeatedly.
+        This is not the case for simulated input.
+        However, keys can be simulated to be released and instantly pressed again,
+        which will trigger "when key is pressed" hats.
         \begin{javascriptcode}
             /* Perform a keyboard input immediately. */
             t.inputImmediate({
@@ -335,11 +342,16 @@ The test driver object will be denoted as $t$ in example code snippets.
             constraint.isActive();
         \end{javascriptcode}
     \item \textbf{Perform randomly generated inputs.}
-        Whisker provides random input generation by performing a random input from a pool of possible inputs in a constant interval during program executions.
+        Whisker provides random input generation by performing a randomly chosen input from a pool of possible inputs
+        in a specified interval during program executions.
+        Tests can either provide the pool or inputs to choose from themselves
+        or they can let Whisker determine what inputs the program reacts to through static analysis.
         If a input consists of multiple events (i.e. if it has a duration) the same input cannot be chosen again while still active.
-        The performed input can also be randomized itself by choosing its values randomly from a configured interval.
-        Tests can either provide the pool or inputs themselves or let Whisker determine what inputs the program reacts to through static analysis.
-        The time interval in which random inputs are performed can also be configured.
+        If all of the inputs in the pool are active, no random inputs are performed until at least one input is done.
+
+        Inputs in the pool can specify intervals for their attributes,
+        from which a value is randomly chosen when the input is performed.
+        They can also be assigned a weight to make them more likely or less likely to be chosen.
         \begin{javascriptcode}
             /* Set the interval, how often random inputs should be performed. */
             t.setRandomInputInterval(150);
@@ -348,7 +360,7 @@ The test driver object will be denoted as $t$ in example code snippets.
             t.registerRandomInputs([
                   { device: 'keyboard', key: 'left arrow', duration: [50, 100] },
                   { device: 'keyboard', key: 'right arrow', duration: [50, 100] },
-                  { device: 'mouse', x: [-100, 100], y: [-100, 100] }
+                  { device: 'mouse', x: [-100, 100], y: [-100, 100], weight: 0.5 }
             ]);
 
             /* Let Whisker detect inputs for the pool. */
@@ -356,6 +368,7 @@ The test driver object will be denoted as $t$ in example code snippets.
         \end{javascriptcode}
 \end{itemize}
 \parspace
+
 
 % \noindent Despite being possible in theory, Whisker does not provide the means to execute single scripts or blocks of the program directly.
 % \mnote{TODO: really write about grading here?}
@@ -437,7 +450,6 @@ and how this can be achieved by defining constraints, that are checked in the ba
 \section{Input-Independent / Constraint-only Tests}
 \label{sec:input_independent_constraint_only_tests}
 
-\mnote{TODO: ''constraint-only''}
 Usually, tests will provide the program under test with inputs and check the resulting outputs.
 However, in many cases, a different approach is possible as well.
 Tests may use other sources of input and simply observe if the program's output is correct for the input provided by the source.
