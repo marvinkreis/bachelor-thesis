@@ -24,9 +24,9 @@ make_bar_plot = function (data, data_name, total_mean_coverage) {
         scale_fill_gradientn(colors = c("green3", "red"), trans = "log", breaks = breaks) +
         scale_y_continuous(labels = percent) +
         theme_light() +
-        theme(axis.text.x = element_text(size = 7, angle = 90, hjust = 1));
+        theme(axis.text.x = element_text(size = 9, angle = 90, hjust = 1));
 
-    label = paste("Average\nCoverage:\n", round(total_mean_coverage, digits = 4), sep="");
+    label = paste("Mean Coverage:\n", round(total_mean_coverage, digits = 4), sep="");
     bar = annotate_plot(bar, label);
 
     ggsave(paste("coverage-bar-", data_name, ".pdf", sep=""), plot = bar, width = 20, height = 10, units = "cm");
@@ -43,7 +43,7 @@ make_line_plot = function (data, data_line_mean, data_name, total_mean_coverage)
         theme_light() +
         theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.key.size = unit(0.9, 'lines'));
 
-    label = paste("Average Coverage: ", round(total_mean_coverage, digits = 4), sep="");
+    label = paste("Mean Coverage: ", round(total_mean_coverage, digits = 4), sep="");
     line = annotate_plot(line, label);
 
     ggsave(paste("coverage-line-", data_name, ".pdf", sep=""), plot = line, width = 25, height = 10, units = "cm");

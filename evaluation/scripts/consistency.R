@@ -29,8 +29,17 @@ make_bar_plot = function(data, total, xlabel, file_name) {
     ggsave(file_name, plot = bar, width = 12.5, height = 5, units = "cm");
 }
 
-is_pass = function(x) {
-    return(as.character(x) == "pass");
+is_compatible = function(old, new) {
+    old = as.character(old);
+    new = as.character(new);
+
+    if (old == "skip") {
+        return (c(compatible = FALSE, new_outcome = new));
+    } else if (new == "skip") {
+        return (c(compatible = FALSE, new_outcome = old));
+    } else {
+        return (c(compatible = old != new, new_outcome = old));
+    }
 }
 
 main = function() {
@@ -50,10 +59,13 @@ main = function() {
 
         for (p in 1:num_projects) {
             for (t in 1:num_tests) {
-                test_outcome = is_pass(datas[[1]][[p]]$status[t]);
+                test_outcome = datas[[1]][[p]]$status[t];
                 differences[p,t] = 0;
                 for (d in 2:num_datas) {
-                    if (test_outcome != is_pass(datas[[d]][[p]]$status[t])) {
+                    new_test_outcome = datas[[d]][[p]]$status[t];
+                    res = is_compatible(test_outcome, new_test_outcome);
+                    test_outcome = res["new_outcome"];
+                    if (res["compatible"]) {
                         differences[p,t] = 1;
                         break;
                     }

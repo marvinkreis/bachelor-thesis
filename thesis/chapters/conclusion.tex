@@ -1,6 +1,3 @@
-% REMEMBER: Write the thesis from the view of the reader. How would I like to READ the thesis?
-% WHY -> WHAT -> HOW structure
-
 \chapter{Conclusion}
 \label{cha:conclusion}
 
@@ -22,25 +19,26 @@ We examined Hairball~\cite{hairball}, which analyzes Scratch programs by perform
 as well as ITCH~\cite{itch}, which transforms Scratch programs to automate \texttt{ask} and \texttt{say} blocks.
 We described various general challenges that have to be overcome in order to perform automated testing for Scratch.
 These challenges include Scratch's code system, which runs parallel scripts, its IO, which is not trivial to automate for testing,
-as well as some common traits in Scratch programs, which can make automated testing more difficult.
+as well as some common traits in Scratch programs, which can make automated testing difficult.
 \parspace
 
-In this work we described a way to perform runtime testing on Scratch programs by automating Scratch's IO operations.
-We introduced Whisker, a utility that automates Scratch 3.0's IO, as the main contribution of our work.
-Whisker makes it possible to programmatically simulate user input on Scratch programs,
-and to obtain information about the sprites of the program during the execution.
-This automation makes it possible to write unit-test like tests for Scratch in JavaScript,
-which run the program, simulate inputs and check how the program behaves.
-Whisker also offers some additional features like measuring statement coverage for Scratch.
-After describing Whisker's main functionality,
-we investigated some challenges of this approach.
-.................
+As the main contribution of this work, we introduced Whisker, a utility that automates Scratch 3.0's IO,
+and described a way to perform runtime testing on Scratch programs by using this automation.
+Whisker allows tests to programmatically simulate user input on Scratch programs
+and to obtain information about the sprites of the program during the execution of the program under test.
+It also offers additional features like measuring statement coverage for Scratch.
+% After describing Whisker's main functionality,
+% we investigated some challenges of this approach, that we came across.
+% Aside from general testing challenges,
+% we found that addressing sprites and variables, missing initialization, and time-displaced events
+% can pose challenges for automated testing with this approach.
 \parspace
 
 We introduced a testing procedure that works by defining constraints that the program must hold.
-Whisker implements these constraints by performing assertions each time Scratch renders a new frame.
-This makes it possible to test with various sources of inputs, for example with randomly generated input.
-We described this procedure and compared it to a more traditional testing process.
+% Whisker implements these constraints by performing assertions each time Scratch renders a new frame.
+Whisker checks these constraints in the background while the program is executed,
+which makes it possible to test with various sources of inputs, for example with randomly generated input.
+% We described this procedure and compared it to a more traditional testing process.
 For this purpose, we also implemented an automated input generation algorithm in Whisker,
 which detects what inputs the program can react to, and randomly performs these inputs on the program.
 \parspace
@@ -48,12 +46,12 @@ which detects what inputs the program can react to, and randomly performs these 
 We evaluated Whisker in three separate experiments.
 In the first experiment, we ran multiple test suites on a set of student-written Scratch programs.
 We learned that our testing approach is able to consistently produce test results that closely match the results of manual assessment.
-In the second experiment we tested the automated input algorithm and measured its achieved statement coverage
+In the second experiment we tested the automated input algorithm by measuring its achieved statement coverage
 on a set of different programs.
 We observed that it is able to cover most of usual Scratch programs' code,
 and produces much higher coverage compared to running the program without any simulated inputs.
-Finally, we investigated if the additional computations done by Whisker and the test code could interfere with the program
-under test by slowing it down, and discovered that this is not the case.
+Finally, we investigated if the additional computations done by Whisker and the test code would interfere with the Scratch program
+in our test executions by slowing it down, and discovered that this is not the case.
 \parspace
 
 % We will continue development on Whisker in order to facilitate the process of writing tests as well as the process of executing tests.
@@ -61,7 +59,7 @@ under test by slowing it down, and discovered that this is not the case.
 % And a standalone user interface may automate test execution and allow users to perform test executions in parallel.%
 % \parspace
 
-In conclusion, we find automating Scratch's IO to be a viable way to perform functional testing on Scratch programs.
-With functional testing, Scratch programs can be scored automatically.
+In conclusion, we find automating Scratch's IO to be a viable way to perform functional testing on Scratch programs,
+and to automatically score them.
 Therefore, we believe that automated testing may aid in the assessment of Scratch assignments in the future,
 both for grading purposes and for students or independent learners to check their own solutions.

@@ -35,7 +35,6 @@ Learners could verify their solution, or receive feedback on possible errors in 
 
 \section{Contributions}
 
-\mnote{TODO: GitHub link}
 This thesis introduces a new approach towards dynamic testing of Scratch programs.
 The testing procedure involves an automation utility, which simulates user input (e.g. mouse movement or key presses)
 and allows access to Scratch's visual output through a test-friendly interface.
@@ -49,18 +48,18 @@ including automatically generated input.
 
 As the main contribution of this work, we introduce Whisker, an implementation of the aforementioned automation utility,
 which provides an interface to control the Scratch virtual machine through JavaScript methods.
+Whisker is available at \url{https://github.com/marvinkreis/whisker}.
 With this implementation, we also explore the possibility of automated test input generation through a combination of random input and simple static analysis on the Scratch project.
 \parspace
 
 We evaluate Whisker with realistic Scratch programs from different educational courses.
 The results provide the following insights:
 
-\mnote{TODO: update numbers}
 \begin{enumerate}[(1)]
     \item Test results can be accurate enough to aid in grading Scratch assignments.
         They can closely match the results of manual assessment and show fairly consistent results over multiple test runs.
         We measured an average Pearson's correlation coefficient of $r = 0.880$ for the correlation
-        between our test results and independent manual scores and an average percentage of $7.35\%$ of test-project pairs that showed inconsistent test outcomes over ten test executions.
+        between our test results and independent manual scores and an average percentage of $5.84\%$ of test-project pairs that showed inconsistent test outcomes over ten test executions.
     \item Automated input generation is a viable method to control Scratch programs for testing purposes.
         A combination of random input generation and simple static analysis can be used to generate input, which covers a big portion of most Scratch programs' functionality.
         We were able to achieve an average of $95.25\%$ statement coverage on a variety of projects with automatically generated input,
