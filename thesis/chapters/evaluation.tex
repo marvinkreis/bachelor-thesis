@@ -106,7 +106,7 @@ Additionally, the full task description from the students course (in german) may
 The Scratch projects in this set were manually evaluated and scored for the students course.
 This enables us to determine the quality of our test results by using the manually assigned scores as ground truth,
 and comparing the results of automated testing to them.
-Table~\ref{tab:manual_scores_of_each_project} in the appendix contains the manual scores for each project.
+Table~\ref{tab:manual_scores_and_test_passes_of_each_project} contains the manual scores for each project.
 \parspace
 
 We use these projects to evaluate the accuracy of our testing approaches.
@@ -519,6 +519,9 @@ with a correlation coefficient of $r = 0.904$ (p-value = 3.43e-12) for the first
 Figure~\ref{fig:scatter_constraint} compares the constraint passes of test suite T3 to the manual scores.
 Possible values for the number of constraint passes are in the range of $[0, 18]$.
 The results indicate a strong correlation with a correlation coefficient of $r = 0.850$ (p-value = 1.49e-09) for the first run and $r = 0.868$ (p-value = 2.63e-10) for the average over 10 runs.
+\parspace
+
+\noindent The manual scores and test passes of each project can be found in Table~\ref{tab:manual_scores_and_test_passes_of_each_project}.
 
 \begin{figure}[htpb]
     \centering
@@ -527,6 +530,8 @@ The results indicate a strong correlation with a correlation coefficient of $r =
         \caption{First run}
         \label{fig:scatter_normal_1}
     \end{subfigure}
+
+    \bigskip
 
     \begin{subfigure}{.85\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-normal-avg}
@@ -545,6 +550,8 @@ The results indicate a strong correlation with a correlation coefficient of $r =
         \label{fig:scatter_constraint_1}
     \end{subfigure}
 
+    \bigskip
+
     \begin{subfigure}{.85\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-constraint-avg}
         \caption{Average over 10 runs}
@@ -562,6 +569,8 @@ The results indicate a strong correlation with a correlation coefficient of $r =
         \label{fig:scatter_random_1}
     \end{subfigure}
 
+    \bigskip
+
     \begin{subfigure}{.85\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-random-avg}
         \caption{Average over 10 runs}
@@ -570,6 +579,56 @@ The results indicate a strong correlation with a correlation coefficient of $r =
     \caption{Comparison between test results of test suite T3 (random input) and manually assigned scores}
     \label{fig:scatter_random}
 \end{figure}
+
+\begin{table}[htpb]
+    \centering
+    \scriptsize
+    \begin{tabular}{lc|r|rr|rr|rr}
+        \toprule
+        Project & Excluded & Points & T1 1st & T1 avg & T2 1st & T2 avg & T3 1st & T3 avg \\
+        \midrule
+        K6\_S01 & \cmark & 30 &  1 &  1.0 &  1 &  1.0 & 10 & 10.1 \\
+        K6\_S02 & \xmark & 15 & 15 & 12.6 & 11 &  9.0 &  9 &  9.3 \\
+        K6\_S03 & \xmark & 11 & 10 & 11.5 &  9 &  9.3 &  6 &  5.5 \\
+        K6\_S05 & \xmark & 23 & 21 & 20.3 & 10 & 10.0 & 10 &  8.5 \\
+        K6\_S06 & \cmark & 30 &  1 &  1.0 &  1 &  1.0 &  9 &  8.7 \\
+        K6\_S10 & \xmark & 22 & 20 & 19.4 & 15 & 14.2 & 15 & 13.0 \\
+        K6\_S11 & \xmark &  8 &  5 &  4.9 &  4 &  3.8 &  1 &  1.7 \\
+        K6\_S13 & \xmark &  8 &  8 &  8.0 &  6 &  6.0 &  5 &  5.0 \\
+        K6\_S14 & \cmark &  4 &  2 &  2.0 &  1 &  1.0 &  3 &  3.0 \\
+        K6\_S15 & \xmark & 10 & 12 & 12.0 &  7 &  7.0 &  7 &  7.0 \\
+        K6\_S16 & \xmark &  2 &  0 &  0.0 &  0 &  0.0 &  0 &  0.0 \\
+        K6\_S18 & \xmark & 27 & 22 & 21.9 & 14 & 14.0 & 13 & 13.6 \\
+        K6\_S19 & \xmark & 25 & 23 & 22.0 & 15 & 15.4 & 15 & 14.2 \\
+        K6\_S20 & \cmark & 30 &  7 &  7.0 &  3 &  3.2 & 10 & 11.2 \\
+        K6\_S27 & \xmark &  4 &  3 &  3.0 &  2 &  2.0 &  1 &  1.0 \\
+        K6\_S29 & \xmark & 12 &  8 &  8.0 &  6 &  6.0 &  5 &  5.6 \\
+        K6\_S30 & \xmark & 20 & 18 & 18.0 & 14 & 12.7 & 12 & 12.2 \\
+        K6\_S31 & \xmark & 16 & 20 & 18.8 & 14 & 14.0 & 12 & 11.9 \\
+        K6\_S33 & \xmark & 20 & 18 & 17.3 & 10 & 11.2 & 13 & 12.8 \\
+        K7\_S02 & \xmark & 19 & 18 & 17.6 & 12 & 12.0 & 11 & 11.1 \\
+        K7\_S03 & \xmark & 14 & 15 & 16.1 & 12 & 11.9 & 10 &  8.4 \\
+        K7\_S04 & \xmark & 12 & 14 & 14.0 &  8 &  8.0 &  8 &  6.6 \\
+        K7\_S05 & \xmark & 22 & 21 & 21.0 & 16 & 15.9 & 15 & 14.8 \\
+        K7\_S06 & \xmark & 20 & 18 & 18.0 & 11 & 11.0 & 11 & 11.0 \\
+        K7\_S07 & \cmark & 20 & 16 & 15.4 &  9 & 10.0 &  0 &  0.7 \\
+        K7\_S08 & \xmark & 21 & 19 & 19.0 & 12 & 12.1 & 13 & 12.3 \\
+        K7\_S10 & \xmark & 25 & 21 & 20.8 & 15 & 14.4 & 14 & 14.9 \\
+        K7\_S11 & \xmark &  8 &  1 &  1.0 &  3 &  3.0 &  3 &  3.0 \\
+        K7\_S12 & \xmark & 27 & 22 & 22.9 & 17 & 17.0 & 15 & 14.1 \\
+        K7\_S14 & \xmark & 24 & 22 & 21.9 & 15 & 14.7 & 16 & 14.7 \\
+        K7\_S15 & \xmark & 25 & 24 & 23.9 & 15 & 14.8 & 11 & 11.7 \\
+        K7\_S16 & \xmark & 19 & 17 & 16.1 & 12 & 11.6 & 13 & 13.1 \\
+        K7\_S17 & \xmark & 29 & 26 & 25.0 & 16 & 15.4 & 10 & 10.7 \\
+        K7\_S18 & \cmark & 19 &  5 &  5.0 &  3 &  3.0 &  5 &  6.2 \\
+        K7\_S19 & \xmark & 22 & 12 & 12.8 & 13 & 13.0 & 10 &  9.4 \\
+        K7\_S20 & \xmark &  9 & 17 & 16.9 & 10 & 10.4 & 10 &  9.8 \\
+        K7\_S26 & \xmark & 22 & 15 & 15.6 & 12 & 12.0 & 10 &  9.9 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Manual scores of each project in P1}
+    \label{tab:manual_scores_and_test_passes_of_each_project}
+\end{table}
 
 \clearpage
 
