@@ -161,16 +161,17 @@ We believe the statistics convey the results more clearly without these projects
       % K7\_S24 & Deleted variable from template: ''Zeit''                                         \\
       % K7\_S27 & Renamed sprite from template: ''Bowl'' to ''Figur2''                             \\
         K7\_S07 & Resets all sprite positions when the "a" key is pressed.
-                  Problematic, because automated test input generation will press the "a" key      \\[1.4\bigskipamount]
+                  Automated test input generation picks up on this and
+                  simulates presses on the "a" key.                                                \\[1.4\bigskipamount]
 
         \multicolumn{2}{l}{\textbf{Detected through zero statement coverage}}                      \\
-        K6\_S01 & Starts on up arrow key press instead of green flag                               \\
-        K6\_S06 & Wrong scratch project file (scored 30 points in manual rating but has no code)   \\
-        K6\_S14 & Starts on space key press instead of green flag                                  \\[\medskipamount]
+        K6\_S01 & Starts on up arrow key press instead of green flag.                              \\
+        K6\_S06 & Starts on space key press instead of green flag.                                 \\
+        K6\_S14 & Starts on space key press instead of green flag.                                 \\[\medskipamount]
 
         \multicolumn{2}{l}{\textbf{Detected manually}}                                             \\
-        K6\_S20 & Green flag has to be pressed twice to make it work properly                      \\
-        K7\_S18 & Sprites have to be repositioned manually in the editor to make it start properly \\
+        K6\_S20 & Goes game over when green flag is pressed the first time.                        \\
+        K7\_S18 & Goes game over on start unless sprites are re-positioned manually in the editor. \\
         \bottomrule
     \end{tabular}
     \caption{Excluded projects together with the reason to exclude them}
@@ -186,9 +187,50 @@ For each project, a sample solution is provided by a volunteer.
 
 We use these projects to evaluate Whisker's automated test input generation.
 The projects work well for this task since they implement a variety of different programs with different input methods.
+Table~\ref{tab:code_club_stats} displays the input methods the projects use.
 We chose the sample solutions of the exercises since measuring coverage on working implementation will yield better results.
 Broken implementations are more likely to have unreachable code,
 because some code might depend on a feature, that is not implemented correctly.
+
+\begin{table}[htpb]
+    \centering
+    \scriptsize
+    \scalebox{.90}{
+    \begin{tabular}{l|lll|lll}
+        \toprule
+        Project & \rotatebox{90}{\texttt{\#} Sprites} & \rotatebox{90}{\texttt{\#} Scripts} & \rotatebox{90}{\texttt{\#} Blocks}
+                & \rotatebox{90}{Mouse} & \rotatebox{90}{Keyboard} & \rotatebox{90}{Ask-Answer} \\
+        \midrule
+        Archery & 2 & 3 & 21 & \xmark & \cmark & \xmark \\
+        Balloons & 2 & 4 & 26 & \cmark & \xmark & \xmark \\
+        Beat The Goalie & 3 & 6 & 30 & \xmark & \cmark & \xmark \\
+        Boat Race & 3 & 3 & 27 & \cmark & \xmark & \xmark \\
+        Brain Game & 4 & 19 & 76 & \cmark & \xmark & \cmark \\
+        Catch The Dots & 5 & 11 & 82 & \xmark & \cmark & \xmark \\
+        Chat Bot & 2 & 2 & 26 & \cmark & \xmark & \cmark \\
+        Clone Wars & 7 & 17 & 76 & \xmark & \cmark & \xmark \\
+        Create Your Own World & 13 & 26 & 165 & \xmark & \cmark & \xmark \\
+        Dodgeball & 5 & 10 & 78 & \xmark & \cmark & \xmark \\
+        Ghostbusters & 5 & 11 & 58 & \cmark & \xmark & \xmark \\
+        Green Your City & 7 & 8 & 52 & \xmark & \cmark & \xmark \\
+        Lost In Space & 6 & 4 & 24 & \xmark & \xmark & \xmark \\
+        Memory & 6 & 11 & 58 & \cmark & \xmark & \cmark \\
+        Moonhack Scratch 2017 & 3 & 4 & 27 & \xmark & \cmark & \xmark \\
+        Poetry Generator & 4 & 2 & 18 & \cmark & \xmark & \cmark \\
+        Rock Band & 5 & 6 & 18 & \cmark & \xmark & \xmark \\
+        Snowball Fight & 4 & 7 & 37 & \xmark & \cmark & \xmark \\
+        Space Junk & 8 & 13 & 68 & \xmark & \cmark & \xmark \\
+        Sprint & 5 & 9 & 78 & \xmark & \cmark & \xmark \\
+        Synchronised Swimming & 2 & 7 & 23 & \xmark & \cmark & \xmark \\
+        Tech Toys & 9 & 5 & 25 & \cmark & \cmark & \xmark \\
+        Username Generator & 3 & 2 & 5 & \cmark & \xmark & \xmark \\
+        Paint Box & 9 & 14 & 42 & \cmark & \xmark & \xmark \\
+        \bottomrule
+    \end{tabular}
+    }
+    \caption{Counts and input methods for Code Club projects (P2)}
+    \label{tab:code_club_stats}
+\end{table}
 
 \subsection{Test Suites}
 
@@ -462,7 +504,7 @@ Figure~\ref{fig:scatter_normal} compares each project's number of test passes of
 Possible values for the manual scores are in the range of $[0, 30]$ and possible values for the number of test passes are in the range of $[0, 28]$.
 The blue line displays the linear regression.
 We can observe a strong correlation between the number of passing test cases and the manual scores,
-with a correlation coefficient of $r = 0.893$ for the first run and $r = 0.899$ for the average number of passes over 10 runs.
+with a correlation coefficient of $r = 0.893$ (p-value = 1.45e-11) for the first run and $r = 0.899$ (p-value = 6.59e-12) for the average number of passes over 10 runs.
 Except for few irregularities, the test results closely resemble the manually assigned scores.
 
 \subsubsection{Input-Independent / Constraint-Only Test Suite (T2)}
@@ -470,23 +512,23 @@ Except for few irregularities, the test results closely resemble the manually as
 Figure~\ref{fig:scatter_constraint} compares each project's number of passing constraints of test suite T2 to its manual score.
 Possible values for the number of constraint passes are in the range of $[0, 20]$.
 We can again observe a strong correlation between the two scores,
-with a correlation coefficient of $r = 0.904$ for the first run and $r = 0.905$ for the average number of passes over 10 runs.
+with a correlation coefficient of $r = 0.904$ (p-value = 3.43e-12) for the first run and $r = 0.905$ (p-value = 2.67e-12) for the average number of passes over 10 runs.
 
 \subsubsection{Random Input Test Suite (T3)}
 
 Figure~\ref{fig:scatter_constraint} compares the constraint passes of test suite T3 to the manual scores.
 Possible values for the number of constraint passes are in the range of $[0, 18]$.
-The results indicate a strong correlation with a correlation coefficient of $r = 0.850$ for the first run and $r = 868$ for the average over 10 runs.
+The results indicate a strong correlation with a correlation coefficient of $r = 0.850$ (p-value = 1.49e-09) for the first run and $r = 0.868$ (p-value = 2.63e-10) for the average over 10 runs.
 
 \begin{figure}[htpb]
     \centering
-    \begin{subfigure}{.75\textwidth}
+    \begin{subfigure}{.85\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-normal-1}
         \caption{First run}
         \label{fig:scatter_normal_1}
     \end{subfigure}
 
-    \begin{subfigure}{.75\textwidth}
+    \begin{subfigure}{.85\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-normal-avg}
         \caption{Average over 10 runs}
         \label{fig:scatter_normal_avg}
@@ -497,13 +539,13 @@ The results indicate a strong correlation with a correlation coefficient of $r =
 
 \begin{figure}[htpb]
     \centering
-    \begin{subfigure}{.75\textwidth}
+    \begin{subfigure}{.85\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-constraint-1}
         \caption{First run}
         \label{fig:scatter_constraint_1}
     \end{subfigure}
 
-    \begin{subfigure}{.75\textwidth}
+    \begin{subfigure}{.85\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-constraint-avg}
         \caption{Average over 10 runs}
         \label{fig:scatter_constraint_avg}
@@ -514,13 +556,13 @@ The results indicate a strong correlation with a correlation coefficient of $r =
 
 \begin{figure}[htpb]
     \centering
-    \begin{subfigure}{.75\textwidth}
+    \begin{subfigure}{.85\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-random-1}
         \caption{First run}
         \label{fig:scatter_random_1}
     \end{subfigure}
 
-    \begin{subfigure}{.75\textwidth}
+    \begin{subfigure}{.85\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-random-avg}
         \caption{Average over 10 runs}
         \label{fig:scatter_random_avg}
@@ -546,12 +588,12 @@ If a test case showed inconsistent results on a certain project over the ten tes
 we assigned a $1$ to the respective cell in the matrix, otherwise we assigned a 0.
 The matrix's sum of rows then shows us how may projects had inconsistent test results for each test case,
 and the sum of columns shows the number of test cases with inconsistent outcomes for each project.
-Table~\ref{tab:inconsistency_matrices_excerpt} shows excerpts of the resulting matrices for demonstration.
-The full matrices can be found in the appendix in Tables~\ref{tab:inconsistencies_matrix_normal}, \ref{tab:inconsistencies_matrix_constraint}, \ref{tab:inconsistencies_matrix_random}.
+Table~\ref{tab:inconsistency_matrices_excerpt} shows an excerpt from one of the resulting matrices for demonstration.
+The full matrices can be found in Tables~\ref{tab:inconsistencies_matrix_normal}, \ref{tab:inconsistencies_matrix_constraint}, and \ref{tab:inconsistencies_matrix_random} in the appendix.
 % For this, we consider both ''skipped'' and ''failed'' to be the same test outcome, since both are non-passing test results.
 We chose to ignore skipped tests for this purpose,
 and only assigned a 1 if the test case had a passing and a failing outcome on the project.
-We skipped tests if the feature, which is tested by the test, could not be checked properly,
+Tests were skipped if the feature, which is tested by the test, could not be checked properly,
 for example if too few apples spawned to determine if their spawn positions are random,
 or if no banana touched the bowl when checking if the banana touching the bowl gives the player points.
 \parspace
@@ -752,20 +794,9 @@ A banana, which touches the ground, just subtracts points, while an apple, that 
         K7\_S02 & 27   & Test    & Program never changes the score or time variable and has very slow falling apples.
                                    The test checks if the program went game over by checking that the variables and the sprites' x position does not change,
                                    but because the variables aren't changed and the apple falls very slowly, the only thing that is changed is the sprites' y positions. \\
-        \bottomrule
-    \end{tabular}
-    }
-
-    \medskip
-
-    \scalebox{0.95}{
-    \tiny
-    \begin{tabular}{lrll}
-        \toprule
-        Project & Test & Cause   & Description \\
         \midrule
         K6\_S02 & 13   & Project & See K7\_S03, test 13. \\
-        K6\_S03 & 13   & Project & See K6\_S03, test 8. \\
+        K6\_S03 & 13   & Project & See K6\_S03, test 8.  \\
         K7\_S17 & 21   & Project & See K7\_S17, test 19. \\
         K6\_S05 & 23   & Project & See K6\_S05, test 20. \\
         K7\_S17 & 23   & Test    & See K6\_S19, test 23. \\
@@ -775,7 +806,6 @@ A banana, which touches the ground, just subtracts points, while an apple, that 
         \bottomrule
     \end{tabular}
     }
-
     \caption{Inconsistent outcomes of test suite T1 on projects P1 and their causes}
     \label{tab:inconsistencies_causes_normal}
 \end{table}
