@@ -9,7 +9,10 @@ We will conduct three experiments to answer the following research questions:
 
     \centering
     \begin{minipage}{.9\textwidth}
-        \textbf{RQ1: Can results of automated testing be accurate enough to aid in grading Scratch assignments?}
+        \textbf{RQ1: Can results of automated testing resemble the results of manual assessment?}
+        \parspace
+
+        \textbf{RQ1.1: How consistent are the results of automated testing?}
         \parspace
 
         \noindent \textbf{RQ2: Is automated test input generation a viable method to control Scratch programs for testing purposes?}
@@ -279,10 +282,10 @@ In this section, we will describe each of the test suites.
          9 & Bananas fall in a straight line with a speed of -7                        & \cmark & 9  & \cmark                    & 5  & \cmark                    & 5  \\[\medskipamount]
            & \textbf{Fruit Spawn} &&&&&&\\
         10 & Apples spawn again at the top of the screen after touching the bowl       & \cmark & 10 & \textasteriskcentered$^3$ &    & \textasteriskcentered$^3$ &    \\
-        11 & Apples spawn at random $X$ position                                       & \cmark & 11 & \cmark                    & 6  & \cmark                    & 6  \\
+        11 & Apples spawn at random $X$ positions                                      & \cmark & 11 & \cmark                    & 6  & \cmark                    & 6  \\
         12 & Apples spawn at $Y = 170$                                                 & \cmark & 12 & \cmark                    & 7  & \cmark                    & 7  \\
         13 & Bananas spawn again at the top of the screen after touching the bowl      & \cmark & 13 & \textasteriskcentered$^4$ &    & \textasteriskcentered$^4$ &    \\
-        14 & Bananas spawn at random $X$ position                                      & \cmark & 14 & \cmark                    & 8  & \cmark                    & 8  \\
+        14 & Bananas spawn at random $X$ positions                                     & \cmark & 14 & \cmark                    & 8  & \cmark                    & 8  \\
         15 & Bananas spawn at $Y = 170$                                                & \cmark & 15 & \cmark                    & 9  & \cmark                    & 9  \\
         16 & Only one apple must fall down at a time                                   & \cmark & 16 & \cmark                    & 10 & \cmark                    & 10 \\
         17 & Only one banana must fall down at a time                                  & \cmark & 17 & \cmark                    & 11 & \cmark                    & 11 \\
@@ -451,10 +454,13 @@ We chose to simulate random inputs with a duration between $50\text{ms}$ and $10
 \section{RQ1: Accuracy of Test Results}
 \label{sec:rq1}
 
-In this part of the evaluation, we will answer the following research question:
+In this part of the evaluation, we will answer the following research questions:
 
 \begin{center}\begin{minipage}{.9\textwidth}
-    \textbf{RQ1: Can results of automated testing be accurate enough to aid in grading Scratch assignments?}
+    \textbf{RQ1: Can results of automated testing resemble the results of manual assessment?}
+    \parspace
+
+    \textbf{RQ1.1: How consistent are the results of automated testing?}
 \end{minipage}\end{center}
 
 \noindent In order to answer this question,
@@ -634,13 +640,6 @@ The results indicate a strong correlation with a correlation coefficient of $r =
 
 \subsection{Consistency of test outcomes over multiple runs}
 
-\paragraph{Null hypothesis ($H_0$):}
-Automated test results show very different results each run and are thus not accurate enough for grading purposes.
-\vspace{-\medskipamount}
-\paragraph{Alternative hypothesis ($H_1$):}
-Test results are consistent enough over multiple runs to provide accurate information for grading.
-\parspace
-
 In order to analyze which test cases where inconsistent for each project, and vice versa,
 we constructed matrices over the test cases in T1-T3 and the projects in P1.
 If a test case showed inconsistent results on a certain project over the ten test executions,
@@ -682,7 +681,6 @@ or if no banana touched the bowl when checking if the banana touching the bowl g
 
 \subsubsection{Normal Test Suite (T1)}
 
-\mnote{Is there a threshold above which a test suite is considered too flaky}
 \noindent Figure~\ref{fig:consistency_per_test_normal} displays the number of inconsistent projects per test case of T1,
 and Figure~\ref{fig:consistency_per_project_normal} displays the number of inconsistent test cases per project.
 The horizontal lines display the average number of inconsistencies.
@@ -778,6 +776,8 @@ However, when using randomly generated input, this can easily happen.
     \caption{Inconsistent outcomes of test suite T3 over 10 runs}
     \label{fig:consistency_random}
 \end{figure}
+
+\clearpage
 
 \subsection{Causes for inconsistent test outcomes}
 
@@ -1259,11 +1259,13 @@ We proved that the input-independent / constraint-only testing approach is able 
 both with deliberate input and with automatically generated input.
 Then, we analyzed the flakiness of the test suites and found several reasons,
 why certain tests and certain programs can be inconsistent.
-We measured the average number of these inconsistencies, which was low enough to reject the null hypothesis.
+We measured a percentage of $2.76\%$ inconsistent project-test combinations for test suite T1, $2.74\%$ for test suite T2, and $12.00\%$ for test suite T3.
 We suspect that simpler programs can be tested with much fewer inconsistencies.
 At the same time, more experience in automated testing for Scratch will lead to more robust and less flaky test suites.
 The test suites we used were written pretty early in development and therefore had some obvious flaws,
 some of which can be seen in Table~\ref{tab:inconsistencies_causes_normal}.
+Of course, tests that involve randomly generated input show a higher number of inconsistent outcomes,
+since the tests themselves are non-deterministic.
 \parspace
 
 The second experiment dealt with automated input generation.
