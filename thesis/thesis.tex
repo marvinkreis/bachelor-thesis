@@ -21,7 +21,6 @@
 
 % Title page
 \usepackage{titling}
-\input{titlepage}
 
 % Tikz diagrams
 \usepackage{tikz}
@@ -104,44 +103,17 @@
 
 \begin{document}
 
-% https://sokogskriv.no/en/writing/structure-and-argumentation/structuring-a-thesis/
-% https://sokogskriv.no/en/writing/language-and-style/organising-your-writing/
-
-% Write intro + background parallel to the main part and only gather some data before.
-
-% RQs: Can Scratch programs be automatically assessed?
-%      Can this be done without simulating user input / just with constraints?
-
-% Title
-\maketitle
-
-% \setlength{\parskip}{.5\smallskipamount}
+\input{titlepage}
 
 % Table of Contents
 \tableofcontents
 \clearpage
 
-% \let\oldclearpage=\clearpage
-% \renewcommand{\clearpage}{}
 \listoffigures
-%\listoflistings
-% \let\clearpage=\oldclearpage
 
-% \setlength{\parskip}{\bigskipamount}
-
-% Abstract
 \input{chapters/abstract}
-%     Explain what this thesis is about, and give a quick summary.
-%     Give the reader a good idea about what's going on.
 
 \input{chapters/introduction}
-%     Overview of the main points.
-%     Discuss the research questions.
-%     Define the scope of the thesis.
-%     Schematic outline for the rest of the thesis.
-%
-%     Awaken the reader's interest.
-%     Should connect with the conclusions, so review / rewrite it in the end.
 
 \input{chapters/background}
 
@@ -150,25 +122,12 @@
 \input{chapters/implementation}
 
 \input{chapters/evaluation}
-%     Show that the method is suited for answering the research questions.
-%     Show that the method is valid and reliable.
-%     How was the data collected, what options does this give?
-%     What did I do to increase validity?
-%     Describe weaknesses as well as strengths.
-%     Defend and, at the same time, criticise the choices I made.
-%     Document what I did and what I did not do.
-
-%    Present findings in a systematic manner.
 
 \input{chapters/future-work}
 
 \input{chapters/conclusion}
-%    Conclude and sum up the results.
-%    Provide a conclusion to the research questions.
 
-% Bibliography
 \clearpage
-%\bibliographystyle{apalike}
 \bibliographystyle{acm}
 \bibliography{references}
 

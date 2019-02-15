@@ -11,9 +11,8 @@ interact with running Scratch programs through Scratch's IO mechanisms.
 % To enable dynamic testing for Scratch, we propose a black-bock approach with a testing utility, which allows test code to interact with a running Scratch program.
 \parspace
 
-Because Scratch's parallel scripts, as well as its lack of code separation, would make white-box testing difficult,
-\mnote{Does static analysis for automated input generation make it not black-box?}
-we instead chose to ignore the internals of the program and to go with a black-box approach, which only focuses on the program's input and output.
+Because Scratch's parallel scripts, as well as its lack of code separation, would make testing individual parts of programs difficult,
+we instead chose to test full programs on the level of system tests, and only focus on the program's input and output.
 This raises the question of how to access Scratch's IO.
 Since Scratch's input usually consists of mouse and keyboard input, and its output consists of visual animations and sound,
 the IO is not easily accessible in a programmable way.
@@ -120,7 +119,7 @@ Without a renderer, some of Scratch's blocks don't work properly.
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=0.85\textwidth]{whisker-gui}
+    \includegraphics[width=0.85\textwidth]{whisker-gui-big}
     \caption{Screenshot of Whisker's web GUI}
     \label{fig:whisker_gui}
 \end{figure}
