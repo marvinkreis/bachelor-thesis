@@ -9,16 +9,16 @@ We will conduct three experiments to answer the following research questions:
 
     \centering
     \begin{minipage}{.9\textwidth}
-        \textbf{RQ1: Can results of automated testing resemble the results of manual assessment?}
+        \textbf{RQ1: Can automated testing produce test results that are accurate enough for manual grading?}
         \parspace
 
-        \textbf{RQ1.1: How consistent are the results of automated testing?}
+        \textbf{RQ2: How flaky are automated tests for Scratch?}
         \parspace
 
-        \noindent \textbf{RQ2: Is automated test input generation a viable method to control Scratch programs for testing purposes?}
+        \textbf{RQ3: What statement coverage can be achieved by controlling Scratch programs with automatically generated input?}
         \parspace
 
-        \noindent \textbf{RQ3: Does the testing process slow down the program under test?}
+        \textbf{RQ4: Does the testing process slow down the program under test?}
     \end{minipage}
 
     \parspace
@@ -26,7 +26,7 @@ We will conduct three experiments to answer the following research questions:
 
 
 \noindent In the first experiment we will execute three different test suites on a set of Scratch projects
-and determine the accuracy of our test results.
+and determine the accuracy of our test results and the flakiness of our test suites.
 For the second experiment, we will run a variety of projects with automated input generation
 to find out how much of Scratch programs can be reached by automatically generated input.
 Finally, in the third experiment we will measure execution times
@@ -35,7 +35,7 @@ to check if the testing process slows down the program under test.
 
 Section~\ref{sec:experimental_setup} describes the test suites as well as the programs under test we will use for the evaluation.
 It also describes the software and hardware of our testing setup.
-Then, Sections~\ref{sec:rq1},~\ref{sec:rq2},~and~\ref{sec:rq3} describe the results to one research question each.
+Then, Sections~\ref{sec:rq1}, \ref{sec:rq2}, \ref{sec:rq3} and \ref{sec:rq4} describe the results to one research question each.
 Each of the sections describes the experiment we conducted and the indicators we used
 to answer the respective question.
 Afterwards, we discuss the results in Section~\ref{sec:discussion}.
@@ -84,7 +84,7 @@ This section will list the Scratch projects we used to evaluate Whisker and expl
 
 The first set of Scratch projects consists of 37 student implementations of a simple catching game.
 The projects originate from a voluntary Scratch workshop for sixth and seventh grade students~\cite{keller}.
-In this course, students were introduced to Scratch through several small exercises,
+In this workshop, students were introduced to Scratch through several small exercises,
 % familiarized themselves with Scratch
 building up to the final and most complex exercise to develop the aforementioned catching game.
 Students were given a Scratch project as a template to fill with their implementation.
@@ -101,12 +101,12 @@ Additionally, the full task description from the students course (in german) may
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=0.35\textwidth]{scratch-stage}
+    \includegraphics[width=0.30\textwidth]{scratch-stage}
     \caption{Screenshot of the sample implementation}
     \label{fig:screenshot_of_the_sample_implementation}
 \end{figure}
 
-The Scratch projects in this set were manually evaluated and scored for the students course.
+The Scratch projects in this set were manually evaluated and scored.
 This enables us to determine the quality of our test results by using the manually assigned scores as ground truth,
 and comparing the results of automated testing to them.
 Table~\ref{tab:manual_scores_and_test_passes_of_each_project} contains the manual scores for each project.
@@ -116,8 +116,7 @@ We use these projects to evaluate the accuracy of our testing approaches.
 The projects are very suitable for this task because of two reasons.
 Firstly, there exists a relatively precise specification for the programs,
 which enables us to test the implementations according to this specification.
-And secondly, since the solutions are from a voluntary students course,
-the student solutions are of varying degrees of quality,
+And secondly, the student solutions are of varying degrees of quality,
 which is desirable for the evaluation,
 because we can analyze a wide range of different outcomes.
 % The projects are suitable for this evaluation because of two reasons.
@@ -131,24 +130,25 @@ because we can analyze a wide range of different outcomes.
 % since tests have to consider multiple options.
 % Additionally, the game over state, that the program enters,
 % when an apple touches the ground, also makes automated testing more difficult.
+\parspace
+
 However, since the Scratch programs were not written for the purpose of automated testing,
 some of the projects were unusable for our evaluation.
 Therefore, we excluded $6$ of the 37 projects in our statistics.
 Table~\ref{tab:excluded_projects} shows the excluded projects together with the reasons for excluding them.
 % The projects are named K6\_S01 through K6\_S33 for 6th grade student solutions
 % and K7\_S02 through K7\_S27 for 7th grade student solutions respectively (with many numbers being skipped).
-Most of the projects were found by analyzing the test reports and the coverage of our test suite,
-while two of them were detected manually from a discrepancy between our test results and the manual scoring.
 Most of the projects were excluded because they don't start properly.
-This seems to be a common problem, since Scratch runs programs from where they left off in the last run.
-But to get consistent test results, we have to establish the same situation before every test case,
-which we do by loading the project.
-Some of the projects start with a key press instead of the green flag, others need to have the green flag pressed twice,
-or require the user to move the sprites to different positions before starting the program.
-The manual scoring ignores these problems, while our tests don't.
-But the program not starting correctly is technically a fault in the implementation, so low test scores are correct for these projects.
+% This seems to be a common problem, since Scratch runs programs from where they left off in the last run.
+% But to get consistent test results, we have to establish the same situation before every test case,
+% which we do by loading the project.
+Some of the projects start with a key press instead of the green flag,
+others go game over when they are started the first time, but work in subsequent runs.
+Since the specification did not actually specify that the programs have to start with the green flag,
+the manual scoring ignores these problems, but our tests don't.
+% But the program not starting correctly is technically a fault in the implementation, so low test scores are correct for these projects.
 Hence, these projects would create a discrepancy between manual scores and test results,
-which only exists because the difference in scoring systems.
+which only exists due to the difference in scoring systems.
 We believe the statistics convey the results more clearly without these projects.
 
 \begin{table}[htpb]
@@ -193,7 +193,7 @@ The projects work well for this task since they implement a variety of different
 Table~\ref{tab:code_club_stats} displays the input methods the projects use.
 We chose the sample solutions of the exercises since measuring coverage on working implementation will yield better results.
 Broken implementations are more likely to have unreachable code,
-because some code might depend on a feature, that is not implemented correctly.
+because some code might depend on a feature that is not implemented correctly.
 
 \begin{table}[htpb]
     \centering
@@ -231,7 +231,7 @@ because some code might depend on a feature, that is not implemented correctly.
         \bottomrule
     \end{tabular}
     }
-    \caption{Counts and input methods for Code Club projects (P2)}
+    \caption{Block counts and input methods of the Code Club projects (P2)}
     \label{tab:code_club_stats}
 \end{table}
 
@@ -454,28 +454,21 @@ We chose to simulate random inputs with a duration between $50\text{ms}$ and $10
 \section{RQ1: Accuracy of Test Results}
 \label{sec:rq1}
 
-In this part of the evaluation, we will answer the following research questions:
+In this part of the evaluation, we will answer the following research question:
 
 \begin{center}\begin{minipage}{.9\textwidth}
-    \textbf{RQ1: Can results of automated testing resemble the results of manual assessment?}
-    \parspace
-
-    \textbf{RQ1.1: How consistent are the results of automated testing?}
+    \textbf{RQ1: Can automated testing produce test results that are accurate enough for manual grading?}
 \end{minipage}\end{center}
 
 \noindent In order to answer this question,
 we executed test suites T1-T3 on the catching game projects (P1) ten times,
-and analyzed the quality of the results.
+and analyzed the results.
 To be useful for grading,
 test results have to indicate the same grades,
 which one would assign the programs through manual assessment.
-Test outcomes also have to be consistent over multiple runs,
-since inconsistent results would lead to unfair grades.
-Therefore, we analyzed the results with respect to two indicators:
-\parspace
-
-\textbf{Correlation of tests results and manual scoring.}
-Firstly, we compare the test results to manually assigned scores, which we use as ground truth.
+% Test outcomes also have to be consistent over multiple runs,
+% since inconsistent results would lead to unfair grades.
+% Therefore, we analyzed the correlation between the number of test passes and the manually assigned scores.
 Intuitively, a higher score means that more tests (or constraints) should pass,
 while a lower score should result in fewer test (or constraint) passes.
 Therefore, we use the correlation between the number of test passes and the manual scores as an indicator.
@@ -485,17 +478,6 @@ A high correlation coefficient indicates a strong relationship between two value
 while lower correlation coefficients indicate a weaker relationship.
 Usually, a value of $r \ge 0.5$ is considered to indicate a strong correlation.
 Negative values indicate a reverse relationship, which is not relevant for our observations.
-\parspace
-
-\textbf{Average inconsistency of test outcomes over multiple runs.}
-Secondly, we analyzed how consistent the test cases are.
-In automated testing, test cases can often yield different results when executed multiple times.
-Test cases like this are known as ''flaky tests''.
-This inconsistency of test results can be caused either by the program under test or by the test case itself.
-We determine the number of test-project pairs with inconsistent results over multiple test executions,
-and use their percentage of all test-project pairs to indicate the flakiness of our test suites.
-
-\subsection{Correlation of tests results and manual scoring}
 
 \paragraph{Null hypothesis ($H_0$):}
 The number of test passes and the results of manual scoring show only a weak correlation or no correlation at all.
@@ -510,7 +492,7 @@ Figure~\ref{fig:scatter_normal} compares each project's number of test passes of
 Possible values for the manual scores are in the range of $[0, 30]$ and possible values for the number of test passes are in the range of $[0, 28]$.
 The blue line displays the linear regression.
 We can observe a strong correlation between the number of passing test cases and the manual scores,
-with a correlation coefficient of $r = 0.893$ (p-value = 1.45e-11) for the first run and $r = 0.899$ (p-value = 6.59e-12) for the average number of passes over 10 runs.
+with a correlation coefficient of $r = 0.893$ (p-value = 1.45e-11) for the first run and $r = 0.899$ (p-value = 6.59e-12) for the average number of passes over ten runs.
 Except for few irregularities, the test results closely resemble the manually assigned scores.
 
 \subsubsection{Input-Independent / Constraint-Only Test Suite (T2)}
@@ -518,13 +500,13 @@ Except for few irregularities, the test results closely resemble the manually as
 Figure~\ref{fig:scatter_constraint} compares each project's number of passing constraints of test suite T2 to its manual score.
 Possible values for the number of constraint passes are in the range of $[0, 20]$.
 We can again observe a strong correlation between the two scores,
-with a correlation coefficient of $r = 0.904$ (p-value = 3.43e-12) for the first run and $r = 0.905$ (p-value = 2.67e-12) for the average number of passes over 10 runs.
+with a correlation coefficient of $r = 0.904$ (p-value = 3.43e-12) for the first run and $r = 0.905$ (p-value = 2.67e-12) for the average number of passes over ten runs.
 
 \subsubsection{Random Input Test Suite (T3)}
 
 Figure~\ref{fig:scatter_constraint} compares the constraint passes of test suite T3 to the manual scores.
 Possible values for the number of constraint passes are in the range of $[0, 18]$.
-The results indicate a strong correlation with a correlation coefficient of $r = 0.850$ (p-value = 1.49e-09) for the first run and $r = 0.868$ (p-value = 2.63e-10) for the average over 10 runs.
+The results indicate a strong correlation with a correlation coefficient of $r = 0.850$ (p-value = 1.49e-09) for the first run and $r = 0.868$ (p-value = 2.63e-10) for the average over ten runs.
 \parspace
 
 \noindent The manual scores and test passes of each project can be found in Table~\ref{tab:manual_scores_and_test_passes_of_each_project}.
@@ -541,7 +523,7 @@ The results indicate a strong correlation with a correlation coefficient of $r =
 
     \begin{subfigure}{.85\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-normal-avg}
-        \caption{Average over 10 runs}
+        \caption{Average over ten runs}
         \label{fig:scatter_normal_avg}
     \end{subfigure}
     \caption{Comparison between test results of test suite T1 (normal) and manually assigned scores}
@@ -560,7 +542,7 @@ The results indicate a strong correlation with a correlation coefficient of $r =
 
     \begin{subfigure}{.85\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-constraint-avg}
-        \caption{Average over 10 runs}
+        \caption{Average over ten runs}
         \label{fig:scatter_constraint_avg}
     \end{subfigure}
     \caption{Comparison between test results of test suite T2 (input-indepent / constraint-only) and manually assigned scores}
@@ -579,7 +561,7 @@ The results indicate a strong correlation with a correlation coefficient of $r =
 
     \begin{subfigure}{.85\textwidth}
         \includegraphics[width=\textwidth]{r/scatter-random-avg}
-        \caption{Average over 10 runs}
+        \caption{Average over ten runs}
         \label{fig:scatter_random_avg}
     \end{subfigure}
     \caption{Comparison between test results of test suite T3 (random input) and manually assigned scores}
@@ -591,7 +573,7 @@ The results indicate a strong correlation with a correlation coefficient of $r =
     \scriptsize
     \begin{tabular}{lc|r|rr|rr|rr}
         \toprule
-        Project & Excluded & Points & T1 1st & T1 avg & T2 1st & T2 avg & T3 1st & T3 avg \\
+        Project & Excl. & Points & T1 1st & T1 avg & T2 1st & T2 avg & T3 1st & T3 avg \\
         \midrule
         K6\_S01 & \cmark & 30 &  1 &  1.0 &  1 &  1.0 & 10 & 10.1 \\
         K6\_S02 & \xmark & 15 & 15 & 12.6 & 11 &  9.0 &  9 &  9.3 \\
@@ -632,17 +614,29 @@ The results indicate a strong correlation with a correlation coefficient of $r =
         K7\_S26 & \xmark & 22 & 15 & 15.6 & 12 & 12.0 & 10 &  9.9 \\
         \bottomrule
     \end{tabular}
-    \caption{Manual scores of each project in P1}
+    \caption{Manual scores and number of test passes of each project in P1}
     \label{tab:manual_scores_and_test_passes_of_each_project}
 \end{table}
 
-\clearpage
+\section{RQ2: Flakiness of Tests}
+\label{sec:rq2}
 
-\subsection{Consistency of test outcomes over multiple runs}
+In this section, we will answer the following research question:
+
+\begin{center}\begin{minipage}{.9\textwidth}
+    \textbf{RQ2: How flaky are automated tests for Scratch?}
+\end{minipage}\end{center}
+
+\noindent In automated testing, test cases can yield different results when executed multiple times.
+Test cases like this are known as \textit{flaky tests}.
+This inconsistency of test results can be caused either by the program under test or by the test case itself.
+We determine the number of test-project combinations with inconsistent results over the ten test executions per test suite we performed for RQ1.
+We use their percentage of all test-project combinations to indicate the flakiness of our test suites.
+\parspace
 
 In order to analyze which test cases where inconsistent for each project, and vice versa,
-we constructed matrices over the test cases in T1-T3 and the projects in P1.
-If a test case showed inconsistent results on a certain project over the ten test executions,
+we constructed matrices over the test cases (or constraints) in T1-T3 and the projects in P1.
+If a test case (or constraint) showed inconsistent results on a certain project over the ten test executions,
 we assigned a $1$ to the respective cell in the matrix, otherwise we assigned a 0.
 The matrix's sum of rows then shows us how may projects had inconsistent test results for each test case,
 and the sum of columns shows the number of test cases with inconsistent outcomes for each project.
@@ -653,7 +647,7 @@ We chose to ignore skipped tests for this purpose,
 and only assigned a 1 if the test case had a passing and a failing outcome on the project.
 Tests were skipped if the feature, which is tested by the test, could not be checked properly,
 for example if too few apples spawned to determine if their spawn positions are random,
-or if no banana touched the bowl when checking if the banana touching the bowl gives the player points.
+or if no banana touched the bowl while checking if the banana touching the bowl gives the player points.
 \parspace
 
 \begin{figure}[htpb]
@@ -683,7 +677,7 @@ or if no banana touched the bowl when checking if the banana touching the bowl g
 
 \noindent Figure~\ref{fig:consistency_per_test_normal} displays the number of inconsistent projects per test case of T1,
 and Figure~\ref{fig:consistency_per_project_normal} displays the number of inconsistent test cases per project.
-The horizontal lines display the average number of inconsistencies.
+The horizontal lines show the average number of inconsistencies.
 We can observe that some test cases and some projects tend to be rather inconsistent,
 with a maximum of $4$ inconsistent projects ($12.90\%$ of projects) per test case and $4$ inconsistent test cases ($14.29\%$ of test cases) per project.
 However, on average only $0.86$ projects per test case and $0.77$ test cases per project show inconsistent results.
@@ -692,7 +686,7 @@ This amounts to $2.76\%$ of all test-project combinations.
 \subsubsection{Input-Independent / Constraint-Only Test Suite (T2)}
 
 Figure~\ref{fig:consistency_constraint} shows the number of inconsistencies for test suite T2.
-We observe similar results to T1.
+We observe fairly similar results to T1.
 The data shows a maximum of $3$ inconsistent projects ($9.68\%$ of projects) per constraint and $3$ inconsistent constraints ($15.00\%$ of constraints) per project.
 On average, $0.85$ projects per constraint and $0.55$ constraints per project show inconsistent results,
 which amounts to $2.74\%$ of all constraint-project pairs.
@@ -703,9 +697,10 @@ Figure~\ref{fig:consistency_random} shows the number of inconsistencies for test
 We observed a maximum of $10$ inconsistent projects ($32.23\%$ of projects) per constraint and $5$ inconsistent constraints ($27.78\%$ of constraints) per project.
 On average, $3.72$ projects per constraint and $2.16$ constraints per project show inconsistent results,
 which amounts to $12.00\%$ of all constraint-project pairs.
-Since this test suite is non-deterministic and executes the programs longer than the other test suites,
+Since this test suite is non-deterministic,
 this increase in inconsistent outcomes is expected.
-However, the increase in inconsistent results for constraints 2 and 3 over their similar tests / constraints in the previous test suites is unexpected.
+\mnote{TODO: Remove if updated test suite fixed it}
+However, the increase in inconsistent results for constraints 2 and 3 over their similar tests or constraints in the previous test suites is unexpected.
 These constraints deal with the movement of the bowl.
 The number of inconsistencies for the two constraints increased, because they don't take the edges of the screen into account, which prevent the bowl from moving.
 The previous test suites would follow the apple with the bowl, and therefore never touch the edge of the screen with the bowl.
@@ -729,7 +724,7 @@ However, when using randomly generated input, this can easily happen.
         \label{fig:consistency_per_project_normal}
     \end{subfigure}
 
-    \caption{Inconsistent outcomes of test suite T1 over 10 runs}
+    \caption{Inconsistent outcomes of test suite T1 over ten runs}
     \label{fig:consistency_normal}
 \end{figure}
 
@@ -751,7 +746,7 @@ However, when using randomly generated input, this can easily happen.
         \label{fig:consistency_per_project_constraint}
     \end{subfigure}
 
-    \caption{Inconsistent outcomes of test suite T2 over 10 runs}
+    \caption{Inconsistent outcomes of test suite T2 over ten runs}
     \label{fig:consistency_constraint}
 \end{figure}
 
@@ -773,23 +768,21 @@ However, when using randomly generated input, this can easily happen.
         \label{fig:consistency_per_project_random}
     \end{subfigure}
 
-    \caption{Inconsistent outcomes of test suite T3 over 10 runs}
+    \caption{Inconsistent outcomes of test suite T3 over ten runs}
     \label{fig:consistency_random}
 \end{figure}
-
-\clearpage
 
 \subsection{Causes for inconsistent test outcomes}
 
 % \mnote{In the discussion, write that Scratch programs tend to be inconsistent / non-deterministic because of their multimedia nature}
-Inconsistent test outcomes can be caused by either the test or the project under test.
+Inconsistent test outcomes can either be caused by the test case (or constraint) or by the project under test.
 Therefore, we analyzed the inconsistencies of test suite T1 and their cause in Table~\ref{tab:inconsistencies_causes_normal}.
 Most of them are caused by projects behaving in a non-deterministic manner,
 tough some are caused by test cases themselves.
 We noticed that tests, which deal with the banana sprite, i.e. test cases $13, 14, 23, 24, 25$, are relatively inconsistent.
 We observed that the banana sprite is often poorly implemented, which causes it to behave inconsistently.
 We suspect that students did not pay much attention to the banana sprite, since it is not essential to play the game.
-A banana, which touches the ground, just subtracts points, while an apple, that falls to the ground, ends the game.
+A banana only subtracts points when it touches the ground, while an apple ends the game in this case.
 % Secondly, tests, which deal with the banana sprite are more likely to be inconsistent.
 % In order to not go game over, tests have to periodically catch the falling apple with the bowl.
 % This means, that the tests do not always, and are not always even able to, catch bananas with the bowl,
@@ -902,17 +895,17 @@ A banana, which touches the ground, just subtracts points, while an apple, that 
 % K7_S20
 % K7_S26
 
-\section{RQ2: Automated Input Generation}
-\label{sec:rq2}
+\section{RQ3: Automated Input Generation}
+\label{sec:rq3}
 
 For this part of the evaluation, we will consider following research question:
 
 \begin{center}\begin{minipage}{.9\textwidth}
-    \textbf{RQ2: Is automated test input generation a viable method to control Scratch programs for testing purposes?}
+    \textbf{RQ3: What statement coverage can be achieved by controlling Scratch programs with automatically generated input?}
 \end{minipage}\end{center}
 
-\noindent For RQ1, we already showed that accurate test results with random input are possible.
-In order to get good test results generally, the generated input needs to be able to execute as much of the program as possible.
+\noindent For RQ1, we already showed that achieving accurate test results with random input are possible.
+In order to get good test results generally, the generated input needs to be able to reach as much of the program as possible.
 Intuitively, the more of a program gets executed, the more of the its functionality can be checked by tests running on it.
 Therefore, we want to find out how much of a typical Scratch program's functionality can be reached by controlling it through Whisker's generated input.
 In order to measure how much of the program is reached, we will use the achieved statement coverage as an indicator.
@@ -922,7 +915,7 @@ We ran Whisker's automated input generation algorithm on each of the Code Club S
 and measured the current statement coverage every second during the execution.
 We chose not to reset the programs during the execution time,
 since some of Code Club's projects require much execution time to be covered.
-In fact, we also tried a configuration of $4 * 2.5\text{min}$ (ten minutes with four resets)
+In fact, we also tried a configuration of ten minutes with four resets ($4 * 2.5\text{min}$)
 and got slightly worse results.
 % Each program was run for five minutes and was reset five times during that time,
 % resulting five one-minute executions of the program.
@@ -949,7 +942,7 @@ which saves the current statement coverage of the program and outputs all saved 
 
     \begin{minipage}{.9\textwidth}
         \begin{javascriptcode}
-            const coverageTest = async function (t) {
+            const measureCoverage = async function (t) {
                 t.detectRandomInputs({duration: [100, 1000]});
                 t.setRandomInputInterval(250);
 
@@ -963,19 +956,9 @@ which saves the current statement coverage of the program and outputs all saved 
         \end{javascriptcode}
     \end{minipage}
 
-    \caption{Test case to measure the coverage of automatically generated input}
+    \caption{Code to measure the coverage of automatically generated input}
     \label{lst:coverage_test}
 \end{listing}
-
-\subsection{Coverage Measurements}
-
-\paragraph{Null hypothesis ($H_0$):}
-Automated input generation can only cover a small fraction of typical Scratch programs' code, making it infeasible for testing purposes.
-Coverage with automated input is not higher than coverage without any input.
-\paragraph{Alternative hypothesis ($H_1$):}
-Automated input generation is able to reach most of typical Scratch programs' functionality, making it a viable method to control the Scratch programs for testing.
-Program coverage with automated input is much higher than coverage without input.
-\parspace
 
 \noindent Figure~\ref{fig:coverage} shows the statement coverage we were able to achieve on the Code Club projects (P2)
 with Whisker's automatically generated input on the first run,
@@ -1105,8 +1088,8 @@ Here, we only got an average of $47.04\%$ per project on our first run, and $47.
 %     \label{fig:difficult_code_club_projects}
 % \end{figure}
 
-\section{RQ3: Interference with Programs Under Test}
-\label{sec:rq3}
+\section{RQ4: Interference with Programs Under Test}
+\label{sec:rq4}
 
 In the following section, we want to answer the following research question:
 
@@ -1118,6 +1101,7 @@ In the following section, we want to answer the following research question:
 Whisker executing code in between steps of the Scratch program can possibly delay execution steps of the program.
 This can be problematic because some of Scratch's blocks,
 specifically the \texttt{wait} blocks, depend on real time.
+Therefore, executing additional code could influence time-related behaviour of the program.
 However, we suspect that this will not be a concern for most Scratch programs.
 \parspace
 
@@ -1125,22 +1109,22 @@ Scratch's step function has to be called 30 times per second.
 Therefore, the execution time of Whisker's step function, which includes the execution of Scratch's step function,
 should not exceed $1000\text{ms}/30 = 33.33\text{ms}$.
 Scratch allocates $0.75 * 33.33\text{ms} = 25.0\text{ms}$ of the $33.33\text{ms}$ to execute the program.
-If no sprite changes in the program during the step,
+If no sprite changes occur during the step,
 the Scratch VM will execute the program for the allocated amount of time.
 But if some sprite's position or appearance changes, the VM will stop executing the program earlier.
 Afterwards, Scratch draws the new frame in the GUI.
 In the worst case, i.e. if no sprite changes and the whole time interval is used to execute the program,
 $0.25 * 33.33\text{ms} = 8.33\text{ms}$ will be left to render the new frame.
-Most modern hardware will take less time than $8.33\text{ms}$ to render the picture,
+Most modern hardware will take significantly less time than $8.33\text{ms}$ to render the picture,
 which leaves time for Whisker to execute other tasks.
 \parspace
 
 We should also note that some of Whisker's optional functionality gets executed during Scratch's step,
-which will slow the program down as well, if the full $25\text{ms}$ of execution time are used by Scratch.
+which will slow the program down as well, if the full $25\text{ms}$ of execution time are used.
 This includes coverage measurement and callbacks for sprite changes (i.e. \texttt{onSpriteMoved}).
 However the Scratch GUI itself also registers code to update the user interface, which is run during the step of the VM,
 so this should not affect the program any more than Scratch's GUI itself does,
-unless the registered callbacks are very expensive to execute.
+unless the registered code is very expensive to execute.
 \parspace
 
 To evaluate this,
@@ -1154,7 +1138,7 @@ The code we used for measuring the execution times can be found in Listing~\ref{
 We will consider the mean execution times, as well as the maximum execution times from the ten runs
 to decide if the test could interfere with the program.
 
-\subsection{Time measurements}
+\clearpage
 
 \paragraph{Null hypothesis ($H_0$):}
 The execution of additional code delays the execution of Scratch's steps, which possibly interferes with the program execution.
@@ -1194,14 +1178,17 @@ and only rarely spikes to higher for short periods of time.
         \caption{Test suite T3 (random input)}
     \end{subfigure}
 
-    \caption{Measured execution time of Whisker's step procedure during first run}
+    \caption{Measured execution time of Whisker's step procedure during the first execution}
     \label{fig:time_line_plot}
 \end{figure}
 
+\clearpage
+
 Figure \ref{tab:time_measurements} shows the mean and the maximum of execution times for each part of Whisker's step procedure.
-This data is taken from ten consecutive executions of the respective test suite on the program under test.
-the average total execution time is far beneath $33.33\text{ms}$.
-The execution of test suite T1 spiked over the $33.33\text{ms}$ with a maximum of $35.1\text{ms}$,
+This data is taken from ten consecutive executions of each test suite on the program under test.
+The average total step execution time is far beneath $33.33\text{ms}$ with $1.972\text{ms}$, $2.272\text{ms}$ and $1.330\text{ms}$ for test suites T1-T3 respectively.
+The maximum total step execution times were $35.1\text{ms}$, $24.9\text{ms}$ and $33.1\text{ms}$.
+We can observe that the execution of test suite T1 spiked over the $33.33\text{ms}$ with a maximum of $35.1\text{ms}$,
 but this only happened in one single step, with the second longest step execution time for T1 being $31.1\text{ms}$.
 
 % round((0.071 + 0.102 + 0.068) / 3, digits = 3)
