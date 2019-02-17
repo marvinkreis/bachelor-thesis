@@ -269,7 +269,7 @@ In this section, we will describe each of the test suites.
                                                                                       && \multicolumn{2}{l|}{T1} & \multicolumn{2}{l|}{T2} & \multicolumn{2}{l}{T3}    \\
         \midrule
            & \textbf{Initialization} &&&&&&\\
-         1 & Timer starts at 30 seconds                                                & \cmark & 1  & \xmark                    &    & \xmark                    &    \\
+         1 & Timer starts at 30 seconds and score starts at 0                          & \cmark & 1  & \xmark                    &    & \xmark                    &    \\
          2 & Bowl starts at $X = 0$ / $Y = -145$                                       & \cmark & 2  & \xmark                    &    & \xmark                    &    \\
          3 & Fruits have a size of 50\%                                                & \cmark & 3  & \cmark                    & 1  & \cmark                    & 1  \\[\medskipamount]
            & \textbf{Bowl Movement} &&&&&&\\
@@ -796,7 +796,10 @@ A banana only subtracts points when it touches the ground, while an apple ends t
         \toprule
         Project & Test & Cause   & Description \\
         \midrule
-        K7\_S11 & 1    & Both    & Program has multiple variables named "Punkte", the test used the wrong variable. \\
+        K6\_S11 & 1    & Both    & Test executes the program until each variable has been initialized to the correct value or until 500ms passed, and then checks the variable values.
+                                   The project incorrectly increments the score variable continually when the program runs.
+                                   Most of the time, the score variable has the value 0 when the rest of the program has been initialized,
+                                   but sometimes the variable already gets incremented during initialization. \\
         K7\_S16 & 4    & Project & Program sometimes goes game over directly after being started. \\
 
         K6\_S03 & 8    & Project & Program moves banana to a random position on the ground when the right arrow key is pressed.
@@ -845,7 +848,7 @@ A banana only subtracts points when it touches the ground, while an apple ends t
         K6\_S19 & 27   & Both    & Banana sometimes still falls for a short time after the time is up. \\
         K7\_S02 & 27   & Test    & Program never changes the score or time variable and has very slow falling apples.
                                    The test checks if the program went game over by checking that the variables and the sprites' x position does not change,
-                                   but because the variables aren't changed and the apple falls very slowly, the only thing that is changed is the sprites' y positions. \\
+                                   but because the variables aren't changed and the apple falls very slowly, sometimes, the only thing that is changed is the sprites' y positions. \\
         \midrule
         K6\_S02 & 13   & Project & See K7\_S03, test 13. \\
         K6\_S03 & 13   & Project & See K6\_S03, test 8.  \\
@@ -1221,7 +1224,7 @@ but this only happened in one single step, with the second longest step executio
         \midrule
         Callbacks (Before)           & 0.071 & 4.8  & 0.102 & 7.3  & 0.068 & 9.7  \\
         Random Inputs                & 0.004 & 1.3  & 0.004 & 3.1  & 0.024 & 6.4  \\
-        Inputs                       & 0.005 & 2    & 0.005 & 1.6  & 0.023 & 8.6  \\
+        Inputs                       & 0.005 & 2.0  & 0.005 & 1.6  & 0.023 & 8.6  \\
         Sprites                      & 0.022 & 6.4  & 0.022 & 4.2  & 0.022 & 4.8  \\
         Scratch (Program + Renderer) & 1.852 & 35.1 & 2.054 & 24.6 & 1.129 & 32.7 \\
         Callbacks (After)            & 0.007 & 1.1  & 0.006 & 0.3  & 0.005 & 1.8  \\
@@ -1239,42 +1242,45 @@ but this only happened in one single step, with the second longest step executio
 \label{sec:discussion}
 
 In the evaluation, we conducted three separate experiments to examine the usefulness of Whisker.
-In the first experiment, we analyzed test results of three different test suites and compared them to manually assigned scores.
+In the first experiment, we analyzed test results of three different test suites.
 We found out, that all of the results consistently show a strong correlation to the manual scores.
-Therefore, the null hypothesis is rejected.
-We proved that the input-independent / constraint-only testing approach is able to deliver accurate test results,
+Therefore, we reject the null hypothesis of RQ1.
+We also proved that the input-independent / constraint-only testing approach is able to deliver accurate test results,
 both with deliberate input and with automatically generated input.
-Then, we analyzed the flakiness of the test suites and found several reasons,
+\parspace
+
+We analyzed the flakiness of the test suites and found several reasons
 why certain tests and certain programs can be inconsistent.
 We measured a percentage of $2.76\%$ inconsistent project-test combinations for test suite T1, $2.74\%$ for test suite T2, and $12.00\%$ for test suite T3.
 We suspect that simpler programs can be tested with much fewer inconsistencies.
 At the same time, more experience in automated testing for Scratch will lead to more robust and less flaky test suites.
-The test suites we used were written pretty early in development and therefore had some obvious flaws,
+The test suites we used were written during development of Whisker and therefore had some more or less obvious flaws,
 some of which can be seen in Table~\ref{tab:inconsistencies_causes_normal}.
 Of course, tests that involve randomly generated input show a higher number of inconsistent outcomes,
 since the tests themselves are non-deterministic.
 \parspace
 
 The second experiment dealt with automated input generation.
-We let Whisker's automated input generation algorithm run on several Scratch programs,
+We let Whisker's automated input generation algorithm run on several Scratch programs ten times,
 then we ran the same programs without any input.
-We measured the achieved statement coverage on the programs during both runs,
+We measured the achieved statement coverage on the programs during both executions,
 and compared their averages.
-Since the automated input was able to achieve much higher coverage than running the programs without simulating input,
-we rejected the null hypothesis.
+% Since the automated input was able to achieve much higher coverage than running the programs without simulating input,
+% we rejected the null hypothesis.
+The mean statement coverage amounted to $95.25\%$ with automated input, and $47.14\%$ without input.
+This shows that simple randomly generated input is able to reach much of typical Scratch programs' functionality.
 \parspace
 
 Finally, we conducted another experiment to find out
-if the testing process interferes with the program under test.
-For this purpose, we measured the execution time of Whisker's step procedure on the execution of our test suites
-to find out if it slowed down the Scratch program.
-We found out that Scratch's allocated time interval for computations is long enough to
+if the testing process would slow down the program under test.
+For this purpose, we measured the execution time of Whisker's step procedure on the execution of our test suites.
+We found that Scratch's allocated time interval for computations is long enough to
 allow executing both the Scratch program and test code.
 Sometimes, the execution time of the step procedure spiked over the allocated time interval,
 delaying a single step.
 However, these single spikes should not affect the programs in a meaningful way.
 The execution times will only be problematic if they consistently exceed the time limit.
-Therefore, programs under test were not affected by Whisker in our tests, and we can reject the null hypothesis.
+Therefore, programs under test were not affected by Whisker in our tests, and we can reject the null hypothesis of RQ4.
 
 
 \section{Threats to Validity}
@@ -1283,21 +1289,21 @@ Therefore, programs under test were not affected by Whisker in our tests, and we
 As is usual, the empirical studies we conducted in this work must confront certain threats to validity.
 Possible threats fall into one of two categories.
 On the one hand, threats to internal validity represent factors which provide alternative explanations for the presented results.
-On the other hand, threats to external validity deal with the generalizability of our approach.
+On the other hand, threats to external validity deal with the generalizability of the results.
 
 \subsection{Internal validity}
 
-Conditions, which could influence any test outcomes, coverage measurements,
+Conditions which could influence any test outcomes, correlations, coverage measurements,
 or time measurements are possible threads to internal validity.
 \parspace
 
 \textbf{Independence of ground truth.}
-One threat to validity arises from our use of the manual scores as
+One threat to validity arises from the use of the manually assigned scores as
 ground truth to assess the quality of test results.
 If we assigned the scores ourselves,
 a comparison to them would not be adequate to give evidence about the quality of the results.
-However, the manual scores were assigned independently, after the course was held,
-before work on Whisker was even started.
+However, the manual scores were assigned by the teacher after the course was held,
+and tests were written independently of the grading scheme, only using the textual specification of the program.
 Therefore, the manual scores are completely independent from our test results,
 and a comparison between the two is adequate.
 \parspace
@@ -1314,7 +1320,7 @@ and considered the average results in addition to results from single executions
 One more possible threat comes from an issue of Scratch itself.
 At the time of the evaluation, Scratch had a problem of consuming increasing amounts of RAM when loading many programs in succession,
 which, in theory, could have interfered with the execution of our test suites.
-However, we payed close attention to the RAM usage of the machine, which executed the tests.
+However, we payed close attention to the RAM usage of the machine that executed the tests.
 We also performed some of our test suite executions on all projects sequentially,
 and some on one half of the programs, then later on the other half.
 We observed similar results with both methods, therefore this issue did not have any impact on our test results.
@@ -1333,17 +1339,17 @@ saved in a state that causes an early game over.
 We conjecture that programs which were written with automated testing in mind won't have this kind of problems.
 If students are given a way to perform the tests on their program themselves, they will realize that the program is not starting correctly.
 And in most cases these problems are fairly easy to solve.
-Therefore we believe, that the statistics show more realistic results with these projects excluded.
+Therefore, we believe that the statistics show more realistic results with these projects excluded.
 
 \subsection{External Validity}
 
-Any factors which limit the generalizability of the results in this work are threats to external validity.
+Factors which limit the generalizability of the results in this work are possible threats to external validity.
 \parspace
 
 \textbf{Programs under test.} For one thing, the program under test could be chosen poorly,
 making the results not applicable for other Scratch programs.
 Therefore, we tried to choose programs that are representative of Whisker's target usage in the field of education.
-To evaluate the test results we chose Scratch projects from an actual Scratch course for students.
+We chose Scratch projects from an actual workshop for students.
 The program has user interaction, uses randomness, and has a game over state,
 which are all important challenges for testing Scratch programs.
 To evaluate the automated input generation,
@@ -1352,13 +1358,13 @@ The programs feature many different input methods and interactions,
 which make them suitable to evaluate automated input on.
 \parspace
 
-\textbf{Test subjects for time measurements.}
+\textbf{Tests for time measurements.}
 To find out if Whisker would slow down programs under test,
 we executed our test suites and measured the execution times of Whisker's step procedure.
 One could argue that the execution times can be raised by a variety factors.
-More, as well as more computationally expensive, callbacks and constraints can be registered.
-More random inputs and inputs can be registered.
-And a Scratch program with more sprites can be chosen.
+More, as well as more computationally expensive, callbacks and constraints can be registered,
+more random inputs can be registered,
+and a Scratch program with more sprites can be chosen.
 Therefore, tests suites can interfere with the program under tests, if they do it purposefully.
 However, we wanted to measure the execution time of a realistic test suite on a realistic program.
 This setup did not slow the program down,
