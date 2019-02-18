@@ -1,6 +1,39 @@
 \chapter{Additional Evaluation Data}
 \label{cha:additional_evaluation_data}
 
+\begin{figure}[htpb]
+    \centering
+    \fbox{\includegraphics[width=\textwidth]{task-description}}
+    \caption{Task description for the catching game (by Sebastian Keller \cite{keller})}
+    \label{fig:catching_game_task_description}
+\end{figure}
+
+\begin{table}[htpb]
+    \centering
+    \footnotesize
+    \begin{tabular}{rcp{.85\textwidth}}
+        \toprule
+        \texttt{\#} & Pts. & Description \\
+        \midrule
+         1 & 2 & Catching an apple gives the player 5 points, catching a banana gives 8 points. \\
+         2 & 2 & Apples and bananas fall with different speeds. apples' y-coordinate is changed by~-5, bananas' y-coordinate is changed is changed by~-7. \\
+         3 & 3 & When an apple touches the red line, it must display the message ''Game over!'' and end the game. \\
+         4 & 3 & When a banana touches the red line, it must display the message ''-8'' and subtract~8~points. \\
+         5 & 2 & The timer ticks backwards from 30 to 0. \\
+         6 & 1 & No two fruit of the same type must fall down at the same time. \\
+         7 & 2 & Apples and bananas have a size of 50\%. \\
+         8 & 2 & Spawn point of the fruit: x-axis: random / y-axis: 170. \\
+         9 & 2 & Fruits fall down in a straight line. \\
+        10 & 3 & When the timer reaches 0, the bowl must display the message ''Ende!'' and end the game. \\
+        11 & 3 & When a fruit touches the bowl, the score is changed and it again falls down from a random position with y = 170. \\
+        12 & 3 & The bowl can only be moved horizontally with the arrow keys. It moves in steps of~10 and starts at x = 0 / y = -145. \\
+        13 & 4 & The banana must wait one second before falling down when the game starts and after touching the ground. It must not be visible during that time. \\
+        \bottomrule
+    \end{tabular}
+    \caption{Grading scheme for the manual scores (by Sebastian Keller~\cite{keller}, translated)}
+    \label{tab:manual_grading_scheme}
+\end{table}
+
 \begin{table}[htpb]
     \setlength{\tabcolsep}{0.2em}
     \tiny
@@ -9,37 +42,37 @@
         \toprule
                 & 01 & 02 & 03 & 04 & 05 & 06 & 07 & 08 & 09 & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 & 19 & 20 & 21 & 22 & 23 & 24 & 25 & 26 & 27 & 28 \\
         \midrule
-        K6\_S02 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y \\
-        K6\_S03 & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \y & \y & \x & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S05 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \x & \x & \x & \y & \y & \y \\
-        K6\_S10 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \x & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S11 & \x & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S13 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S15 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S16 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S18 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S19 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \y & \x & \y \\
-        K6\_S27 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S29 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S30 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S31 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S33 & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S02 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \y & \y & \y & \x & \y \\
-        K7\_S03 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S04 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S05 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S06 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S08 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S10 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S11 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S12 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S14 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S15 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S16 & \y & \y & \y & \x & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S17 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \x & \y & \x & \x & \y & \y & \y & \y \\
-        K7\_S19 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S20 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S26 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
+        K6\_S02 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n \\
+        K6\_S03 & \n & \n & \n & \n & \n & \n & \n & \e & \n & \e & \n & \n & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n \\
+        K6\_S05 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \e & \e & \e & \n & \n & \n \\
+        K6\_S10 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S11 & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S13 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S15 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S16 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S18 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S19 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \e & \n \\
+        K6\_S27 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S29 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S30 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S31 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \e & \n & \n \\
+        K6\_S33 & \n & \n & \n & \e & \n & \n & \n & \e & \n & \e & \n & \n & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n \\
+        K7\_S02 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \e & \n \\
+        K7\_S03 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S04 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S05 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S06 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S08 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S10 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S11 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S12 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S14 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S15 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S16 & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S17 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \e & \n & \e & \e & \n & \n & \n & \n \\
+        K7\_S19 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S20 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S26 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
         \bottomrule
     \end{tabular}
     \caption{Inconsistency matrix for test suite T1 (normal tests)}
@@ -51,41 +84,41 @@
     \setlength{\tabcolsep}{0.2em}
     \tiny
     \centering
-    \begin{tabular}{l|rrrrrrrrrrrrrrrrrrrr}
+    \begin{tabular}{l|rrrrrrrrrrrrrrrrrrrrrrrrrr}
         \toprule
-               & 01 & 02 & 03 & 04 & 05 & 06 & 07 & 08 & 09 & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 & 19 & 20 \\
         \midrule
-        K6\_S02 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \x & \y & \y & \y \\
-        K6\_S03 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \y & \y & \y \\
-        K6\_S05 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S10 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \x & \x \\
-        K6\_S11 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S13 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S15 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S16 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S18 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S19 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y \\
-        K6\_S27 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S29 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S30 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \x & \y & \y & \y & \y & \y & \y \\
-        K6\_S31 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S33 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \x & \y & \y & \y & \y & \y \\
-        K7\_S02 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S03 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S04 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S05 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S06 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S08 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S10 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S11 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S12 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S14 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S15 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S16 & \y & \x & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S17 & \y & \y & \y & \y & \x & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \y \\
-        K7\_S19 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S20 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \y & \y & \y \\
-        K7\_S26 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
+                & 01 & 02 & 03 & 04 & 05 & 06 & 07 & 08 & 09 & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 & 19 & 20 & 21 & 22 & 23 & 24 & 25 & 26 \\
+        K6\_S02 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n & \n & \n & \e & \e & \n & \n & \n \\
+        K6\_S03 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n \\
+        K6\_S05 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \e & \n & \e & \n & \n & \n \\
+        K6\_S10 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e \\
+        K6\_S11 & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S13 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S15 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S16 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S18 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S19 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S27 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S29 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S30 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S31 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S33 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n \\
+        K7\_S02 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S03 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S04 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S05 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S06 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S08 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \e & \n & \n & \n \\
+        K7\_S10 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n \\
+        K7\_S11 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S12 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \e & \n & \n & \n \\
+        K7\_S14 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \e & \n & \n & \n \\
+        K7\_S15 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n \\
+        K7\_S16 & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S17 & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \e & \n & \e & \n & \n & \n \\
+        K7\_S19 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S20 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S26 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
         \bottomrule
     \end{tabular}
     \caption{Inconsistency matrix for test suite T2 (input-independent / constraint-only tests)}
@@ -97,54 +130,47 @@
     \setlength{\tabcolsep}{0.2em}
     \tiny
     \centering
-    \begin{tabular}{l|rrrrrrrrrrrrrrrrrr}
+    \begin{tabular}{l|rrrrrrrrrrrrrrrrrrrrrrrrrr}
         \toprule
-                & 01 & 02 & 03 & 04 & 05 & 06 & 07 & 08 & 09 & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 \\
+                & 01 & 02 & 03 & 04 & 05 & 06 & 07 & 08 & 09 & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 & 19 & 20 & 21 & 22 & 23 & 24 & 25 & 26 \\
         \midrule
-        K6\_S02 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \x & \y \\
-        K6\_S03 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \y & \y & \y & \y \\
-        K6\_S05 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \x & \x & \x & \y & \y & \y \\
-        K6\_S10 & \y & \x & \x & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \x & \y & \x & \y & \y \\
-        K6\_S11 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \y & \y & \y & \y \\
-        K6\_S13 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S15 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S16 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S18 & \y & \x & \x & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \y & \y & \y \\
-        K6\_S19 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \y \\
-        K6\_S27 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S29 & \y & \y & \x & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \x & \y \\
-        K6\_S30 & \y & \x & \x & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \x & \y & \y & \y & \y \\
-        K6\_S31 & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K6\_S33 & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \y & \x & \y & \y & \y & \y & \y & \y \\
-        K7\_S02 & \y & \x & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S03 & \y & \x & \x & \y & \y & \y & \y & \x & \y & \y & \y & \x & \y & \y & \y & \y & \y & \y \\
-        K7\_S04 & \y & \x & \x & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \x & \y & \y \\
-        K7\_S05 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y \\
-        K7\_S06 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S08 & \y & \x & \x & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S10 & \y & \x & \x & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \x & \y & \y & \y \\
-        K7\_S11 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S12 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \x & \x & \x & \y & \y \\
-        K7\_S14 & \y & \y & \x & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \x & \y & \x & \y & \y \\
-        K7\_S15 & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \y & \x & \y & \y & \y & \y & \y & \y \\
-        K7\_S16 & \y & \x & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \x & \y & \y & \y \\
-        K7\_S17 & \y & \y & \y & \y & \x & \y & \y & \y & \y & \y & \y & \x & \y & \y & \x & \y & \y & \y \\
-        K7\_S19 & \y & \y & \y & \y & \y & \y & \y & \x & \y & \y & \y & \y & \x & \y & \y & \y & \y & \y \\
-        K7\_S20 & \y & \x & \x & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y \\
-        K7\_S26 & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \y & \x & \x & \x & \x & \y \\
+        K6\_S02 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n \\
+        K6\_S03 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S05 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \e & \e & \e & \n & \e & \n \\
+        K6\_S10 & \n & \n & \n & \e & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \e & \e & \n & \e & \n & \n \\
+        K6\_S11 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S13 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S15 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S16 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S18 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n \\
+        K6\_S19 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n \\
+        K6\_S27 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S29 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S30 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \e & \n & \n & \n & \n \\
+        K6\_S31 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K6\_S33 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S02 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S03 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n \\
+        K7\_S04 & \n & \n & \n & \e & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S05 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \e & \n \\
+        K7\_S06 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S08 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \e & \n & \n & \e & \n \\
+        K7\_S10 & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n \\
+        K7\_S11 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S12 & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \e & \n & \e & \e & \n \\
+        K7\_S14 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \e & \n & \n & \n & \n \\
+        K7\_S15 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n & \e & \e & \n & \n & \n & \n & \e & \n \\
+        K7\_S16 & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \e & \n & \n & \n \\
+        K7\_S17 & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \e & \n & \e & \n \\
+        K7\_S19 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n & \n & \n & \e & \n & \n & \e & \n & \n \\
+        K7\_S20 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n \\
+        K7\_S26 & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \n & \e & \n & \n & \n & \n \\
         \bottomrule
     \end{tabular}
     \caption{Inconsistency matrix for test suite T3 (random input tests)}
     \label{tab:inconsistencies_matrix_random}
     \setlength{\tabcolsep}{\defaulttabcolsep}
 \end{table}
-
-\begin{figure}[htpb]
-    \centering
-    \fbox{\includegraphics[width=\textwidth]{task-description}}
-    \caption{Task description for the catching game (by Sebastian Keller \cite{keller})}
-    \label{fig:catching_game_task_description}
-\end{figure}
 
 \begin{listing}[htpb]
     \centering
@@ -245,3 +271,4 @@
     \caption{Modified Whisker step procedure for measuring the step execution time}
     \label{lst:time_measurement_code}
 \end{listing}
+

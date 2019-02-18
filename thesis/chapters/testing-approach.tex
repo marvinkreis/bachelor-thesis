@@ -125,7 +125,7 @@ Without a renderer, some of Scratch's blocks don't work properly.
     \label{fig:whisker_gui}
 \end{figure}
 
-\section{Public Interface}
+\section{Whisker's Public Interface}
 \label{sec:public_interface}
 
 Automating Scratch allows us to write tests for Scratch in a unit-test-like fashion.
@@ -448,13 +448,13 @@ This may be done by tracking timestamps of the event and the action, and compari
 but this can be expensive to do.
 \parspace
 
-\chapter{Using Constraints For Flexible Test Inputs}
+\chapter{Property-based Testing with Constraints}
 \label{cha:using_constraints_for_flexible_test_inputs}
 
 This section will describe why separating control of the program under test from the test code can be beneficial,
 and how this can be achieved by defining constraints, that are checked in the background.
 
-\section{Input-Independent / Constraint-only Tests}
+\section{Constraint Tests}
 \label{sec:input_independent_constraint_only_tests}
 
 Usually, tests will provide the program under test with inputs and check the resulting outputs.
@@ -524,7 +524,7 @@ For the sake of simplicity we are going to ignore the case of the sprite not bei
             -- (0.2, -0.8);
     \end{tikzpicture}
 
-    \caption{Input-independent / constraint-only testing procedure}
+    \caption{Constraint testing procedure}
     \label{fig:input_independent_testing_procedure}
 \end{figure}
 
@@ -622,7 +622,7 @@ For the sake of simplicity we are going to ignore the case of the sprite not bei
 Figure~\ref{fig:normal_input_independent_test_comparison} shows the resulting test code for the example
 and compares it to a similar test, which simulates inputs deliberately to check the sprite's movement.
 We can easily see, that this approach takes quite a bit more code than the more normal approach.
-But at the same time, the input-independent testing procedure is able to scale better than the other testing procedure.
+But at the same time, the constraint testing procedure is able to scale better than the other testing procedure.
 Once enough tracking is set up, writing constraints becomes easy and requires little code.
 At the same time, because the constraints are isolated from the program execution itself,
 many constraints can possibly be combined into a single test.
@@ -750,14 +750,14 @@ In this case, tests can simply check which constraints failed, and let Whisker g
             t.assume.ok(released, 'Right arrow key must be released.');
         \end{minted}
         \vspace{-\bigskipamount}
-        \caption{Input-independent test}
+        \caption{Constraint test}
         \label{fig:normal_input_independent_test_comparison_constraint}
     \end{subfigure}
-    \caption{Comparison of normal tests and an input-independent tests}
+    \caption{Comparison of a normal test and a similar constraint tests}
     \label{fig:normal_input_independent_test_comparison}
 \end{listing}
 
-\section{Resetting the Program During a Test}
+\section{Resetting the Program During Tests}
 \label{sec:resetting_the_program_during_a_test}
 
 When testing with randomly generated input, programs often need to be reset multiple times inside of one test execution,
@@ -771,7 +771,7 @@ After resetting the program, callbacks and constraints have to be enabled again.
 Also, if the test configured Whisker not to fail the test when a constraint fails, then the test needs to check which constraints failed before disabling them
 and then only enable constraints which were active before.
 Figure~\ref{fig:resetting_the_program_under_test_procedure} shows a procedure that may be used to reset the program under test.
-This procedure replaces step $5$ (Run the program) in the input-independent testing procedure (see Figure~\ref{fig:input_independent_testing_procedure}).
+This procedure replaces step $5$ (Run the program) in the constraint testing procedure (see Figure~\ref{fig:input_independent_testing_procedure}).
 Additionally the code example in Listing~\ref{fig:resetting_the_program_under_test_example}
 implements this procedure for the example from the previous section.
 \parspace

@@ -9,7 +9,7 @@ We will conduct three experiments to answer the following research questions:
 
     \centering
     \begin{minipage}{.9\textwidth}
-        \textbf{RQ1: Can automated testing produce test results that are accurate enough for manual grading?}
+        \textbf{RQ1: Can automated testing produce test results that match the results of manual grading?}
         \parspace
 
         \textbf{RQ2: How flaky are automated tests for Scratch?}
@@ -109,7 +109,8 @@ Additionally, the full task description from the students course (in german) may
 The Scratch projects in this set were manually evaluated and scored.
 This enables us to determine the quality of our test results by using the manually assigned scores as ground truth,
 and comparing the results of automated testing to them.
-Table~\ref{tab:manual_scores_and_test_passes_of_each_project} contains the manual scores for each project.
+Table~\ref{tab:manual_scores_and_test_passes_of_each_project} contains the manual scores for each project and
+Table~\ref{tab:manual_grading_scheme} shows the grading scheme used to determine the scores.
 \parspace
 
 We use these projects to evaluate the accuracy of our testing approaches.
@@ -263,7 +264,6 @@ In this section, we will describe each of the test suites.
 \begin{table}[htpb]
     \centering
     \scriptsize
-    \mnote{TODO: explanation}
     \begin{tabular}{rl|cr|cr|cr}
         \toprule
         \texttt{\#} & Specification              & \multicolumn{6}{c}{Covered?, Test Number}                     \\
@@ -290,8 +290,8 @@ In this section, we will describe each of the test suites.
         15 & Bananas spawn at $Y = 170$                                                & \cmark & 15 & \cmark & 15 & \cmark & 15 \\
         16 & Only one apple must fall down at a time                                   & \cmark & 16 & \cmark & 16 & \cmark & 16 \\
         17 & Only one banana must fall down at a time                                  & \cmark & 17 & \cmark & 17 & \cmark & 17 \\
-        18 & Banana must wait for a second before falling down in the beginning        & \cmark & 18 & \xmark & 18 & \cmark & 18 \\
-        19 & Banana must wait for a second before falling down after displaying ''-8'' & \cmark & 19 & \xmark & 19 & \cmark & 19 \\[\medskipamount]
+        18 & Banana must wait for a second before falling down in the beginning        & \cmark & 18 & \cmark & 18 & \cmark & 18 \\
+        19 & Banana must wait for a second before falling down after displaying ''-8'' & \cmark & 19 & \cmark & 19 & \cmark & 19 \\[\medskipamount]
            & \textbf{Fruit Interaction} &&&&&&\\
         20 & Apple gives 5 points when it touches the bowl                             & \cmark & 20 & \cmark & 20 & \cmark & 20 \\
         21 & Game over when the apple touches the ground                               & \cmark & 21 & \xmark &    & \cmark & 21 \\
@@ -410,11 +410,11 @@ This function, as well as a usage example, are shown in Listing~\ref{lst:simulat
     \label{lst:simulating_catching_game}
 \end{listing}
 
-\subsubsection{(T2) Input-Independent / Constraint-Only Test Suite}
+\subsubsection{(T2) Constraint Test Suite}
 
-This test suite implements the input-independent testing approach from Chapter~\ref{cha:using_constraints_for_flexible_test_inputs}.
+This test suite implements the constraint testing approach from Chapter~\ref{cha:using_constraints_for_flexible_test_inputs}.
 With this test suite, we tried to test the program with only one execution in total.
-Therefore, this test suite only has a single test case, which registers 20 constraints to check various parts of the specification
+Therefore, this test suite only has a single test case, which registers 26 constraints to check various parts of the specification
 (corresponding to Table~\ref{tab:project_specification}).
 \parspace
 
@@ -422,12 +422,13 @@ This test case deliberately simulates inputs with the goal of winning the game.
 We use the same helper method as test suite T1 to simulate key presses depending on the bowl's and the apple's position.
 Because of this, the bowl should always catch the apple in working implementations,
 and the program should never go game over because of an apple touching the ground.
-Nevertheless, we register constraints, which check the game over state in case an apple does reach the ground in a buggy implementation.
+Therefore, we don't check the interaction between the apple sprite and the ground with this test suite.
 
 \subsubsection{(T3) Random Input Test Suite}
 
-This test suite uses the same constraints as T2, but uses Whisker's automated input generation to control the program with random inputs.
-It resets the program multiple times in order to increase the likelihood of multiple apples getting caught in one of the runs.
+This test suite uses 26 constraint, which are mostly the same as in T2.
+It uses Whisker's automated input generation to control the program with random inputs,
+and resets the program multiple times in order to increase the likelihood of multiple apples getting caught in one of the runs.
 But since it is nevertheless very unlikely to have the apple not touch the ground at all with random inputs,
 we don't for check for a game over after 30 seconds, and only let the program run for 10 seconds a time.
 We chose to reset the program 30 times during the test, resulting in an execution time of $30 \cdot 10s = 300s$.
@@ -453,7 +454,7 @@ We chose to simulate random inputs with a duration between $50\text{ms}$ and $10
 In this section, we will answer the following research question:
 
 \begin{center}\begin{minipage}{.9\textwidth}
-    \textbf{RQ1: Can automated testing produce test results that are accurate enough for manual grading?}
+    \textbf{RQ1: Can automated testing produce test results that match the results of manual grading?}
 \end{minipage}\end{center}
 
 \noindent In order to answer this question,
@@ -491,18 +492,18 @@ We can observe a strong correlation between the number of passing test cases and
 with a correlation coefficient of $r = 0.893$ (p-value = 1.45e-11) for the first run and $r = 0.899$ (p-value = 6.59e-12) for the average number of passes over ten runs.
 Except for few irregularities, the test results closely resemble the manually assigned scores.
 
-\subsubsection{Input-Independent / Constraint-Only Test Suite (T2)}
+\subsubsection{Constraint Test Suite (T2)}
 
 Figure~\ref{fig:scatter_constraint} compares each project's number of passing constraints of test suite T2 to its manual score.
-Possible values for the number of constraint passes are in the range of $[0, 20]$.
+Possible values for the number of constraint passes are in the range of $[0, 26]$.
 We can again observe a strong correlation between the two scores,
-with a correlation coefficient of $r = 0.904$ (p-value = 3.43e-12) for the first run and $r = 0.905$ (p-value = 2.67e-12) for the average number of passes over ten runs.
+with a correlation coefficient of $r = 0.878$ (p-value = 9.06e-11) for the first run and $r = 0.889$ (p-value = 2.43e-11) for the average number of passes over ten runs.
 
 \subsubsection{Random Input Test Suite (T3)}
 
 Figure~\ref{fig:scatter_constraint} compares the constraint passes of test suite T3 to the manual scores.
-Possible values for the number of constraint passes are in the range of $[0, 18]$.
-The results indicate a strong correlation with a correlation coefficient of $r = 0.850$ (p-value = 1.49e-09) for the first run and $r = 0.868$ (p-value = 2.63e-10) for the average over ten runs.
+Possible values for the number of constraint passes are in the range of $[0, 26]$.
+The results indicate a strong correlation with a correlation coefficient of $r = 0.869$ (p-value = 2.39e-10) for the first run and $r = 0.882$ (p-value = 5.23e-11) for the average over ten runs.
 \parspace
 
 \noindent The manual scores and test passes of each project can be found in Table~\ref{tab:manual_scores_and_test_passes_of_each_project}.
@@ -541,7 +542,7 @@ The results indicate a strong correlation with a correlation coefficient of $r =
         \caption{Average over ten runs}
         \label{fig:scatter_constraint_avg}
     \end{subfigure}
-    \caption{Comparison between test results of test suite T2 (input-indepent / constraint-only) and manually assigned scores}
+    \caption{Comparison between test results of test suite T2 (constraint) and manually assigned scores}
     \label{fig:scatter_constraint}
 \end{figure}
 
@@ -571,43 +572,43 @@ The results indicate a strong correlation with a correlation coefficient of $r =
         \toprule
         Project & Excl. & Points & T1 1st & T1 avg & T2 1st & T2 avg & T3 1st & T3 avg \\
         \midrule
-        K6\_S01 & \cmark & 30 &  1 &  1.0 &  1 &  1.0 & 10 & 10.1 \\
-        K6\_S02 & \xmark & 15 & 15 & 12.6 & 11 &  9.0 &  9 &  9.3 \\
-        K6\_S03 & \xmark & 11 & 10 & 11.5 &  9 &  9.3 &  6 &  5.5 \\
-        K6\_S05 & \xmark & 23 & 21 & 20.3 & 10 & 10.0 & 10 &  8.5 \\
-        K6\_S06 & \cmark & 30 &  1 &  1.0 &  1 &  1.0 &  9 &  8.7 \\
-        K6\_S10 & \xmark & 22 & 20 & 19.4 & 15 & 14.2 & 15 & 13.0 \\
-        K6\_S11 & \xmark &  8 &  5 &  4.9 &  4 &  3.8 &  1 &  1.7 \\
-        K6\_S13 & \xmark &  8 &  8 &  8.0 &  6 &  6.0 &  5 &  5.0 \\
-        K6\_S14 & \cmark &  4 &  2 &  2.0 &  1 &  1.0 &  3 &  3.0 \\
-        K6\_S15 & \xmark & 10 & 12 & 12.0 &  7 &  7.0 &  7 &  7.0 \\
-        K6\_S16 & \xmark &  2 &  0 &  0.0 &  0 &  0.0 &  0 &  0.0 \\
-        K6\_S18 & \xmark & 27 & 22 & 21.9 & 14 & 14.0 & 13 & 13.6 \\
-        K6\_S19 & \xmark & 25 & 23 & 22.0 & 15 & 15.4 & 15 & 14.2 \\
-        K6\_S20 & \cmark & 30 &  7 &  7.0 &  3 &  3.2 & 10 & 11.2 \\
-        K6\_S27 & \xmark &  4 &  3 &  3.0 &  2 &  2.0 &  1 &  1.0 \\
-        K6\_S29 & \xmark & 12 &  8 &  8.0 &  6 &  6.0 &  5 &  5.6 \\
-        K6\_S30 & \xmark & 20 & 18 & 18.0 & 14 & 12.7 & 12 & 12.2 \\
-        K6\_S31 & \xmark & 16 & 20 & 18.8 & 14 & 14.0 & 12 & 11.9 \\
-        K6\_S33 & \xmark & 20 & 18 & 17.3 & 10 & 11.2 & 13 & 12.8 \\
-        K7\_S02 & \xmark & 19 & 18 & 17.6 & 12 & 12.0 & 11 & 11.1 \\
-        K7\_S03 & \xmark & 14 & 15 & 16.1 & 12 & 11.9 & 10 &  8.4 \\
-        K7\_S04 & \xmark & 12 & 14 & 14.0 &  8 &  8.0 &  8 &  6.6 \\
-        K7\_S05 & \xmark & 22 & 21 & 21.0 & 16 & 15.9 & 15 & 14.8 \\
-        K7\_S06 & \xmark & 20 & 18 & 18.0 & 11 & 11.0 & 11 & 11.0 \\
-        K7\_S07 & \cmark & 20 & 16 & 15.4 &  9 & 10.0 &  0 &  0.7 \\
-        K7\_S08 & \xmark & 21 & 19 & 19.0 & 12 & 12.1 & 13 & 12.3 \\
-        K7\_S10 & \xmark & 25 & 21 & 20.8 & 15 & 14.4 & 14 & 14.9 \\
-        K7\_S11 & \xmark &  8 &  1 &  1.0 &  3 &  3.0 &  3 &  3.0 \\
-        K7\_S12 & \xmark & 27 & 22 & 22.9 & 17 & 17.0 & 15 & 14.1 \\
-        K7\_S14 & \xmark & 24 & 22 & 21.9 & 15 & 14.7 & 16 & 14.7 \\
-        K7\_S15 & \xmark & 25 & 24 & 23.9 & 15 & 14.8 & 11 & 11.7 \\
-        K7\_S16 & \xmark & 19 & 17 & 16.1 & 12 & 11.6 & 13 & 13.1 \\
-        K7\_S17 & \xmark & 29 & 26 & 25.0 & 16 & 15.4 & 10 & 10.7 \\
-        K7\_S18 & \cmark & 19 &  5 &  5.0 &  3 &  3.0 &  5 &  6.2 \\
-        K7\_S19 & \xmark & 22 & 12 & 12.8 & 13 & 13.0 & 10 &  9.4 \\
-        K7\_S20 & \xmark &  9 & 17 & 16.9 & 10 & 10.4 & 10 &  9.8 \\
-        K7\_S26 & \xmark & 22 & 15 & 15.6 & 12 & 12.0 & 10 &  9.9 \\
+        K6\_S01 & \cmark & 30 &  1 &  1.0 &  1 &  1.0 & 20 & 17.8 \\
+        K6\_S02 & \xmark & 15 & 15 & 12.6 & 13 & 12.8 & 14 & 14.0 \\
+        K6\_S03 & \xmark & 11 & 10 & 11.5 & 15 & 14.7 &  7 &  8.6 \\
+        K6\_S05 & \xmark & 23 & 21 & 20.3 & 15 & 15.1 & 16 & 14.6 \\
+        K6\_S06 & \cmark & 30 &  1 &  1.0 &  1 &  1.0 & 19 & 16.7 \\
+        K6\_S10 & \xmark & 22 & 20 & 19.4 & 19 & 19.6 & 18 & 18.1 \\
+        K6\_S11 & \xmark &  8 &  5 &  4.9 &  7 &  6.9 &  5 &  5.3 \\
+        K6\_S13 & \xmark &  8 &  8 &  8.0 &  7 &  7.0 &  9 &  9.0 \\
+        K6\_S14 & \cmark &  4 &  2 &  2.0 &  2 &  2.0 &  5 &  5.0 \\
+        K6\_S15 & \xmark & 10 & 12 & 12.0 & 11 & 11.0 & 12 & 12.0 \\
+        K6\_S16 & \xmark &  2 &  0 &  0.0 &  0 &  0.0 &  1 &  1.0 \\
+        K6\_S18 & \xmark & 27 & 22 & 21.9 & 19 & 19.9 & 19 & 19.8 \\
+        K6\_S19 & \xmark & 25 & 23 & 22.0 & 20 & 20.0 & 21 & 20.9 \\
+        K6\_S20 & \cmark & 30 &  7 &  7.0 &  7 &  7.2 & 19 & 18.8 \\
+        K6\_S27 & \xmark &  4 &  3 &  3.0 &  3 &  3.0 &  3 &  3.0 \\
+        K6\_S29 & \xmark & 12 &  8 &  8.0 &  6 &  6.0 &  7 &  7.0 \\
+        K6\_S30 & \xmark & 20 & 18 & 18.0 & 17 & 17.0 & 19 & 18.2 \\
+        K6\_S31 & \xmark & 16 & 20 & 18.8 & 20 & 20.0 & 18 & 18.0 \\
+        K6\_S33 & \xmark & 20 & 18 & 17.3 & 17 & 16.7 & 19 & 19.0 \\
+        K7\_S02 & \xmark & 19 & 18 & 17.6 & 17 & 16.9 & 19 & 19.0 \\
+        K7\_S03 & \xmark & 14 & 15 & 16.1 & 16 & 15.8 & 14 & 14.5 \\
+        K7\_S04 & \xmark & 12 & 14 & 14.0 & 12 & 12.0 & 13 & 12.4 \\
+        K7\_S05 & \xmark & 22 & 21 & 21.0 & 21 & 21.0 & 22 & 21.8 \\
+        K7\_S06 & \xmark & 20 & 18 & 18.0 & 16 & 16.0 & 17 & 17.0 \\
+        K7\_S07 & \cmark & 20 & 16 & 15.4 & 14 & 13.6 &  3 &  3.8 \\
+        K7\_S08 & \xmark & 21 & 19 & 19.0 & 17 & 16.8 & 18 & 18.6 \\
+        K7\_S10 & \xmark & 25 & 21 & 20.8 & 19 & 19.2 & 21 & 21.8 \\
+        K7\_S11 & \xmark &  8 &  1 &  1.0 &  3 &  3.0 &  6 &  6.0 \\
+        K7\_S12 & \xmark & 27 & 22 & 22.9 & 20 & 21.8 & 18 & 20.8 \\
+        K7\_S14 & \xmark & 24 & 22 & 21.9 & 20 & 19.5 & 20 & 21.7 \\
+        K7\_S15 & \xmark & 25 & 24 & 23.9 & 20 & 20.6 & 19 & 18.6 \\
+        K7\_S16 & \xmark & 19 & 17 & 16.1 & 17 & 16.7 & 20 & 19.9 \\
+        K7\_S17 & \xmark & 29 & 26 & 25.0 & 23 & 22.4 & 20 & 18.9 \\
+        K7\_S18 & \cmark & 19 &  5 &  5.0 &  5 &  5.0 &  8 &  9.2 \\
+        K7\_S19 & \xmark & 22 & 12 & 12.8 & 15 & 15.2 & 14 & 16.2 \\
+        K7\_S20 & \xmark &  9 & 17 & 16.9 & 15 & 15.0 & 16 & 16.0 \\
+        K7\_S26 & \xmark & 22 & 15 & 15.6 & 16 & 16.8 & 16 & 16.4 \\
         \bottomrule
     \end{tabular}
     \caption{Manual scores and number of test passes of each project in P1}
@@ -655,12 +656,12 @@ or if no banana touched the bowl while checking if the banana touching the bowl 
         \toprule
                 & 12 & 13 & 14 & 15 & 16 & 17 \\
         \midrule
-        K6\_S02 & \y & \x & \y & \y & \y & \y \\
-        K6\_S03 & \y & \x & \y & \y & \y & \y \\
-        K6\_S05 & \y & \y & \y & \y & \y & \y \\
-        K6\_S10 & \y & \x & \x & \y & \y & \y \\
-        K6\_S11 & \y & \y & \y & \y & \y & \y \\
-        K6\_S13 & \y & \y & \y & \y & \y & \y \\
+        K6\_S02 & \n & \e & \n & \n & \n & \n \\
+        K6\_S03 & \n & \e & \n & \n & \n & \n \\
+        K6\_S05 & \n & \n & \n & \n & \n & \n \\
+        K6\_S10 & \n & \e & \e & \n & \n & \n \\
+        K6\_S11 & \n & \n & \n & \n & \n & \n \\
+        K6\_S13 & \n & \n & \n & \n & \n & \n \\
         \bottomrule
     \end{tabular}
     \setlength{\tabcolsep}{\defaulttabcolsep}
@@ -675,32 +676,31 @@ or if no banana touched the bowl while checking if the banana touching the bowl 
 and Figure~\ref{fig:consistency_per_project_normal} displays the number of inconsistent test cases per project.
 The horizontal lines show the average number of inconsistencies.
 We can observe that some test cases and some projects tend to be rather inconsistent,
-with a maximum of $4$ inconsistent projects ($12.90\%$ of projects) per test case and $4$ inconsistent test cases ($14.29\%$ of test cases) per project.
-However, on average only $0.86$ projects per test case and $0.77$ test cases per project show inconsistent results.
-This amounts to $2.76\%$ of all test-project combinations.
+with a maximum of $6$ inconsistent projects ($19.35\%$ of projects) per test case and $5$ inconsistent test cases ($17.86\%$ of test cases) per project.
+However, on average only $1.28$ projects per test case and $1.65$ test cases per project show inconsistent results.
+This amounts to $4.15\%$ of all test-project combinations.
 
-\subsubsection{Input-Independent / Constraint-Only Test Suite (T2)}
+\subsubsection{Constraint Test Suite (T2)}
 
 Figure~\ref{fig:consistency_constraint} shows the number of inconsistencies for test suite T2.
 We observe fairly similar results to T1.
-The data shows a maximum of $3$ inconsistent projects ($9.68\%$ of projects) per constraint and $3$ inconsistent constraints ($15.00\%$ of constraints) per project.
-On average, $0.85$ projects per constraint and $0.55$ constraints per project show inconsistent results,
-which amounts to $2.74\%$ of all constraint-project pairs.
+The data shows a maximum of $7$ inconsistent projects ($22.58\%$ of projects) per constraint and $4$ inconsistent constraints ($15.38\%$ of constraints) per project.
+On average, $0.96$ projects per constraint and $0.86$ constraints per project show inconsistent results,
+which amounts to $3.10\%$ of all constraint-project pairs.
 
 \subsubsection{Random Input Test Suite (T3)}
 
 Figure~\ref{fig:consistency_random} shows the number of inconsistencies for test suite T3.
-We observed a maximum of $10$ inconsistent projects ($32.23\%$ of projects) per constraint and $5$ inconsistent constraints ($27.78\%$ of constraints) per project.
-On average, $3.72$ projects per constraint and $2.16$ constraints per project show inconsistent results,
-which amounts to $12.00\%$ of all constraint-project pairs.
+We observed a maximum of $9$ inconsistent projects ($29.03\%$ of projects) per constraint and $6$ inconsistent constraints ($23.08\%$ of constraints) per project.
+On average, $1.96$ projects per constraint and $1.65$ constraints per project show inconsistent results,
+which amounts to $6.32\%$ of all constraint-project pairs.
 Since this test suite is non-deterministic,
 this increase in inconsistent outcomes is expected.
-\mnote{TODO: Remove if updated test suite fixed it}
-However, the increase in inconsistent results for constraints 2 and 3 over their similar tests or constraints in the previous test suites is unexpected.
-These constraints deal with the movement of the bowl.
-The number of inconsistencies for the two constraints increased, because they don't take the edges of the screen into account, which prevent the bowl from moving.
-The previous test suites would follow the apple with the bowl, and therefore never touch the edge of the screen with the bowl.
-However, when using randomly generated input, this can easily happen.
+% However, the increase in inconsistent results for constraints 2 and 3 over their similar tests or constraints in the previous test suites is unexpected.
+% These constraints deal with the movement of the bowl.
+% The number of inconsistencies for the two constraints increased, because they don't take the edges of the screen into account, which prevent the bowl from moving.
+% The previous test suites would follow the apple with the bowl, and therefore never touch the edge of the screen with the bowl.
+% However, when using randomly generated input, this can easily happen.
 
 \begin{figure}[htpb]
     \centering
@@ -768,11 +768,12 @@ However, when using randomly generated input, this can easily happen.
     \label{fig:consistency_random}
 \end{figure}
 
-\subsection{Causes for inconsistent test outcomes}
+\subsection{Causes for Inconsistent Test Outcomes}
 
 % \mnote{In the discussion, write that Scratch programs tend to be inconsistent / non-deterministic because of their multimedia nature}
 Inconsistent test outcomes can either be caused by the test case (or constraint) or by the project under test.
-Therefore, we analyzed the inconsistencies of test suite T1 and their cause in Table~\ref{tab:inconsistencies_causes_normal}.
+\mnote{TODO: analyze the rest of inconsistencies}
+Therefore, we analyzed some of the inconsistencies of test suite T1 and their cause in Table~\ref{tab:inconsistencies_causes_normal}.
 Most of them are caused by projects behaving in a non-deterministic manner,
 tough some are caused by test cases themselves.
 We noticed that tests, which deal with the banana sprite, i.e. test cases $13, 14, 23, 24, 25$, are relatively inconsistent.
@@ -1083,7 +1084,7 @@ Here, we only got an average of $47.04\%$ per project on our first run, and $47.
     \label{fig:coverage_no_input_avg}
 \end{figure}
 
-\subsection{Reasons for low coverage on certain projects}
+\subsection{Reasons for Low Coverage on Certain Projects}
 
 Over the ten runs with generated input, we observed \textit{Create Your Own World} and \textit{Memory} consistently having the lowest coverage of the projects.
 A screenshot of both these programs can be seen in Figure~\ref{fig:difficult_code_club_projects}.
@@ -1200,7 +1201,7 @@ and only rarely spikes to higher for short periods of time.
         \centering
         \includegraphics[width=.7\textwidth]{r/time-constraint}
         \vspace{-\medskipamount}
-        \caption{Test suite T2 (input-independent / constraint-only)}
+        \caption{Test suite T2 (constraint)}
     \end{subfigure}
 
     \begin{subfigure}{\textwidth}
@@ -1274,11 +1275,12 @@ In the evaluation, we conducted three separate experiments to examine the useful
 In the first experiment, we analyzed test results of three different test suites.
 We found out, that all of the results consistently show a strong correlation to the manual scores.
 Therefore, we reject the null hypothesis of RQ1.
-We also proved that the input-independent / constraint-only testing approach is able to deliver accurate test results,
+We also proved that the constraint testing approach is able to deliver accurate test results,
 both with deliberate input and with automatically generated input.
 \parspace
 
-We analyzed the flakiness of the test suites and measured a percentage of $2.76\%$ inconsistent project-test combinations for test suite T1, $2.74\%$ for test suite T2, and $12.00\%$ for test suite T3.
+We analyzed the flakiness of the test suites and measured a percentage of $4.15\%$ inconsistent project-test combinations for test suite T1,
+$3.10\%$ for test suite T2, and $6.32\%$ for test suite T3.
 We found several reasons why certain tests and certain programs can be flaky.
 Many inconsistent results were caused by non-deterministic behaviour of the programs under test,
 which may be counteracted in the future by seeding Scratch's random number generator.
