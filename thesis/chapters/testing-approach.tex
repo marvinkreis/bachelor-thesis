@@ -14,7 +14,7 @@ interact with running Scratch programs through Scratch's IO mechanisms.
 Because Scratch's parallel scripts, as well as its lack of code separation, would make testing individual parts of programs difficult,
 we instead chose to test full programs on the level of system tests, and only focus on the program's input and output.
 This raises the question of how to access Scratch's IO.
-Since Scratch's input usually consists of mouse and keyboard input, and its output consists of visual animations and sound,
+Since its input usually consists of mouse and keyboard input, and its output consists of visual animations and sound,
 the IO is not easily accessible in a programmable way.
 To overcome this challenge, we developed an automation utility called Whisker, which acts as a wrapper around Scratch.
 It interacts with Scratch's virtual machine in order to automate its input and output.
@@ -23,6 +23,7 @@ This makes automated testing for Scratch possible.
 % Selenium~\cite{selenium}, a popular tool for automated testing of web sites,
 % uses a similar approach to automate web browsers.
 Figure~\ref{fig:comparison_of_io_mechanisms} illustrates the difference between Scratch's IO mechanisms and Whisker's automated input and output.
+Note that the current version of Whisker does not yet support audio output or Scratch's extensions.
 
 \begin{figure}[htpb]
     \centering
@@ -119,7 +120,7 @@ Without a renderer, some of Scratch's blocks don't work properly.
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=0.85\textwidth]{whisker-gui-big}
+    \includegraphics[width=\textwidth]{whisker-gui-big-upscaled}
     \caption{Screenshot of Whisker's web GUI}
     \label{fig:whisker_gui}
 \end{figure}
@@ -138,7 +139,6 @@ Whisker's own testing framework automatically passes the test driver object to i
 but tests written for other testing frameworks may have to acquire the test driver in their test code.
 Whisker offers an interface to create and configure the test driver object for this purpose.
 Listing~\ref{fig:examples_of_how_to_acquire_the_test_driver} shows code examples for both possibilities.
-\parspace
 
 \begin{listing}[htpb]
     \centering
@@ -429,6 +429,14 @@ A program with missing initialization may be saved in a bad state,
 meaning the program will behave incorrectly the next time it is started.
 Since we restore the same state in the beginning of each test case,
 such a program will always behave incorrectly during the tests although the implementation might be mostly correct.
+\parspace
+
+\textbf{Parallel initialization.}
+Since Scratch runs all ''when green flag is pressed'' scripts in parallel,
+programs tend to mix their initialization with actual program execution.
+This may make it difficult to test initialization,
+since some initialized values may already change while others have not been initialized yet,
+meaning that the program is never in a clean initialized state.
 \parspace
 
 \textbf{Time-displaced events.}

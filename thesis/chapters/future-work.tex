@@ -20,14 +20,11 @@ for which answers may be generated.
     \label{fig:generated_ask_answer}
 \end{figure}
 
-
-\textbf{Simplify tests with helper methods.}
-Tests with Whisker can quickly become quite long and complex.
-Therefore, Whisker should should provide more features that simplify writing tests.
-One task, which currently requires a large amount of code,
-is checking temporal relationships between two events,
-for example ''one second after some sprite touches a border, some variable must be increased''.
-In the future, testing may be simplified greatly by providing methods to handle cases like this.
+\textbf{Seeding randomness.}
+Non-deterministic programs can be problematic for testing since the behaviour of such programs may change from one execution to another.
+This is especially problematic for faulty implementations.
+Bugs may only sometimes cause incorrect behaviour, causing inconsistent test outcomes.
+This may be avoided by seeding the random number generator so it produces the same random numbers for each program execution.
 \parspace
 
 \textbf{Support for audio and Scratch extensions.}
@@ -39,7 +36,6 @@ Adding support for audio as well as extensions in the future would make Whisker 
 \parspace
 
 \textbf{User interface.}
-Another thing to improve, is Whisker's user interface.
 Currently Whisker only has a web GUI, which is accessed through a web browser.
 This interface can be used to test projects in batch, but it still requires manual user interaction to select programs and tests,
 and to save the test report once the test execution finished.
@@ -48,11 +44,19 @@ and to directly save test reports.
 It would also make it possible to run tests in parallel more easily.
 \parspace
 
-\textbf{Seeding randomness.}
-Non-deterministic programs can be problematic for testing since the behaviour of such programs may change from one execution to another.
-This is especially problematic for faulty implementations.
-Bugs may only sometimes cause incorrect behaviour, causing inconsistent test outcomes.
-This may be avoided by seeding the random number generator so it produces the same random numbers for each program execution.
+\textbf{Simplify tests with helper methods.}
+Tests with Whisker can quickly become quite long and complex.
+Therefore, Whisker should should provide more features that simplify writing tests.
+One task, which currently requires a large amount of code,
+is checking temporal relationships between two events,
+for example ''one second after some sprite touches a border, some variable must be increased''.
+In the future, testing may be simplified greatly by providing methods to handle cases like this.
+\parspace
 
-
+% \textbf{Error detection.}
+% Automated testing allows us to automatically detect faults in Scratch programs.
+% The gathered information about the program's faults may be used to detect the error in the program's code.
+% This could be useful in multiple ways.
+% Faulty code could be highlighted or even automatically corrected.
+% \parspace
 

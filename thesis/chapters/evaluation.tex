@@ -263,51 +263,47 @@ In this section, we will describe each of the test suites.
 \begin{table}[htpb]
     \centering
     \scriptsize
+    \mnote{TODO: explanation}
     \begin{tabular}{rl|cr|cr|cr}
         \toprule
-        \texttt{\#} & Specification                                                    & \multicolumn{6}{c}{Covered? (\xmark/\cmark), Test number}                     \\
-                                                                                      && \multicolumn{2}{l|}{T1} & \multicolumn{2}{l|}{T2} & \multicolumn{2}{l}{T3}    \\
+        \texttt{\#} & Specification              & \multicolumn{6}{c}{Covered?, Test Number}                     \\
+                                                && \multicolumn{2}{l|}{T1} & \multicolumn{2}{l|}{T2} & \multicolumn{2}{l}{T3}    \\
         \midrule
            & \textbf{Initialization} &&&&&&\\
-         1 & Timer starts at 30 seconds and score starts at 0                          & \cmark & 1  & \xmark                    &    & \xmark                    &    \\
-         2 & Bowl starts at $X = 0$ / $Y = -145$                                       & \cmark & 2  & \xmark                    &    & \xmark                    &    \\
-         3 & Fruits have a size of 50\%                                                & \cmark & 3  & \cmark                    & 1  & \cmark                    & 1  \\[\medskipamount]
+         1 & Timer starts at 30 seconds and score starts at 0                          & \cmark & 1  & \cmark & 1  & \cmark & 1  \\
+         2 & Bowl starts at $X = 0$ / $Y = -145$                                       & \cmark & 2  & \cmark & 2  & \cmark & 2  \\
+         3 & Fruits have a size of 50\%                                                & \cmark & 3  & \cmark & 3  & \cmark & 3  \\[\medskipamount]
            & \textbf{Bowl Movement} &&&&&&\\
-         4 & Bowl moves left/right when corresponding arrow key is pressed             & \cmark & 4  & \cmark                    & 2  & \cmark                    & 2  \\
-         5 & Bowl can only move horizontally with a speed of 10                        & \cmark & 5  & \cmark                    & 3  & \cmark                    & 3  \\[\medskipamount]
+         4 & Bowl moves left/right when corresponding arrow key is pressed             & \cmark & 4  & \cmark & 4  & \cmark & 4  \\
+         5 & Bowl can only move horizontally with a speed of 10                        & \cmark & 5  & \cmark & 5  & \cmark & 5  \\[\medskipamount]
            & \textbf{Fruit Falling} &&&&&&\\
-         6 & Apples fall down                                                          & \cmark & 6  & \textasteriskcentered$^1$ &    & \textasteriskcentered$^1$ &    \\
-         7 & Apples fall in a straight line with a speed of -5                         & \cmark & 7  & \cmark                    & 4  & \cmark                    & 4  \\
-         8 & Bananas fall down                                                         & \cmark & 8  & \textasteriskcentered$^2$ &    & \textasteriskcentered$^2$ &    \\
-         9 & Bananas fall in a straight line with a speed of -7                        & \cmark & 9  & \cmark                    & 5  & \cmark                    & 5  \\[\medskipamount]
+         6 & Apples fall down                                                          & \cmark & 6  & \cmark & 6  & \cmark & 6  \\
+         7 & Apples fall in a straight line with a speed of -5                         & \cmark & 7  & \cmark & 7  & \cmark & 7  \\
+         8 & Bananas fall down                                                         & \cmark & 8  & \cmark & 8  & \cmark & 8  \\
+         9 & Bananas fall in a straight line with a speed of -7                        & \cmark & 9  & \cmark & 9  & \cmark & 9  \\[\medskipamount]
            & \textbf{Fruit Spawn} &&&&&&\\
-        10 & Apples spawn again at the top of the screen after touching the bowl       & \cmark & 10 & \textasteriskcentered$^3$ &    & \textasteriskcentered$^3$ &    \\
-        11 & Apples spawn at random $X$ positions                                      & \cmark & 11 & \cmark                    & 6  & \cmark                    & 6  \\
-        12 & Apples spawn at $Y = 170$                                                 & \cmark & 12 & \cmark                    & 7  & \cmark                    & 7  \\
-        13 & Bananas spawn again at the top of the screen after touching the bowl      & \cmark & 13 & \textasteriskcentered$^4$ &    & \textasteriskcentered$^4$ &    \\
-        14 & Bananas spawn at random $X$ positions                                     & \cmark & 14 & \cmark                    & 8  & \cmark                    & 8  \\
-        15 & Bananas spawn at $Y = 170$                                                & \cmark & 15 & \cmark                    & 9  & \cmark                    & 9  \\
-        16 & Only one apple must fall down at a time                                   & \cmark & 16 & \cmark                    & 10 & \cmark                    & 10 \\
-        17 & Only one banana must fall down at a time                                  & \cmark & 17 & \cmark                    & 11 & \cmark                    & 11 \\
-        18 & Banana must wait for a second before falling down in the beginning        & \cmark & 18 & \xmark                    &    & \xmark                    &    \\
-        19 & Banana must wait for a second before falling down after displaying ''-8'' & \cmark & 19 & \xmark                    &    & \xmark                    &    \\[\medskipamount]
+        10 & Apples spawn again at the top of the screen after touching the bowl       & \cmark & 10 & \cmark & 10 & \cmark & 10  \\
+        11 & Apples spawn at random $X$ positions                                      & \cmark & 11 & \cmark & 11 & \cmark & 11 \\
+        12 & Apples spawn at $Y = 170$                                                 & \cmark & 12 & \cmark & 12 & \cmark & 12 \\
+        13 & Bananas spawn again at the top of the screen after touching the bowl      & \cmark & 13 & \cmark & 13 & \cmark & 13 \\
+        14 & Bananas spawn at random $X$ positions                                     & \cmark & 14 & \cmark & 14 & \cmark & 14 \\
+        15 & Bananas spawn at $Y = 170$                                                & \cmark & 15 & \cmark & 15 & \cmark & 15 \\
+        16 & Only one apple must fall down at a time                                   & \cmark & 16 & \cmark & 16 & \cmark & 16 \\
+        17 & Only one banana must fall down at a time                                  & \cmark & 17 & \cmark & 17 & \cmark & 17 \\
+        18 & Banana must wait for a second before falling down in the beginning        & \cmark & 18 & \xmark & 18 & \cmark & 18 \\
+        19 & Banana must wait for a second before falling down after displaying ''-8'' & \cmark & 19 & \xmark & 19 & \cmark & 19 \\[\medskipamount]
            & \textbf{Fruit Interaction} &&&&&&\\
-        20 & Apple gives 5 points when it touches the bowl                             & \cmark & 20 & \cmark                    & 12 & \cmark                    & 12 \\
-        21 & Game over when the apple touches the ground                               & \cmark & 21 & \textasteriskcentered$^5$ & 13 & \cmark                    & 13 \\
-        22 & Apple displays ''Game Over!'' message when it touches the ground          & \cmark & 22 & \textasteriskcentered$^5$ & 14 & \cmark                    & 14 \\
-        23 & Banana gives 8 points when it touches the bowl                            & \cmark & 23 & \cmark                    & 15 & \cmark                    & 15 \\
-        24 & Banana subtracts 8 points when it touches the ground                      & \cmark & 24 & \cmark                    & 16 & \cmark                    & 16 \\
-        25 & Banana displays ''-8'' message when it touches the ground                 & \cmark & 25 & \cmark                    & 17 & \cmark                    & 17 \\[\medskipamount]
+        20 & Apple gives 5 points when it touches the bowl                             & \cmark & 20 & \cmark & 20 & \cmark & 20 \\
+        21 & Game over when the apple touches the ground                               & \cmark & 21 & \xmark &    & \cmark & 21 \\
+        22 & Apple displays ''Game Over!'' message when it touches the ground          & \cmark & 22 & \xmark &    & \cmark & 22 \\
+        23 & Banana gives 8 points when it touches the bowl                            & \cmark & 23 & \cmark & 21 & \cmark & 23 \\
+        24 & Banana subtracts 8 points when it touches the ground                      & \cmark & 24 & \cmark & 22 & \cmark & 24 \\
+        25 & Banana displays ''-8'' message when it touches the ground                 & \cmark & 25 & \cmark & 23 & \cmark & 25 \\[\medskipamount]
            & \textbf{Timer} &&&&&&\\
-        26 & Timer ticks down                                                          & \cmark & 26 & \cmark                    & 18 & \cmark                    & 18 \\
-        27 & Game stops when timer reaches 0                                           & \cmark & 27 & \cmark                    & 19 & \xmark                    &    \\
-        28 & Bowl must display ''Ende!'' message when timer reaches 0                  & \cmark & 28 & \cmark                    & 20 & \xmark                    &    \\
-        \bottomrule \\
-        \multicolumn{1}{r}{\textasteriskcentered$^1$} & \multicolumn{1}{l}{Not covered directly, because indirectly covered by (7)        } \\
-        \multicolumn{1}{r}{\textasteriskcentered$^2$} & \multicolumn{1}{l}{Not covered directly, because indirectly covered by (9)        } \\
-        \multicolumn{1}{r}{\textasteriskcentered$^3$} & \multicolumn{1}{l}{Not covered directly, because indirectly covered by (11), (12) } \\
-        \multicolumn{1}{r}{\textasteriskcentered$^4$} & \multicolumn{1}{l}{Not covered directly, because indirectly covered by (14), (15) } \\
-        \multicolumn{1}{r}{\textasteriskcentered$^5$} & \multicolumn{1}{l}{Covered, but game over through apple not expected to happen    } \\
+        26 & Timer ticks down                                                          & \cmark & 26 & \cmark & 24 & \cmark & 26 \\
+        27 & Game stops when timer reaches 0                                           & \cmark & 27 & \cmark & 25 & \xmark &    \\
+        28 & Bowl must display ''Ende!'' message when timer reaches 0                  & \cmark & 28 & \cmark & 26 & \xmark &    \\
+        \bottomrule
     \end{tabular}
 
     \caption{Project specifications and their coverage by the test suites}
@@ -454,7 +450,7 @@ We chose to simulate random inputs with a duration between $50\text{ms}$ and $10
 \section{RQ1: Accuracy of Test Results}
 \label{sec:rq1}
 
-In this part of the evaluation, we will answer the following research question:
+In this section, we will answer the following research question:
 
 \begin{center}\begin{minipage}{.9\textwidth}
     \textbf{RQ1: Can automated testing produce test results that are accurate enough for manual grading?}
@@ -865,7 +861,8 @@ A banana only subtracts points when it touches the ground, while an apple ends t
     \label{tab:inconsistencies_causes_normal}
 \end{table}
 
-%        1 2 3 4 5 6 7 8 9 1  11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27
+% current
+%        1 2 3 4 5 6 7 8 9 1  11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28
 % K6_S02                             1                                         1
 % K6_S03               1             1
 % K6_S05                                                  1        1  1  1
@@ -898,10 +895,44 @@ A banana only subtracts points when it touches the ground, while an apple ends t
 % K7_S20
 % K7_S26
 
+% new
+%        1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28
+% K6_S02                    1        1                                         1
+% K6_S03               1    1        1                                         1
+% K6_S05                                                  1        1  1  1
+% K6_S10                             1  1
+% K6_S11 1
+% K6_S13
+% K6_S15
+% K6_S16
+% K6_S18
+% K6_S19                                                           1           1
+% K6_S27
+% K6_S29
+% K6_S30
+% K6_S31                    1        1                             1        1
+% K6_S33       1       1    1        1                                      1
+% K7_S02                                                     1                 1
+% K7_S03                             1
+% K7_S04
+% K7_S05
+% K7_S06
+% K7_S08
+% K7_S10                                                     1
+% K7_S11
+% K7_S12                                1
+% K7_S14                       1
+% K7_S15
+% K7_S16       1
+% K7_S17                                               1     1     1  1
+% K7_S19
+% K7_S20
+% K7_S26
+
 \section{RQ3: Automated Input Generation}
 \label{sec:rq3}
 
-For this part of the evaluation, we will consider following research question:
+In this section, we will answer the following research question:
 
 \begin{center}\begin{minipage}{.9\textwidth}
     \textbf{RQ3: What statement coverage can be achieved by controlling Scratch programs with automatically generated input?}
@@ -953,8 +984,6 @@ which saves the current statement coverage of the program and outputs all saved 
                     await t.runUntil(() => t.getTotalTimeElapsed() >= timestamp);
                     t.logCoverage(timestamp, t.isProjectRunning());
                 }
-
-                t.end();
             }
         \end{javascriptcode}
     \end{minipage}
@@ -1054,50 +1083,50 @@ Here, we only got an average of $47.04\%$ per project on our first run, and $47.
     \label{fig:coverage_no_input_avg}
 \end{figure}
 
-% \subsection{Reasons for low coverage on certain projects}
-%
-% Over the ten runs with generated input, we observed ''Create Your Own World'' and ''Memory'' to consistently have the lowest coverage of the projects.
-% % A screenshot of both these programs can be seen in Figure~\ref{fig:difficult_code_club_projects}.
-% We are going to take a quick look at the reasons, why these projects are difficult to cover by using random input.
-%
-% \begin{itemize}
-%     \item ''Create Your Own World'' implements a little adventure game with a player sprite, which starts on the left of the screen and is able to move through several rooms through a portal on the right side of the screen.
-%         This project is difficult to cover, because the sprite needs to move a long way in one direction, to reach a screen transition.
-%         But because each arrow key has equal probability to be simulated by Whisker, the sprite will likely only hover over a small area around its start position.
-%     \item In ''Memory'' the player can hit 4 different colored drums.
-%         The player has to hit them in an order, which is randomly determined by the program.
-%         If the player hits one drum incorrectly, which includes hitting a drum while no sequence is active, the game goes into a game over state,
-%         and can only be restarted by pressing the green flag.
-%         Therefore, using random inputs quickly results in an irrecoverable game over,
-%         because a wrong drum is hit, which renders much of the program's code unreachable.
-% \end{itemize}
+\subsection{Reasons for low coverage on certain projects}
 
-% \begin{figure}[htpb]
-%     \centering
-%
-%     \begin{subfigure}{.3\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{code-club-create-your-own-world}
-%         \caption{Create Your Own World}
-%     \end{subfigure}
-%     \hspace{1mm}
-%     \begin{subfigure}{.3\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{code-club-memory}
-%         \caption{Memory}
-%     \end{subfigure}%
-%
-%     \caption{Difficult to cover Code Club projects}
-%     \label{fig:difficult_code_club_projects}
-% \end{figure}
+Over the ten runs with generated input, we observed \textit{Create Your Own World} and \textit{Memory} consistently having the lowest coverage of the projects.
+A screenshot of both these programs can be seen in Figure~\ref{fig:difficult_code_club_projects}.
+We are going to take a quick look at the reasons, why these projects are difficult to cover using random input.
+
+\begin{itemize}
+    \item \textit{Create Your Own World} implements a little adventure game with a player sprite that is moved using the arrow keys.
+        The player starts on the left of the screen and is able to move through several rooms using a portal on the right side of the screen.
+        This project is difficult to cover, because the sprite needs to move a long way in one direction to reach a screen transition.
+        But since each arrow key has equal probability to be simulated by Whisker, the sprite is more likely to only hover over a small area around its start position.
+    \item In \textit{Memory} the player has to hit 4 different colored drums in an order that is randomly determined by the program.
+        If the player hits one drum incorrectly, which includes hitting a drum while no sequence is active,
+        the game goes into a game over state and can only be restarted by pressing the green flag.
+        Therefore, using random inputs quickly results in an irrecoverable game over,
+        because a wrong drum is hit, which renders much of the program's code unreachable.
+\end{itemize}
+
+\begin{figure}[htpb]
+    \centering
+
+    \begin{subfigure}{.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{code-club-create-your-own-world}
+        \caption{Create Your Own World}
+    \end{subfigure}
+    \hspace{1mm}
+    \begin{subfigure}{.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{code-club-memory}
+        \caption{Memory}
+    \end{subfigure}%
+
+    \caption{Difficult to cover Code Club projects}
+    \label{fig:difficult_code_club_projects}
+\end{figure}
 
 \section{RQ4: Interference with Programs Under Test}
 \label{sec:rq4}
 
-In the following section, we want to answer the following research question:
+In this section, we will answer the following research question:
 
 \begin{center}\begin{minipage}{.9\textwidth}
-    \textbf{RQ3: Does the testing process slow down the program under test?}
+    \textbf{RQ4: Does the testing process slow down the program under test?}
 \end{minipage}\end{center}
 
 \noindent Since JavaScript is executed in a single-threaded environment,
@@ -1249,14 +1278,16 @@ We also proved that the input-independent / constraint-only testing approach is 
 both with deliberate input and with automatically generated input.
 \parspace
 
-We analyzed the flakiness of the test suites and found several reasons
-why certain tests and certain programs can be inconsistent.
-We measured a percentage of $2.76\%$ inconsistent project-test combinations for test suite T1, $2.74\%$ for test suite T2, and $12.00\%$ for test suite T3.
-We suspect that simpler programs can be tested with much fewer inconsistencies.
+We analyzed the flakiness of the test suites and measured a percentage of $2.76\%$ inconsistent project-test combinations for test suite T1, $2.74\%$ for test suite T2, and $12.00\%$ for test suite T3.
+We found several reasons why certain tests and certain programs can be flaky.
+Many inconsistent results were caused by non-deterministic behaviour of the programs under test,
+which may be counteracted in the future by seeding Scratch's random number generator.
+% We suspect that simpler programs can be tested with much fewer inconsistencies.
 At the same time, more experience in automated testing for Scratch will lead to more robust and less flaky test suites.
-The test suites we used were written during development of Whisker and therefore had some more or less obvious flaws,
+The test suites we used were written early during development of Whisker and were not changed much afterwards.
+Therefore, test suites had some more or less obvious flaws,
 some of which can be seen in Table~\ref{tab:inconsistencies_causes_normal}.
-Of course, tests that involve randomly generated input show a higher number of inconsistent outcomes,
+And of course, tests that involve randomly generated input show a higher number of inconsistent outcomes,
 since the tests themselves are non-deterministic.
 \parspace
 

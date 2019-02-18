@@ -102,7 +102,7 @@ It runs the program's threads, which each execute one instance of a script, sequ
 If some visual change occurs, i.e. when a sprite changes appearance or position, a redraw is requested,
 and the program execution step is stopped earlier (in turbo mode redraw requests are ignored).
 Whenever a script is triggered by its hat, a new thread is spawned.
-Figure~\ref{fig:simplified_scratch_step} shows a simplified version of this procedure.
+Figure~\ref{lst:simplified_scratch_step} shows a simplified version of this procedure.
 \parspace
 
 \begin{listing}[htpb]
@@ -160,7 +160,7 @@ Figure~\ref{fig:simplified_scratch_step} shows a simplified version of this proc
         \caption{Simplified \texttt{stepThreads} function from the \texttt{Sequencer} class}
     \end{subfigure}
     \caption{Simplified Scratch step procedure}
-    \label{fig:simplified_scratch_step}
+    \label{lst:simplified_scratch_step}
 \end{listing}
 
 For the purpose of controlling the execution of the program, and to run multiple functions alongside the step loop,
@@ -219,17 +219,17 @@ which queues and periodically executes functions in a fixed frequency using Java
 Whenever a test runs the Scratch program,
 the \texttt{Stepper} is used to execute Whisker's own \texttt{step} function periodically,
 until the execution is done.
-Listing~\ref{fig:run_method_excerpt} shows an except of Whisker's run method,
+Listing~\ref{lst:run_method_excerpt} shows an except of Whisker's run method,
 in which the step loop is implemented.
 Although the Scratch program has to be run asynchronously, we use JavaScript's \texttt{Promise} API to make running the program seem like a normal method call.
 Tests are declared as \texttt{async functions}, so they can use the \texttt{await} keyword to wait until a run of the program is done.
 Otherwise, other test code would continue to be executed while the JavaScript engine waits for the next Scratch step.
-Figure~\ref{fig:promise_api_example} presents a code example for this.
+Figure~\ref{lst:promise_api_example} presents a code example for this.
 Whisker prevents multiple runs of the Scratch program at the same time by throwing an error,
 when a run of the program is being started, while another one is still going on.
 \parspace
 
-\begin{figure}[htpb]
+\begin{listing}[htpb]
     \centering
 
     \begin{minipage}{.9\textwidth}
@@ -249,8 +249,8 @@ when a run of the program is being started, while another one is still going on.
     \end{minipage}
 
     \caption{Excerpt from Whisker's run method}
-    \label{fig:run_method_excerpt}
-\end{figure}
+    \label{lst:run_method_excerpt}
+\end{listing}
 
 \begin{listing}[htpb]
     \centering
@@ -268,7 +268,7 @@ when a run of the program is being started, while another one is still going on.
     \end{minipage}
 
     \caption{Using JavaScript's Promise API to wait for runs}
-    \label{fig:promise_api_example}
+    \label{lst:promise_api_example}
 \end{listing}
 
 Running other code before and after Scratch's step could theoretically be problematic in a single-threaded environment like JavaScript,
@@ -520,29 +520,27 @@ or ignore the constraint failure entirely.
 \section{Coverage Measurement}
 \label{sec:coverage_measurement}
 
-\mnote{TODO: only works with Scratch 3.0 projects, TODO: explain that Whisker does Coverage measurement earlier}
+\mnote{TODO: explain that Whisker does Coverage measurement earlier}
 
-Whisker can measure statement coverage on a Scratch program.
+Whisker can be used to measure statement coverage.
 It does this by temporarily modifying Scratch's \texttt{Thread} class.
 This class has two methods, \texttt{pushStack} and \texttt{reuseStackForNextBlock},
-which push blocks onto the execution stack.
+which put blocks onto the execution stack.
 Whisker intercepts these methods by replacing them with a version
 that saves the unique id of the executed blocks and then calls the respective original method.
 This way, Whisker can track which blocks are executed by the program.
 \parspace
 
 In order to calculate the coverage, we also need a complete list of the program's blocks.
-To compose this list, Whisker traverses all scripts of the program,
+To compose this list, Whisker traverses all scripts of the program
 and saves each block's unique id.
 Because Whisker traverses the scripts, blocks which are not part of a script with a hat
 are ignored for the coverage measurement.
-This is not a problem, since these blocks will never be covered anyways,
-because they are not reachable by the program.
-\parspace
-
+This is not a problem, since these blocks are not reachable by the program anyways.
+Whisker considers all reachable control structure blocks, statement blocks and hats for the statement coverage.
 Coverage is measured per sprite, and program wide coverage can simply be calculated from the per-sprite coverage.
-Listing~\ref{fig:example_coverage_report} shows an example coverage report.
-Listing~\ref{fig:measuring_coverage} gives a code example of how to measure statement coverage with Whisker.%
+Listing~\ref{fig:example_coverage_report} shows an example coverage report and
+Listing~\ref{fig:measuring_coverage} gives a code example of how to measure statement coverage with Whisker.
 \parspace
 
 \begin{listing}[htpb]
@@ -562,6 +560,12 @@ Listing~\ref{fig:measuring_coverage} gives a code example of how to measure stat
     \caption{Example coverage report}
     \label{fig:example_coverage_report}
 \end{listing}
+
+Currently, coverage measurement can only be performed on Scratch 3.0 (.sb3) projects,
+since earlier projects don't save the unique id of each block.
+However, this is not a problem since older Scratch programs can simply be converted to Scratch 3.0 projects by
+opening them in Scratch 3.0 and saving them.
+\parspace
 
 % \begin{enumerate}[(1)]
 %     \item \texttt{prepareThread} replaces methods in \texttt{Thread}, so coverage can be tracked.
