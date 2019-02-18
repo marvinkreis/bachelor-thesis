@@ -1,21 +1,27 @@
 id,name,status,message
-1,Fruit Size Constraint,pass,
-2,Bowl Movement Constraint,fail,Bowl must move left when left arrow key is pressed.
-3,Bowl Movement Details Constraint,fail,Bowl must move left with a speed of 10 when left arrow key is pressed.
-4,Apple Falling Details,fail,Apple must fall down in steps of size 5.
-5,Banana Falling Details,fail,Banana must fall down in steps of size 7.
-6,Apple Spawn Random X Position Constraint,skip,Too few apples spawned.
-7,Apple Spawn Y Position Constraint,skip,Too few apples spawned.
-8,Banana Spawn Random X Position Constraint,skip,Too few bananas spawned.
-9,Banana Spawn Y Position Constraint,skip,Too few bananas spawned.
-10,Only One Apple Constraint,skip,Too few apples spawned.
-11,Only One Banana Constraint,skip,Too few bananas spawned.
-12,Apple Points Constraint,skip,Apple did not touch the bowl.
-13,Apple Game Over Constraint,pass,
-14,Apple Game Over Message Constraint,pass,
-15,Banana Bowl Points Constraint,skip,Banana did not touch the bowl.
-16,Banana Ground Points Constraint,fail,Bananas must subtract 8 points when they hit the floor.
-17,Banana Ground Message Constraint,fail,Banana must display a message when it hits the ground.
-18,Timer Tick Constraint,skip,Timer did not tick at all.
-19,Timer Game Over Constraint,fail,The game must run for at least 20 seconds.
-20,Timer Game Over Message Constraint,fail,Bowl must display a message after 30 seconds.
+1,Timer Initialization Constraint,fail,Timer must start at 30
+2,Bowl Initialization Constraint,fail,
+3,Fruit Size Constraint,pass,
+4,Bowl Movement Constraint,fail,Bowl must move right when right arrow key is pressed.
+5,Bowl Movement Details Constraint,fail,Bowl must move left with a speed of 10 when left arrow key is pressed.
+6,Apple Falling Constraint,pass,
+7,Apple Falling Details,fail,Apple must fall down in steps of size 5.
+8,Banana Falling Constraint,pass,
+9,Banana Falling Details,fail,Banana must fall down in steps of size 7.
+10,Apple Spawn Constraint,fail,
+11,Apple Spawn Random X Position Constraint,skip,Too few apples spawned.
+12,Apple Spawn Y Position Constraint,skip,Too few apples spawned.
+13,Banana Spawn Constraint,fail,
+14,Banana Spawn Random X Position Constraint,skip,Too few bananas spawned.
+15,Banana Spawn Y Position Constraint,skip,Too few bananas spawned.
+16,Only One Apple Constraint,skip,Too few apples spawned.
+17,Only One Banana Constraint,skip,Too few bananas spawned.
+18,Banana Beginning Delay Constraint,fail,Banana must not fall in the first second.
+19,Banana Respawn Delay Constraint,fail,
+20,Apple Points Constraint,skip,Apple points could not be checked.
+21,Banana Bowl Points Constraint,skip,Banana bowl points could not be checked.
+22,Banana Ground Points Constraint,skip,Banana ground points could not be checked.
+23,Banana Ground Message Constraint,skip,Banana ground message could not be checked.
+24,Timer Tick Constraint,skip,Timer did not tick at all.
+25,Timer Game Over Constraint,skip,Program did not run long enough.
+26,Timer Game Over Message Constraint,skip,Program did not run long enough

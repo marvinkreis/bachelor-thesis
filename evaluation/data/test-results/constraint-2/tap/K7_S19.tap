@@ -5,85 +5,109 @@ ok 1 - Test
   ---
   log:
     - id: 1
-      name: Fruit Size Constraint
+      name: Timer Initialization Constraint
       status: pass
       message: ''
     - id: 2
+      name: Bowl Initialization Constraint
+      status: fail
+      message: ''
+    - id: 3
+      name: Fruit Size Constraint
+      status: pass
+      message: ''
+    - id: 4
       name: Bowl Movement Constraint
       status: pass
       message: ''
-    - id: 3
+    - id: 5
       name: Bowl Movement Details Constraint
       status: fail
       message: Bowl must move right with a speed of 10 when right arrow key is pressed.
-    - id: 4
-      name: Apple Falling Details
-      status: pass
-      message: ''
-    - id: 5
-      name: Banana Falling Details
-      status: fail
-      message: Banana must fall down in steps of size 7.
     - id: 6
-      name: Apple Spawn Random X Position Constraint
+      name: Apple Falling Constraint
       status: pass
       message: ''
     - id: 7
-      name: Apple Spawn Y Position Constraint
+      name: Apple Falling Details
       status: pass
       message: ''
     - id: 8
-      name: Banana Spawn Random X Position Constraint
+      name: Banana Falling Constraint
       status: pass
       message: ''
     - id: 9
-      name: Banana Spawn Y Position Constraint
-      status: pass
-      message: ''
+      name: Banana Falling Details
+      status: fail
+      message: Banana must fall down in steps of size 7.
     - id: 10
-      name: Only One Apple Constraint
+      name: Apple Spawn Constraint
       status: pass
       message: ''
     - id: 11
-      name: Only One Banana Constraint
+      name: Apple Spawn Random X Position Constraint
       status: pass
       message: ''
     - id: 12
-      name: Apple Points Constraint
+      name: Apple Spawn Y Position Constraint
       status: pass
       message: ''
     - id: 13
-      name: Apple Game Over Constraint
-      status: fail
-      message: Score must not change after game is over (should be over).
+      name: Banana Spawn Constraint
+      status: pass
+      message: ''
     - id: 14
-      name: Apple Game Over Message Constraint
-      status: fail
-      message: Apple must display a message if it hits the ground.
+      name: Banana Spawn Random X Position Constraint
+      status: pass
+      message: ''
     - id: 15
-      name: Banana Bowl Points Constraint
+      name: Banana Spawn Y Position Constraint
       status: pass
       message: ''
     - id: 16
-      name: Banana Ground Points Constraint
+      name: Only One Apple Constraint
       status: pass
       message: ''
     - id: 17
-      name: Banana Ground Message Constraint
+      name: Only One Banana Constraint
       status: pass
       message: ''
     - id: 18
-      name: Timer Tick Constraint
+      name: Banana Beginning Delay Constraint
       status: fail
-      message: Time must only tick down.
+      message: Banana must be invisible for the first second.
     - id: 19
-      name: Timer Game Over Constraint
+      name: Banana Respawn Delay Constraint
       status: fail
-      message: Time must not change after game is over (should be over).
+      message: ''
     - id: 20
+      name: Apple Points Constraint
+      status: skip
+      message: Apple points could not be checked.
+    - id: 21
+      name: Banana Bowl Points Constraint
+      status: skip
+      message: Banana bowl points could not be checked.
+    - id: 22
+      name: Banana Ground Points Constraint
+      status: skip
+      message: Banana ground points could not be checked.
+    - id: 23
+      name: Banana Ground Message Constraint
+      status: skip
+      message: Banana ground message could not be checked.
+    - id: 24
+      name: Timer Tick Constraint
+      status: pass
+      message: ''
+    - id: 25
+      name: Timer Game Over Constraint
+      status: skip
+      message: Program did not run long enough.
+    - id: 26
       name: Timer Game Over Message Constraint
-      status: fail
-      message: Bowl must not display a message before 20 seconds.
+      status: skip
+      message: Program did not run long enough
   ...
 # summary:
 #   tests: 1

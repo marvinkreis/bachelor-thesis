@@ -11,14 +11,14 @@ source("scripts/annotate-plot.R");
 ids = projects.intersect;
 
 # The names of the data sets for which to make scatter plots for
-data_sets = list(normal = paste("normal-", 0:9, sep=""),
-                 constraint = paste("constraint-", 0:9, sep=""),
-                 random = paste("random-", 0:9, sep=""));
+data_sets = list("normal" = paste("normal-", 0:9, sep=""),
+                 "constraint" = paste("constraint-", 0:9, sep=""),
+                 "random" = paste("random-", 0:9, sep=""));
 
 make_scatter_plot = function(data, name) {
     excluded = which(data$excluded == FALSE);
-    correlation = cor(data$points, data$passes);
-    correlation_excluded = cor(data$points[excluded], data$passes[excluded])
+    correlation = cor.test(data$points, data$passes);
+    correlation_excluded = cor.test(data$points[excluded], data$passes[excluded])
 
     if (grepl("normal", name)) {
         test_name = "Test";
@@ -28,8 +28,10 @@ make_scatter_plot = function(data, name) {
 
     print(name);
     print(data);
-    print(correlation);
-    print(correlation_excluded);
+    print("with excluded:");
+    print(paste("r =", correlation[["estimate"]], "p-value =", correlation[["p.value"]]));
+    print("without excluded:");
+    print(paste("r =", correlation_excluded[["estimate"]], "p-value =", correlation_excluded[["p.value"]]));
 
     scatter = ggplot(data = data, aes(x = points, y = passes, color = coverage, shape = excluded)) +
         geom_point(size = 3) +
@@ -40,11 +42,16 @@ make_scatter_plot = function(data, name) {
         labs(x = "Points (Manual Evaluation)", y = paste(test_name, "Passes"), shape = "", color = "Coverage") +
         theme_light();
 
-    label = paste("without excluded projects:\nr = ", format(round(correlation_excluded, digits = 3), nsmall = 3), "\n",
-                  "with excluded projects:\nr = ", format(round(correlation, digits = 3), nsmall = 3), sep = "");
+    label = paste("without excluded projects:\n",
+                  "r = ", format(correlation_excluded[["estimate"]], digits = 3, nsmall = 3), " ",
+                  "(p-value = ", format(correlation_excluded[["p.value"]], digits = 3, nsmall = 3, scientific = TRUE), ")\n",
+                  "with excluded projects:\n",
+                  "r = ", format(correlation[["estimate"]], digits = 3, nsmall = 3), " ",
+                  "(p-value = ", format(correlation[["p.value"]], digits = 3, nsmall = 3, scientific = TRUE), ")",
+                   sep = "");
     scatter = annotate_plot(scatter, label, 2);
 
-    ggsave(paste("scatter-", name, ".pdf", sep=""), plot = scatter, width = 14.5, height = 10, units = "cm");
+    ggsave(paste("scatter-", name, ".pdf", sep=""), plot = scatter, width = 15, height = 10, units = "cm");
 }
 
 main = function () {

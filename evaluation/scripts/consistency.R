@@ -8,24 +8,23 @@ source("scripts/read-data.R");
 ids = projects.filtered;
 
 # The names of the data sets for which to make scatter plots for
-data_sets = list(normal = paste("normal-", 1:7, sep=""),
-                 constraint = paste("constraint-", 4:7, sep=""),
-                 random = paste("random-", 0:9, sep=""));
+data_sets = list("normal" = paste("normal-", 0:9, sep=""),
+                 "constraint" = paste("constraint-", 0:9, sep=""),
+                 "random" = paste("random-", 0:9, sep=""));
 
 
 percent_format = function(total) {
     function(x) paste(x, " (", round(x * 100 / total), "%)", sep = "");
 }
 
-make_bar_plot = function(data, total, xlabel, file_name) {
-
+make_bar_plot = function(data, total, xlabel, ylabel, file_name) {
     bar = ggplot(data = data, aes(x = items, y = inconsistencies)) +
           geom_col(width = 0.8) +
           geom_hline(aes(yintercept = mean(inconsistencies))) +
           scale_y_continuous(breaks = 0:10, labels = percent_format(total)) +
-          labs(x = xlabel, y = "Inconsistencies") +
+          labs(x = xlabel, y = ylabel) +
           theme_light() +
-          theme(text = element_text(size=10), axis.text.x = element_text(size = 6, angle = 90, hjust = 1));
+          theme(text = element_text(size=9), axis.text.x = element_text(size = 6, angle = 90, hjust = 1));
     ggsave(file_name, plot = bar, width = 12.5, height = 5, units = "cm");
 }
 
@@ -84,14 +83,14 @@ main = function() {
         data = data.frame(inconsistencies = inconsistencies_per_project,
                           items = names(inconsistencies_per_project));
         file_name = paste("consistency-per-project-", set_name, ".pdf", sep="")
-        make_bar_plot(data, num_tests, "Project", file_name);
+        make_bar_plot(data, num_tests, "Project", paste("Inconsistent ", test_name, "s", sep = ""), file_name);
 
         inconsistencies_per_test = colSums(differences);
         inconsistencies_per_test = inconsistencies_per_test[order(as.numeric(names(inconsistencies_per_test)))];
         data = data.frame(inconsistencies = inconsistencies_per_test,
                           items = reorder(as.numeric(names(inconsistencies_per_test)), as.numeric(names(inconsistencies_per_test))));
         file_name = paste("consistency-per-test-", set_name, ".pdf", sep="")
-        make_bar_plot(data, num_projects, test_name, file_name);
+        make_bar_plot(data, num_projects, test_name, "Inconsistent Projects", file_name);
 
         print(set_name);
         print("");

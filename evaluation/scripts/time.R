@@ -5,10 +5,6 @@ library(ggplot2);
 source("scripts/read-data.R");
 source("scripts/annotate-plot.R");
 
-
-
-#max_time = sum(lapply(csvs.time[[set_name]], function(x) x[1:len]));
-
 data_sets = c("normal-pc",
               "normal-laptop",
               "constraint-pc",
@@ -97,36 +93,3 @@ for (set_name in data_sets) {
 
     ggsave(paste("time-", set_name, ".pdf", sep=""), plot = line, width = 15, height = 6.5, units = "cm");
 }
-
-
-
-# data_sets = c("normal",
-#               "constraint",
-#               "random",
-#               "random-exp");
-#
-# data = data.frame(NA, NA, NA);
-# names(data) = c("time",
-#                 "step",
-#                 "run");
-#
-# for (set_name in data_sets) {
-#     i = 1;
-#     for (times in csvs.time[[set_name]]) {
-#         new_data = data.frame(time = rowSums(times),
-#                               step = 1:nrow(times),
-#                               run  = set_name);
-#         i = i + 1;
-#         data = rbind(data, new_data);
-#     }
-# }
-#
-# data = data[-1,];
-#
-# line = ggplot(data = data, aes(x = step, y = time, color = run, group = run)) +
-#     geom_line(size = 0.25, alpha = 0.4) +
-#     labs(x = "Step (30 per second)", y = "Step execution time (in ms)", color = "Run") +
-#     theme_light();
-#     #scale_x_continuous(breaks = c(0, 250, 500, 750, 1000, 1250));
-#
-# ggsave("time-tests.pdf", plot = line, width = 15, height = 6.5, units = "cm");
