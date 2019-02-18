@@ -178,7 +178,7 @@ We believe the statistics convey the results more clearly without these projects
         K7\_S18 & Goes game over on start unless sprites are re-positioned manually in the editor. \\
         \bottomrule
     \end{tabular}
-    \caption{Excluded projects together with the reason to exclude them}
+    \caption{Excluded projects and the reasons for their exclusion}
     \label{tab:excluded_projects}
 \end{table}
 
@@ -241,7 +241,7 @@ because some code might depend on a feature that is not implemented correctly.
 The set of catching game projects (P1) will be tested with three different test suites
 in order to analyze the quality of their test results.
 Table~\ref{tab:project_specification} lists which part of the specification is covered by each test suite.
-Additionally, the number of tests or constraints and the size of the test suite, measured in lines of code (LOC),
+Additionally, the number of tests or constraints and the size of the test suite, measured in source lines of code (SLOC),
 can be found in Table~\ref{tab:test_suite_statistics}.
 In this section, we will describe each of the test suites.
 
@@ -250,14 +250,14 @@ In this section, we will describe each of the test suites.
     \scriptsize
     \begin{tabular}{rlrlr}
         \toprule
-        Test Suite & Type       & \texttt{\#}Tests / \texttt{\#}Constraints & LOC \\
+        Test Suite & Type       & \texttt{\#}Tests / \texttt{\#}Constraints & SLOC \\
         \midrule
-        T1         & Normal     & 28 Tests                                  & 852 \\
-        T2         & Constraint & 20 Constraints                            & 515 \\
-        T3         & Constraint & 18 Constraints                            & 539 \\
+        T1         & Normal     & 28 Tests                                  &  852 \\
+        T2         & Constraint & 26 Constraints                            &  620 \\
+        T3         & Constraint & 26 Constraints                            &  618 \\
         \bottomrule
     \end{tabular}
-    \caption{Number of tests and lines of code per test suite}
+    \caption{Number of tests and source lines of code per test suite}
     \label{tab:test_suite_statistics}
 \end{table}
 
@@ -306,7 +306,7 @@ In this section, we will describe each of the test suites.
         \bottomrule
     \end{tabular}
 
-    \caption{Project specifications and their coverage by the test suites}
+    \caption{Project specification and each test suite's coverage of the specification}
     \label{tab:project_specification}
 \end{table}
 
@@ -406,7 +406,7 @@ This function, as well as a usage example, are shown in Listing~\ref{lst:simulat
         \end{minted}
     \end{minipage}
 
-    \caption{Simulating arrow key presses for the catching game}
+    \caption{Code for simulating arrow key presses for the catching game}
     \label{lst:simulating_catching_game}
 \end{listing}
 
@@ -444,7 +444,7 @@ We chose to simulate random inputs with a duration between $50\text{ms}$ and $10
             t.detectRandomInputs({duration: [50, 100]});
         \end{javascriptcode}
     \end{minipage}
-    \caption{Automated input generation for random test suites}
+    \caption{Code for automated input generation in test suite T3 (random input)}
     \label{lst:automated_input_random_tests}
 \end{listing}
 
@@ -666,7 +666,7 @@ or if no banana touched the bowl while checking if the banana touching the bowl 
     \end{tabular}
     \setlength{\tabcolsep}{\defaulttabcolsep}
 
-    \caption{Excerpt from the test-project matrix of test suite T1}
+    \caption{Excerpt from the test-project matrix of test suite T1's inconsistencies}
     \label{tab:inconsistency_matrices_excerpt}
 \end{figure}
 
@@ -858,7 +858,7 @@ A banana only subtracts points when it touches the ground, while an apple ends t
         \bottomrule
     \end{tabular}
     }
-    \caption{Inconsistent outcomes of test suite T1 on projects P1 and their causes}
+    \caption{Explanations for inconsistent outcomes of test suite T1}
     \label{tab:inconsistencies_causes_normal}
 \end{table}
 
@@ -1117,7 +1117,7 @@ We are going to take a quick look at the reasons, why these projects are difficu
         \caption{Memory}
     \end{subfigure}%
 
-    \caption{Difficult to cover Code Club projects}
+    \caption{Screenshots of difficult to cover Code Club projects}
     \label{fig:difficult_code_club_projects}
 \end{figure}
 
@@ -1211,7 +1211,7 @@ and only rarely spikes to higher for short periods of time.
         \caption{Test suite T3 (random input)}
     \end{subfigure}
 
-    \caption{Measured execution time of Whisker's step procedure during the first execution}
+    \caption{Measured execution time of Whisker's step procedure (in ms) during the first test execution}
     \label{fig:time_line_plot}
 \end{figure}
 
@@ -1264,7 +1264,7 @@ but this only happened in one single step, with the second longest step executio
         Total (Whisker only)         & 0.12  & 6.5  & 0.218 & 7.6  & 0.201 & 13.1 \\
         \bottomrule
     \end{tabular}
-    \caption{Measured execution time (in ms) for every part of Whisker's step procedure}
+    \caption{Measured execution time (in ms) for every part of Whisker's step procedure over ten test executions}
     \label{tab:time_measurements}
 \end{table}
 
