@@ -2,6 +2,7 @@
 
 library(ggplot2);
 library(scales);
+library(viridis);
 
 source("scripts/read-data.R");
 source("scripts/annotate-plot.R");
@@ -36,7 +37,7 @@ make_scatter_plot = function(data, name) {
     scatter = ggplot(data = data, aes(x = points, y = passes, color = coverage, shape = excluded)) +
         geom_point(size = 3) +
         geom_smooth(method = lm, se = FALSE, data = subset(data, !excluded)) +
-        scale_color_gradient(low = "red", high = "green", limits = c(0.0, 1.0), labels = percent) +
+        scale_color_viridis(limits = c(0.0, 1.0), labels = percent) +
         scale_shape_manual(values = c(19, 1), labels = c("Included Projects", "Excluded Projects")) +
         guides(color = guide_colorbar(order = 0), shape = guide_legend(order = 1)) +
         labs(x = "Points (Manual Evaluation)", y = paste(test_name, "Passes"), shape = "", color = "Coverage") +

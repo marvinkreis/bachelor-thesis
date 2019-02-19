@@ -8,23 +8,24 @@ source("scripts/read-data.R");
 ids = projects.filtered;
 
 # The names of the data sets for which to make scatter plots for
-data_sets = list("normal" = paste("normal-", 0:9, sep=""),
-                 "constraint" = paste("constraint-", 0:9, sep=""),
-                 "random" = paste("random-", 0:9, sep=""));
+data_sets = list(normal = paste("normal-", 0:9, sep=""),
+                 constraint = paste("constraint-", 0:9, sep=""),
+                 random = paste("random-", 0:9, sep=""));
 
 
 percent_format = function(total) {
     function(x) paste(x, " (", round(x * 100 / total), "%)", sep = "");
 }
 
-make_bar_plot = function(data, total, xlabel, ylabel, file_name) {
+make_bar_plot = function(data, total, xlabel, file_name) {
+
     bar = ggplot(data = data, aes(x = items, y = inconsistencies)) +
           geom_col(width = 0.8) +
           geom_hline(aes(yintercept = mean(inconsistencies))) +
           scale_y_continuous(breaks = 0:10, labels = percent_format(total)) +
-          labs(x = xlabel, y = ylabel) +
+          labs(x = xlabel, y = "Inconsistencies") +
           theme_light() +
-          theme(text = element_text(size=9), axis.text.x = element_text(size = 6, angle = 90, hjust = 1));
+          theme(text = element_text(size=10), axis.text.x = element_text(size = 6, angle = 90, hjust = 1));
     ggsave(file_name, plot = bar, width = 12.5, height = 5, units = "cm");
 }
 
@@ -56,17 +57,24 @@ main = function() {
         rownames(differences) = names(datas[[1]]);
         colnames(differences) = 1:num_tests;
 
+        passes = differences;
+
         for (p in 1:num_projects) {
             for (t in 1:num_tests) {
                 test_outcome = datas[[1]][[p]]$status[t];
                 differences[p,t] = 0;
                 for (d in 2:num_datas) {
                     new_test_outcome = datas[[d]][[p]]$status[t];
+
                     res = is_compatible(test_outcome, new_test_outcome);
                     test_outcome = res["new_outcome"];
                     if (res["compatible"]) {
                         differences[p,t] = 1;
                         break;
+                    }
+
+                    if (as.character(new_test_outcome) == "pass") {
+                        passes[p,t] = 1;
                     }
                 }
             }
@@ -83,14 +91,14 @@ main = function() {
         data = data.frame(inconsistencies = inconsistencies_per_project,
                           items = names(inconsistencies_per_project));
         file_name = paste("consistency-per-project-", set_name, ".pdf", sep="")
-        make_bar_plot(data, num_tests, "Project", paste("Inconsistent ", test_name, "s", sep = ""), file_name);
+        make_bar_plot(data, num_tests, "Project", file_name);
 
         inconsistencies_per_test = colSums(differences);
         inconsistencies_per_test = inconsistencies_per_test[order(as.numeric(names(inconsistencies_per_test)))];
         data = data.frame(inconsistencies = inconsistencies_per_test,
                           items = reorder(as.numeric(names(inconsistencies_per_test)), as.numeric(names(inconsistencies_per_test))));
         file_name = paste("consistency-per-test-", set_name, ".pdf", sep="")
-        make_bar_plot(data, num_projects, test_name, "Inconsistent Projects", file_name);
+        make_bar_plot(data, num_projects, test_name, file_name);
 
         print(set_name);
         print("");
@@ -98,22 +106,18 @@ main = function() {
         print(inconsistencies_per_test);
         cat("Mean inconsistent projects per test: ");
         print(mean(inconsistencies_per_test));
-        cat("Inconsistent test-project pairs: ");
-        print(sum(inconsistencies_per_test));
-        cat("Percentage of inconsistent test-project pairs: ");
+        cat("Mean inconsistent test-project pairs: ");
         print(mean(inconsistencies_per_test) / num_projects);
         print("");
 
         print(inconsistencies_per_project);
         cat("Mean inconsistent tests per project: ");
         print(mean(inconsistencies_per_project));
-        cat("Inconsistent test-project pairs: ");
-        print(sum(inconsistencies_per_project));
-        cat("Percentage of inconsistent test-project pairs: ");
+        cat("Mean inconsistent test-project pairs: ");
         print(mean(inconsistencies_per_project) / num_tests);
         print("");
 
-        print(differences);
+        print(passes);
         print("");
         print("");
     }

@@ -20,7 +20,7 @@ Because Whisker is still in early development, some of its implementation may ch
 \section{Implementation Environment}
 \label{sec:implementation_environment}
 
-Whisker works with Scratch 3.0, which is implemented in JavaScript.
+Whisker uses Scratch 3.0, which is implemented in JavaScript.
 Therefore, it is also implemented in JavaScript (ES6) for compatibility.
 One restriction of Whisker's implementation environment is Scratch's dependence on a renderer.
 In order to operate properly, the Scratch VM needs a HTML canvas to render to.
@@ -101,8 +101,8 @@ which is called at a constant frequency of 30 times per second using JavaScripts
 It runs the program's threads, which each execute one instance of a script, sequentially until a time limit is reached, then it draws the scene using the renderer.
 If some visual change occurs, i.e. when a sprite changes appearance or position, a redraw is requested,
 and the program execution step is stopped earlier (in turbo mode redraw requests are ignored).
-Whenever a script is triggered by its hat, a new thread is spawned.
 Figure~\ref{lst:simplified_scratch_step} shows a simplified version of this procedure.
+Whenever a script is triggered by its hat, a new thread is spawned.
 \parspace
 
 \begin{listing}[htpb]
@@ -132,7 +132,7 @@ Figure~\ref{lst:simplified_scratch_step} shows a simplified version of this proc
             }
         \end{javascriptcode}
         \vspace{-\bigskipamount}
-        \caption{Simplified \texttt{step} and \texttt{start} functions from the \texttt{Runtime} class}
+        \caption{Simplified \texttt{step} and \texttt{start} functions from Scratch's \texttt{Runtime} class}
     \end{subfigure}
 
     \bigskip
@@ -157,7 +157,7 @@ Figure~\ref{lst:simplified_scratch_step} shows a simplified version of this proc
             }
         \end{javascriptcode}
         \vspace{-\bigskipamount}
-        \caption{Simplified \texttt{stepThreads} function from the \texttt{Sequencer} class}
+        \caption{Simplified \texttt{stepThreads} function from Scratch's \texttt{Sequencer} class}
     \end{subfigure}
     \caption{Simplified Scratch step procedure}
     \label{lst:simplified_scratch_step}
@@ -165,8 +165,8 @@ Figure~\ref{lst:simplified_scratch_step} shows a simplified version of this proc
 
 For the purpose of controlling the execution of the program, and to run multiple functions alongside the step loop,
 Whisker clears the interval that runs the \texttt{step} function and runs its own loop, which in turn calls Scratch's \texttt{step} function, instead.
-Figure~\ref{fig:whisker_step_procedure} shows the procedure of Whisker's step loop.
-In addition to running the Scratch program, it performs other tasks which have to be executed periodically.
+Figure~\ref{fig:whisker_step_procedure} shows the procedure of Whisker's step function.
+In addition to running the Scratch program, it performs other tasks which have to be executed periodically.%
 \parspace
 
 \begin{figure}[htpb]
@@ -195,31 +195,42 @@ In addition to running the Scratch program, it performs other tasks which have t
         \node[num] at (-2.6,  0.0) (six)   {6};
         \node[num] at (-2.6, -1.0) (seven) {7};
 
+%         \draw[shorten >= 2pt, rounded corners, arrow]
+%                (callbacksbefore)
+%             -- (random-inputs)
+%             -- (inputs)
+%             -- (sprites)
+%             -- (step)
+%             -- (callbacksafter)
+%             -- (constraints)
+%             -- ( 0.2, -2.0)
+%             -- (-3.4, -2.0)
+%             -- (-3.4,  6.0)
+%             -- ( 0.2,  6.0)
+%             -- (callbacksbefore);
+
         \draw[shorten >= 2pt, rounded corners, arrow]
-               (callbacksbefore)
+               ( 0.2,  6.0)
+            -- (callbacksbefore)
             -- (random-inputs)
             -- (inputs)
             -- (sprites)
             -- (step)
             -- (callbacksafter)
             -- (constraints)
-            -- ( 0.2, -2.0)
-            -- (-3.4, -2.0)
-            -- (-3.4,  6.0)
-            -- ( 0.2,  6.0)
-            -- (callbacksbefore);
+            -- ( 0.2, -2.0);
     \end{tikzpicture}
 
     \caption{Whisker's step procedure}
     \label{fig:whisker_step_procedure}
 \end{figure}
 
-To make it possible to run and pause the program on demand, we implemented a class called \texttt{Stepper},
+To make running and pausing the program on demand possible, we implemented a class called \texttt{Stepper},
 which queues and periodically executes functions in a fixed frequency using JavaScript's intervals as needed.
 Whenever a test runs the Scratch program,
 the \texttt{Stepper} is used to execute Whisker's own \texttt{step} function periodically,
 until the execution is done.
-Listing~\ref{lst:run_method_excerpt} shows an except of Whisker's run method,
+Listing~\ref{lst:run_method_excerpt} shows an excerpt of Whisker's run method,
 in which the step loop is implemented.
 Although the Scratch program has to be run asynchronously, we use JavaScript's \texttt{Promise} API to make running the program seem like a normal method call.
 Tests are declared as \texttt{async functions}, so they can use the \texttt{await} keyword to wait until a run of the program is done.
@@ -285,7 +296,7 @@ In section~\ref{sec:rq3}, we will prove this empirically by measuring how long S
 
 % For the purpose of providing access to sprite attributes, Whisker provides a wrapper for Scratch's sprites.
 Scratch's implementation differentiates between \texttt{Sprites} and \texttt{RenderedTargets}.
-\texttt{Sprite} objects contain the code, costumes, and sounds of the sprite.
+\texttt{Sprite} objects contain the scripts, costumes, and sounds of the sprite.
 They can be seen as a kind of blueprint for the actual sprite instances, which are objects of the \texttt{RenderedTarget} class.
 In contrast, we will call rendered targets sprites, since this resembles the user's view.
 \parspace
@@ -306,7 +317,7 @@ This is illustrated in Whisker's step procedure shown by Figure~\ref{fig:whisker
 \parspace
 
 In order to keep track of the sprite wrappers,
-Whisker keeps a mapping between the unique id of the original \texttt{RenderedTarget}-objects and their wrappers.
+Whisker keeps a mapping between the unique id of the original \texttt{RenderedTarget} objects and their wrappers.
 Whenever a sprite is requested, Whisker first checks the mapping for an existing wrapper,
 and only creates a new one if there isn't already one for the specific sprite.
 This way, only one wrapper object can exist for every sprite in the program.
@@ -320,7 +331,7 @@ Scratch's virtual machine provides an interface to perform input events on the S
 This method is usually used by Scratch's GUI, which forwards input events from the web browser to the virtual machine.
 But we can use this API for Whisker to simulate mouse and keyboard inputs.
 However, \texttt{postIOData} is not a very user-friendly interface,
-It requires extra information about the Scratch stage and coordinate conversion for mouse inputs.
+as it requires extra information about the Scratch stage and coordinate conversion for mouse inputs.
 Because of this, Whisker takes inputs in a slightly simpler format and converts them to the format that \texttt{postIOData} expects.
 Listing~\ref{fig:input_conversion_example} shows a mouse input in Whisker's format and the resulting \texttt{postIOData} call.
 Answers to Scratch's \texttt{ask} blocks, are simulated in a similar way, but though the VM's event system instead of \texttt{postIOData}.
@@ -345,7 +356,6 @@ Answers to Scratch's \texttt{ask} blocks, are simulated in a similar way, but th
     \begin{subfigure}[b]{.3\textwidth}
         \begin{javascriptcode}
             vm.postIOData('mouse', {
-                device: 'mouse',
                 isDown: true,
                 x: 194.09,
                 y: 53.65,
@@ -366,7 +376,7 @@ or to queue inputs and execute them after a certain time has passed during the n
 % This allows the test to specify a chain of inputs, which are performed during a run of the program.
 For this purpose, Whisker keeps a list of inputs, which are supposed to be performed later.
 When the program under test is executed, these inputs are checked before every Scratch step
-and inputs which are due, are performed.
+and inputs, which are due, are performed.
 Figure~\ref{fig:whisker_step_procedure} illustrates when the inputs are called in Whisker's step procedure.
 \parspace
 
@@ -473,7 +483,7 @@ These string constants are then seeded as possible answers for the \texttt{ask} 
     \scalebox{0.875}{
         \begin{tabular}{m{5.25cm}m{9.0cm}}
             \toprule
-            Scratch Block & Resulting Input(s) \\
+            Scratch Block(s) & Resulting Input(s) \\
             \midrule
             \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-1}\vspace{2mm} & \tablebox{(1) Press the respective keyboard key}                \\
             \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-2}\vspace{2mm} & \tablebox{(1) Click the left mouse button}                      \\
@@ -519,9 +529,7 @@ or ignore the constraint failure entirely.
 \section{Coverage Measurement}
 \label{sec:coverage_measurement}
 
-\mnote{TODO: explain that Whisker does Coverage measurement earlier}
-
-Whisker can be used to measure statement coverage.
+Whisker can be used to measure statement coverage on Scratch programs.
 It does this by temporarily modifying Scratch's \texttt{Thread} class.
 This class has two methods, \texttt{pushStack} and \texttt{reuseStackForNextBlock},
 which put blocks onto the execution stack.
@@ -547,12 +555,10 @@ Listing~\ref{fig:measuring_coverage} gives a code example of how to measure stat
 
     \begin{minipage}{.5\textwidth}
         \begin{javascriptcode}
-            {
-                stage: { covered: 0, total: 0 },
+              { stage: { covered: 0, total: 0 },
                 bowl: { covered: 16, total: 16 },
                 bananas: { covered: 12, total: 24 },
-                apple: { covered: 15, total: 18 }
-            }
+                apple: { covered: 15, total: 18 } }
         \end{javascriptcode}
     \end{minipage}
 
@@ -561,8 +567,8 @@ Listing~\ref{fig:measuring_coverage} gives a code example of how to measure stat
 \end{listing}
 
 Currently, coverage measurement can only be performed on Scratch 3.0 (.sb3) projects,
-since earlier projects don't save the unique id of each block.
-However, this is not a problem since older Scratch programs can simply be converted to Scratch 3.0 projects by
+since earlier projects don't make the unique id of each block persistent in the project file.
+However, this is not a problem since older Scratch projects can simply be converted to Scratch 3.0 projects by
 opening them in Scratch 3.0 and saving them.
 \parspace
 
@@ -596,19 +602,20 @@ opening them in Scratch 3.0 and saving them.
                and gather a list of all reachable blocks. */
             CoverageGenerator.prepare(vm);
 
-            /* Run the Scratch program. */
+            /* Run the Scratch program.
+            * (Can be run and reloaded multiple times.) */
             ...
 
             /* (3) Retrieve the current statement coverage. */
             const coverage = CoverageGenerator.getCoverage();
 
-            /* (4) Restore real implementations of pushStack and
+            /* (4) Restore the original implementations of pushStack and
                reuseStackForNextBlock. */
             CoverageGenerator.restoreThread(Thread);
         \end{javascriptcode}
     \end{minipage}
 
-    \caption{Example of coverage measurement using Whisker}
+    \caption{Example code for coverage measurement using Whisker}
     \label{fig:measuring_coverage}
 \end{listing}
 
