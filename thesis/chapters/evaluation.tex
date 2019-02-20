@@ -785,7 +785,7 @@ A banana only subtracts points when it touches the ground, while an apple ends t
 \parspace
 
 \begin{table}[htpb]
-    \scalebox{0.95}{
+    \scalebox{0.94}{
     \scriptsize
     \begin{tabular}{lrlp{11.25cm}}
         \toprule
@@ -801,7 +801,8 @@ A banana only subtracts points when it touches the ground, while an apple ends t
                                    Therefore the test has different outcomes depending on if the apple spawns left or right of the bowl. \\
         K6\_S33 & 8    & Both    & Test waits for 250ms to let the program initialize, then waits for a banana to appear at the top of the screen.
                                    K6\_S33 lets the banana fall instantly instead of waiting for a second (as specified),
-                                   causing the banana to be below the tests threshold for detecting the banana ($y > 100$) after 250ms. \\
+                                   causing the banana to be below the tests threshold for detecting the banana ($y > 100$) after 250ms.
+                                   The banana then proceeds to re-appear at the top of the screen, but sometimes the banana stays there because an apple already touched the ground, ending the game. \\
 
         K6\_S10 & 13   & Project & Program checks if the apple touches the ground with Scratch's "touching edge" primitive.
                                    Therefore, the program sometimes goes game over when an apple randomly spawns too much to the side of the screen and touches a vertical edge. \\
@@ -815,14 +816,15 @@ A banana only subtracts points when it touches the ground, while an apple ends t
         % K6\_S02 & 14   & Project & Banana get stuck in the ground and only re-spawns if touched by the bowl. \\
         K6\_S10 & 14   & Test    & Test checks if bananas spawn at random x coordinates.
                                    The program uses clones for fruit sprites.
-                                   The test detects the original sprite and the clone as two banana instances at the same x coordinate and concludes that bananas don't spawn at random x coordinatessthe same. \\
-        K7\_S12 & 14   & Test    & Test failed because it detected two bananas spawning at the same x coordinate.
+                                   The test detects the original sprite and the clone as two banana instances at the same x coordinate and concludes that bananas don't spawn at random x coordinates. \\
+        K7\_S12 & 14   & Test    & Test failed because it detected two fruits spawning at the same x coordinate.
                                    In order to speed up test executions, we decided to wait for only two bananas to spawn and compare their positions.
-                                   Therefore, while unlikely, it is possible that two bananas spawn in the same place by random chance, which fails the test. \\
+                                   The test either may have detected the same fruit twice, or two fruit spawned at the same position.
+                                   Both will result in the first two bananas being detected at the same x coordinate, failing the test. \\
 
         K7\_S17 & 19   & Project & Programs are supposed to check if the apple touches the color of the red stripe at the bottom to detect when the apple touches the ground.
                                    K7\_S17 checks for the wrong shade of red which is only present in some places, at the transition of the background and the red line.
-                                   Therefore sprites are sometimes not detected touching the ground, and simply stay at the bottom of the screen. \\
+                                   Therefore, sprites are sometimes not detected touching the ground, and simply stay at the bottom of the screen. \\
 
         K6\_S05 & 20   & Project & To move the banana to a random position whenever it spawns,
                                    the program uses Scratch's builtin ''go to random position'', which moves it to a random y coordinate as well.
@@ -842,28 +844,50 @@ A banana only subtracts points when it touches the ground, while an apple ends t
         K6\_S02 & 27   & Both    & Banana can get stuck in the ground and continually subtract points for a short time after the time is up. \\
         K6\_S19 & 27   & Both    & Banana sometimes still falls for a short time after the time is up. \\
         K7\_S02 & 27   & Test    & Program never changes the score or time variable and has very slow falling apples.
-                                   The test checks if the program went game over by checking that the variables and the sprites' x position does not change,
-                                   but because the variables aren't changed and the apple falls very slowly, sometimes, the only thing that is changed is the sprites' y positions. \\
-        \midrule
-        K6\_S02 & 13   & Project & See K7\_S03, test 13. \\
-        K6\_S03 & 13   & Project & See K6\_S03, test 8.  \\
-        K7\_S17 & 21   & Project & See K7\_S17, test 19. \\
-        K6\_S05 & 23   & Project & See K6\_S05, test 20. \\
-        K7\_S17 & 23   & Test    & See K6\_S19, test 23. \\
-        K6\_S05 & 24   & Project & See K6\_S05, test 20. \\
-        K7\_S17 & 24   & Project & See K7\_S17, test 19. \\
-        K6\_S05 & 25   & Project & See K6\_S05, test 20. \\
+                                   The test checks if the program went game over by observing if the variables and the sprites' x position changes, for one second.
+                                   But because the variables aren't changed and the apple falls very slowly, sometimes, the only thing that is changed is the sprites' y positions. \\
+        K7\_S03 & 27   & Test    & Tests checks for game over by observing if variables or sprite y-coordinates change for a second.
+                                   The program's banana can get stuck in the ground, because of which the program has a high chance of just the apple falling down while the test checks for the game over,
+                                   which will erroneously be detected as game over. \\
         \bottomrule
     \end{tabular}
     }
+
+    \scalebox{0.94}{
+    \tiny
+    \begin{tabular}{lrll|lrll}
+        \toprule
+        Project & Test & Cause   & Description &
+        Project & Test & Cause   & Description \\
+        \midrule
+        K7\_S14 & 11   & Test    & See K7\_S12, test 14. & K7\_S17 & 23   & Test    & See K6\_S19, test 23. \\
+        K6\_S02 & 13   & Project & See K7\_S03, test 13. & K6\_S05 & 24   & Project & See K6\_S05, test 20. \\
+        K6\_S03 & 13   & Project & See K6\_S03, test 8.  & K7\_S17 & 24   & Project & See K7\_S17, test 19. \\
+        K7\_S17 & 21   & Project & See K7\_S17, test 19. & K6\_S05 & 25   & Project & See K6\_S05, test 20. \\
+        K6\_S05 & 23   & Project & See K6\_S05, test 20. \\
+        \bottomrule
+    \end{tabular}
+    }
+
     \caption{Explanations for inconsistent outcomes of test suite T1}
     \label{tab:inconsistencies_causes_normal}
 \end{table}
 
+%         K6\_S33 & 4    & TODO  \\
+%         K6\_S33 & 10   & TODO  \\
+%         K6\_S33 & 13   & TODO  \\
+%         K6\_S33 & 26   & TODO  \\
+%         K6\_S31 & 10   & TODO  \\
+%         K6\_S31 & 13   & TODO  \\
+%         K6\_S31 & 23   & TODO  \\
+%         K6\_S31 & 26   & TODO  \\
+%         K6\_S02 & 10   & TODO  \\
+%         K6\_S03 & 10   & TODO  \\
+
 % current
-%        1 2 3 4 5 6 7 8 9 1  11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28
-% K6_S02                             1                                         1
-% K6_S03               1             1
+%        1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28
+% K6_S02                    x        1                                         1
+% K6_S03               1    x        1                                         x
 % K6_S05                                                  1        1  1  1
 % K6_S10                             1  1
 % K6_S11 1
@@ -875,8 +899,8 @@ A banana only subtracts points when it touches the ground, while an apple ends t
 % K6_S27
 % K6_S29
 % K6_S30
-% K6_S31
-% K6_S33               1
+% K6_S31                    x        x                             x        x
+% K6_S33       x       1    x        x                                      x
 % K7_S02                                                     1                 1
 % K7_S03                             1
 % K7_S04
@@ -886,7 +910,7 @@ A banana only subtracts points when it touches the ground, while an apple ends t
 % K7_S10                                                     1
 % K7_S11
 % K7_S12                                1
-% K7_S14
+% K7_S14                       x
 % K7_S15
 % K7_S16       1
 % K7_S17                                               1     1     1  1
