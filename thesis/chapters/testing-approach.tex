@@ -108,10 +108,10 @@ but for compatibility reasons, we developed a simple testing framework to go alo
 \parspace
 
 Currently, Whisker is only available in its own web GUI, which can be seen in Figure~\ref{fig:whisker_gui}.
-The web page displays Scratch's stage, a table of loaded tests, and a test report in TAP13~\cite{tap} format.
+The web page displays Scratch's stage, a table of loaded tests, and a test report in TAP13\footnote{Test Anything Protocol, \url{https://testanything.org/}} format.
 It supports batch testing more than one program with the same test suite,
 but it doesn't support parallel test execution.
-In the future, we plan on implementing a standalone Electron~\cite{electron} application for Whisker.
+In the future, we plan on implementing a standalone Electron\footnote{\url{https://electronjs.org/}} application for Whisker.
 This would facilitate batch testing many programs,
 and would also make it possible to test programs in parallel.
 Unfortunately it is not possible to run tests in a headless environment,
@@ -272,8 +272,8 @@ The test driver object will be denoted as $t$ in example code snippets.
             sprite.isTouchingSprite(otherSprite);
         \end{javascriptcode}
     \item \textbf{Register Callbacks.}
-        Tests can execute code during the program execution by registering callbacks, which get called every time the program renders a new frame.
-        Callbacks can be registered to be executed before or after each frame.
+        Tests can execute code during the program execution by registering callbacks, which get called every time Scratch executes a step.
+        Callbacks can be registered to be executed before or after each step execution.
         This allows tests to react to information, which the user would normally see, while the program is running.
         Callbacks can, for example, be used to track information, to perform inputs according to sprite information, or to cancel a run.
         Callbacks can be enabled and disabled.

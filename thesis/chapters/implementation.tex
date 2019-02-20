@@ -25,7 +25,7 @@ Therefore, it is also implemented in JavaScript (ES6) for compatibility.
 One restriction of Whisker's implementation environment is Scratch's dependence on a renderer.
 In order to operate properly, the Scratch VM needs a HTML canvas to render to.
 This limits Scratch, and consequently Whisker, to run inside a web environment.
-Therefore, we use webpack~\cite{webpack} to transpile Whisker's source code into browser-runnable JavaScript.
+Therefore, we use webpack\footnote{\url{https://webpack.js.org/}} to transpile Whisker's source code into browser-runnable JavaScript.
 
 \section{General Architecture}
 \label{sec:general_architecture}
@@ -98,7 +98,8 @@ because it offers a simpler interface and prevents access to Whisker's private m
 
 The core of Scratch's virtual machine is a function called \texttt{step},
 which is called at a constant frequency of 30 times per second using JavaScripts \texttt{setInterval} mechanism.
-It runs the program's threads, which each execute one instance of a script, sequentially until a time limit is reached, then it draws the scene using the renderer.
+% It runs the program's threads, which each execute one instance of a script, sequentially until a time limit is reached, then it draws the scene using the renderer.
+It runs the program until a time limit is reached, then it draws the scene using the renderer.
 If some visual change occurs, i.e. when a sprite changes appearance or position, a redraw is requested,
 and the program execution step is stopped earlier (in turbo mode redraw requests are ignored).
 Figure~\ref{lst:simplified_scratch_step} shows a simplified version of this procedure.
@@ -151,6 +152,9 @@ Whenever a script is triggered by its hat, a new thread is spawned.
 
                     /* Execute each script sequentially. */
                     for (thread of this.runtime.threads) {
+                        /* Execute the thread until either the script's end
+                           is reached, one loop iteration is executed,
+                           or the thread yields. */
                         this.stepThread(thread);
                     }
                 }
@@ -159,7 +163,7 @@ Whenever a script is triggered by its hat, a new thread is spawned.
         \vspace{-\bigskipamount}
         \caption{Simplified \texttt{stepThreads} function from Scratch's \texttt{Sequencer} class}
     \end{subfigure}
-    \caption{Simplified Scratch step procedure}
+    \caption{Simplified Scratch step code}
     \label{lst:simplified_scratch_step}
 \end{listing}
 
@@ -571,23 +575,6 @@ since earlier projects don't make the unique id of each block persistent in the 
 However, this is not a problem since older Scratch projects can simply be converted to Scratch 3.0 projects by
 opening them in Scratch 3.0 and saving them.
 \parspace
-
-% \begin{enumerate}[(1)]
-%     \item \texttt{prepareThread} replaces methods in \texttt{Thread}, so coverage can be tracked.
-%     \item \texttt{prepare} traverses the program and gathers a list of all reachable blocks.
-%     \item \texttt{getCoverage} calculates the coverage and returns it.
-%     \item \texttt{restoreThread} restores \texttt{Thread}'s original method implementations.
-% \end{enumerate}
-
-% \begin{enumerate}[(1)]
-%     \item \texttt{prepareThread} replaces the \texttt{pushStack} and \texttt{reuseStackForNextBlock} methods of the \texttt{Thread} class.
-%         The new methods simply track the block, which is put on the execution stack, and then call the respective original method.
-%     \item \texttt{prepare} traverses the scripts of the program, which is currently loaded by the virtual machine, and gathers a list of the program's blocks.
-%         Whisker only gathers reachable blocks, i.e. blocks, which are part of a script equipped with a hat.
-%         Therefore, unreachable blocks are ignored for the coverage measurement.
-%     \item \texttt{getCoverage} calculates the coverage based on the program's blocks and the blocks, which are known to be used by a thread.
-%     \item \texttt{restoreThread} restores the original method implementations of the \texttt{Thread} class.
-% \end{enumerate}
 
 \begin{listing}[htpb]
     \centering

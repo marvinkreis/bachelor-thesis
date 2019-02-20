@@ -61,7 +61,7 @@ we used slightly modified versions of Whisker as well as its GUI.
     \scriptsize \tt
     \begin{tabular}{ll}
         \toprule
-        Whisker     & Whisker 1.0 \\
+        Whisker     & Whisker 0.2 \\
         Scratch VM  & scratch-vm 0.2.0-prerelease.20181108204010 \\
         Web Browser & Chrome 70.0.3538.110 (64-Bit) \\
         JavaScript  & V8 7.0.276.40 \\
@@ -299,9 +299,9 @@ In this section, we will describe each of the test suites.
         24 & Banana subtracts 8 points when it touches the ground                      & \cmark & 24 & \cmark & 22 & \cmark & 24 \\
         25 & Banana displays ''-8'' message when it touches the ground                 & \cmark & 25 & \cmark & 23 & \cmark & 25 \\[\medskipamount]
            & \textbf{Timer} &&&&&&\\
-        26 & Timer ticks down                                                          & \cmark & 26 & \cmark & 24 & \cmark & 26 \\
-        27 & Game stops when timer reaches 0                                           & \cmark & 27 & \cmark & 25 & \xmark &    \\
-        28 & Bowl must display ''Ende!'' message when timer reaches 0                  & \cmark & 28 & \cmark & 26 & \xmark &    \\
+        26 & Timer ticks down in one-second intervals                                  & \cmark & 26 & \cmark & 24 & \cmark & 26 \\
+        27 & Game stops after 30 seconds elapsed                                       & \cmark & 27 & \cmark & 25 & \xmark &    \\
+        28 & Bowl must display ''Ende!'' message after 30 seconds elapsed              & \cmark & 28 & \cmark & 26 & \xmark &    \\
         \bottomrule
     \end{tabular}
 
