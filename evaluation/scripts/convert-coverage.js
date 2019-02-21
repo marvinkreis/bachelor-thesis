@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /*
- * Required dependencies:
+ * Required modules:
  * csv-stringify
  */
 

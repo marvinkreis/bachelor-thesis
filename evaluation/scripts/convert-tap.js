@@ -12,7 +12,7 @@
  * If "--constraint" is specified, parse the TAP13 output according to a different format that
  * is used by the constraint tests.
  *
- * Required dependencies:
+ * Required modules:
  * tap-parser
  * csv-stringify
  * js-yaml
