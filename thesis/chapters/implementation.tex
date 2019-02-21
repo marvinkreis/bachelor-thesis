@@ -100,10 +100,9 @@ The core of Scratch's virtual machine is a function called \texttt{step},
 which is called at a constant frequency of 30 times per second using JavaScripts \texttt{setInterval} mechanism.
 % It runs the program's threads, which each execute one instance of a script, sequentially until a time limit is reached, then it draws the scene using the renderer.
 It runs the program until a time limit is reached, then it draws the scene using the renderer.
-If some visual change occurs, i.e. when a sprite changes appearance or position, a redraw is requested,
+If some visual change occurs, i.e.\ when a sprite changes appearance or position, a redraw is requested,
 and the program execution step is stopped earlier (in turbo mode redraw requests are ignored).
 Figure~\ref{lst:simplified_scratch_step} shows a simplified version of this procedure.
-Whenever a script is triggered by its hat, a new thread is spawned.
 \parspace
 
 \begin{listing}[htpb]

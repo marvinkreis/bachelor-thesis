@@ -299,7 +299,7 @@ In this section, we will describe each of the test suites.
         24 & Banana subtracts 8 points when it touches the ground                      & \cmark & 24 & \cmark & 22 & \cmark & 24 \\
         25 & Banana displays ''-8'' message when it touches the ground                 & \cmark & 25 & \cmark & 23 & \cmark & 25 \\[\medskipamount]
            & \textbf{Timer} &&&&&&\\
-        26 & Timer ticks down in one-second intervals                                  & \cmark & 26 & \cmark & 24 & \cmark & 26 \\
+        26 & Timer is decremented by one once a second                                 & \cmark & 26 & \cmark & 24 & \cmark & 26 \\
         27 & Game stops after 30 seconds elapsed                                       & \cmark & 27 & \cmark & 25 & \xmark &    \\
         28 & Bowl must display ''Ende!'' message after 30 seconds elapsed              & \cmark & 28 & \cmark & 26 & \xmark &    \\
         \bottomrule
@@ -432,7 +432,7 @@ But since it is nevertheless very unlikely to have the apple not touch the groun
 we don't for check for a game over after 30 seconds, and only let the program run for 10 seconds a time.
 We chose to reset the program 30 times during the test, resulting in an execution time of $30 \times 10s = 300s$.
 Listing~\ref{lst:automated_input_random_tests} shows the exact configuration we used to simulate input for the test case.
-We chose to simulate random inputs with a duration between $50\text{ms}$ and $100\text{ms}$ in an interval of $150\text{ms}$.
+We chose to simulate random inputs with a duration between $50\text{ms}$ and $100\text{ms}$ each $150\text{ms}$.
 \parspace
 
 \begin{listing}[htpb]
@@ -774,7 +774,7 @@ Inconsistent test outcomes can either be caused by the test case (or constraint)
 Therefore, we analyzed some of the inconsistencies of test suite T1 and their causes in Table~\ref{tab:inconsistencies_causes_normal}.
 Most of them are caused by projects behaving in a non-deterministic manner,
 tough some are caused by test cases themselves.
-We noticed that tests, which deal with the banana sprite, i.e. test cases $13, 14, 23, 24, 25$, are relatively inconsistent.
+We noticed that tests, which deal with the banana sprite, i.e.\ test cases $13, 14, 23, 24, 25$, are relatively inconsistent.
 We observed that the banana sprite is often poorly implemented, which causes it to behave inconsistently.
 We suspect that students did not pay much attention to the banana sprite, since it is not essential to play the game.
 A banana only subtracts points when it touches the ground, while an apple ends the game in this situation.
@@ -785,7 +785,7 @@ A banana only subtracts points when it touches the ground, while an apple ends t
 \parspace
 
 \begin{table}[htpb]
-    \scalebox{0.94}{
+    \scalebox{0.95}{
     \scriptsize
     \begin{tabular}{lrlp{11.25cm}}
         \toprule
@@ -843,17 +843,15 @@ A banana only subtracts points when it touches the ground, while an apple ends t
 
         K6\_S02 & 27   & Both    & Banana can get stuck in the ground and continually subtract points for a short time after the time is up. \\
         K6\_S19 & 27   & Both    & Banana sometimes still falls for a short time after the time is up. \\
-        K7\_S02 & 27   & Test    & Program never changes the score or time variable and has very slow falling apples.
-                                   The test checks if the program went game over by observing if the variables and the sprites' x position changes, for one second.
-                                   But because the variables aren't changed and the apple falls very slowly, sometimes, the only thing that is changed is the sprites' y positions. \\
-        K7\_S03 & 27   & Test    & Tests checks for game over by observing if variables or sprite y-coordinates change for a second.
-                                   The program's banana can get stuck in the ground, because of which the program has a high chance of just the apple falling down while the test checks for the game over,
-                                   which will erroneously be detected as game over. \\
+        K7\_S02 & 27   & Test    & Test checks if the program went game over by observing for one second if the variables and the sprites' x coordinates change.
+                                   Therefore, if fruit is currently falling while the game over is checked, the test may see a running game as game over, since only the sprites' y coordinates change. \\
         \bottomrule
     \end{tabular}
     }
 
-    \scalebox{0.94}{
+    \bigskip
+
+    \scalebox{0.95}{
     \tiny
     \begin{tabular}{lrll|lrll}
         \toprule
@@ -864,7 +862,7 @@ A banana only subtracts points when it touches the ground, while an apple ends t
         K6\_S02 & 13   & Project & See K7\_S03, test 13. & K6\_S05 & 24   & Project & See K6\_S05, test 20. \\
         K6\_S03 & 13   & Project & See K6\_S03, test 8.  & K7\_S17 & 24   & Project & See K7\_S17, test 19. \\
         K7\_S17 & 21   & Project & See K7\_S17, test 19. & K6\_S05 & 25   & Project & See K6\_S05, test 20. \\
-        K6\_S05 & 23   & Project & See K6\_S05, test 20. \\
+        K6\_S05 & 23   & Project & See K6\_S05, test 20. & K7\_S03 & 27   & Test    & See K7\_S02, test 27. \\
         \bottomrule
     \end{tabular}
     }
@@ -979,7 +977,7 @@ and got slightly worse results.
 We use the mean final statement coverage on the projects to indicate how much of the programs is reached by the automated input.
 To get more consistent results, we ran this experiment ten times, and took the average of the final coverage scores.
 Listing~\ref{lst:coverage_test} shows the code, which we used to run the programs.
-We chose to simulate random inputs with a duration between $100\text{ms}$ and $1000\text{ms}$ in an interval of $250\text{ms}$.
+We chose to simulate random inputs with a duration between $100\text{ms}$ and $1000\text{ms}$ each $250\text{ms}$.
 In order to access the coverage during the execution we implemented a function called \texttt{logCoverage},
 which saves the current statement coverage of the program and outputs all saved coverage records once the test is over.
 \parspace
@@ -1168,7 +1166,7 @@ If no sprite changes occur during the step,
 the Scratch VM will execute the program for the allocated amount of time.
 But if some sprite's position or appearance changes, the VM will stop executing the program earlier.
 Afterwards, Scratch draws the new frame in the GUI.
-In the worst case, i.e. if no sprite changes and the whole time interval is used to execute the program,
+In the worst case, i.e.\ if no sprite changes and the whole time interval is used to execute the program,
 $0.25 * 33.33\text{ms} = 8.33\text{ms}$ will be left to render the new frame.
 Most modern hardware will take significantly less time than $8.33\text{ms}$ to render the picture,
 which leaves time for Whisker to execute other tasks.
@@ -1178,7 +1176,7 @@ We should also note that coverage measurement gets done during Scratch's step,
 which will slow the program down if the full $25\text{ms}$ of execution time are used.
 However the Scratch GUI also registers code to update the user interface, which is run during the step of the VM,
 so this should not affect the program any more than Scratch's GUI itself does.
-Callbacks for sprite changes, i.e. \texttt{onSpriteMoved} and \texttt{onSpriteVisualChange},
+Callbacks for sprite changes, i.e.\ \texttt{onSpriteMoved} and \texttt{onSpriteVisualChange},
 are also executed during Scratch's step, but if one of these functions is executed, a redraw request will be issued anyways,
 causing the step execution to end earlier.
 \parspace
