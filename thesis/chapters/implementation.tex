@@ -4,19 +4,6 @@
 This chapter will provide an overview over Whisker's implementation.
 Because Whisker is still in early development, some of its implementation may change later.
 
-% \section{Scratch Implementation Details}
-%
-% \begin{tikzpicture}[sibling distance=10em,
-%   every node/.style = {draw, text width=3.2cm, minimum height=0.7cm, text centered, rounded corners}]
-%   edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}]
-%
-%   \node {\textbf{Virtual Machine}}
-%     child { node {Storage} }
-%     child { node {Renderer} }
-%     child { node {SVG Renderer} }
-%     child { node {Audio Engine} }
-% \end{tikzpicture}
-
 \section{Implementation Environment}
 \label{sec:implementation_environment}
 
@@ -40,7 +27,6 @@ Therefore, anything that runs Scratch 3.0 can theoretically use Whisker.
 
 Figure~\ref{fig:general_architecture} shows Whisker's general architecture.
 It is designed to be a layer between test code and the Scratch virtual machine.
-% It controls the execution of the Scratch program, simulates inputs and exposes information about sprites and variables.
 The main class \texttt{VMWrapper} makes up a wrapper around the Scratch virtual machine,
 and its components each implement one part of Whisker's functionality.
 Test code uses a test driver object, which gives access to the methods that are used for testing.
@@ -98,7 +84,6 @@ because it offers a simpler interface and prevents access to Whisker's private m
 
 The core of Scratch's virtual machine is a function called \texttt{step},
 which is called at a constant frequency of 30 times per second using JavaScripts \texttt{setInterval} mechanism.
-% It runs the program's threads, which each execute one instance of a script, sequentially until a time limit is reached, then it draws the scene using the renderer.
 It runs the program until a time limit is reached, then it draws the scene using the renderer.
 If some visual change occurs, i.e.\ when a sprite changes appearance or position, a redraw is requested,
 and the program execution step is stopped earlier (in turbo mode redraw requests are ignored).
@@ -198,20 +183,6 @@ In addition to running the Scratch program, it performs other tasks which have t
         \node[num] at (-2.6,  0.0) (six)   {6};
         \node[num] at (-2.6, -1.0) (seven) {7};
 
-%         \draw[shorten >= 2pt, rounded corners, arrow]
-%                (callbacksbefore)
-%             -- (random-inputs)
-%             -- (inputs)
-%             -- (sprites)
-%             -- (step)
-%             -- (callbacksafter)
-%             -- (constraints)
-%             -- ( 0.2, -2.0)
-%             -- (-3.4, -2.0)
-%             -- (-3.4,  6.0)
-%             -- ( 0.2,  6.0)
-%             -- (callbacksbefore);
-
         \draw[shorten >= 2pt, rounded corners, arrow]
                ( 0.2,  6.0)
             -- (callbacksbefore)
@@ -297,7 +268,6 @@ In section~\ref{sec:rq3}, we will prove this empirically by measuring how long S
 \section{Accessing Sprites and Variables}
 \label{sec:accessing_sprites_and_variables}
 
-% For the purpose of providing access to sprite attributes, Whisker provides a wrapper for Scratch's sprites.
 Scratch's implementation differentiates between \texttt{Sprites} and \texttt{RenderedTargets}.
 \texttt{Sprite} objects contain the scripts, costumes, and sounds of the sprite.
 They can be seen as a kind of blueprint for the actual sprite instances, which are objects of the \texttt{RenderedTarget} class.
@@ -376,7 +346,6 @@ Answers to Scratch's \texttt{ask} blocks, are simulated in a similar way, but th
 
 Whisker provides methods to either perform inputs immediately,
 or to queue inputs and execute them after a certain time has passed during the next run of the program.
-% This allows the test to specify a chain of inputs, which are performed during a run of the program.
 For this purpose, Whisker keeps a list of inputs, which are supposed to be performed later.
 When the program under test is executed, these inputs are checked before every Scratch step
 and inputs, which are due, are performed.
@@ -388,66 +357,6 @@ For example, pressing a key for a certain duration and then releasing it require
 For this purpose, Whisker keeps a state for each input,
 which indicates how much of the input was already performed,
 and what action has to be carried out next.
-
-% \section{Randomized Inputs}
-% \label{sec:randomized_inputs}
-%
-% Whisker offers a mechanism to periodically perform random inputs.
-% It chooses an input from a pool of registered inputs during Whisker's step procedure.
-% Figure~\ref{fig:whisker_step_procedure} shows when this is done during the step.
-% Random inputs are not performed every single step.
-% Rather, Whisker waits a configured amount of time after a random input is executed before it chooses the next one.
-% % Whisker waits before choosing the next random input by recording a timestamp when a random input was performed,
-% % and checking if $n$ milliseconds have passed since then during every iteration of the step procedure.
-% \parspace
-%
-% If the chosen input consists of multiple input events,
-% e.g. if a key has to be pressed and released later,
-% then the input can not be chosen again while it is still active.
-% If all inputs in the pool are currently active,
-% then Whisker executes no random input until at least one of the inputs is done.
-% \parspace
-%
-% Before a input from the pool is executed, it is randomized first.
-% Random inputs can specify ranges, from which the final properties are chosen randomly.
-% Listing~\ref{fig:input_randomization_example} shows an example of an input before and after randomization.
-% After the input is randomized, it is registered and executed like a normal, non-random, input.
-% \parspace
-%
-% \begin{listing}[htpb]
-%     \centering
-%
-%     \begin{subfigure}[b]{.35\textwidth}
-%         \begin{javascriptcode}
-%             {
-%                 device: 'mouse',
-%                 isDown: true,
-%                 x: [-100, 100],
-%                 y: [-100, 100],
-%                 duration: [100, 1000]
-%             }
-%         \end{javascriptcode}
-%         \vspace{-\bigskipamount}
-%         \caption{Input before randomization}
-%     \end{subfigure}
-%     \hspace{.08\textwidth}
-%     \begin{subfigure}[b]{.35\textwidth}
-%         \begin{javascriptcode}
-%             {
-%                 device: 'mouse',
-%                 isDown: true,
-%                 x: 30,
-%                 y: -57,
-%                 duration: 351
-%             }
-%         \end{javascriptcode}
-%         \vspace{-\bigskipamount}
-%         \caption{Input after randomization}
-%     \end{subfigure}
-%
-%     \caption{Example of input randomization}
-%     \label{fig:input_randomization_example}
-% \end{listing}
 
 \section{Automated Input Generation}
 \label{sec:automated_input_generation}
@@ -466,10 +375,6 @@ Each resulting input depends only on the block type and its parameter.
 The only exception to this are inputs that answer seeded strings to \texttt{ask} blocks.
 Whisker checks for comparisons between the \texttt{answer} variable and string constants.
 These string constants are then seeded as possible answers for the \texttt{ask} blocks.
-% To avoid overshadowing random answers for \texttt{ask} blocks,
-% inputs with string constants are given a smaller weight depending on how many of these string comparisons were found,
-% so they are less likely to be chosen individually, while still being likely to be chosen as a whole.
-% We set the weight of each input with a string constant to $1 / \log_2(\text{\texttt{\#}strings})$.
 \parspace
 
 \newcommand{\tablebox}[1]{
@@ -635,248 +540,3 @@ Listing~\ref{fig:acquiring_thread_class} shows example code of how this can be d
     \caption{Acquiring Scratch's Thread class}
     \label{fig:acquiring_thread_class}
 \end{listing}
-
-% \section{Running Tests}
-%
-% Since Whisker itself is just an automation tool,
-% it can theoretically be used with any JavaScript testing framework.
-%
-% - Whisker comes with an optional testing framework
-% - Include a sample test report?
-%
-% === Seeing test output, interactive tests
-% - Users will want to see the program's output while it is run
-%     - to check if the tests run correctly, to check if the program runs correctly
-%     - Difficult to determine a problem with the project from just textual test reports
-%     - Tests without showing output are not very useful in such an interactive environment
-% $\rightarrow$ Has to be able to run in a interactive environment
-%     - Web GUI, which can be run by any modern browser
-%     - Allows users to run individual tests on the project and see the program execution
-%
-% === Batch Testing of Projects
-% - Some tests for Scratch projects can take a long time because projects run in real time
-%     - raises the need to test scratch programs in parallel
-%     - Scratch depends on the renderer
-%         - Some functionality of the Scratch virtual machine depends on the renderer
-%         - Headless tests are impossible without restricting the Scratch program to a subset of available blocks
-% $\rightarrow$ Web GUI has the option to run tests on multiple projects sequentially, but this might still take a long time depending on the project and the test suite
-% $\rightarrow$ Electron
-%     - Running tests in multiple processes could circumvent the problem
-%     - Electron provides a renderer that can be used to render the Scratch output to
-%     - Spawns multiple processes which open a window each, one project is tested in each window
-
-% \section{Basic Testing Functionality}
-%
-% === WM Wrapper
-% - Control the execution of the scratch program
-% - Run the program until a certain amount of time has passed or a condition has been met
-% - Get the time elapsed since the start of the test or the start of the last run
-% - Cancel a run
-% - Uses JavaScript's Promise API to wait until a run is finished
-%
-% \begin{listing}[htpb]
-%     \centering
-%     \begin{javascriptcode}
-%         await t.runForTime(500);
-%         await t.runUntil(() => !t.projectRunning(), 1000);
-%         t.assert.ok(t.getTotalTimeElapsed() < 1000);
-%     \end{javascriptcode}
-%     \vspace{-\bigskipamount}
-%     \caption{Example code for the VM Wrapper}
-%     \label{fig:example_code_for_the_vm_wrapper}
-% \end{listing}
-%
-% === Sprites
-% - Sprite is not the same as sprite in Scratch VM
-%     - Explain distinguishes between sprites and targets / rendered targets
-%     - Sprite contains the blocks, graphics (costumes), etc.
-%     - Target / rendered target is an instance of the sprite
-%     - Whisker sees every rendered target as a sprite
-%     - The original target of a Scratch sprite as well as its clones are each an instance of a ''sprites''
-%     - TODO: explain clones here
-%
-% - Sprites work by wrapping around the original
-% - If some getter of the sprite is called, the actual value is retrieved from the original target
-% - Most properties are implemented as JavaScript getters $\rightarrow$ look like properties of Whisker's sprite object
-%
-% - Information about sprites and variables
-% - Gives the information that the test uses
-% - Does not allow to manipulate sprites and variables
-% - Contains ''old'' value for every fitting property
-%     - Saves the value from the last step
-%     - Useful for constraints (see later)
-%     - Initialized with the present value
-% - Sprites are only tracked once they are retrieved via one of the getter method
-% - Helps, for example, with programs that spawn a lot of clones (could pose a performance problem otherwise)
-%
-%
-% \begin{listing}[htpb]
-%     \centering
-%     \begin{javascriptcode}
-%         const sprite = t.getSprite('Sprite1');
-%         const variable = sprite.getVariable('Variable1');
-%         const sprites = t.getSprites(s => s.x > 100);
-%
-%         t.assert.equal(sprite.x, 100);
-%         t.assert.equal(sprite.old.x, 100);
-%         t.assert.equal(variable.value, 5);
-%     \end{javascriptcode}
-%     \vspace{-\bigskipamount}
-%     \caption{Example code for Sprites}
-%     \label{fig:example_code_for_sprites}
-% \end{listing}
-%
-% === Inputs
-% - INPUTS ARE SIMULATED ON THE VM, NO ACTIONS ARE SIMULATED ON THE OS LEVEL OR ANYTHING
-%
-% - Simulate inputs on the program
-% - Can be registered to be called after a certain amount of time or be executed immediately
-% - Registering a Input with 0 delay is different from executing it immediately
-% === Kinds of Input
-% - At the moment: only mouse and keyboard input
-% - Keyboard:
-%     - Press a key
-%     - Release a key
-%     - Toggle a key
-%     - Press / release a key for a certain duration
-% - Mouse (only left mouse button):
-%     - move cursor to position
-%     - move cursor to sprite (+offset)
-%     - press mouse button
-%     - release mouse button
-%     - toggle mouse button
-%     - Press / release mouse button for a certain duration
-%
-% \begin{listing}[htpb]
-%     \centering
-%     \begin{javascriptcode}
-%         t.inputImmediate({
-%             device: 'keyboard',
-%             key: 'right arrow',
-%             isDown: true
-%         });
-%
-%         const mouseInput = t.addInput(1000, {
-%             device: 'mouse',
-%             x: 100,
-%             y: 0,
-%             isDown: true,
-%             duration: 500
-%         });
-%
-%         t.assert.ok(t.isKeyDown('right arrow'));
-%         t.removeInput(mouseInput);
-%         t.addInput(mouseInput);
-%     \end{javascriptcode}
-%     \vspace{-\bigskipamount}
-%     \caption{Example code for Random Inputs}
-%     \label{fig:example_code_for_random_inputs}
-% \end{listing}
-%
-% === Random Inputs
-% - Provides a simple way to perform inputs randomly
-% - Way of testing the program without deliberately controlling the inputs
-% - In a set time interval (at the next step), an input is randomly selected from a pool of registered random inputs
-%
-% - You  can register inputs for the random pool, or let Whisker choose inputs based on the blocks used in the program
-% - Random inputs can be detected through simple static analysis
-% $\rightarrow$ Blocks that take inputs and their options are analyzed
-%
-% - TODO table of detected blocks and resulting inputs ?
-%
-% \begin{listing}[htpb]
-%     \centering
-%     \begin{javascriptcode}
-%         t.setRandomInputInterval(150);
-%         t.registerRandomInputs([
-%             {
-%                 device: 'keyboard',
-%                 key: 'left arrow',
-%                 duration: [50, 100]
-%             },
-%             {
-%                 device: 'keyboard',
-%                 key: 'right arrow',
-%                 duration: [50, 100]
-%             }
-%         ]);
-%         t.detectRandomInputs();
-%     \end{javascriptcode}
-%     \vspace{-\bigskipamount}
-%     \caption{Example code for Inputs}
-%     \label{fig:example_code_for_inputs}
-% \end{listing}
-%
-% === Callbacks
-% - Register callbacks that are called after every step
-% - Can be registered to run at two positions in the step cycle (see diagram later)
-% - Purpose:
-%     - Information Tracking:
-%         - Track events
-%         - e.g how many times a sprite touches some other sprite
-%               or how long a sprite is invisible, etc.
-%     - Inputs:
-%         - Allows performing conditional inputs
-%         - Control the program like a player would
-%         - e.g. follow a sprite with the mouse cursor
-%
-% \begin{listing}[htpb]
-%     \centering
-%     \begin{javascriptcode}
-%         const sprite = t.getSprite('Sprite1');
-%
-%         const callback = t.addCallback(() => {
-%             t.inputImmediate({
-%                 device: 'mouse',
-%                 x: sprite.x,
-%                 y: sprite.y
-%             });
-%         });
-%
-%         await t.runForTime(1000);
-%
-%         callback.disable();
-%         callback.enable();
-%     \end{javascriptcode}
-%     \vspace{-\bigskipamount}
-%     \caption{Example code for Callbacks}
-%     \label{fig:example_code_for_callbacks}
-% \end{listing}
-%
-%
-% === Constraints
-% - Describe conditions that must always hold
-% - Failed constraints can be configured to fail the test, stop the current program run (\texttt{run...()}), or do nothing
-% - Can be used to perform checks like "sprite xy is always visible when sprite yz is visible"
-% - Implemented as callbacks that execute assertions
-%     - Advantages:
-%         - Concise syntax
-%         - Multiple assertions per constraint possible
-%         - Assertion messages can be used to describe the constraint failure
-%     - Disadvantages:
-%         - Assertion methods have to be efficient, e.g. if assertion message is constructed every time it could be too slow
-%         - Need to catch exceptions if constraints should not fail the test
-% - Can separate assertions from the program execution
-%     - Define constraints for tested properties, then use whatever input (deliberate / random / manual)
-%     - Problem: most constraints still hold if the tested property is not implemented at all
-%         - e.g. constraint that checks that a sprite never moves left will hold if the sprite doesn't move at all
-%
-% \begin{listing}[htpb]
-%     \centering
-%     \begin{javascriptcode}
-%         const sprite = t.getSprite('Sprite1');
-%
-%         t.onConstraintFailure('fail');
-%
-%         const constraint = t.addConstraint(() => {
-%             t.assert.ok(sprite.x >= sprite.old.x);
-%         });
-%
-%         await t.runForTime(1000);
-%
-%         constraint.disable();
-%     \end{javascriptcode}
-%     \vspace{-\bigskipamount}
-%     \caption{Example code for Constraints}
-%     \label{fig:example_code_for_constraints}
-% \end{listing}

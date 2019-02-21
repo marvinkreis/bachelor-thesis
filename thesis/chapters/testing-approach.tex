@@ -8,7 +8,6 @@ In this work, we propose a way to perform dynamic testing on Scratch programs fo
 The main goal of this approach is to be able to automatically assess student's solutions to Scratch assignments.
 In order to do so, this approach makes use of an automation utility, which allows test code to
 interact with Scratch programs through Scratch's IO.
-% To enable dynamic testing for Scratch, we propose a black-bock approach with a testing utility, which allows test code to interact with a running Scratch program.
 \parspace
 
 Because Scratch's parallel scripts, as well as its lack of code separation, would make testing individual parts of programs difficult,
@@ -20,8 +19,6 @@ To overcome this challenge, we developed an automation utility called Whisker, w
 It interacts with Scratch's virtual machine in order to automate its input and output.
 Whisker offers a programmable interface for Scratch, which allows tests to simulate inputs and to access information about sprites and variables.
 This makes automated testing for Scratch possible.
-% Selenium~\cite{selenium}, a popular tool for automated testing of web sites,
-% uses a similar approach to automate web browsers.
 Figure~\ref{fig:comparison_of_io_mechanisms} illustrates the difference between Scratch's IO mechanisms and Whisker's automated input and output.
 Note that the current version of Whisker does not yet support audio output or Scratch's extensions.
 
@@ -366,31 +363,8 @@ The test driver object will be denoted as $t$ in example code snippets.
 \end{itemize}
 \parspace
 
-
-% \noindent Despite being possible in theory, Whisker does not provide the means to execute single scripts or blocks of the program directly.
-% \mnote{TODO: really write about grading here?}
-% It only allows executing the program as a whole.
-% This has two reasons.
-% Since the main goal for this testing approach is automated grading, one test suite is possibly executed on a large number of different implementations.
-% Therefore, we don't want to concern ourselves with the internals of the program, since they may change from program to program.
-% Secondly, executing single scripts could also lead to unexpected behaviour in the program, because scripts in typical Scratch programs often depend on other scripts, which run in parallel.
-% This is mainly due to the game-like nature of usual Scratch programs.
-% They often feature multiple sprites running loops in order to be interactive.
-
 \section{Challenges of this Approach}
 \label{sec:appraoch_challenges}
-
-% \begin{itemize}
-%     \item This approach allows to test programs with most of Scratch's functionality.
-%         Apart from sounds and extensions, anything, which Scratch has to offer, can be tested with this approach.
-%         In contrast, ITCH's previous testing approach limited Scratch programs to textual IO.
-%     \item Tests are easily understood, because they control the program like a normal person would.
-%     \mnote{Can't state this without proof $\rightarrow$ "we believe" or similar}
-%         This is important, because students, whose programs are supposed to be tested later,
-%         could be allowed to run tests on their programs themselves during development.
-%         This way, students could easily receive valuable feedback about the correctness of their implementations.
-%         Therefore, it is beneficial to use tests, whose actions and purposes are easily understood by students.
-% \end{itemize}
 
 This section highlights various challenges that one can face when using this approach to aid in grading Scratch assignments.%
 \parspace
@@ -414,8 +388,6 @@ This can be a problem if a Scratch program deviates from the specification.
 For example, if students are given a template with sprite names already in place,
 some students could rename the sprites, causing tests to fail.
 However, errors like this can easily be detected through test reports.
-% Probably the easiest way to handle this is to give students a Scratch project with the sprites and variables already in place
-% as a template so the sprites and variables have the same name in each student solution.
 \parspace
 
 \textbf{Missing initialization.}
@@ -466,11 +438,8 @@ But in order to be able to do this, tests have to be made independent of the sim
 This will not just enable us to test with generated input, but with other input sources as well.
 For example, the program could be manually controlled by a person, or input could be recorded and played back.
 Whisker also offers its own implementation of automated input generation.
-% Whisker also offers its own method of automated input generation by randomizing a set of inputs,
-% which are either provided by the test itself, or deduced by analyzing the program code (see section~\ref{sec:automated_input_generation} for more information on this).
 \parspace
 
-% Scratch tests can often be made independent of inputs, and Whisker provides the means to do this.
 Using constraints allows us to define conditions, which the program must hold.
 Constraints check the program's compliance to the conditions by continually performing assertions throughout the program execution.
 Since this is done entirely in the background while the program under test is running, we can define constraints and just let the program run for some time.

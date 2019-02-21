@@ -6,9 +6,6 @@ It will also highlight some previous approaches towards automated assessment of 
 
 \section{Scratch}%
 \label{sec:scratch}
-% Block-based code eliminates the possibility of syntax errors and makes programming more intuitive by letting the user pick blocks from a drawer of pre-defined blocks instead of having the user memorize a programming language's keywords.
-% Scratch heavily focuses on multimedia, as graphics and audio can easily be integrated into Scratch projects.
-% Whenever a sprite is cloned, it runs all of its scripts, which have a ''when I start as a clone'' hat.
 
 Scratch~\cite{scratch} is a programming language developed by the MIT Media Lab.
 Its main goal is to offer an intuitive language suited for programming novices and children.
@@ -82,15 +79,6 @@ The program is executed by running its's threads, which each run an instance of 
 Each of the threads is executed until either the script's end is reached,
 a loop iteration has been executed, or the thread yields (e.g. when a \texttt{wait} block is used).
 Figure~\ref{fig:scratch_step_procedure} illustrates this procedure.
-% Scratch executes part of the program 30 times per second.
-% We will call the program execution, that is done 30 times per second, a \textit{step}.
-% During the step, Scratch executes the program's active scripts sequentially, one script after another.
-% Each of the currently active scripts is executed until either the script's end is reached,
-% a loop iteration has been executed, or the script yields (e.g. when a \texttt{wait} block is used).
-% This is done in a loop until either a certain time limit is reached, a sprite changes its position or appearance,
-% or all scripts are done (and the program finished), whichever happens first.
-% Then, a new frame is rendered.
-% Figure~\ref{fig:scratch_step_procedure} illustrates this procedure.
 \parspace
 
 \begin{figure}[htpb]
@@ -169,7 +157,6 @@ at least two other projects have tackled this task through different approaches.
 Boe et al. developed Hairball~\cite{hairball} to perform static analysis on Scratch programs.
 Hairball is implemented as a standalone Python program.
 It allows users to load a saved Scratch project file and analyze it by iterating through its blocks.
-% Example applications of Hairball are detecting code smells or finding out if a desired programming concept is implemented in the program.
 An example application of this program is the web-based assessment tool called Dr.\ Scratch~\cite{drscratch} by Moreno-Le\'on et al.,
 which uses Hairball to measure the complexity of Scratch programs in various categories and scores them accordingly.
 Though Hairball is very useful for analyzing programs statically, testing the functionality of a program with it would be very difficult.
@@ -190,26 +177,6 @@ Sprite manipulation and such cannot be tested with ITCH.
 If the only reason to adopt Scratch is its block-based code system, there exist other block-based programming environments, that serve as a front-end to more common programming languages, which can be tested more easily.
 An example for this is BlockPy~\cite{blockpy}, which translates its block-based code into Python.
 
-% \section{Black Box Testing}
-%
-% - Black box approach:
-%     - Block box testing bases tests on the specification of the tested program
-%     - Tests are written without knowledge of the internals of a program
-%     - Program is seen as a ''black box'' that takes some input and produces some output.
-%     - Program specification is in the case of Scratch programs most likely a task description for some course or tutorial
-%
-%     - Input for the black box is user interaction through mouse and keyboard
-%     - Interact only how a user can interact with the program
-%         - Since Scratch can only be controlled through user interaction and has no API to call blocks or scripts,
-%           it only makes sense to control the program this way in the test
-%         - No information about the internals of the program other than sprite and variable names
-%             - Sprite names should be included in the specification so the test can more easily identify sprites
-%             - Giving no or little information about the implementation makes sense for a task description
-%     - Output of the black box are changes on Scratch's stage
-%     - Test only what the user sees
-%         - Only information about sprites and variables (both can be shown on screen)
-%         - Sprite positions, movement, looks, etc.
-
 \section{Challenges of Testing Scratch Programs}
 \label{sec:challenges_of_testing_scratch_programs}
 
@@ -225,19 +192,12 @@ Additionally, scripts run in parallel and may depend on one another.
 This makes it hard to test a part of the program in isolation from the rest of the program.
 One could circumvent this problem by restricting the tested programs, like ITCH~\cite{itch} does it,
 but that defeats the purpose of using Scratch as a language.
-% To deal with this challenge, this work proposes a black-box testing approach.
-% This way, the test code does not have to concern itself with the internals of the program.
-% Scratch programs can be controlled by simulating user input, instead of calling specific scripts.
-% Tests can then check the visual and auditory output of the program.
 \parspace
 
 \textbf{GUI input and output.}
 Scratch is entirely run inside a graphical user interface and lacks traditional IO mechanisms.
 Its output consists of visual animations and audio, which are difficult to analyze automatically.
 Likewise, Scratch's input, which mainly consists of keyboard and mouse input, can make interacting with the program in an automated way problematic.
-% We are going to deal with this problem by creating a wrapper around Scratch,
-% which can be used to simulate input and access information about the sprites which make up the output.
-% Tests can then use methods, which the wrapper provides, instead of manually interacting with the Scratch program.
 \parspace
 
 \textbf{Randomness.}
@@ -245,9 +205,6 @@ Scratch provides blocks to incorporate randomness into programs.
 Non-determinism is problematic for testing in general and not just for Scratch,
 but Scratch programs tend to frequently make use of randomness,
 since the programs implemented in Scratch are often of game-like nature.
-% This is especially relevant in the context of automated grading.
-% Programming tasks for students in conventional programming languages are usually deterministic.
-% However, Scratch assignments may tend to feature randomness to create game-like programs.
 \parspace
 
 \textbf{Missing Initialization.}
@@ -255,8 +212,6 @@ Scratch programs don't start with a fixed configuration of sprites and variables
 When the program is loaded, sprite attributes and variable values are restored from the project file,
 but subsequent program executions after the first one start with the configuration in which the last execution left the sprites and variables in.
 Scratch programs can deal with this by doing initialization in the beginning, but many implementations don't.
-% Therefore, if a program is run multiple times for testing, the initial sprite and variable configuration needs to be restored
-% so each test can start from the same state.
 \parspace
 
 \textbf{Fuzziness of properties.}

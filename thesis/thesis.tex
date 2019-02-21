@@ -1,8 +1,8 @@
 % Document layout
 \documentclass[12pt,a4paper,oneside]{report}
 \usepackage[margin=3cm]{geometry}
-%\usepackage[top=3cm, bottom=3cm, right=2.5cm, left=3.5cm]{geometry}
 %\usepackage[top=3cm, bottom=3cm, right=2.75cm, left=3.25cm]{geometry}
+%\usepackage[top=3cm, bottom=3cm, right=2.5cm, left=3.5cm]{geometry}
 \raggedbottom
 
 % Standard packages
@@ -13,7 +13,6 @@
 
 % List formatting
 \usepackage{enumitem}
-%\usepackage{enumitem}
 
 % Math symbols
 \usepackage{amsfonts}
@@ -35,8 +34,7 @@
 \usepackage{array}
 \newlength{\defaulttabcolsep}
 \setlength{\defaulttabcolsep}{\tabcolsep}
-%\usepackage{makecell}
-%\renewcommand{\cellalign}{l}
+
 % Matrices
 \newcommand{\e}{\textbf{1}}
 \newcommand{\n}{\textcolor{gray}{0}}
@@ -45,11 +43,9 @@
 \usepackage{pifont}
 \newcommand{\cmark}{\ding{51}}
 \newcommand{\xmark}{\ding{53}}
-\newcommand{\smark}{\ding{73}}
 
 % Source code highlighting
-% outputdir workaround because minted ignores the '-output-directory' flag.
-\usepackage[outputdir=/tmp/latexrun]{minted}
+\usepackage{minted}
 \newminted{javascript}{
     autogobble,
     breaklines,
@@ -72,9 +68,8 @@
 \usepackage{fancyhdr}
 \fancypagestyle{plain}{
     \fancyhead{}
-    \fancyhead[LE,RO]{\thepage}
-    \fancyhead[LO]{\leftmark}
-    \fancyhead[RE]{\rightmark}
+    \fancyhead[R]{\thepage}
+    \fancyhead[L]{\leftmark}
     \fancyfoot{}}
 \pagestyle{plain}
 \setlength{\headheight}{20pt}
@@ -93,9 +88,6 @@
 \let\endlisting\endfigure
 \renewcommand\listfigurename{List of Figures, Tables and Listings}
 
-% Calculate sizes
-\usepackage{calc}
-
 % Math
 \usepackage{amsmath}
 
@@ -108,7 +100,6 @@
 
 \input{titlepage}
 
-% Table of Contents
 \tableofcontents
 \clearpage
 
