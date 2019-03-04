@@ -105,8 +105,84 @@
     \bigcenter{How to automatically test Scratch programs?}
 \end{frame}
 
-\begin{frame}\frametitle{How to automatically test Scratch programs?}
+\begin{frame}[fragile]\frametitle{How to automatically test Scratch programs?}
     Approach: Test on a system level by automating Scratch's IO
+
+    \bigskip
+    \centering
+
+    \tikzset{>=latex,
+           arrow/.style={draw, -{Latex[length=1.5mm, width=1.5mm]}},
+             put/.style={draw, minimum height=0.65cm, minimum width=1.75cm, rounded corners, fill=red!20, text width=2.4cm, text centered},
+              vm/.style={draw, minimum height=1.75cm, minimum width=3.0cm, rounded corners, fill=white},
+             gui/.style={draw, minimum height=2.6cm, minimum width=3.5cm, rounded corners, fill=blue!20},
+         whisker/.style={draw, minimum height=2.6cm, minimum width=3.5cm, rounded corners, fill=green!20},
+             box/.style={draw,text centered, rounded corners}}
+
+    \begin{tikzpicture}[scale=0.9, every node/.style={scale=0.9}]
+        \node[box] at (0.0, 4.0) (input)  {\includegraphics[height=.25\textheight]{mouse-keyboard}};
+        \node[box] at (8.1, 4.0) (output) {\includegraphics[height=.25\textheight]{scratch-stage}};
+
+        \node[] at (0.0, 5.5) (inputtxt)  {\textbf{Input}};
+        \node[] at (8.1, 5.5) (outputtxt) {\textbf{Output}};
+
+        \begin{scope}[on background layer]
+            \node[gui] at (4.0,  4.0)  (gui) {};
+            \node[vm]  at (4.0,  3.75) (vm)  {};
+        \end{scope}
+
+        \node[put] at (4.0,  3.5) (put)     {\small Program under test};
+        \node[]    at (4.0,  4.3) (vmtxt)   {\small Scratch VM};
+        \node[]    at (4.0,  4.95) (guitxt) {\textbf{Scratch GUI}};
+
+        \draw [shorten >= 2pt, shorten <= 2pt, arrow] (input) -- (gui);
+        \draw [shorten >= 2pt, shorten <= 2pt, arrow] (gui)   -- (output);
+    \end{tikzpicture}
+
+    \bigskip
+
+    \begin{tikzpicture}[scale=0.9, every node/.style={scale=0.9}]
+        \node[box] at (-0.1, 4.0) (input) {
+            \begin{minipage}{.28\textwidth}
+                \begin{minted}[autogobble, breaklines, fontsize=\scriptsize, frame=none]{javascript}
+                    t.inputImmediate({
+                        device: 'mouse',
+                        isDown: true,
+                        x: 50,
+                        y: 100
+                    });
+                \end{minted}
+            \end{minipage}
+        };
+
+        \node[box] at (8.1, 4.0) (output) {
+            \begin{minipage}{.28\textwidth}
+                \begin{minted}[autogobble, breaklines, fontsize=\scriptsize, frame=none]{javascript}
+                    sprite.x
+                    sprite.y
+                    sprite.rotation
+                    sprite.sayText
+                    sprite.costume
+                    variable.value
+                \end{minted}
+            \end{minipage}
+        };
+
+        \node[] at (0.0, 5.5) (inputtxt)  {\textbf{Input}};
+        \node[] at (8.1, 5.5) (outputtxt) {\textbf{Output}};
+
+        \begin{scope}[on background layer]
+            \node[whisker] at (4.0,  4.0)  (whisker) {};
+            \node[vm]      at (4.0,  3.75) (vm)      {};
+        \end{scope}
+
+        \node[put] at (4.0,  3.5)  (put)        {\small Program under test};
+        \node[]    at (4.0,  4.3)  (vmtxt)      {\small Scratch VM};
+        \node[]    at (4.0,  4.95) (whiskertxt) {\textbf{Whisker}};
+
+        \draw [shorten >= 2pt, shorten <= 2pt, arrow] (input)   -- (whisker);
+        \draw [shorten >= 2pt, shorten <= 2pt, arrow] (whisker) -- (output);
+    \end{tikzpicture}
 
     % \begin{figure}
     %     \centering
@@ -139,4 +215,6 @@
     %     \end{tikzpicture}
     %     \caption{Input and output of the Scratch GUI}
     % \end{figure}
+
+
 \end{frame}

@@ -4,6 +4,16 @@
 \usepackage{tikz}
 \usetikzlibrary{fit, backgrounds, shapes, arrows, arrows.meta, chains}
 
+\usepackage[outputdir=/tmp/latexrun]{minted}
+\newminted{javascript}{
+    autogobble,
+    breaklines,
+    linenos,
+    fontsize=\footnotesize,
+    framesep=2mm,
+    frame=lines}
+\newmintinline{javascript}{}
+
 % Suppress navigation bar
 \beamertemplatenavigationsymbolsempty
 
