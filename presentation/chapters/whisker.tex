@@ -1,0 +1,398 @@
+\begin{frame}
+    \bigcenter{Why is automated testing for Scratch difficult?}
+\end{frame}
+
+\begin{frame}\frametitle{Why is automated testing for Scratch difficult?}
+    Usually functional testing is deployed to automatically assess student solution,
+    but this is not straightforward for Scratch
+    \begin{itemize}
+        \item Scratch is normally only accessible through its GUI
+        \item no functions that take parameters and return a value
+        \item no textual IO, keyboard and mouse input and graphical output
+    \end{itemize}
+
+    \bigskip
+
+    \centering
+    \includegraphics[width=.45\textwidth]{scratch-code}
+    \hspace{1em}
+    \includegraphics[width=.4\textwidth]{scratch-stage}
+\end{frame}
+
+\begin{frame}
+    \bigcenter{How to test Scratch programs?}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{How to test Scratch programs? Automating IO}
+    Approach: Test on a system level by automating Scratch's IO
+
+    \begin{center}
+
+    \tikzset{>=latex,
+           arrow/.style={draw, -{Latex[length=1.5mm, width=1.5mm]}},
+             put/.style={draw, minimum height=0.65cm, minimum width=1.75cm, rounded corners, fill=red!20, text width=2.4cm, text centered},
+              vm/.style={draw, minimum height=1.75cm, minimum width=3.0cm, rounded corners, fill=white},
+             gui/.style={draw, minimum height=2.6cm, minimum width=3.5cm, rounded corners, fill=blue!20},
+         whisker/.style={draw, minimum height=2.6cm, minimum width=3.5cm, rounded corners, fill=green!20},
+             box/.style={draw,text centered, rounded corners}}
+
+    \hspace{2mm}\begin{tikzpicture}[scale=0.9, every node/.style={scale=0.9}]
+        \node[box] at (0.0, 4.0) (input)  {\includegraphics[height=.25\textheight]{mouse-keyboard}};
+        \node[box] at (5.1, 4.0) (output) {\includegraphics[height=.25\textheight]{scratch-stage}};
+
+        \node[] at (0.0, 5.5) (inputtxt)  {\textbf{Input}};
+        \node[] at (5.1, 5.5) (outputtxt) {\textbf{Output}};
+
+        \draw [shorten >= 2pt, shorten <= 2pt, arrow] (input) -- (output);
+    \end{tikzpicture}
+
+    \bigskip
+
+    \begin{tikzpicture}[scale=0.9, every node/.style={scale=0.9}]
+        \node[box] at (-0.1, 4.0) (input) {
+            \begin{minipage}{.28\textwidth}
+                \begin{minted}[autogobble, breaklines, fontsize=\scriptsize, frame=none]{javascript}
+                    t.inputImmediate({
+                        device: 'mouse',
+                        isDown: true,
+                        x: 50,
+                        y: 100
+                    });
+                \end{minted}
+            \end{minipage}
+        };
+
+        \node[box] at (5.1, 4.0) (output) {
+            \begin{minipage}{.28\textwidth}
+                \begin{minted}[autogobble, breaklines, fontsize=\scriptsize, frame=none]{javascript}
+                    sprite.x
+                    sprite.y
+                    sprite.rotation
+                    sprite.sayText
+                    sprite.costume
+                    variable.value
+                \end{minted}
+            \end{minipage}
+        };
+
+        \node[] at (0.0, 5.5) (inputtxt)  {\textbf{Input}};
+        \node[] at (5.1, 5.5) (outputtxt) {\textbf{Output}};
+
+        \draw [shorten >= 2pt, shorten <= 2pt, arrow] (input) -- (output);
+    \end{tikzpicture}
+
+    \end{center}
+\end{frame}
+
+\begin{frame}\frametitle{How to test Scratch programs? Automating IO}
+    \begin{figure}
+        \centering
+        \tikzset{>=latex,
+                 arrow/.style={-{Latex[length=1.5mm, width=1.5mm]}},
+                 label/.style={draw=none, text width=5.3cm, minimum height=0.5cm, text centered},
+                   box/.style={draw,      text width=3.2cm, minimum height=0.7cm, text centered, rounded corners},
+                     h/.style={fill=blue!10}}
+
+        \begin{tikzpicture}
+            \node[box, h] at ( 0.0, 3.0) (gui)           {Scratch GUI};
+            \node[box]    at (-2.0, 1.5) (scratchvm)     {Scratch VM};
+            \node[box]    at ( 2.2, 1.5) (scratchrender) {Scratch Renderer};
+            \node[box, color=gray]   at (-2.0, 0.0) (program)       {Program};
+            \node[box, color=gray]   at ( 2.2, 0.0) (htmlcanvas)    {HTML Canvas};
+
+            \foreach \pp/\pf/\pt in {--/gui/scratchvm,
+                                     --/gui/scratchrender,
+                                     --/scratchvm/scratchrender,
+                                     --/scratchvm/program,
+                                     --/scratchrender/htmlcanvas}
+            \draw[shorten >= 2pt, arrow] (\pf) \pp (\pt);
+        \end{tikzpicture}
+
+        \caption{General architecture of Scratch}
+    \end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{How to test Scratch programs? Automating IO}
+    \begin{figure}[htpb]
+        \centering
+        \tikzset{>=latex,
+                 arrow/.style={-{Latex[length=1.5mm, width=1.5mm]}},
+                 label/.style={draw=none, text width=5.3cm, minimum height=0.5cm, text centered},
+                   box/.style={draw,      text width=3.2cm, minimum height=0.7cm, text centered, rounded corners},
+                     h/.style={fill=blue!10}}
+
+        \begin{tikzpicture}
+            \node[box]    at ( 0.00,  1.5) (testcode)      {Test Code};
+            \node[box, h] at ( 0.00,  0.0) (whisker)       {Whisker};
+            \node[box]    at (-2.00, -1.5) (scratchvm)     {Scratch VM};
+            \node[box]    at ( 2.20, -1.5) (scratchrender) {Scratch Renderer};
+            \node[box, color=gray]   at (-2.0, -3.0) (program)       {Program};
+            \node[box, color=gray]   at ( 2.2, -3.0) (htmlcanvas)    {HTML Canvas};
+
+            \foreach \pp/\pf/\pt in {--/testcode/whisker,
+                                     --/whisker/scratchvm,
+                                     --/whisker/scratchrender,
+                                     --/scratchvm/scratchrender,
+                                     --/scratchvm/program,
+                                     --/scratchrender/htmlcanvas}
+            \draw[shorten >= 2pt, arrow] (\pf) \pp (\pt);
+        \end{tikzpicture}
+
+        \caption{General architecture of Whisker}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{How to test Scratch programs? Automating IO}
+    \tikzset{>=latex,
+           arrow/.style={draw, -{Latex[length=1.5mm, width=1.5mm]}},
+             put/.style={draw, minimum height=0.65cm, minimum width=1.75cm, rounded corners, fill=red!20, text width=2.4cm, text centered},
+              vm/.style={draw, minimum height=1.75cm, minimum width=3.0cm, rounded corners, fill=white},
+             gui/.style={draw, minimum height=2.6cm, minimum width=3.5cm, rounded corners, fill=blue!20},
+         whisker/.style={draw, minimum height=2.6cm, minimum width=3.5cm, rounded corners, fill=green!20},
+             box/.style={draw,text centered, rounded corners}}
+
+    \hspace{2mm}\begin{tikzpicture}[scale=0.9, every node/.style={scale=0.9}]
+        \node[box] at (0.0, 4.0) (input)  {\includegraphics[height=.25\textheight]{mouse-keyboard}};
+        \node[box] at (8.1, 4.0) (output) {\includegraphics[height=.25\textheight]{scratch-stage}};
+
+        \node[] at (0.0, 5.5) (inputtxt)  {\textbf{Input}};
+        \node[] at (8.1, 5.5) (outputtxt) {\textbf{Output}};
+
+        \begin{scope}[on background layer]
+            \node[gui] at (4.0,  4.0)  (gui) {};
+            \node[vm]  at (4.0,  3.75) (vm)  {};
+        \end{scope}
+
+        \node[put] at (4.0,  3.5) (put)     {\small Program under test};
+        \node[]    at (4.0,  4.3) (vmtxt)   {\small Scratch VM};
+        \node[]    at (4.0,  4.95) (guitxt) {\textbf{Scratch GUI}};
+
+        \draw [shorten >= 2pt, shorten <= 2pt, arrow] (input) -- (gui);
+        \draw [shorten >= 2pt, shorten <= 2pt, arrow] (gui)   -- (output);
+    \end{tikzpicture}
+
+    \bigskip
+
+    \begin{tikzpicture}[scale=0.9, every node/.style={scale=0.9}]
+        \node[box] at (-0.1, 4.0) (input) {
+            \begin{minipage}{.28\textwidth}
+                \begin{minted}[autogobble, breaklines, fontsize=\scriptsize, frame=none]{javascript}
+                    t.inputImmediate({
+                        device: 'mouse',
+                        isDown: true,
+                        x: 50,
+                        y: 100
+                    });
+                \end{minted}
+            \end{minipage}
+        };
+
+        \node[box] at (8.1, 4.0) (output) {
+            \begin{minipage}{.28\textwidth}
+                \begin{minted}[autogobble, breaklines, fontsize=\scriptsize, frame=none]{javascript}
+                    sprite.x
+                    sprite.y
+                    sprite.rotation
+                    sprite.sayText
+                    sprite.costume
+                    variable.value
+                \end{minted}
+            \end{minipage}
+        };
+
+        \node[] at (0.0, 5.4) (inputtxt)  {\textbf{Input}};
+        \node[] at (8.1, 5.4) (outputtxt) {\textbf{Output}};
+
+        \begin{scope}[on background layer]
+            \node[whisker] at (4.0,  4.0)  (whisker) {};
+            \node[vm]      at (4.0,  3.75) (vm)      {};
+        \end{scope}
+
+        \node[put] at (4.0,  3.5)  (put)        {\small Program under test};
+        \node[]    at (4.0,  4.3)  (vmtxt)      {\small Scratch VM};
+        \node[]    at (4.0,  4.95) (whiskertxt) {\textbf{Whisker}};
+
+        \draw [shorten >= 2pt, shorten <= 2pt, arrow] (input)   -- (whisker);
+        \draw [shorten >= 2pt, shorten <= 2pt, arrow] (whisker) -- (output);
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+    \bigcenter{Whisker}
+\end{frame}
+
+\begin{frame}\frametitle{Whisker, Whisker's GUI}
+    \begin{figure}
+        \includegraphics[width=\textwidth]{whisker-gui-big-upscaled}
+        \caption{Whisker's GUI}
+    \end{figure}
+    % Whisker allows us to interact with the Scratch VM through a JavaScript API
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Whisker, Example Test}
+    \begin{center}
+        \begin{minipage}{.95\textwidth}
+            \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, frame=lines]{javascript}
+                const test = async function (t) {
+                    const sprite = t.getSprite('Sprite1');
+
+                    await t.runForTime(100);
+                    let oldX = sprite.x;
+
+                    await t.runForTime(1000);
+
+                    t.assert.ok(oldX === sprite.x);
+
+                    t.inputImmediate({
+                        device: 'keyboard',
+                        key: 'right arrow',
+                        isDown: true
+                    });
+
+                    await t.runForTime(1000);
+
+                    t.assert.ok(oldX < sprite.x);
+                }
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{frame}
+
+\begin{frame}\frametitle{Whisker}
+    \bigcenter{TODO: Whisker's functionality, then: constraint tests}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Whisker, Simulating Inputs}
+    \begin{center}
+        \begin{minipage}{.95\textwidth}
+            \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, frame=lines]{javascript}
+                t.inputImmediate({
+                    device: 'keyboard',
+                    key: 'right arrow',
+                    isDown: true,
+                    duration: 100
+                });
+                t.addInput(1000, {
+                    device: 'mouse',
+                    x: 100,
+                    y: 200,
+                    isDown: true
+                });
+                t.addInput(2000, {
+                    device: 'text',
+                    text: 'some answer'
+                });
+
+                t.getMousePos();
+                t.isMouseDown();
+                t.isKeyDown('space');
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Whisker, Accessing Output}
+    \begin{center}
+        \begin{minipage}{.95\textwidth}
+            \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, frame=lines]{javascript}
+                const sprite = t.getSprite('Sprite1');
+                const sprites = t.getSprites(sprite => sprite.x > 100);
+                const clones = sprite.getClones();
+                const stage = t.getStage();
+
+                const variable = stage.getVariable('my variable');
+                const variables = stage.getVariables();
+                const list = sprite.getList('my list');
+                const lists = sprite.getLists();
+
+                sprite.x;
+                sprite.old.x;
+                variable.value;
+
+                sprite.isOriginal();
+                sprite.isTouchingEdge();
+                sprite.isTouchingSprite(otherSprite);
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Whisker, Running the program}
+    \begin{center}
+        \begin{minipage}{.95\textwidth}
+            \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, frame=lines]{javascript}
+            await t.runForTime(1000);
+            await t.runForSteps(30);
+            await t.runUntil(() => a > b, 1000);
+
+            t.getRunTimeElapsed();
+            t.getTotalTimeElapsed();
+
+            t.greenFlag();
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Whisker, Callbacks}
+    \begin{center}
+        \begin{minipage}{.95\textwidth}
+            \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, frame=lines]{javascript}
+                const callback = t.addCallback(() => {
+                    if (sprite.x > 100) {
+                        t.inputImmediate({ device: 'mouse', isDown: true });
+                    } else if (sprite.x < 0) {
+                        t.cancelRun();
+                    }
+                });
+
+                t.addCallback(() => someList.push(sprite.x), true);
+
+                callback.disable();
+                callback.enable();
+                callback.isActive();
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Whisker, Constraints}
+    \begin{center}
+        \begin{minipage}{.95\textwidth}
+            \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, frame=lines]{javascript}
+                t.onConstraintFailure('fail');
+                t.onConstraintFailure('nothing');
+
+                const constraint = t.addConstraint(() => {
+                    t.assert.ok(sprite.visible === true,
+                        'Sprite must always be visible.');
+                });
+
+                constraint.disable();
+                constraint.enable();
+                constraint.isActive();
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Whisker, Input Generation}
+    \begin{center}
+        \begin{minipage}{.95\textwidth}
+            \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, frame=lines]{javascript}
+            t.setRandomInputInterval(150);
+
+            t.registerRandomInputs([
+              { device: 'keyboard', key: 'left arrow', duration: [50, 100] },
+              { device: 'keyboard', key: 'right arrow', duration: [50, 100] },
+              { device: 'mouse', x: [-100, 100], y: [-100, 100], weight: 0.5 }
+            ]);
+
+            t.detectRandomInputs({ duration: [50, 100] });
+            \end{minted}
+        \end{minipage}
+    \end{center}
+\end{frame}
+
+% Scratch's visual output is rendered at a rate of 30 frames per second.
+% In between frames the program is executed.
