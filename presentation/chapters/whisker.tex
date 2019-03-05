@@ -230,97 +230,156 @@
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Whisker, Example Test}
-    \begin{center}
-        \begin{minipage}{.95\textwidth}
-            \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, frame=lines]{javascript}
-                const test = async function (t) {
-                    const sprite = t.getSprite('Sprite1');
+    \vspace{-\bigskipamount}
+    \begin{minipage}{.7\textwidth}\begin{tikzpicture}
+        \node[opacity=1.0] (0,0) {
+            \begin{minipage}{\textwidth}
+                \begin{javascriptcode}
+                    const test = async function (t) {
+                        const sprite = t.getSprite('Sprite1');
 
-                    await t.runForTime(100);
-                    let oldX = sprite.x;
+                        await t.runForTime(100);
+                        let oldX = sprite.x;
 
-                    await t.runForTime(1000);
+                        await t.runForTime(1000);
 
-                    t.assert.ok(oldX === sprite.x);
+                        t.assert.ok(oldX === sprite.x);
 
-                    t.inputImmediate({
-                        device: 'keyboard',
-                        key: 'right arrow',
-                        isDown: true
-                    });
+                        t.inputImmediate({
+                            device: 'keyboard',
+                            key: 'right arrow',
+                            isDown: true
+                        });
 
-                    await t.runForTime(1000);
+                        await t.runForTime(1000);
 
-                    t.assert.ok(oldX < sprite.x);
-                }
-            \end{minted}
-        \end{minipage}
-    \end{center}
+                        t.assert.ok(oldX < sprite.x);
+                    }
+                \end{javascriptcode}
+            \end{minipage}
+        };
+    \end{tikzpicture}\end{minipage}
 \end{frame}
 
-\begin{frame}\frametitle{Whisker}
-    \bigcenter{TODO: Whisker's functionality, then: constraint tests}
+\begin{frame}[fragile]\frametitle{Whisker, Accessing sprites and variables}
+    \vspace{-\bigskipamount}
+    \begin{minipage}{.7\textwidth}\begin{tikzpicture}
+        \node[opacity=0.5] (0,0) {
+            \begin{minipage}{\textwidth}
+                \begin{javascriptcode}
+                    const test = async function (t) {
+                        const sprite = t.getSprite('Sprite1');
+
+                        await t.runForTime(100);
+                        let oldX = sprite.x;
+
+                        await t.runForTime(1000);
+
+                        t.assert.ok(oldX === sprite.x);
+
+                        t.inputImmediate({
+                            device: 'keyboard',
+                            key: 'right arrow',
+                            isDown: true
+                        });
+
+                        await t.runForTime(1000);
+
+                        t.assert.ok(oldX < sprite.x);
+                    }
+                \end{javascriptcode}
+            \end{minipage}
+        };
+    \end{tikzpicture}\end{minipage}%
+    \hspace{-.4\textwidth}%
+    \begin{minipage}{.6\textwidth}
+        \begin{javascriptcode}
+            t.getSprite('Sprite1');
+            t.getSprites(sprite => sprite.x > 100);
+            sprite.getClones();
+            t.getStage();
+
+            stage.getVariable('my variable');
+            stage.getVariables();
+            sprite.getList('my list');
+            sprite.getLists();
+
+            sprite.x;
+            sprite.old.x;
+            variable.value;
+
+            sprite.isOriginal();
+            sprite.isTouchingEdge();
+            sprite.isTouchingSprite(otherSprite);
+        \end{javascriptcode}
+    \end{minipage}
 \end{frame}
 
-\begin{frame}[fragile]\frametitle{Whisker, Simulating Inputs}
-    \begin{center}
-        \begin{minipage}{.95\textwidth}
-            \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, frame=lines]{javascript}
-                t.inputImmediate({
-                    device: 'keyboard',
-                    key: 'right arrow',
-                    isDown: true,
-                    duration: 100
-                });
-                t.addInput(1000, {
-                    device: 'mouse',
-                    x: 100,
-                    y: 200,
-                    isDown: true
-                });
-                t.addInput(2000, {
-                    device: 'text',
-                    text: 'some answer'
-                });
+\begin{frame}[fragile]\frametitle{Whisker, Example Test}
+    \vspace{-\bigskipamount}
+    \begin{minipage}{.7\textwidth}\begin{tikzpicture}
+        \node[opacity=1.0] (0,0) {
+            \begin{minipage}{\textwidth}
+                \begin{javascriptcode}
+                    const test = async function (t) {
+                        const sprite = t.getSprite('Sprite1');
 
-                t.getMousePos();
-                t.isMouseDown();
-                t.isKeyDown('space');
-            \end{minted}
-        \end{minipage}
-    \end{center}
-\end{frame}
+                        await t.runForTime(100);
+                        let oldX = sprite.x;
 
-\begin{frame}[fragile]\frametitle{Whisker, Accessing Output}
-    \begin{center}
-        \begin{minipage}{.95\textwidth}
-            \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, frame=lines]{javascript}
-                const sprite = t.getSprite('Sprite1');
-                const sprites = t.getSprites(sprite => sprite.x > 100);
-                const clones = sprite.getClones();
-                const stage = t.getStage();
+                        await t.runForTime(1000);
 
-                const variable = stage.getVariable('my variable');
-                const variables = stage.getVariables();
-                const list = sprite.getList('my list');
-                const lists = sprite.getLists();
+                        t.assert.ok(oldX === sprite.x);
 
-                sprite.x;
-                sprite.old.x;
-                variable.value;
+                        t.inputImmediate({
+                            device: 'keyboard',
+                            key: 'right arrow',
+                            isDown: true
+                        });
 
-                sprite.isOriginal();
-                sprite.isTouchingEdge();
-                sprite.isTouchingSprite(otherSprite);
-            \end{minted}
-        \end{minipage}
-    \end{center}
+                        await t.runForTime(1000);
+
+                        t.assert.ok(oldX < sprite.x);
+                    }
+                \end{javascriptcode}
+            \end{minipage}
+        };
+    \end{tikzpicture}\end{minipage}
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Whisker, Running the program}
-    \begin{center}
-        \begin{minipage}{.95\textwidth}
-            \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, frame=lines]{javascript}
+    \vspace{-\bigskipamount}
+    \begin{minipage}{.7\textwidth}\begin{tikzpicture}
+        \node[opacity=0.5] (0,0) {
+            \begin{minipage}{\textwidth}
+                \begin{javascriptcode}
+                    const test = async function (t) {
+                        const sprite = t.getSprite('Sprite1');
+
+                        await t.runForTime(100);
+                        let oldX = sprite.x;
+
+                        await t.runForTime(1000);
+
+                        t.assert.ok(oldX === sprite.x);
+
+                        t.inputImmediate({
+                            device: 'keyboard',
+                            key: 'right arrow',
+                            isDown: true
+                        });
+
+                        await t.runForTime(1000);
+
+                        t.assert.ok(oldX < sprite.x);
+                    }
+                \end{javascriptcode}
+            \end{minipage}
+        };
+    \end{tikzpicture}\end{minipage}%
+    \hspace{-.4\textwidth}%
+    \begin{minipage}{.6\textwidth}
+        \begin{javascriptcode}
             await t.runForTime(1000);
             await t.runForSteps(30);
             await t.runUntil(() => a > b, 1000);
@@ -329,69 +388,116 @@
             t.getTotalTimeElapsed();
 
             t.greenFlag();
-            \end{minted}
-        \end{minipage}
-    \end{center}
+        \end{javascriptcode}
+    \end{minipage}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Whisker, Simulating Inputs}
+    \begin{javascriptcode}
+        t.inputImmediate({
+            device: 'keyboard',
+            key: 'right arrow',
+            isDown: true,
+            duration: 100
+        });
+        t.addInput(1000, {
+            device: 'mouse',
+            x: 100,
+            y: 200,
+            isDown: true
+        });
+        t.addInput(2000, {
+            device: 'text',
+            text: 'some answer'
+        });
+
+        t.getMousePos();
+        t.isMouseDown();
+        t.isKeyDown('space');
+    \end{javascriptcode}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Whisker, Accessing Output}
+    \begin{javascriptcode}
+        const sprite = t.getSprite('Sprite1');
+        const sprites = t.getSprites(sprite => sprite.x > 100);
+        const clones = sprite.getClones();
+        const stage = t.getStage();
+
+        const variable = stage.getVariable('my variable');
+        const variables = stage.getVariables();
+        const list = sprite.getList('my list');
+        const lists = sprite.getLists();
+
+        sprite.x;
+        sprite.old.x;
+        variable.value;
+
+        sprite.isOriginal();
+        sprite.isTouchingEdge();
+        sprite.isTouchingSprite(otherSprite);
+    \end{javascriptcode}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Whisker, Running the program}
+    \begin{javascriptcode}
+        await t.runForTime(1000);
+        await t.runForSteps(30);
+        await t.runUntil(() => a > b, 1000);
+
+        t.getRunTimeElapsed();
+        t.getTotalTimeElapsed();
+
+        t.greenFlag();
+    \end{javascriptcode}
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Whisker, Callbacks}
-    \begin{center}
-        \begin{minipage}{.95\textwidth}
-            \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, frame=lines]{javascript}
-                const callback = t.addCallback(() => {
-                    if (sprite.x > 100) {
-                        t.inputImmediate({ device: 'mouse', isDown: true });
-                    } else if (sprite.x < 0) {
-                        t.cancelRun();
-                    }
-                });
+    \begin{javascriptcode}
+        const callback = t.addCallback(() => {
+            if (sprite.x > 100) {
+                t.inputImmediate({ device: 'mouse', isDown: true });
+            } else if (sprite.x < 0) {
+                t.cancelRun();
+            }
+        });
 
-                t.addCallback(() => someList.push(sprite.x), true);
+        t.addCallback(() => someList.push(sprite.x), true);
 
-                callback.disable();
-                callback.enable();
-                callback.isActive();
-            \end{minted}
-        \end{minipage}
-    \end{center}
+        callback.disable();
+        callback.enable();
+        callback.isActive();
+    \end{javascriptcode}
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Whisker, Constraints}
-    \begin{center}
-        \begin{minipage}{.95\textwidth}
-            \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, frame=lines]{javascript}
-                t.onConstraintFailure('fail');
-                t.onConstraintFailure('nothing');
+    \begin{javascriptcode}
+        t.onConstraintFailure('fail');
+        t.onConstraintFailure('nothing');
 
-                const constraint = t.addConstraint(() => {
-                    t.assert.ok(sprite.visible === true,
-                        'Sprite must always be visible.');
-                });
+        const constraint = t.addConstraint(() => {
+            t.assert.ok(sprite.visible === true,
+                'Sprite must always be visible.');
+        });
 
-                constraint.disable();
-                constraint.enable();
-                constraint.isActive();
-            \end{minted}
-        \end{minipage}
-    \end{center}
+        constraint.disable();
+        constraint.enable();
+        constraint.isActive();
+    \end{javascriptcode}
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Whisker, Input Generation}
-    \begin{center}
-        \begin{minipage}{.95\textwidth}
-            \begin{minted}[autogobble, breaklines, linenos, fontsize=\scriptsize, frame=lines]{javascript}
-            t.setRandomInputInterval(150);
+    \begin{javascriptcode}
+        t.setRandomInputInterval(150);
 
-            t.registerRandomInputs([
-              { device: 'keyboard', key: 'left arrow', duration: [50, 100] },
-              { device: 'keyboard', key: 'right arrow', duration: [50, 100] },
-              { device: 'mouse', x: [-100, 100], y: [-100, 100], weight: 0.5 }
-            ]);
+        t.registerRandomInputs([
+          { device: 'keyboard', key: 'left arrow', duration: [50, 100] },
+          { device: 'keyboard', key: 'right arrow', duration: [50, 100] },
+          { device: 'mouse', x: [-100, 100], y: [-100, 100], weight: 0.5 }
+        ]);
 
-            t.detectRandomInputs({ duration: [50, 100] });
-            \end{minted}
-        \end{minipage}
-    \end{center}
+        t.detectRandomInputs({ duration: [50, 100] });
+    \end{javascriptcode}
 \end{frame}
 
 % Scratch's visual output is rendered at a rate of 30 frames per second.
