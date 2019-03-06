@@ -1,0 +1,103 @@
+\begin{frame}
+    \bigcenter{Property-based Testing with Whisker}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Property-based Testing, QuickCheck}
+    \begin{itemize}
+        \item Define properties
+        \item Feed program with (random) input
+        \item Check if the program complies to the defined properties
+    \end{itemize}
+
+    \bigskip
+
+    Example: QuickCheck for Haskell
+
+    \begin{minted}[autogobble, breaklines, fontsize=\scriptsize, frame=single]{haskell}
+        prop_RevApp xs ys =
+            reverse (xs++ys) == reverse xs++reverse ys
+    \end{minted}
+
+    \begin{minted}[autogobble, breaklines, fontsize=\scriptsize, frame=single]{bash}
+        Main> quickCheck prop_RevApp
+        OK: passed 100 tests.
+    \end{minted}
+
+    \begin{minted}[autogobble, breaklines, fontsize=\scriptsize, frame=single]{bash}
+        Main> quickCheck prop_RevApp
+        Falsifiable, after 1 tests:
+        [2]
+        [-2,1]
+    \end{minted}
+\end{frame}
+
+\begin{frame}\frametitle{Property-based Testing, Whisker}
+    \begin{itemize}
+        \item \textcolor{upfim}{Callbacks:} Observe the program's output
+        \item \textcolor{upfim}{Constraints}: Define properties
+        \item (\textcolor{upfim}{Automated Input Generation}: Control the program)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Property-based Testing, Whisker, Callbacks}
+    \begin{minted}[autogobble, breaklines, fontsize=\scriptsize, frame=single]{javascript}
+        t.addCallback(() => {
+            const currentTime = t.getTotalTimeElapsed();
+            if (t.isKeyDown('right arrow')) {
+                pressedTime = currentTime;
+                if (!previouslyPressed) {
+                    startPressedTime = currentTime;
+                }
+                previouslyPressed = true;
+            } else {
+                previouslyPressed = false;
+            }
+        });
+
+        t.addCallback(() => {
+            if (sprite.x > sprite.old.x) {
+                movedRightTime = t.getTotalTimeElapsed();
+            }
+        });
+    \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Property-based Testing, Whisker, Constraints}
+    \begin{minted}[autogobble, breaklines, fontsize=\scriptsize, frame=single]{javascript}
+        t.addConstraint(() => {
+            const currentTime = t.getTotalTimeElapsed();
+            if (currentTime > startPressedTime + 100) {
+                t.assert.ok(Math.abs(movedRightTime - pressedTime) <= 100,
+                    'Sprite must move right when, and only when, the right arrow key is pressed.');
+            }
+        }));
+
+        t.addConstraint(() => {
+            t.assert.ok(sprite.x >= sprite.old.x,
+                'Sprite must only stand still or move right');
+            t.assert.ok(sprite.y == sprite.old.y,
+                'Sprite must not move vertically.');
+        }));
+    \end{minted}
+\end{frame}
+
+\begin{frame}
+    \bigcenter{Why property-based testing for Scratch?}
+\end{frame}
+
+\begin{frame}\frametitle{Why property-based testing for Scratch?}
+    \begin{itemize}
+        \item Many conditions can be checked in a single program execution%
+            \begin{itemize}
+                \item less test code
+                \item less execution time
+            \end{itemize}
+        \item Test independently of the input source
+            \begin{itemize}
+                \item generated input
+                \item recorded input
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+% TODO: resets
