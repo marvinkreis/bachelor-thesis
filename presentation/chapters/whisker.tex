@@ -3,11 +3,10 @@
 \end{frame}
 
 \begin{frame}\frametitle{Why is automated testing for Scratch difficult?}
-    Usually functional testing is deployed to automatically assess student solution,
-    but this is not straightforward for Scratch
+    Functional testing for Scratch is not a straightforward task:
     \begin{itemize}
-        \item Scratch is normally only accessible through its GUI
         \item \textcolor{upfim}{no functions} that take parameters and return a value
+        \item Scratch is normally only accessible through its GUI, which is not accessible in a programmable way
         \item \textcolor{upfim}{no textual IO}, keyboard and mouse input and graphical output
     \end{itemize}
 
@@ -298,7 +297,6 @@
             t.getSprites(sprite => sprite.x > 100);
             t.getStage();
 
-            sprite.getClones();
             sprite.getVariable('my variable');
 
             sprite.x;
