@@ -3,11 +3,11 @@
 \end{frame}
 
 \begin{frame}\frametitle{Why is automated testing for Scratch difficult?}
-    Functional testing for Scratch is not a straightforward task:
+    Scratch is difficult to interact with in an automated way:
     \begin{itemize}
-        \item \textcolor{upfim}{no functions} that take parameters and return a value
-        \item Scratch is normally only accessible through its GUI, which is not accessible in a programmable way
-        \item \textcolor{upfim}{no textual IO}, keyboard and mouse input and graphical output
+        \item \textcolor{upfim}{no functions}, that take parameters and return a value
+        % \item Scratch is only accessible through its GUI
+        \item \textcolor{upfim}{no textual IO}, keyboard / mouse input and graphical output
     \end{itemize}
 
     \bigskip
@@ -25,62 +25,64 @@
 \begin{frame}[fragile]\frametitle{How to test Scratch programs? Automating IO}
     Approach: Test on a system level by automating Scratch's IO
 
-    \begin{center}
+    \begin{figure}
+        \begin{center}
+            \tikzset{>=latex,
+                   arrow/.style={draw, -{Latex[length=1.5mm, width=1.5mm]}},
+                     put/.style={draw, minimum height=0.65cm, minimum width=1.75cm, rounded corners, fill=red!20, text width=2.4cm, text centered},
+                      vm/.style={draw, minimum height=1.75cm, minimum width=3.0cm, rounded corners, fill=white},
+                     gui/.style={draw, minimum height=2.6cm, minimum width=3.5cm, rounded corners, fill=blue!20},
+                 whisker/.style={draw, minimum height=2.6cm, minimum width=3.5cm, rounded corners, fill=green!20},
+                     box/.style={draw,text centered, rounded corners}}
 
-    \tikzset{>=latex,
-           arrow/.style={draw, -{Latex[length=1.5mm, width=1.5mm]}},
-             put/.style={draw, minimum height=0.65cm, minimum width=1.75cm, rounded corners, fill=red!20, text width=2.4cm, text centered},
-              vm/.style={draw, minimum height=1.75cm, minimum width=3.0cm, rounded corners, fill=white},
-             gui/.style={draw, minimum height=2.6cm, minimum width=3.5cm, rounded corners, fill=blue!20},
-         whisker/.style={draw, minimum height=2.6cm, minimum width=3.5cm, rounded corners, fill=green!20},
-             box/.style={draw,text centered, rounded corners}}
+            \hspace{2mm}\begin{tikzpicture}[scale=0.9, every node/.style={scale=0.9}]
+                \node[box] at (0.0, 4.0) (input)  {\includegraphics[height=.25\textheight]{mouse-keyboard}};
+                \node[box] at (5.1, 4.0) (output) {\includegraphics[height=.25\textheight]{scratch-stage}};
 
-    \hspace{2mm}\begin{tikzpicture}[scale=0.9, every node/.style={scale=0.9}]
-        \node[box] at (0.0, 4.0) (input)  {\includegraphics[height=.25\textheight]{mouse-keyboard}};
-        \node[box] at (5.1, 4.0) (output) {\includegraphics[height=.25\textheight]{scratch-stage}};
+                \node[] at (0.0, 5.5) (inputtxt)  {\textbf{Input}};
+                \node[] at (5.1, 5.5) (outputtxt) {\textbf{Output}};
 
-        \node[] at (0.0, 5.5) (inputtxt)  {\textbf{Input}};
-        \node[] at (5.1, 5.5) (outputtxt) {\textbf{Output}};
+                \draw [shorten >= 2pt, shorten <= 2pt, arrow] (input) -- (output);
+            \end{tikzpicture}
 
-        \draw [shorten >= 2pt, shorten <= 2pt, arrow] (input) -- (output);
-    \end{tikzpicture}
+            \bigskip
 
-    \bigskip
+            \begin{tikzpicture}[scale=0.9, every node/.style={scale=0.9}]
+                \node[box] at (-0.1, 4.0) (input) {
+                    \begin{minipage}{.28\textwidth}
+                        \begin{minted}[autogobble, breaklines, fontsize=\scriptsize, frame=none]{javascript}
+                            t.inputImmediate({
+                                device: 'mouse',
+                                isDown: true,
+                                x: 50,
+                                y: 100
+                            });
+                        \end{minted}
+                    \end{minipage}
+                };
 
-    \begin{tikzpicture}[scale=0.9, every node/.style={scale=0.9}]
-        \node[box] at (-0.1, 4.0) (input) {
-            \begin{minipage}{.28\textwidth}
-                \begin{minted}[autogobble, breaklines, fontsize=\scriptsize, frame=none]{javascript}
-                    t.inputImmediate({
-                        device: 'mouse',
-                        isDown: true,
-                        x: 50,
-                        y: 100
-                    });
-                \end{minted}
-            \end{minipage}
-        };
+                \node[box] at (5.1, 4.0) (output) {
+                    \begin{minipage}{.28\textwidth}
+                        \begin{minted}[autogobble, breaklines, fontsize=\scriptsize, frame=none]{javascript}
+                            sprite.x
+                            sprite.y
+                            sprite.rotation
+                            sprite.sayText
+                            sprite.costume
+                            variable.value
+                        \end{minted}
+                    \end{minipage}
+                };
 
-        \node[box] at (5.1, 4.0) (output) {
-            \begin{minipage}{.28\textwidth}
-                \begin{minted}[autogobble, breaklines, fontsize=\scriptsize, frame=none]{javascript}
-                    sprite.x
-                    sprite.y
-                    sprite.rotation
-                    sprite.sayText
-                    sprite.costume
-                    variable.value
-                \end{minted}
-            \end{minipage}
-        };
+                \node[] at (0.0, 5.5) (inputtxt)  {\textbf{Input}};
+                \node[] at (5.1, 5.5) (outputtxt) {\textbf{Output}};
 
-        \node[] at (0.0, 5.5) (inputtxt)  {\textbf{Input}};
-        \node[] at (5.1, 5.5) (outputtxt) {\textbf{Output}};
+                \draw [shorten >= 2pt, shorten <= 2pt, arrow] (input) -- (output);
+            \end{tikzpicture}
 
-        \draw [shorten >= 2pt, shorten <= 2pt, arrow] (input) -- (output);
-    \end{tikzpicture}
-
-    \end{center}
+            \caption{Comparison of Scratch's IO and Whisker's IO}
+        \end{center}
+    \end{figure}
 \end{frame}
 
 \begin{frame}\frametitle{How to test Scratch programs? Automating IO}
@@ -109,6 +111,12 @@
 
         \caption{General architecture of Scratch}
     \end{figure}
+
+    \pause
+
+    \begin{itemize}
+        \item[$\rightarrow$] replace Scratch's GUI with an implementation that provides an API to access Scratch's IO
+    \end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{How to test Scratch programs? Automating IO}
@@ -142,78 +150,82 @@
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{How to test Scratch programs? Automating IO}
-    \tikzset{>=latex,
-           arrow/.style={draw, -{Latex[length=1.5mm, width=1.5mm]}},
-             put/.style={draw, minimum height=0.65cm, minimum width=1.75cm, rounded corners, fill=red!20, text width=2.4cm, text centered},
-              vm/.style={draw, minimum height=1.75cm, minimum width=3.0cm, rounded corners, fill=white},
-             gui/.style={draw, minimum height=2.6cm, minimum width=3.5cm, rounded corners, fill=blue!20},
-         whisker/.style={draw, minimum height=2.6cm, minimum width=3.5cm, rounded corners, fill=green!20},
-             box/.style={draw,text centered, rounded corners}}
+    \begin{figure}
+        \tikzset{>=latex,
+               arrow/.style={draw, -{Latex[length=1.5mm, width=1.5mm]}},
+                 put/.style={draw, minimum height=0.65cm, minimum width=1.75cm, rounded corners, fill=red!20, text width=2.4cm, text centered},
+                  vm/.style={draw, minimum height=1.75cm, minimum width=3.0cm, rounded corners, fill=white},
+                 gui/.style={draw, minimum height=2.6cm, minimum width=3.5cm, rounded corners, fill=blue!20},
+             whisker/.style={draw, minimum height=2.6cm, minimum width=3.5cm, rounded corners, fill=green!20},
+                 box/.style={draw,text centered, rounded corners}}
 
-    \hspace{2mm}\begin{tikzpicture}[scale=0.9, every node/.style={scale=0.9}]
-        \node[box] at (0.0, 4.0) (input)  {\includegraphics[height=.25\textheight]{mouse-keyboard}};
-        \node[box] at (8.1, 4.0) (output) {\includegraphics[height=.25\textheight]{scratch-stage}};
+        \hspace{2mm}\begin{tikzpicture}[scale=0.9, every node/.style={scale=0.9}]
+            \node[box] at (0.0, 4.0) (input)  {\includegraphics[height=.25\textheight]{mouse-keyboard}};
+            \node[box] at (8.1, 4.0) (output) {\includegraphics[height=.25\textheight]{scratch-stage}};
 
-        \node[] at (0.0, 5.5) (inputtxt)  {\textbf{Input}};
-        \node[] at (8.1, 5.5) (outputtxt) {\textbf{Output}};
+            \node[] at (0.0, 5.5) (inputtxt)  {\textbf{Input}};
+            \node[] at (8.1, 5.5) (outputtxt) {\textbf{Output}};
 
-        \begin{scope}[on background layer]
-            \node[gui] at (4.0,  4.0)  (gui) {};
-            \node[vm]  at (4.0,  3.75) (vm)  {};
-        \end{scope}
+            \begin{scope}[on background layer]
+                \node[gui] at (4.0,  4.0)  (gui) {};
+                \node[vm]  at (4.0,  3.75) (vm)  {};
+            \end{scope}
 
-        \node[put] at (4.0,  3.5) (put)     {\small Program under test};
-        \node[]    at (4.0,  4.3) (vmtxt)   {\small Scratch VM};
-        \node[]    at (4.0,  4.95) (guitxt) {\textbf{Scratch GUI}};
+            \node[put] at (4.0,  3.5) (put)     {\small Program under test};
+            \node[]    at (4.0,  4.3) (vmtxt)   {\small Scratch VM};
+            \node[]    at (4.0,  4.95) (guitxt) {\textbf{Scratch GUI}};
 
-        \draw [shorten >= 2pt, shorten <= 2pt, arrow] (input) -- (gui);
-        \draw [shorten >= 2pt, shorten <= 2pt, arrow] (gui)   -- (output);
-    \end{tikzpicture}
+            \draw [shorten >= 2pt, shorten <= 2pt, arrow] (input) -- (gui);
+            \draw [shorten >= 2pt, shorten <= 2pt, arrow] (gui)   -- (output);
+        \end{tikzpicture}
 
-    \bigskip
+        \bigskip
 
-    \begin{tikzpicture}[scale=0.9, every node/.style={scale=0.9}]
-        \node[box] at (-0.1, 4.0) (input) {
-            \begin{minipage}{.28\textwidth}
-                \begin{minted}[autogobble, breaklines, fontsize=\scriptsize, frame=none]{javascript}
-                    t.inputImmediate({
-                        device: 'mouse',
-                        isDown: true,
-                        x: 50,
-                        y: 100
-                    });
-                \end{minted}
-            \end{minipage}
-        };
+        \begin{tikzpicture}[scale=0.9, every node/.style={scale=0.9}]
+            \node[box] at (-0.1, 4.0) (input) {
+                \begin{minipage}{.28\textwidth}
+                    \begin{minted}[autogobble, breaklines, fontsize=\scriptsize, frame=none]{javascript}
+                        t.inputImmediate({
+                            device: 'mouse',
+                            isDown: true,
+                            x: 50,
+                            y: 100
+                        });
+                    \end{minted}
+                \end{minipage}
+            };
 
-        \node[box] at (8.1, 4.0) (output) {
-            \begin{minipage}{.28\textwidth}
-                \begin{minted}[autogobble, breaklines, fontsize=\scriptsize, frame=none]{javascript}
-                    sprite.x
-                    sprite.y
-                    sprite.rotation
-                    sprite.sayText
-                    sprite.costume
-                    variable.value
-                \end{minted}
-            \end{minipage}
-        };
+            \node[box] at (8.1, 4.0) (output) {
+                \begin{minipage}{.28\textwidth}
+                    \begin{minted}[autogobble, breaklines, fontsize=\scriptsize, frame=none]{javascript}
+                        sprite.x
+                        sprite.y
+                        sprite.rotation
+                        sprite.sayText
+                        sprite.costume
+                        variable.value
+                    \end{minted}
+                \end{minipage}
+            };
 
-        \node[] at (0.0, 5.4) (inputtxt)  {\textbf{Input}};
-        \node[] at (8.1, 5.4) (outputtxt) {\textbf{Output}};
+            \node[] at (0.0, 5.4) (inputtxt)  {\textbf{Input}};
+            \node[] at (8.1, 5.4) (outputtxt) {\textbf{Output}};
 
-        \begin{scope}[on background layer]
-            \node[whisker] at (4.0,  4.0)  (whisker) {};
-            \node[vm]      at (4.0,  3.75) (vm)      {};
-        \end{scope}
+            \begin{scope}[on background layer]
+                \node[whisker] at (4.0,  4.0)  (whisker) {};
+                \node[vm]      at (4.0,  3.75) (vm)      {};
+            \end{scope}
 
-        \node[put] at (4.0,  3.5)  (put)        {\small Program under test};
-        \node[]    at (4.0,  4.3)  (vmtxt)      {\small Scratch VM};
-        \node[]    at (4.0,  4.95) (whiskertxt) {\textbf{Whisker}};
+            \node[put] at (4.0,  3.5)  (put)        {\small Program under test};
+            \node[]    at (4.0,  4.3)  (vmtxt)      {\small Scratch VM};
+            \node[]    at (4.0,  4.95) (whiskertxt) {\textbf{Whisker}};
 
-        \draw [shorten >= 2pt, shorten <= 2pt, arrow] (input)   -- (whisker);
-        \draw [shorten >= 2pt, shorten <= 2pt, arrow] (whisker) -- (output);
-    \end{tikzpicture}
+            \draw [shorten >= 2pt, shorten <= 2pt, arrow] (input)   -- (whisker);
+            \draw [shorten >= 2pt, shorten <= 2pt, arrow] (whisker) -- (output);
+        \end{tikzpicture}
+
+        \caption{Comparison of Scratch's IO and Whisker's IO}
+    \end{figure}
 \end{frame}
 
 \begin{frame}
@@ -229,18 +241,20 @@
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Whisker, Example Test}
+    \only<1,3,5,7>{\tikzset{test/.style={opacity=1.0}}}
+    \only<2,4,6>{\tikzset{test/.style={opacity=0.3}}}
     \vspace{-\bigskipamount}
-    \begin{minipage}{.7\textwidth}\begin{tikzpicture}
-        \node[opacity=1.0] (0,0) {
+    \begin{minipage}{.75\textwidth}\begin{tikzpicture}
+        \node[test] (0,0) {
             \begin{minipage}{\textwidth}
                 \begin{javascriptcode}
                     const test = async function (t) {
-                        const sprite = t.getSprite('Sprite1');
-
                         await t.runForTime(100);
+
+                        const sprite = t.getSprite('Sprite1');
                         let oldX = sprite.x;
 
-                        await t.runForTime(1000);
+                        await t.runForTime(250);
 
                         t.assert.ok(oldX === sprite.x);
 
@@ -250,261 +264,80 @@
                             isDown: true
                         });
 
-                        await t.runForTime(1000);
+                        await t.runForTime(250);
 
-                        t.assert.ok(oldX < sprite.x);
-                    }
-                \end{javascriptcode}
-            \end{minipage}
-        };
-    \end{tikzpicture}\end{minipage}
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Whisker, Accessing Sprites and Variables}
-    \vspace{-\bigskipamount}
-    \begin{minipage}{.7\textwidth}\begin{tikzpicture}
-        \node[opacity=0.35] (0,0) {
-            \begin{minipage}{\textwidth}
-                \begin{javascriptcode}
-                    const test = async function (t) {
-                        const sprite = t.getSprite('Sprite1');
-
-                        await t.runForTime(100);
-                        let oldX = sprite.x;
-
-                        await t.runForTime(1000);
-
-                        t.assert.ok(oldX === sprite.x);
-
-                        t.inputImmediate({
-                            device: 'keyboard',
-                            key: 'right arrow',
-                            isDown: true
-                        });
-
-                        await t.runForTime(1000);
-
-                        t.assert.ok(oldX < sprite.x);
+                        t.assert.ok(sprite.x > oldX);
                     }
                 \end{javascriptcode}
             \end{minipage}
         };
     \end{tikzpicture}\end{minipage}%
     \hspace{-.4\textwidth}%
-    \begin{minipage}{.6\textwidth}
-        \begin{javascriptcode}
-            t.getSprite('Sprite1');
-            t.getSprites(sprite => sprite.x > 100);
-            t.getStage();
+    \begin{onlyenv}<2>
+        \begin{minipage}{.6\textwidth}
+            \begin{javascriptcode}
+                /* Running the program */
 
-            sprite.getVariable('my variable');
+                /* Tests start with the program in a
+                 * paused state. The test can then run
+                 * (resume) the program on demand. */
 
-            sprite.x;
-            sprite.rotation;
-            variable.value;
+                await t.runForTime(500);
+                await t.runUntil(() => a > b, 1000);
 
-            sprite.old.x;
-            sprite.old.rotation;
-            variable.old.value;
+                t.getRunTimeElapsed();
+                t.getTotalTimeElapsed();
 
-            sprite.isTouchingEdge();
-        \end{javascriptcode}
-    \end{minipage}
-\end{frame}
+                t.greenFlag();
+            \end{javascriptcode}
+        \end{minipage}
+    \end{onlyenv}
+    \begin{onlyenv}<4>
+        \begin{minipage}{.6\textwidth}
+            \begin{javascriptcode}
+                /* Accessing sprites and variables */
 
-\begin{frame}[fragile]\frametitle{Whisker, Example Test}
-    \vspace{-\bigskipamount}
-    \begin{minipage}{.7\textwidth}\begin{tikzpicture}
-        \node[opacity=1.0] (0,0) {
-            \begin{minipage}{\textwidth}
-                \begin{javascriptcode}
-                    const test = async function (t) {
-                        const sprite = t.getSprite('Sprite1');
+                /* Accessed through objects that always
+                 * have the current sprite attributes /
+                 * variable value. */
 
-                        await t.runForTime(100);
-                        let oldX = sprite.x;
+                t.getSprite('Sprite1');
+                t.getSprites(sprite => sprite.x > 100);
+                t.getStage();
 
-                        await t.runForTime(1000);
+                sprite.getVariable('my variable');
 
-                        t.assert.ok(oldX === sprite.x);
+                sprite.x;
+                sprite.rotation;
+                variable.value;
 
-                        t.inputImmediate({
-                            device: 'keyboard',
-                            key: 'right arrow',
-                            isDown: true
-                        });
+                sprite.isTouchingEdge();
+            \end{javascriptcode}
+        \end{minipage}
+    \end{onlyenv}
+    \begin{onlyenv}<6>
+        \begin{minipage}{.6\textwidth}
+            \begin{javascriptcode}
+                /* Simulating Inputs */
 
-                        await t.runForTime(1000);
+                t.inputImmediate({
+                    device: 'keyboard',
+                    key: 'space',
+                    isDown: true,
+                    duration: 100
+                });
+                t.addInput(1000, {
+                    device: 'mouse',
+                    x: 100,
+                    y: 200,
+                    isDown: true
+                });
 
-                        t.assert.ok(oldX < sprite.x);
-                    }
-                \end{javascriptcode}
-            \end{minipage}
-        };
-    \end{tikzpicture}\end{minipage}
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Whisker, Running the Program}
-    \vspace{-\bigskipamount}
-    \begin{minipage}{.7\textwidth}\begin{tikzpicture}
-        \node[opacity=0.35] (0,0) {
-            \begin{minipage}{\textwidth}
-                \begin{javascriptcode}
-                    const test = async function (t) {
-                        const sprite = t.getSprite('Sprite1');
-
-                        await t.runForTime(100);
-                        let oldX = sprite.x;
-
-                        await t.runForTime(1000);
-
-                        t.assert.ok(oldX === sprite.x);
-
-                        t.inputImmediate({
-                            device: 'keyboard',
-                            key: 'right arrow',
-                            isDown: true
-                        });
-
-                        await t.runForTime(1000);
-
-                        t.assert.ok(oldX < sprite.x);
-                    }
-                \end{javascriptcode}
-            \end{minipage}
-        };
-    \end{tikzpicture}\end{minipage}%
-    \hspace{-.4\textwidth}%
-    \begin{minipage}{.6\textwidth}
-        \begin{javascriptcode}
-            await t.runForTime(1000);
-            await t.runUntil(() => a > b, 1000);
-
-            t.getRunTimeElapsed();
-            t.getTotalTimeElapsed();
-
-            t.greenFlag();
-        \end{javascriptcode}
-    \end{minipage}
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Whisker, Example Test}
-    \vspace{-\bigskipamount}
-    \begin{minipage}{.7\textwidth}\begin{tikzpicture}
-        \node[opacity=1.0] (0,0) {
-            \begin{minipage}{\textwidth}
-                \begin{javascriptcode}
-                    const test = async function (t) {
-                        const sprite = t.getSprite('Sprite1');
-
-                        await t.runForTime(100);
-                        let oldX = sprite.x;
-
-                        await t.runForTime(1000);
-
-                        t.assert.ok(oldX === sprite.x);
-
-                        t.inputImmediate({
-                            device: 'keyboard',
-                            key: 'right arrow',
-                            isDown: true
-                        });
-
-                        await t.runForTime(1000);
-
-                        t.assert.ok(oldX < sprite.x);
-                    }
-                \end{javascriptcode}
-            \end{minipage}
-        };
-    \end{tikzpicture}\end{minipage}
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Whisker, Simulating Inputs}
-    \vspace{-\bigskipamount}
-    \begin{minipage}{.7\textwidth}\begin{tikzpicture}
-        \node[opacity=0.35] (0,0) {
-            \begin{minipage}{\textwidth}
-                \begin{javascriptcode}
-                    const test = async function (t) {
-                        const sprite = t.getSprite('Sprite1');
-
-                        await t.runForTime(100);
-                        let oldX = sprite.x;
-
-                        await t.runForTime(1000);
-
-                        t.assert.ok(oldX === sprite.x);
-
-                        t.inputImmediate({
-                            device: 'keyboard',
-                            key: 'right arrow',
-                            isDown: true
-                        });
-
-                        await t.runForTime(1000);
-
-                        t.assert.ok(oldX < sprite.x);
-                    }
-                \end{javascriptcode}
-            \end{minipage}
-        };
-    \end{tikzpicture}\end{minipage}%
-    \hspace{-.4\textwidth}%
-    \begin{minipage}{.6\textwidth}
-        \begin{javascriptcode}
-            t.inputImmediate({
-                device: 'keyboard',
-                key: 'right arrow',
-                isDown: true,
-                duration: 100
-            });
-            t.addInput(1000, {
-                device: 'mouse',
-                x: 100, y: 200,
-                isDown: true
-            });
-            t.addInput(2000, {
-                device: 'text',
-                text: 'some answer'
-            });
-
-            t.getMousePos();
-            t.isKeyDown('space');
-        \end{javascriptcode}
-    \end{minipage}
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Whisker, Example Test}
-    \vspace{-\bigskipamount}
-    \begin{minipage}{.7\textwidth}\begin{tikzpicture}
-        \node[opacity=1.0] (0,0) {
-            \begin{minipage}{\textwidth}
-                \begin{javascriptcode}
-                    const test = async function (t) {
-                        const sprite = t.getSprite('Sprite1');
-
-                        await t.runForTime(100);
-                        let oldX = sprite.x;
-
-                        await t.runForTime(1000);
-
-                        t.assert.ok(oldX === sprite.x);
-
-                        t.inputImmediate({
-                            device: 'keyboard',
-                            key: 'right arrow',
-                            isDown: true
-                        });
-
-                        await t.runForTime(1000);
-
-                        t.assert.ok(oldX < sprite.x);
-                    }
-                \end{javascriptcode}
-            \end{minipage}
-        };
-    \end{tikzpicture}\end{minipage}
+                t.getMousePos();
+                t.isKeyDown('space');
+            \end{javascriptcode}
+        \end{minipage}
+    \end{onlyenv}
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Whisker, Callbacks}
@@ -528,7 +361,6 @@
         callback.enable();
         callback.isActive();
     \end{javascriptcode}
-    % TODO: remove disable / enable / isActive
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Whisker, Constraints}
@@ -542,15 +374,13 @@
         t.onConstraintFailure('nothing');
 
         const constraint = t.addConstraint(() => {
-            t.assert.ok(sprite.visible === true,
-                        'Sprite must always be visible.');
+            t.assert.ok(sprite.visible === true, 'Sprite must be visible.');
         });
 
         constraint.disable();
         constraint.enable();
         constraint.isActive();
     \end{javascriptcode}
-    % TODO: remove disable / enable / isActive
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Whisker, Automated Input Generation}
@@ -563,9 +393,9 @@
         t.setRandomInputInterval(150);
 
         t.registerRandomInputs([
-          { device: 'keyboard', key: 'left arrow', duration: [50, 100] },
-          { device: 'keyboard', key: 'right arrow', duration: [50, 100] },
-          { device: 'mouse', x: [-100, 100], y: [-100, 100], weight: 0.5 }
+            { device: 'keyboard', key: 'left arrow', duration: [50, 100] },
+            { device: 'keyboard', key: 'right arrow', duration: [50, 100] },
+            { device: 'mouse', x: [-50, 50], y: [-100, 100], weight: 0.5 }
         ]);
 
         t.detectRandomInputs({ duration: [50, 100] });
@@ -578,16 +408,16 @@
     \end{tikzpicture}
 }
 
-\begin{frame}\frametitle{Whisker, Detecting Inputs}
-    \scalebox{0.75}{
-        \begin{tabular}{m{5.25cm}m{9.0cm}}
-            \large Scratch Block(s) & \large Resulting Input(s) \\
-            \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-1}\vspace{2mm} & \tablebox{(1) Press the respective keyboard key}                \\
-            \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-4}\vspace{2mm} & \tablebox{(1) Move the cursor near / onto the respective sprite \\
-                                                                                                      (2) Move the cursor to a random position}             \\
-            \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-7}\vspace{2mm} & \tablebox{(1) Answer with a randomly generated string}          \\
-            \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-8}\vspace{2mm} & \tablebox{(1) Answer with the compared string constant}         \\
-            \huge ...                                                                     & \huge ...                                                       \\
-        \end{tabular}
-    }
-\end{frame}
+% \begin{frame}\frametitle{Whisker, Detecting Inputs}
+%     \scalebox{0.75}{
+%         \begin{tabular}{m{5.25cm}m{9.0cm}}
+%             \large Scratch Block(s) & \large Resulting Input(s) \\
+%             \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-1}\vspace{2mm} & \tablebox{(1) Press the respective keyboard key}                \\
+%             \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-4}\vspace{2mm} & \tablebox{(1) Move the cursor near / onto the respective sprite \\
+%                                                                                                       (2) Move the cursor to a random position}             \\
+%             \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-7}\vspace{2mm} & \tablebox{(1) Answer with a randomly generated string}          \\
+%             \vspace{3.5mm}\includegraphics[scale=1.5]{scratch-input-blocks-8}\vspace{2mm} & \tablebox{(1) Answer with the compared string constant}         \\
+%             \huge ...                                                                     & \huge ...                                                       \\
+%         \end{tabular}
+%     }
+% \end{frame}

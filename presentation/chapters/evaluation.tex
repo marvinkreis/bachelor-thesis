@@ -6,14 +6,15 @@
     \bigcenter{Can test results match results of manual grading?}
 \end{frame}
 
-\begin{frame}\frametitle{Test Results}
+\begin{frame}\frametitle{Evaluation, Test Results}
     Test subjects:
     \begin{itemize}
         \item \textcolor{upfim}{37 student implementations} of a simple catching game
-        % \item from a 6th and 7th grade Scratch workshop
-        \item Graded manually (independently), on a scale from 0 to 30
+        \item from a 6th and 7th grade Scratch workshop~\cite{keller}
+        \item Graded manually, on a scale from 0 to 30
     \end{itemize}
 
+    \pause
     \bigskip
 
     Two test suites:
@@ -30,15 +31,16 @@
             \end{itemize}
     \end{itemize}
 
+    \pause
     \bigskip
 
     Measured item:
     \begin{itemize}
-        \item Correlation between manual scores and the number of test / constraint passes
+        \item Correlation between manual scores and the number of test or constraint passes
     \end{itemize}
 \end{frame}
 
-\begin{frame}\frametitle{Test Results}
+\begin{frame}\frametitle{Evaluation, Test Results}
     Excluded Projects:
     \begin{itemize}
         \item 6 of the 37 projects were excluded from the statistics
@@ -49,7 +51,7 @@
     % TODO: note the excluded projects for potential questions
 \end{frame}
 
-\begin{frame}\frametitle{Test Results, Normal Tests}
+\begin{frame}\frametitle{Evaluation, Test Results, Normal Tests}
     \begin{figure}
         \begin{minipage}{.85\textwidth}
             \includegraphics[width=\textwidth]{r/scatter-normal-1}
@@ -58,7 +60,7 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}\frametitle{Test Results, Normal Tests}
+\begin{frame}\frametitle{Evaluation, Test Results, Normal Tests}
     \begin{figure}
         \begin{minipage}{.85\textwidth}
             \includegraphics[width=\textwidth]{r/scatter-normal-avg}
@@ -67,7 +69,7 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}\frametitle{Test Results, Constraint Tests}
+\begin{frame}\frametitle{Evaluation, Test Results, Constraint Tests}
     \begin{figure}
         \begin{minipage}{.85\textwidth}
             \includegraphics[width=\textwidth]{r/scatter-random-1}
@@ -76,7 +78,7 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}\frametitle{Test Results, Constraint Tests}
+\begin{frame}\frametitle{Evaluation, Test Results, Constraint Tests}
     \begin{figure}
         \begin{minipage}{.85\textwidth}
             \includegraphics[width=\textwidth]{r/scatter-random-avg}
@@ -89,15 +91,14 @@
     \bigcenter{What coverage can be achieved with automated input?}
 \end{frame}
 
-% TODO: better frame title?
-\begin{frame}\frametitle{Coverage of Automated Input}
+\begin{frame}\frametitle{Evaluation, Coverage of Automated Input}
     Test subjects:
     \begin{itemize}
-        % TODO footnote about Code Club
-        \item 24 sample solutions to Code Club's online Scratch courses
+        \item 24 sample solutions to Code Club's\footnote{\url{https://codeclubprojects.org/}} online Scratch courses
         \item Run with generated input for 10 minutes
     \end{itemize}
 
+    \pause
     \bigskip
 
     Measured item:
@@ -107,30 +108,58 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}\frametitle{Coverage of Automated Input}
+\begin{frame}\frametitle{Evaluation, Coverage of Automated Input}
     \begin{figure}
         \includegraphics[width=\textwidth]{r/coverage-bar-random-input-1}
         \caption{Coverage per project, 1st run}
     \end{figure}
 \end{frame}
 
-\begin{frame}\frametitle{Coverage of Automated Input}
+\begin{frame}\frametitle{Evaluation, Coverage of Automated Input}
     \begin{figure}
         \includegraphics[width=\textwidth]{r/coverage-line-random-input-1}
         \caption{Coverage over time, 1st run}
     \end{figure}
 \end{frame}
 
-\begin{frame}\frametitle{Coverage of Automated Input}
+\begin{frame}\frametitle{Evaluation, Coverage of Automated Input}
     \begin{figure}
         \includegraphics[width=\textwidth]{r/coverage-bar-random-input-avg}
         \caption{Coverage per project, average over 10 runs}
     \end{figure}
 \end{frame}
 
-\begin{frame}\frametitle{Coverage of Automated Input}
+\begin{frame}\frametitle{Evaluation, Coverage of Automated Input}
     \begin{figure}
         \includegraphics[width=\textwidth]{r/coverage-line-random-input-avg}
+        \caption{Coverage over time, average over 10 runs}
+    \end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Evaluation, Coverage of Automated Input}
+    \begin{figure}
+        \includegraphics[width=\textwidth]{r/coverage-bar-no-input-1}
+        \caption{Coverage per project, 1st run}
+    \end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Evaluation, Coverage of Automated Input}
+    \begin{figure}
+        \includegraphics[width=\textwidth]{r/coverage-line-no-input-1}
+        \caption{Coverage over time, 1st run}
+    \end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Evaluation, Coverage of Automated Input}
+    \begin{figure}
+        \includegraphics[width=\textwidth]{r/coverage-bar-no-input-avg}
+        \caption{Coverage per project, average over 10 runs}
+    \end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Evaluation, Coverage of Automated Input}
+    \begin{figure}
+        \includegraphics[width=\textwidth]{r/coverage-line-no-input-avg}
         \caption{Coverage over time, average over 10 runs}
     \end{figure}
 \end{frame}

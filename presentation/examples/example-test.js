@@ -1,12 +1,14 @@
 const test = async function (t) {
-    const sprite = t.getSprite('Sprite1');
 
     await t.runForTime(100);
+
+    const sprite = t.getSprite('Sprite1');
     let oldX = sprite.x;
 
-    await t.runForTime(1000);
+    await t.runForTime(250);
 
-    t.assert.ok(oldX === sprite.x);
+    t.assert.ok(oldX === sprite.x,
+        'Sprite must not move when no key is pressed.');
 
     t.inputImmediate({
         device: 'keyboard',
@@ -14,16 +16,17 @@ const test = async function (t) {
         isDown: true
     });
 
-    await t.runForTime(1000);
+    await t.runForTime(250);
 
-    t.assert.ok(oldX < sprite.x);
+    t.assert.ok(oldX < sprite.x,
+        'Sprite must move when right arrow key is pressed.');
 };
 
 module.exports = [
     {
         test: test,
         name: 'Example Test',
-        description: '',
+        description: 'Tests the sprite movement.',
         categories: []
     }
 ];

@@ -2,19 +2,22 @@
     \bigcenter{What is Scratch?}
 \end{frame}
 
-\begin{frame}\frametitle{What is Scratch?}
-    \begin{figure}
-        \includegraphics[width=.9\textwidth]{scratch-gui}
-        \caption{Scratch's GUI}
-    \end{figure}
-\end{frame}
+% \begin{frame}\frametitle{What is Scratch?}
+%     \begin{figure}
+%         \includegraphics[width=.9\textwidth]{scratch-gui}
+%         \caption{Scratch's GUI}
+%     \end{figure}
+% \end{frame}
 
 \begin{frame}\frametitle{What is Scratch?}
     \begin{itemize}
         \item Block-based programming language
         \item Developed by the MIT media lab
+        \item Programs create interactive animations on a stage
         \item Code is separated into scripts that are triggered by events
     \end{itemize}
+
+    \pause
 
     \begin{figure}
         \centering
@@ -24,101 +27,60 @@
                  label/.style={text width=1.9cm}}
 
         \begin{tikzpicture}[scale=0.8, every node/.style={scale=0.8}]
-            \node[box] at (0.0, 1.5) (step)   {Run scripts in parallel until a sprite changes};
+            \node[box] at (0.0, 1.25) (step)   {Run active scripts in parallel};
             \node[box] at (0.0, 0.0) (render) {Render the stage};
 
-            \node[label] at (-3.5, 1.0) {30 times per second};
+            \node[label] at (-3.5, 0.75) {30 times per second};
 
             \draw[shorten >= 2pt, arrow, rounded corners]
                    (step)
                 -- (render)
                 -- ( 0.0, -1.0)
                 -- (-2.4, -1.0)
-                -- (-2.4,  3.0)
-                -- ( 0.0,  3.0)
+                -- (-2.4,  2.5)
+                -- ( 0.0,  2.5)
                 -- (step);
         \end{tikzpicture}
 
-        \caption{Scratch step cycle}
+        \caption{Scratch program execution}
     \end{figure}
 \end{frame}
 
-\begin{frame}
-    \bigcenter{Why Scratch?}
-    % Why is Scratch relevant?
-    % Scratch is widely popular
-    % For one thing, Scratch has a big online community
-\end{frame}
-
-\begin{frame}\frametitle{Why Scratch? Scratch's online community}
-    % It has an online repository that everyone can upload their own projects to
-    \begin{figure}
-        \includegraphics[width=.7\textwidth]{scratch-repository}
-        \caption{Scratch's online repository}
-    \end{figure}
-\end{frame}
-
-\begin{frame}[shrink=0]\frametitle{Why Scratch? Scratch's online community}
-    % This repository encompasses over 38 million Scratch projects from over 36 million users at the time of writing
-    % With over a million projects uploaded each month
-    \begin{figure}
-        \includegraphics[width=.7\textwidth]{scratch-popularity}
-        \caption{Submitted Scratch projects per month}
-    \end{figure}
-    \centering
-    \begin{minipage}{.7\textwidth}
-        \begin{itemize}
-            \item over 38 million projects shared
-            \item over 36 million users
-        \end{itemize}
-    \end{minipage}
-\end{frame}
-
-\begin{frame}\frametitle{Why Scratch? Good introduction to programming}
-    % But more importantly Scratch is used by many schools and universities to introduce students to the principles of programming
-    % Scratch is very suitable for this task for multiple reasons
-    Many schools and universities deploy Scratch as a gentle introduction to programming.
-\end{frame}
-
-\begin{frame}\frametitle{Why Scratch? Good introduction to programming}
-    % For one thing, Scratch makes it impossible to write invalid code
-    % The block-based code system eliminates the possibility of syntax errors
-    % Blocks are chosen from a drawer
-    % And even variable names can't be misspelled since they are chosen from a list
-    % This all helps make Scratch very intuitive to use
-    \centering
-    \includegraphics[width=.8\textwidth]{scratch-valid-code}\\[\medskipamount]
-    Intuitive: Block based code system only allows valid code
-\end{frame}
-
-\begin{frame}\frametitle{Why Scratch? Good introduction to programming}
-    % At the same time, Scratch is very engaging
-    % User input, graphics and audio are easy to integrate, which often leads to game-like programs
-    \centering
-    \includegraphics[width=.33\textwidth]{scratch-input-blocks}
-    \includegraphics[width=.4\textwidth]{scratch-sprite-editor}
-    \includegraphics[width=.6\textwidth]{scratch-sound-editor}\\[\medskipamount]
-    Engaging: User interaction, easy integration of graphics and sounds
-\end{frame}
+% Scratch 3.0 is accessed through a web interface
+% Code is made up of blocks that are chosen from a drawer and sticked together
+% These blocks include statements, expressions, variables, control structures, and also something called hats
+% Hats are used to trigger scripts through a variety of different events
+% For example the "green flag" event is the entry point of the program, and other events include clicks, key presses and messages from other scripts
+% These scripts manipulate sprites on a stage to create animations
+% Scratch Programs are usually very interactive, Scratch has blocks to use keyboard and mouse input, which often makes for game-like programs
 
 \begin{frame}
     \bigcenter{Why automated testing for Scratch?}
 \end{frame}
 
 \begin{frame}\frametitle{Why automated testing for Scratch?}
+    Many schools and universities deploy Scratch as a gentle introduction to programming.
+
+    \pause
+    \bigskip
+
     Grading Scratch assignments is very \textcolor{upfim}{time consuming}
     \begin{itemize}
         \item every project has to be opened individually
         \item programs require large amounts of \textcolor{upfim}{user interaction}
     \end{itemize}
 
+    \pause
     \bigskip
 
-    % TODO citation
-    Some courses are attended by a \textcolor{upfim}{large number of students ($> 200$)},
-    making manual testing for grading infeasible.
+    Some courses are attended by a \textcolor{upfim}{large number of students}
+    \begin{itemize}
+        \item manual testing for grading infeasible
+        \item university of Utah: $> 200$~\cite{itch}
+    \end{itemize}
 
+    \pause
     \bigskip
 
-    Students can also use automated tests to get feedback for their own implementations.
+    Additionally, students can use automated tests to get feedback for their own implementations.
 \end{frame}
