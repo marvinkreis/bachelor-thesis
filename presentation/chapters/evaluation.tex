@@ -1,9 +1,11 @@
+\section{Evaluation + Results}
+
 \begin{frame}
     \bigcenter{Evaluation}
 \end{frame}
 
 \begin{frame}
-    \bigcenter{Can test results match results of manual grading?}
+    \bigcenter{RQ: Can test results match results of manual grading?}
 \end{frame}
 
 \begin{frame}\frametitle{Evaluation, Test Results}
@@ -11,7 +13,7 @@
     \begin{itemize}
         \item \textcolor{upfim}{37 student implementations} of a simple catching game
         \item from a 6th and 7th grade Scratch workshop~\cite{keller}
-        \item Graded manually, on a scale from 0 to 30
+        \item \textcolor{upfim}{Graded manually}, on a scale from 0 to 30
     \end{itemize}
 
     \pause
@@ -36,16 +38,19 @@
 
     Measured item:
     \begin{itemize}
-        \item Correlation between manual scores and the number of test or constraint passes
+        \item \textcolor{upfim}{Correlation} between manual scores and the number of test or constraint passes
     \end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{Evaluation, Test Results}
     Excluded Projects:
     \begin{itemize}
-        \item 6 of the 37 projects were excluded from the statistics
-        \item Mostly excluded because they don't start correctly
-        \item Would distort results, since manual grading ignored the issues
+        \item 6 of the 37 projects were excluded from the calculation
+        \item Most because they don't start with the \greenflag event, but with other key presses
+            \begin{itemize}
+                \item Tests try to start the program with the \greenflag button
+                \item Not an issue for manual grading
+            \end{itemize}
     \end{itemize}
 
     % TODO: note the excluded projects for potential questions
@@ -88,7 +93,7 @@
 \end{frame}
 
 \begin{frame}
-    \bigcenter{What coverage can be achieved with automated input?}
+    \bigcenter{RQ: What coverage can be achieved with automated input?}
 \end{frame}
 
 \begin{frame}\frametitle{Evaluation, Coverage of Automated Input}

@@ -1,14 +1,20 @@
 \documentclass{beamer}
-\usepackage{xcolor}
 \graphicspath{{media/},{../thesis/media/}}
+
+\usepackage{xcolor}
+
 \usepackage{tikz}
 \usetikzlibrary{fit, backgrounds, shapes, arrows, arrows.meta, chains}
+
 \usepackage{array}
+
 \usepackage[justification=centering, font=small]{caption}
 
-% TODO: highlight important parts with upfim
+\usepackage{fontawesome}
 
-\usepackage[outputdir=/tmp/latexrun]{minted}
+\usepackage{xspace}
+
+\usepackage{minted}
 \newminted{javascript}{
     autogobble,
     breaklines,
@@ -36,13 +42,16 @@
     Chair of Software Engineering II\\
     University of Passau
 }
-\date{2019-03-27}
+\date{2019-04-02}
 
 \newcommand{\bigcenter}[1]{
     \begin{center}
         \textcolor{black!70}{\Huge #1}
     \end{center}
 }
+
+\definecolor{greenflag}{RGB}{76,191,86}
+\newcommand{\greenflag}{\textcolor{greenflag}{\faFlag}\xspace}
 
 %--------------------------------------------------------------------
 % Titlepage
@@ -54,6 +63,9 @@
 
 \begin{frame}
     \titlepage
+    \begin{tikzpicture}[remember picture,overlay]
+        \node[xshift=-2.4cm,yshift=-7cm] at (current page.north east){\includegraphics[width=.2\textwidth]{scratch-cat}};
+    \end{tikzpicture}
 \end{frame}
 
 \setbeamertemplate{footline}[unipassautheme]
@@ -62,14 +74,19 @@
 % Content
 %-------------------------------------------------------------------
 
+\begin{frame}
+    \tableofcontents
+\end{frame}
+
 \input{chapters/intro}
 \input{chapters/whisker}
 \input{chapters/constraint-tests}
 \input{chapters/evaluation}
-\input{chapters/conclusion}
+\input{chapters/future-work}
 
-\clearpage
-\bibliographystyle{acm}
-\bibliography{references}
+\begin{frame}\frametitle{References}
+    \bibliographystyle{acm}
+    \bibliography{references}
+\end{frame}
 
 \end{document}

@@ -18,6 +18,8 @@
     \includegraphics[width=.4\textwidth]{scratch-stage}
 \end{frame}
 
+\section{How to test Scratch programs?}
+
 \begin{frame}
     \bigcenter{How to test Scratch programs?}
 \end{frame}
@@ -111,12 +113,6 @@
 
         \caption{General architecture of Scratch}
     \end{figure}
-
-    \pause
-
-    \begin{itemize}
-        \item[$\rightarrow$] replace Scratch's GUI with an implementation that provides an API to access Scratch's IO
-    \end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{How to test Scratch programs? Automating IO}
@@ -228,6 +224,8 @@
     \end{figure}
 \end{frame}
 
+\section{Testing Framework: Whisker}
+
 \begin{frame}
     \bigcenter{Whisker}
 \end{frame}
@@ -278,15 +276,10 @@
             \begin{javascriptcode}
                 /* Running the program */
 
-                /* Tests start with the program in a
-                 * paused state. The test can then run
-                 * (resume) the program on demand. */
-
                 await t.runForTime(500);
                 await t.runUntil(() => a > b, 1000);
 
-                t.getRunTimeElapsed();
-                t.getTotalTimeElapsed();
+                t.cancelRun();
 
                 t.greenFlag();
             \end{javascriptcode}
@@ -297,10 +290,6 @@
             \begin{javascriptcode}
                 /* Accessing sprites and variables */
 
-                /* Accessed through objects that always
-                 * have the current sprite attributes /
-                 * variable value. */
-
                 t.getSprite('Sprite1');
                 t.getSprites(sprite => sprite.x > 100);
                 t.getStage();
@@ -309,6 +298,8 @@
 
                 sprite.x;
                 sprite.rotation;
+                sprite.visible;
+                sprite.sayText;
                 variable.value;
 
                 sprite.isTouchingEdge();
@@ -340,10 +331,38 @@
     \end{onlyenv}
 \end{frame}
 
+% \begin{frame}\frametitle{Whisker, Callbacks}
+%     \begin{figure}
+%         \centering
+%         \tikzset{>=latex,
+%                  arrow/.style={-{Latex[length=1.5mm, width=1.5mm]}},
+%                    box/.style={draw, text width=3.2cm, minimum height=0.7cm, text centered, rounded corners},
+%                  label/.style={text width=1.9cm}}
+%
+%         \begin{tikzpicture}[scale=0.8, every node/.style={scale=0.8}]
+%             \node[box] at (0.0, 1.25) (step)   {Run active scripts in parallel};
+%             \node[box] at (0.0, 0.0) (render) {Render the stage};
+%
+%             \node[label] at (-3.5, 0.75) {30 times per second};
+%
+%             \draw[shorten >= 2pt, arrow, rounded corners]
+%                    (step)
+%                 -- (render)
+%                 -- ( 0.0, -1.0)
+%                 -- (-2.4, -1.0)
+%                 -- (-2.4,  2.5)
+%                 -- ( 0.0,  2.5)
+%                 -- (step);
+%         \end{tikzpicture}
+%
+%         \caption{Scratch program execution}
+%     \end{figure}
+% \end{frame}
+
 \begin{frame}[fragile]\frametitle{Whisker, Callbacks}
     \begin{itemize}
-        \item Callbacks get executed every time a frame is rendered
-        \item Make it possible to \textcolor{upfim}{track} and \textcolor{upfim}{react} to what the user sees
+        \item Callbacks get \textcolor{upfim}{executed every time a frame is rendered}
+        \item Make it possible to \textcolor{upfim}{observe} what the user sees
     \end{itemize}
 
     \begin{javascriptcode}
@@ -370,16 +389,16 @@
     \end{itemize}
 
     \begin{javascriptcode}
-        t.onConstraintFailure('fail');
-        t.onConstraintFailure('nothing');
-
         const constraint = t.addConstraint(() => {
-            t.assert.ok(sprite.visible === true, 'Sprite must be visible.');
+            t.assert.ok(sprite.visible, 'Sprite must be visible.');
         });
 
         constraint.disable();
         constraint.enable();
         constraint.isActive();
+
+        t.onConstraintFailure('fail');
+        t.onConstraintFailure('nothing');
     \end{javascriptcode}
 \end{frame}
 
@@ -421,3 +440,11 @@
 %         \end{tabular}
 %     }
 % \end{frame}
+
+% /* Tests start with the program in a
+%  * paused state. The test can then run
+%  * (resume) the program on demand. */
+%
+% /* Accessed through objects that always
+%  * have the current sprite attributes /
+%  * variable value. */

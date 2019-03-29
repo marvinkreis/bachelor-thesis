@@ -2,7 +2,7 @@
     \bigcenter{Property-based Testing with Whisker}
 \end{frame}
 
-\begin{frame}[fragile]\frametitle{Property-based Testing, QuickCheck}
+\begin{frame}[fragile]\frametitle{Property-based Testing with QuickCheck}
     Example: QuickCheck
 
     \medskip
@@ -38,17 +38,44 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}\frametitle{Property-based Testing, Whisker}
-    Property-based testing can be performed on Scratch programs in a different way,
-    by checking properties in the background, while the program is running.
-
-    \pause
-    \bigskip
-
+\begin{frame}\frametitle{Property-based Testing with Whisker}
+    Property-based testing can be performed on Scratch programs:
     \begin{itemize}
         \item \textcolor{upfim}{Callbacks:} Observe the program's output
-        \item \textcolor{upfim}{Constraints}: Define properties
+        \item \textcolor{upfim}{Constraints}: Define properties, checked in the background
         \item (\textcolor{upfim}{Automated Input Generation}: Control the program)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Property-based Testing with Whisker}
+    \begin{javascriptcode}
+        await t.runForTime(100)
+        const sprite = t.getSprite('Sprite1');
+
+        let oldX = sprite.x;
+
+        t.addCallback(() => {
+            oldX = sprite.x;
+        });
+
+        t.addConstraint(() => {
+            if (t.isKeyDown('right arrow')) {
+                t.assert.ok(sprite.x > oldX);
+            } else {
+                t.assert.ok(sprite.x === oldX);
+            }
+        });
+
+        t.detectRandomInputs();
+        await t.runForTime(2000);
+    \end{javascriptcode}
+\end{frame}
+
+\begin{frame}\frametitle{Property-based Testing with Whisker}
+    Advantages over normal tests:
+    \begin{itemize}
+        \item Many constraints can be checked in \textcolor{upfim}{few program executions}
+        \item Constraints require \textcolor{upfim}{little code}
     \end{itemize}
 \end{frame}
 
