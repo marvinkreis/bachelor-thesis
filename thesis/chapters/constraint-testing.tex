@@ -273,14 +273,14 @@ In this case, tests can simply check which constraints failed, and let Whisker g
                     t.assert.ok(Math.abs(movedRightTime - pressedTime) <= 100,
                         'Sprite must move right when, and only when, the right arrow key is pressed.');
                 }
-            }));
+            });
 
             const moveDirectionConstraint = t.addConstraint(() => {
                 t.assert.ok(sprite.x >= sprite.old.x,
                     'Sprite must only stand still or move right');
                 t.assert.ok(sprite.y == sprite.old.y,
                     'Sprite must not move vertically.');
-            }));
+            });
 
             /* (4) Some code, which registers inputs. Or nothing if
              * inputs are done manually. For example, generated input: */
