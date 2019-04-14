@@ -6,6 +6,18 @@ In order to solve this problem, we implemented Whisker, a program which automate
 
 To evaluate Whisker, we tested a collection of student solutions from a sixth and seventh grade Scratch workshop.  Our test results closely match scores from independent manual grading, with an average Pearson's correlation coefficient of 0.882 over ten test executions.  Furthermore, we evaluated Whisker's automated input generation by measuring its statement coverage on the sample solutions to Code Club's Scratch courses, on which was able to achieve a mean statement coverage of 95.25\% over ten runs.
 
+# Citation (BibTeX)
+
+```bibtex
+@mastersthesis{whisker,
+    type = {B.Sc. Thesis},
+    author = {Kreis, Marvin},
+    year = {2019},
+    month = {02},
+    title = {Whisker: Automated Testing of Scratch Programs}
+}
+```
+
 # Evaluation Data
 
 The `evaluation` directory contains data from the evaluation, as well as scripts to analyze the data and to reproduce the diagrams in the thesis.
