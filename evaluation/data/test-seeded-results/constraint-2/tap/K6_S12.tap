@@ -1,0 +1,28 @@
+# project: K6_S12.sb3
+TAP version 13
+1..1
+not ok 1 - Test
+  ---
+  severity: fail
+  error:
+    name: AssumptionError
+    actual: false
+    expected: true
+    operator: ok
+    message: Could not find variable time.
+    generatedMessage: false
+  ...
+# summary:
+#   tests: 1
+#   pass: 0
+#   fail: 1
+#   error: 0
+#   skip: 0
+# coverage:
+#   combined: 0.00 (0/26)
+#   individual:
+#     Stage: NaN (0/0)
+#     Bowl: 0.00 (0/10)
+#     Apple: 0.00 (0/9)
+#     Bananas: 0.00 (0/7)
+

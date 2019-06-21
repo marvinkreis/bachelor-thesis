@@ -1,0 +1,29 @@
+# project: K7_S27.sb3
+TAP version 13
+1..1
+not ok 1 - Test
+  ---
+  severity: fail
+  error:
+    name: AssumptionError
+    actual: false
+    expected: true
+    operator: ok
+    message: Could not find sprite bowl.
+    generatedMessage: false
+  ...
+# summary:
+#   tests: 1
+#   pass: 0
+#   fail: 1
+#   error: 0
+#   skip: 0
+# coverage:
+#   combined: 0.15 (4/26)
+#   individual:
+#     Stage: NaN (0/0)
+#     Figur2: 0.00 (0/4)
+#     Figur4: NaN (0/0)
+#     Bananas: 0.20 (2/10)
+#     Apple: 0.17 (2/12)
+
