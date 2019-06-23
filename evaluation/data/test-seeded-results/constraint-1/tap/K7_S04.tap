@@ -75,7 +75,7 @@ ok 1 - Test
     - id: 18
       name: Banana Beginning Delay Constraint
       status: fail
-      message: Banana must not fall in the first second.
+      message: Banana must be invisible for the first second.
     - id: 19
       name: Banana Respawn Delay Constraint
       status: fail
@@ -116,10 +116,10 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.46 (29/63)
+#   combined: 0.51 (32/63)
 #   individual:
 #     Stage: 0.57 (4/7)
 #     Apple: 0.53 (9/17)
 #     Bowl: 0.47 (7/15)
-#     Bananas: 0.38 (9/24)
+#     Bananas: 0.50 (12/24)
 

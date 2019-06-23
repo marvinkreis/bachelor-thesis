@@ -25,5 +25,5 @@ id,name,status,message
 24,Banana Ground Points Test,pass,
 25,Banana Ground Message Test,fail,Banana must display a message when it hits the ground.
 26,Timer Tick Test,fail,Time must decrease by one every second.
-27,Timer Game Over Test,pass,
+27,Timer Game Over Test,fail,Score must not change after game is over (should be over).
 28,Timer Game Over Message Test,fail,Bowl must display a message when the time is up.

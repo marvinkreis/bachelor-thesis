@@ -124,22 +124,33 @@ not ok 25 - Banana Ground Message Test
     generatedMessage: false
   ...
 ok 26 - Timer Tick Test
-ok 27 - Timer Game Over Test
+not ok 27 - Timer Game Over Test
+  ---
+  severity: fail
+  error:
+    name: AssertionError
+    actual: 95
+    expected: -100
+    operator: ==
+    message: Apple must not move after game is over (should be over).
+    generatedMessage: false
+    constraint: '[no name]'
+  ...
 not ok 28 - Timer Game Over Message Test
   ---
   severity: fail
   error:
     name: AssertionError
-    actual: false
-    expected: true
-    operator: ok
-    message: Bowl must display a message when the time is up.
+    actual: 4
+    expected: 20000
+    operator: '>='
+    message: Game over message must not appear before 20 seconds.
     generatedMessage: false
   ...
 # summary:
 #   tests: 28
-#   pass: 18
-#   fail: 10
+#   pass: 17
+#   fail: 11
 #   error: 0
 #   skip: 0
 # coverage:

@@ -98,8 +98,8 @@ ok 1 - Test
       message: Banana did not touch the ground.
     - id: 24
       name: Timer Tick Constraint
-      status: pass
-      message: ''
+      status: skip
+      message: Timer did not tick at all.
     - id: 25
       name: Timer Game Over Constraint
       status: fail

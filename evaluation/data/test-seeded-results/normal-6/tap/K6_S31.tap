@@ -104,9 +104,9 @@ not ok 27 - Timer Game Over Test
   error:
     name: AssertionError
     actual: -3
-    expected: -2
+    expected: -123
     operator: ==
-    message: Time must not change after game is over (should be over).
+    message: Bananas must not move after game is over (should be over).
     generatedMessage: false
     constraint: '[no name]'
   ...

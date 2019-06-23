@@ -86,8 +86,8 @@ ok 1 - Test
       message: ''
     - id: 21
       name: Banana Bowl Points Constraint
-      status: skip
-      message: Banana bowl points could not be checked.
+      status: pass
+      message: ''
     - id: 22
       name: Banana Ground Points Constraint
       status: fail
@@ -116,10 +116,10 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.67 (34/51)
+#   combined: 0.73 (37/51)
 #   individual:
 #     Stage: 0.50 (5/10)
 #     Bowl: 0.80 (8/10)
 #     Apple: 0.67 (10/15)
-#     Bananas: 0.69 (11/16)
+#     Bananas: 0.88 (14/16)
 

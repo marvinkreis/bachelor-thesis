@@ -62,17 +62,7 @@ not ok 9 - Banana Falling Details Test
     constraint: '[no name]'
   ...
 ok 10 - Apple Spawn Test
-not ok 11 - Apple Spawn Random X Position Test
-  ---
-  severity: fail
-  error:
-    name: AssertionError
-    actual: false
-    expected: true
-    operator: ok
-    message: Apples must spawn at random x positions.
-    generatedMessage: false
-  ...
+ok 11 - Apple Spawn Random X Position Test
 ok 12 - Apple Spawn Y Position Test
 ok 13 - Banana Spawn Test
 ok 14 - Banana Spawn Random X Position Test
@@ -147,8 +137,6 @@ not ok 23 - Banana Bowl Points Test
     operator: ok
     message: Apple touched the bowl before banana's score could be added.
     generatedMessage: false
-  log:
-    - Apple touched the bowl before the banana touched the bowl.
   ...
 not ok 24 - Banana Ground Points Test
   ---
@@ -188,10 +176,10 @@ not ok 27 - Timer Game Over Test
   severity: fail
   error:
     name: AssertionError
-    actual: 2
-    expected: 5
+    actual: 8
+    expected: 3
     operator: ==
-    message: Bananas must not move after game is over (should be over).
+    message: Apple must not move after game is over (should be over).
     generatedMessage: false
     constraint: '[no name]'
   ...
@@ -208,8 +196,8 @@ not ok 28 - Timer Game Over Message Test
   ...
 # summary:
 #   tests: 28
-#   pass: 11
-#   fail: 17
+#   pass: 12
+#   fail: 16
 #   error: 0
 #   skip: 0
 # coverage:

@@ -35,39 +35,9 @@ not ok 9 - Banana Falling Details Test
 ok 10 - Apple Spawn Test
 ok 11 - Apple Spawn Random X Position Test
 ok 12 - Apple Spawn Y Position Test
-not ok 13 - Banana Spawn Test
-  ---
-  severity: fail
-  error:
-    name: AssertionError
-    actual: 2
-    expected: 3
-    operator: '>='
-    message: At least three Bananas must have spawned after 30 seconds.
-    generatedMessage: false
-  ...
-not ok 14 - Banana Spawn Random X Position Test
-  ---
-  severity: fail
-  error:
-    name: AssumptionError
-    actual: 2
-    expected: 3
-    operator: '>='
-    message: At least three Bananas must have spawned after 30 seconds.
-    generatedMessage: false
-  ...
-not ok 15 - Banana Spawn Y Position Test
-  ---
-  severity: fail
-  error:
-    name: AssumptionError
-    actual: 2
-    expected: 3
-    operator: '>='
-    message: At least three Bananas must have spawned after 30 seconds.
-    generatedMessage: false
-  ...
+ok 13 - Banana Spawn Test
+ok 14 - Banana Spawn Random X Position Test
+ok 15 - Banana Spawn Y Position Test
 ok 16 - Only One Apple Test
 ok 17 - Only One Banana Test
 not ok 18 - Banana Fall Delay Test
@@ -97,7 +67,7 @@ not ok 19 - Banana Ground Delay Test
 ok 20 - Apple Points Test
   ---
   log:
-    - Banana touched the ground before the apple touched the bowl.
+    - Banana touched the bowl before the apple touched the bowl.
   ...
 not ok 21 - Apple Game Over Test
   ---
@@ -161,8 +131,8 @@ not ok 27 - Timer Game Over Test
   severity: fail
   error:
     name: AssertionError
-    actual: 205
-    expected: 78
+    actual: 13
+    expected: 12
     operator: ==
     message: Apple must not move after game is over (should be over).
     generatedMessage: false
@@ -181,8 +151,8 @@ not ok 28 - Timer Game Over Message Test
   ...
 # summary:
 #   tests: 28
-#   pass: 14
-#   fail: 14
+#   pass: 17
+#   fail: 11
 #   error: 0
 #   skip: 0
 # coverage:

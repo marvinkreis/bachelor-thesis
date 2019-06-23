@@ -2,8 +2,8 @@ id,name,status,message
 1,Variable Initialization Test,fail,Score must start at 0.
 2,Bowl Initialization Test,fail,Bowl must start at x = 0.
 3,Fruit Initialization Test,fail,Apple must have a size of 50%.
-4,Bowl Movement Test,fail,Bowl must move to the left when left arrow key is pressed.
-5,Bowl Movement Details Test,fail,Bowl must move to the left when left arrow key is pressed.
+4,Bowl Movement Test,pass,
+5,Bowl Movement Details Test,fail,Bowl must move in steps of size 10.
 6,Apple Falling Test,pass,
 7,Apple Falling Details Test,pass,
 8,Banana Falling Test,pass,
@@ -25,5 +25,5 @@ id,name,status,message
 24,Banana Ground Points Test,fail,Apple touched the bowl before banana's score could be subtracted.
 25,Banana Ground Message Test,fail,Banana's message must disappear a second after it hit the ground
 26,Timer Tick Test,pass,
-27,Timer Game Over Test,pass,
+27,Timer Game Over Test,fail,Apple must not move after game is over (should be over).
 28,Timer Game Over Message Test,fail,Bowl must display a message when the time is up.

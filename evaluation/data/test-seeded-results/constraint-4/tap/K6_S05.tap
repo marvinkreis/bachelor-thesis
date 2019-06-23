@@ -79,23 +79,23 @@ ok 1 - Test
     - id: 19
       name: Banana Respawn Delay Constraint
       status: fail
-      message: Banana must not fall for a second after it spawned.
+      message: ''
     - id: 20
       name: Apple Points Constraint
-      status: pass
-      message: ''
+      status: skip
+      message: Apple points could not be checked.
     - id: 21
       name: Banana Bowl Points Constraint
       status: skip
       message: Banana bowl points could not be checked.
     - id: 22
       name: Banana Ground Points Constraint
-      status: fail
-      message: Bananas must subtract 8 points when they hit the floor.
+      status: skip
+      message: Banana ground points could not be checked.
     - id: 23
       name: Banana Ground Message Constraint
-      status: fail
-      message: Banana must display a message when it hits the ground.
+      status: skip
+      message: Banana ground message could not be checked.
     - id: 24
       name: Timer Tick Constraint
       status: pass
@@ -116,10 +116,10 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.88 (43/49)
+#   combined: 0.92 (45/49)
 #   individual:
 #     Stage: NaN (0/0)
-#     Apple: 0.83 (19/23)
+#     Apple: 0.91 (21/23)
 #     Bananas: 1.00 (16/16)
 #     Bowl: 0.80 (8/10)
 

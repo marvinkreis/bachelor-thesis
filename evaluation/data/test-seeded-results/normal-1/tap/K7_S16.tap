@@ -128,10 +128,10 @@ not ok 27 - Timer Game Over Test
   severity: fail
   error:
     name: AssertionError
-    actual: -227
-    expected: 104
+    actual: 95
+    expected: -100
     operator: ==
-    message: Bananas must not move after game is over (should be over).
+    message: Apple must not move after game is over (should be over).
     generatedMessage: false
     constraint: '[no name]'
   ...
@@ -140,10 +140,10 @@ not ok 28 - Timer Game Over Message Test
   severity: fail
   error:
     name: AssertionError
-    actual: false
-    expected: true
-    operator: ok
-    message: Bowl must display a message when the time is up.
+    actual: 3
+    expected: 20000
+    operator: '>='
+    message: Game over message must not appear before 20 seconds.
     generatedMessage: false
   ...
 # summary:

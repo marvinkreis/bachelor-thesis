@@ -21,7 +21,7 @@ id,name,status,message
 20,Apple Points Test,pass,
 21,Apple Game Over Test,pass,
 22,Apple Game Over Message Test,fail,Apple must display a message if it hits the ground.
-23,Banana Bowl Points Test,fail,Apple touched the bowl before banana's score could be added.
+23,Banana Bowl Points Test,pass,
 24,Banana Ground Points Test,pass,
 25,Banana Ground Message Test,fail,Banana's message must disappear a second after it hit the ground
 26,Timer Tick Test,pass,

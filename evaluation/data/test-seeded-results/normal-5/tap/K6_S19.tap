@@ -46,7 +46,7 @@ not ok 20 - Apple Points Test
   severity: fail
   error:
     name: AssertionError
-    actual: -720
+    actual: -712
     expected: -715
     operator: ==
     message: Apple must give 5 points when it touches the bowl.
@@ -59,10 +59,10 @@ not ok 21 - Apple Game Over Test
   severity: fail
   error:
     name: AssertionError
-    actual: -186
-    expected: -98
+    actual: 26
+    expected: 27
     operator: ==
-    message: Apple must not move after game is over (should be over).
+    message: Time must not change after game is over (should be over).
     generatedMessage: false
     constraint: '[no name]'
   ...
@@ -77,10 +77,16 @@ not ok 22 - Apple Game Over Message Test
     message: Apple must display a message if it hits the ground.
     generatedMessage: false
   ...
-ok 23 - Banana Bowl Points Test
+not ok 23 - Banana Bowl Points Test
   ---
-  log:
-    - Apple touched the bowl before the banana touched the bowl.
+  severity: fail
+  error:
+    name: AssumptionError
+    actual: false
+    expected: bowl
+    operator: ==
+    message: Banana didn't touch the bowl after 30 seconds.
+    generatedMessage: false
   ...
 ok 24 - Banana Ground Points Test
 ok 25 - Banana Ground Message Test
@@ -89,8 +95,8 @@ ok 27 - Timer Game Over Test
 ok 28 - Timer Game Over Message Test
 # summary:
 #   tests: 28
-#   pass: 23
-#   fail: 5
+#   pass: 22
+#   fail: 6
 #   error: 0
 #   skip: 0
 # coverage:

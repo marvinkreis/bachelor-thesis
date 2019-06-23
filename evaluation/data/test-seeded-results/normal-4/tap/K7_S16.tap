@@ -34,7 +34,17 @@ not ok 3 - Fruit Initialization Test
     message: Apple must have a size of 50%.
     generatedMessage: false
   ...
-ok 4 - Bowl Movement Test
+not ok 4 - Bowl Movement Test
+  ---
+  severity: fail
+  error:
+    name: AssertionError
+    actual: -112
+    expected: -112
+    operator: <
+    message: Bowl must move to the left when left arrow key is pressed.
+    generatedMessage: false
+  ...
 not ok 5 - Bowl Movement Details Test
   ---
   severity: fail
@@ -124,22 +134,33 @@ not ok 25 - Banana Ground Message Test
     generatedMessage: false
   ...
 ok 26 - Timer Tick Test
-ok 27 - Timer Game Over Test
+not ok 27 - Timer Game Over Test
+  ---
+  severity: fail
+  error:
+    name: AssertionError
+    actual: 95
+    expected: -100
+    operator: ==
+    message: Apple must not move after game is over (should be over).
+    generatedMessage: false
+    constraint: '[no name]'
+  ...
 not ok 28 - Timer Game Over Message Test
   ---
   severity: fail
   error:
     name: AssertionError
-    actual: false
-    expected: true
-    operator: ok
-    message: Bowl must display a message when the time is up.
+    actual: 3
+    expected: 20000
+    operator: '>='
+    message: Game over message must not appear before 20 seconds.
     generatedMessage: false
   ...
 # summary:
 #   tests: 28
-#   pass: 18
-#   fail: 10
+#   pass: 16
+#   fail: 12
 #   error: 0
 #   skip: 0
 # coverage:

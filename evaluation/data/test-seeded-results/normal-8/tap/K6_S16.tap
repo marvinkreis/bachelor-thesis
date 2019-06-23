@@ -17,7 +17,7 @@ not ok 2 - Bowl Initialization Test
   severity: fail
   error:
     name: AssertionError
-    actual: 176
+    actual: 186
     expected: 0
     operator: ==
     message: Bowl must start at x = 0.
@@ -39,8 +39,8 @@ not ok 4 - Bowl Movement Test
   severity: fail
   error:
     name: AssumptionError
-    actual: 176
-    expected: 96
+    actual: 186
+    expected: 106
     operator: ==
     message: Bowl must not move when no key is pressed.
     generatedMessage: false

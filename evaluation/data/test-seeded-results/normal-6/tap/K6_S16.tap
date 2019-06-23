@@ -50,8 +50,8 @@ not ok 5 - Bowl Movement Details Test
   severity: fail
   error:
     name: AssertionError
-    actual: 176
-    expected: 96
+    actual: 186
+    expected: 106
     operator: ==
     message: Bowl must not move when no key is pressed.
     generatedMessage: false

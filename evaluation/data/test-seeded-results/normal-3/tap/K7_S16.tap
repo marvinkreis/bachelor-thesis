@@ -39,12 +39,13 @@ not ok 5 - Bowl Movement Details Test
   ---
   severity: fail
   error:
-    name: AssumptionError
-    actual: -112
-    expected: -112
-    operator: <
-    message: Bowl must move to the left when left arrow key is pressed.
+    name: AssertionError
+    actual: false
+    expected: true
+    operator: ok
+    message: Bowl must move in steps of size 10.
     generatedMessage: false
+    constraint: '[no name]'
   ...
 ok 6 - Apple Falling Test
 ok 7 - Apple Falling Details Test
@@ -128,7 +129,7 @@ not ok 27 - Timer Game Over Test
   severity: fail
   error:
     name: AssertionError
-    actual: 75
+    actual: 140
     expected: -100
     operator: ==
     message: Apple must not move after game is over (should be over).
@@ -140,10 +141,10 @@ not ok 28 - Timer Game Over Message Test
   severity: fail
   error:
     name: AssertionError
-    actual: false
-    expected: true
-    operator: ok
-    message: Bowl must display a message when the time is up.
+    actual: 4
+    expected: 20000
+    operator: '>='
+    message: Game over message must not appear before 20 seconds.
     generatedMessage: false
   ...
 # summary:

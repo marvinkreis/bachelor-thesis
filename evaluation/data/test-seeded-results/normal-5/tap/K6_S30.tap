@@ -88,6 +88,8 @@ not ok 24 - Banana Ground Points Test
     operator: ok
     message: Apple touched the bowl before banana's score could be subtracted.
     generatedMessage: false
+  log:
+    - Apple touched the bowl before the banana touched the ground.
   ...
 not ok 25 - Banana Ground Message Test
   ---
@@ -99,6 +101,8 @@ not ok 25 - Banana Ground Message Test
     operator: ok
     message: Banana must display a message when it hits the ground.
     generatedMessage: false
+  log:
+    - Apple touched the bowl before the banana touched the ground.
   ...
 not ok 26 - Timer Tick Test
   ---
@@ -116,8 +120,8 @@ not ok 27 - Timer Game Over Test
   severity: fail
   error:
     name: AssertionError
-    actual: -1276
-    expected: -1275
+    actual: -1285
+    expected: -1284
     operator: ==
     message: Time must not change after game is over (should be over).
     generatedMessage: false

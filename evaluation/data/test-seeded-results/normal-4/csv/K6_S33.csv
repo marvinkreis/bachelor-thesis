@@ -6,8 +6,8 @@ id,name,status,message
 5,Bowl Movement Details Test,pass,
 6,Apple Falling Test,pass,
 7,Apple Falling Details Test,fail,Apple must fall with a speed of -5.
-8,Banana Falling Test,fail,Banana must fall down.
-9,Banana Falling Details Test,fail,Banana must fall down.
+8,Banana Falling Test,pass,
+9,Banana Falling Details Test,fail,Banana must fall with a speed of -7.
 10,Apple Spawn Test,pass,
 11,Apple Spawn Random X Position Test,pass,
 12,Apple Spawn Y Position Test,pass,

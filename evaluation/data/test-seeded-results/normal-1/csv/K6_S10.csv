@@ -26,4 +26,4 @@ id,name,status,message
 25,Banana Ground Message Test,fail,Banana must display a message when it hits the ground.
 26,Timer Tick Test,pass,
 27,Timer Game Over Test,fail,Game must not be over after 15 seconds.
-28,Timer Game Over Message Test,fail,Bowl must display a message when the time is up.
+28,Timer Game Over Message Test,fail,Bowl's game over message must disappear after one second

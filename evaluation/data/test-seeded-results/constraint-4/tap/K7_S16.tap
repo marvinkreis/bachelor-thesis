@@ -18,8 +18,8 @@ ok 1 - Test
       message: ''
     - id: 4
       name: Bowl Movement Constraint
-      status: fail
-      message: Bowl must move right when right arrow key is pressed.
+      status: pass
+      message: ''
     - id: 5
       name: Bowl Movement Details Constraint
       status: fail
@@ -103,11 +103,11 @@ ok 1 - Test
     - id: 25
       name: Timer Game Over Constraint
       status: fail
-      message: Score must not change after game is over (should be over).
+      message: Bananas must not move after game is over (should be over).
     - id: 26
       name: Timer Game Over Message Constraint
       status: fail
-      message: Bowl must not display a message before 20 seconds.
+      message: Bowl must display a message after 30 seconds.
   ...
 # summary:
 #   tests: 1
@@ -116,10 +116,10 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.81 (35/43)
+#   combined: 0.79 (34/43)
 #   individual:
 #     Stage: NaN (0/0)
 #     Bananas: 0.79 (11/14)
-#     Bowl: 0.89 (8/9)
+#     Bowl: 0.78 (7/9)
 #     Apple: 0.80 (16/20)
 

@@ -33,16 +33,8 @@ not ok 22 - Apple Game Over Message Test
     message: Apple must display a message if it hits the ground.
     generatedMessage: false
   ...
-not ok 23 - Banana Bowl Points Test
+ok 23 - Banana Bowl Points Test
   ---
-  severity: fail
-  error:
-    name: AssumptionError
-    actual: false
-    expected: true
-    operator: ok
-    message: Apple touched the bowl before banana's score could be added.
-    generatedMessage: false
   log:
     - Apple touched the bowl before the banana touched the bowl.
   ...
@@ -69,8 +61,8 @@ ok 27 - Timer Game Over Test
 ok 28 - Timer Game Over Message Test
 # summary:
 #   tests: 28
-#   pass: 25
-#   fail: 3
+#   pass: 26
+#   fail: 2
 #   error: 0
 #   skip: 0
 # coverage:

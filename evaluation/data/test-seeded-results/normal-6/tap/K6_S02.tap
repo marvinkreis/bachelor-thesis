@@ -60,7 +60,7 @@ not ok 13 - Banana Spawn Test
   severity: fail
   error:
     name: AssertionError
-    actual: 0
+    actual: 2
     expected: 3
     operator: '>='
     message: At least three Bananas must have spawned after 30 seconds.
@@ -71,7 +71,7 @@ not ok 14 - Banana Spawn Random X Position Test
   severity: fail
   error:
     name: AssumptionError
-    actual: 0
+    actual: 2
     expected: 3
     operator: '>='
     message: At least three Bananas must have spawned after 30 seconds.
@@ -82,24 +82,14 @@ not ok 15 - Banana Spawn Y Position Test
   severity: fail
   error:
     name: AssumptionError
-    actual: 0
+    actual: 2
     expected: 3
     operator: '>='
     message: At least three Bananas must have spawned after 30 seconds.
     generatedMessage: false
   ...
 ok 16 - Only One Apple Test
-not ok 17 - Only One Banana Test
-  ---
-  severity: fail
-  error:
-    name: AssumptionError
-    actual: 0
-    expected: 3
-    operator: '>='
-    message: At least three Bananas must have spawned after 30 seconds.
-    generatedMessage: false
-  ...
+ok 17 - Only One Banana Test
 not ok 18 - Banana Fall Delay Test
   ---
   severity: fail
@@ -201,15 +191,15 @@ not ok 28 - Timer Game Over Message Test
   ...
 # summary:
 #   tests: 28
-#   pass: 12
-#   fail: 16
+#   pass: 13
+#   fail: 15
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.65 (24/37)
+#   combined: 0.70 (26/37)
 #   individual:
 #     Stage: NaN (0/0)
 #     Bowl: 1.00 (4/4)
-#     Bananas: 0.53 (9/17)
+#     Bananas: 0.65 (11/17)
 #     Apple: 0.69 (11/16)
 

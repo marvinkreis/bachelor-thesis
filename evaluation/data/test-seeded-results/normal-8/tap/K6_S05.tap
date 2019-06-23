@@ -92,7 +92,7 @@ not ok 23 - Banana Bowl Points Test
   severity: fail
   error:
     name: AssumptionError
-    actual: ground
+    actual: false
     expected: bowl
     operator: ==
     message: Banana didn't touch the bowl after 30 seconds.

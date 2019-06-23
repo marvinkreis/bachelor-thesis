@@ -233,8 +233,8 @@ not ok 26 - Timer Tick Test
   severity: fail
   error:
     name: AssertionError
-    actual: 29
-    expected: 28
+    actual: '30 '
+    expected: 29
     operator: ==
     message: Time must decrease by one every second.
     generatedMessage: false

@@ -23,7 +23,7 @@ ok 1 - Test
     - id: 5
       name: Bowl Movement Details Constraint
       status: fail
-      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
+      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
     - id: 6
       name: Apple Falling Constraint
       status: pass
@@ -54,24 +54,24 @@ ok 1 - Test
       message: ''
     - id: 13
       name: Banana Spawn Constraint
-      status: fail
+      status: pass
       message: ''
     - id: 14
       name: Banana Spawn Random X Position Constraint
-      status: skip
-      message: Too few bananas spawned.
+      status: pass
+      message: ''
     - id: 15
       name: Banana Spawn Y Position Constraint
-      status: skip
-      message: Too few bananas spawned.
+      status: pass
+      message: ''
     - id: 16
       name: Only One Apple Constraint
       status: pass
       message: ''
     - id: 17
       name: Only One Banana Constraint
-      status: skip
-      message: Too few bananas spawned.
+      status: pass
+      message: ''
     - id: 18
       name: Banana Beginning Delay Constraint
       status: fail
@@ -86,16 +86,16 @@ ok 1 - Test
       message: Apples must give 5 points when they hit the bowl.
     - id: 21
       name: Banana Bowl Points Constraint
-      status: skip
-      message: Banana bowl points could not be checked.
+      status: fail
+      message: Bananas must give 8 points when they hit the bowl.
     - id: 22
       name: Banana Ground Points Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Bananas must subtract 8 points when they hit the floor.
     - id: 23
       name: Banana Ground Message Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Banana must display a message when it hits the ground.
     - id: 24
       name: Timer Tick Constraint
       status: skip
@@ -116,10 +116,10 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.57 (21/37)
+#   combined: 0.62 (23/37)
 #   individual:
 #     Stage: NaN (0/0)
 #     Bowl: 1.00 (4/4)
-#     Bananas: 0.53 (9/17)
+#     Bananas: 0.65 (11/17)
 #     Apple: 0.50 (8/16)
 

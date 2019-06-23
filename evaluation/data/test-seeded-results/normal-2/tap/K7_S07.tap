@@ -65,37 +65,17 @@ not ok 9 - Banana Falling Details Test
 ok 10 - Apple Spawn Test
 ok 11 - Apple Spawn Random X Position Test
 ok 12 - Apple Spawn Y Position Test
-not ok 13 - Banana Spawn Test
-  ---
-  severity: fail
-  error:
-    name: AssertionError
-    actual: 2
-    expected: 3
-    operator: '>='
-    message: At least three Bananas must have spawned after 30 seconds.
-    generatedMessage: false
-  ...
-not ok 14 - Banana Spawn Random X Position Test
-  ---
-  severity: fail
-  error:
-    name: AssumptionError
-    actual: 2
-    expected: 3
-    operator: '>='
-    message: At least three Bananas must have spawned after 30 seconds.
-    generatedMessage: false
-  ...
+ok 13 - Banana Spawn Test
+ok 14 - Banana Spawn Random X Position Test
 not ok 15 - Banana Spawn Y Position Test
   ---
   severity: fail
   error:
-    name: AssumptionError
-    actual: 2
-    expected: 3
-    operator: '>='
-    message: At least three Bananas must have spawned after 30 seconds.
+    name: AssertionError
+    actual: false
+    expected: true
+    operator: ok
+    message: Bananas must spawn at y = 170.
     generatedMessage: false
   ...
 ok 16 - Only One Apple Test
@@ -127,16 +107,10 @@ not ok 19 - Banana Ground Delay Test
 ok 20 - Apple Points Test
 ok 21 - Apple Game Over Test
 ok 22 - Apple Game Over Message Test
-not ok 23 - Banana Bowl Points Test
+ok 23 - Banana Bowl Points Test
   ---
-  severity: fail
-  error:
-    name: AssumptionError
-    actual: false
-    expected: bowl
-    operator: ==
-    message: Banana didn't touch the bowl after 30 seconds.
-    generatedMessage: false
+  log:
+    - Apple touched the bowl before the banana touched the bowl.
   ...
 not ok 24 - Banana Ground Points Test
   ---
@@ -144,7 +118,7 @@ not ok 24 - Banana Ground Points Test
   error:
     name: AssertionError
     actual: '-8'
-    expected: 2
+    expected: 20
     operator: ==
     message: Banana must subtract 8 points when it touches the ground.
     generatedMessage: false
@@ -170,8 +144,8 @@ not ok 27 - Timer Game Over Test
   severity: fail
   error:
     name: AssertionError
-    actual: 59
-    expected: 60
+    actual: 58
+    expected: 59
     operator: ==
     message: Time must not change after game is over (should be over).
     generatedMessage: false
@@ -190,8 +164,8 @@ not ok 28 - Timer Game Over Message Test
   ...
 # summary:
 #   tests: 28
-#   pass: 13
-#   fail: 15
+#   pass: 16
+#   fail: 12
 #   error: 0
 #   skip: 0
 # coverage:

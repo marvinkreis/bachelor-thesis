@@ -7,7 +7,7 @@ id,name,status,message
 6,Apple Falling Test,pass,
 7,Apple Falling Details Test,pass,
 8,Banana Falling Test,pass,
-9,Banana Falling Details Test,fail,Banana must fall down.
+9,Banana Falling Details Test,pass,
 10,Apple Spawn Test,pass,
 11,Apple Spawn Random X Position Test,pass,
 12,Apple Spawn Y Position Test,fail,Apples must spawn at y = 170.
@@ -26,4 +26,4 @@ id,name,status,message
 25,Banana Ground Message Test,fail,Banana must display a message when it hits the ground.
 26,Timer Tick Test,pass,
 27,Timer Game Over Test,fail,Game must not be over after 15 seconds.
-28,Timer Game Over Message Test,fail,Bowl must display a message when the time is up.
+28,Timer Game Over Message Test,fail,Bowl's game over message must disappear after one second

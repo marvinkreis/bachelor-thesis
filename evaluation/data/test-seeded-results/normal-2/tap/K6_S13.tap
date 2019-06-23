@@ -169,8 +169,8 @@ not ok 21 - Apple Game Over Test
   severity: fail
   error:
     name: AssertionError
-    actual: -0.215
-    expected: -2.0425
+    actual: -7.824
+    expected: -8.286
     operator: ==
     message: Apple must not move after game is over (should be over).
     generatedMessage: false

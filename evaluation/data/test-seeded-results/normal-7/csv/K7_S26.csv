@@ -22,7 +22,7 @@ id,name,status,message
 21,Apple Game Over Test,fail,Apple must not move after game is over (should be over).
 22,Apple Game Over Message Test,fail,Apple's game over message must disappear one second after it hit the ground
 23,Banana Bowl Points Test,pass,
-24,Banana Ground Points Test,pass,
+24,Banana Ground Points Test,fail,Banana must subtract 8 points when it touches the ground.
 25,Banana Ground Message Test,fail,Banana's message must disappear a second after it hit the ground
 26,Timer Tick Test,pass,
 27,Timer Game Over Test,pass,

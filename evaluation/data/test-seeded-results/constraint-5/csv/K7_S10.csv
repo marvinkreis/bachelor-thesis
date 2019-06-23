@@ -23,5 +23,5 @@ id,name,status,message
 22,Banana Ground Points Constraint,fail,Bananas must subtract 8 points when they hit the floor.
 23,Banana Ground Message Constraint,pass,
 24,Timer Tick Constraint,pass,
-25,Timer Game Over Constraint,fail,Apple must not move after game is over (should be over).
+25,Timer Game Over Constraint,fail,Bananas must not move after game is over (should be over).
 26,Timer Game Over Message Constraint,fail,Bowl must display a message after 30 seconds.

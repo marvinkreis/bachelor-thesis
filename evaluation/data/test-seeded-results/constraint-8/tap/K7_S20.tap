@@ -82,8 +82,8 @@ ok 1 - Test
       message: Banana must be invisible for a second after it spawned.
     - id: 20
       name: Apple Points Constraint
-      status: fail
-      message: Apples must give 5 points when they hit the bowl.
+      status: skip
+      message: Apple points could not be checked.
     - id: 21
       name: Banana Bowl Points Constraint
       status: skip
@@ -103,7 +103,7 @@ ok 1 - Test
     - id: 25
       name: Timer Game Over Constraint
       status: fail
-      message: Bananas must not move after game is over (should be over).
+      message: Apple must not move after game is over (should be over).
     - id: 26
       name: Timer Game Over Message Constraint
       status: fail

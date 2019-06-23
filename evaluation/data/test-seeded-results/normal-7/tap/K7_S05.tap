@@ -69,7 +69,17 @@ ok 20 - Apple Points Test
     - Banana touched the ground before the apple touched the bowl.
   ...
 ok 21 - Apple Game Over Test
-ok 22 - Apple Game Over Message Test
+not ok 22 - Apple Game Over Message Test
+  ---
+  severity: fail
+  error:
+    name: AssertionError
+    actual: false
+    expected: true
+    operator: ok
+    message: Apple must display a message for one second if it hits the ground.
+    generatedMessage: false
+  ...
 ok 23 - Banana Bowl Points Test
   ---
   log:
@@ -84,7 +94,7 @@ not ok 25 - Banana Ground Message Test
     actual: false
     expected: true
     operator: ok
-    message: Banana must display a message when it hits the ground.
+    message: Banana must display a message for one second when it hits the ground
     generatedMessage: false
   ...
 ok 26 - Timer Tick Test
@@ -102,8 +112,8 @@ not ok 28 - Timer Game Over Message Test
   ...
 # summary:
 #   tests: 28
-#   pass: 22
-#   fail: 6
+#   pass: 21
+#   fail: 7
 #   error: 0
 #   skip: 0
 # coverage:

@@ -79,7 +79,7 @@ ok 1 - Test
     - id: 19
       name: Banana Respawn Delay Constraint
       status: fail
-      message: Banana must not fall for a second after it spawned.
+      message: ''
     - id: 20
       name: Apple Points Constraint
       status: fail

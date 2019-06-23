@@ -23,7 +23,7 @@ ok 1 - Test
     - id: 5
       name: Bowl Movement Details Constraint
       status: fail
-      message: Bowl must move left with a speed of 10 when left arrow key is pressed.
+      message: Bowl must move right with a speed of 10 when right arrow key is pressed.
     - id: 6
       name: Apple Falling Constraint
       status: pass

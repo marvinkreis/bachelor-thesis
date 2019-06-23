@@ -17,7 +17,7 @@ not ok 2 - Bowl Initialization Test
   severity: fail
   error:
     name: AssertionError
-    actual: 176
+    actual: 186
     expected: 0
     operator: ==
     message: Bowl must start at x = 0.

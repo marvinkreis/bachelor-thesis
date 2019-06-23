@@ -4,7 +4,7 @@ id,name,status,message
 3,Fruit Initialization Test,pass,
 4,Bowl Movement Test,fail,Bowl must move to the left when left arrow key is pressed.
 5,Bowl Movement Details Test,fail,Bowl must move to the left when left arrow key is pressed.
-6,Apple Falling Test,pass,
+6,Apple Falling Test,fail,Apple must appear on the top of the screen after 5 seconds.
 7,Apple Falling Details Test,fail,Apple must appear on the top of the screen after 5 seconds.
 8,Banana Falling Test,fail,Banana must appear on the top of the screen after 5 seconds.
 9,Banana Falling Details Test,fail,Banana must appear on the top of the screen after 5 seconds.

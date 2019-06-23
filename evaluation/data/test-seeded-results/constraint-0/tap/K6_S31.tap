@@ -103,7 +103,7 @@ ok 1 - Test
     - id: 25
       name: Timer Game Over Constraint
       status: fail
-      message: Time must not change after game is over (should be over).
+      message: Apple must not move after game is over (should be over).
     - id: 26
       name: Timer Game Over Message Constraint
       status: fail

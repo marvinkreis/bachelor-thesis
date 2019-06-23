@@ -22,7 +22,7 @@ id,name,status,message
 21,Apple Game Over Test,pass,
 22,Apple Game Over Message Test,pass,
 23,Banana Bowl Points Test,fail,Apple touched the bowl before banana's score could be added.
-24,Banana Ground Points Test,fail,Apple touched the bowl before banana's score could be subtracted.
+24,Banana Ground Points Test,pass,
 25,Banana Ground Message Test,pass,
 26,Timer Tick Test,pass,
 27,Timer Game Over Test,pass,

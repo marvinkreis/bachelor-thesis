@@ -234,7 +234,7 @@ not ok 28 - Timer Game Over Message Test
   severity: fail
   error:
     name: AssertionError
-    actual: 4
+    actual: 2
     expected: 20000
     operator: '>='
     message: Game over message must not appear before 20 seconds.

@@ -19,17 +19,7 @@ ok 5 - Bowl Movement Details Test
 ok 6 - Apple Falling Test
 ok 7 - Apple Falling Details Test
 ok 8 - Banana Falling Test
-not ok 9 - Banana Falling Details Test
-  ---
-  severity: fail
-  error:
-    name: AssumptionError
-    actual: 150
-    expected: 150
-    operator: <
-    message: Banana must fall down.
-    generatedMessage: false
-  ...
+ok 9 - Banana Falling Details Test
 ok 10 - Apple Spawn Test
 ok 11 - Apple Spawn Random X Position Test
 not ok 12 - Apple Spawn Y Position Test
@@ -136,20 +126,20 @@ not ok 28 - Timer Game Over Message Test
     actual: false
     expected: true
     operator: ok
-    message: Bowl must display a message when the time is up.
+    message: Bowl's game over message must disappear after one second
     generatedMessage: false
   ...
 # summary:
 #   tests: 28
-#   pass: 18
-#   fail: 10
+#   pass: 19
+#   fail: 9
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.95 (53/56)
+#   combined: 0.96 (54/56)
 #   individual:
 #     Stage: NaN (0/0)
-#     Bowl: 0.87 (13/15)
+#     Bowl: 0.93 (14/15)
 #     Apple: 1.00 (21/21)
 #     Bananas: 0.95 (19/20)
 

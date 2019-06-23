@@ -19,7 +19,7 @@ id,name,status,message
 18,Banana Beginning Delay Constraint,fail,Banana must not fall in the first second.
 19,Banana Respawn Delay Constraint,fail,Banana must not fall for a second after it spawned.
 20,Apple Points Constraint,pass,
-21,Banana Bowl Points Constraint,skip,Banana bowl points could not be checked.
+21,Banana Bowl Points Constraint,pass,
 22,Banana Ground Points Constraint,fail,Bananas must subtract 8 points when they hit the floor.
 23,Banana Ground Message Constraint,fail,Banana must display a message when it hits the ground.
 24,Timer Tick Constraint,pass,

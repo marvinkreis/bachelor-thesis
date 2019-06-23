@@ -90,8 +90,8 @@ ok 1 - Test
       message: ''
     - id: 22
       name: Banana Ground Points Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Bananas must subtract 8 points when they hit the floor.
     - id: 23
       name: Banana Ground Message Constraint
       status: fail
@@ -106,8 +106,8 @@ ok 1 - Test
       message: ''
     - id: 26
       name: Timer Game Over Message Constraint
-      status: fail
-      message: Bowl must display a message after 30 seconds.
+      status: pass
+      message: ''
   ...
 # summary:
 #   tests: 1
@@ -119,7 +119,7 @@ ok 1 - Test
 #   combined: 0.95 (53/56)
 #   individual:
 #     Stage: NaN (0/0)
-#     Bowl: 0.87 (13/15)
-#     Apple: 1.00 (21/21)
+#     Bowl: 1.00 (15/15)
+#     Apple: 0.90 (19/21)
 #     Bananas: 0.95 (19/20)
 

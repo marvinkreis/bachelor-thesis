@@ -34,12 +34,12 @@ ok 1 - Test
       message: Apple must fall down in steps of size 5.
     - id: 8
       name: Banana Falling Constraint
-      status: fail
+      status: pass
       message: ''
     - id: 9
       name: Banana Falling Details
-      status: skip
-      message: Banana did not fall.
+      status: fail
+      message: Banana must fall down in steps of size 7.
     - id: 10
       name: Apple Spawn Constraint
       status: fail
@@ -75,11 +75,11 @@ ok 1 - Test
     - id: 18
       name: Banana Beginning Delay Constraint
       status: fail
-      message: Banana must be invisible for the first second.
+      message: Banana must not fall in the first second.
     - id: 19
       name: Banana Respawn Delay Constraint
       status: fail
-      message: ''
+      message: Banana must be invisible for a second after it spawned.
     - id: 20
       name: Apple Points Constraint
       status: skip
@@ -90,12 +90,12 @@ ok 1 - Test
       message: Banana bowl points could not be checked.
     - id: 22
       name: Banana Ground Points Constraint
-      status: skip
-      message: Banana ground points could not be checked.
+      status: fail
+      message: Bananas must subtract 8 points when they hit the floor.
     - id: 23
       name: Banana Ground Message Constraint
-      status: skip
-      message: Banana ground message could not be checked.
+      status: fail
+      message: Banana must display a message when it hits the ground.
     - id: 24
       name: Timer Tick Constraint
       status: skip
@@ -116,10 +116,10 @@ ok 1 - Test
 #   error: 0
 #   skip: 0
 # coverage:
-#   combined: 0.75 (21/28)
+#   combined: 0.82 (23/28)
 #   individual:
 #     Stage: NaN (0/0)
 #     Apple: 1.00 (11/11)
-#     Bananas: 0.63 (5/8)
+#     Bananas: 0.88 (7/8)
 #     Bowl: 0.56 (5/9)
 

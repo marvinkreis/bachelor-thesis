@@ -19,27 +19,18 @@ not ok 7 - Apple Falling Details Test
     generatedMessage: false
     constraint: '[no name]'
   ...
-not ok 8 - Banana Falling Test
-  ---
-  severity: fail
-  error:
-    name: AssertionError
-    actual: 170
-    expected: 170
-    operator: <
-    message: Banana must fall down.
-    generatedMessage: false
-  ...
+ok 8 - Banana Falling Test
 not ok 9 - Banana Falling Details Test
   ---
   severity: fail
   error:
-    name: AssumptionError
-    actual: 170
-    expected: 170
-    operator: <
-    message: Banana must fall down.
+    name: AssertionError
+    actual: false
+    expected: true
+    operator: ok
+    message: Banana must fall with a speed of -7.
     generatedMessage: false
+    constraint: '[no name]'
   ...
 ok 10 - Apple Spawn Test
 ok 11 - Apple Spawn Random X Position Test
@@ -85,8 +76,8 @@ not ok 23 - Banana Bowl Points Test
   severity: fail
   error:
     name: AssertionError
-    actual: 12
-    expected: 15
+    actual: 19
+    expected: 22
     operator: ==
     message: Banana must give 8 points when it touches the bowl.
     generatedMessage: false
@@ -141,8 +132,8 @@ not ok 28 - Timer Game Over Message Test
   ...
 # summary:
 #   tests: 28
-#   pass: 18
-#   fail: 10
+#   pass: 19
+#   fail: 9
 #   error: 0
 #   skip: 0
 # coverage:

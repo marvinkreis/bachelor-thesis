@@ -20,10 +20,10 @@ id,name,status,message
 19,Banana Ground Delay Test,fail,Banana must not be visible for a second after touching the ground.
 20,Apple Points Test,pass,
 21,Apple Game Over Test,pass,
-22,Apple Game Over Message Test,pass,
+22,Apple Game Over Message Test,fail,Apple must display a message for one second if it hits the ground.
 23,Banana Bowl Points Test,pass,
 24,Banana Ground Points Test,pass,
-25,Banana Ground Message Test,fail,Banana must display a message when it hits the ground.
+25,Banana Ground Message Test,fail,Banana must display a message for one second when it hits the ground
 26,Timer Tick Test,pass,
 27,Timer Game Over Test,pass,
 28,Timer Game Over Message Test,fail,Bowl must display a message when the time is up.

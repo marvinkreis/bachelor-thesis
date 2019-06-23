@@ -135,8 +135,8 @@ not ok 27 - Timer Game Over Test
   severity: fail
   error:
     name: AssertionError
-    actual: -17.278
-    expected: -5.542
+    actual: 200.047
+    expected: 208
     operator: ==
     message: Apple must not move after game is over (should be over).
     generatedMessage: false

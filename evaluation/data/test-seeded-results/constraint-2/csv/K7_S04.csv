@@ -16,7 +16,7 @@ id,name,status,message
 15,Banana Spawn Y Position Constraint,pass,
 16,Only One Apple Constraint,pass,
 17,Only One Banana Constraint,pass,
-18,Banana Beginning Delay Constraint,fail,Banana must not fall in the first second.
+18,Banana Beginning Delay Constraint,fail,Banana must be invisible for the first second.
 19,Banana Respawn Delay Constraint,fail,Banana must be invisible for a second after it spawned.
 20,Apple Points Constraint,pass,
 21,Banana Bowl Points Constraint,skip,Banana bowl points could not be checked.

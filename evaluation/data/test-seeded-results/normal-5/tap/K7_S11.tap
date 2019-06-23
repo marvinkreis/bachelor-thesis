@@ -207,13 +207,11 @@ not ok 20 - Apple Points Test
   severity: fail
   error:
     name: AssumptionError
-    actual: ground
-    expected: bowl
-    operator: ==
-    message: Apple must have touched the bowl after five seconds.
+    actual: false
+    expected: true
+    operator: ok
+    message: An apple must appear on the top of the screen after 5 seconds.
     generatedMessage: false
-  log:
-    - Banana touched the ground before the apple touched the bowl.
   ...
 not ok 21 - Apple Game Over Test
   ---

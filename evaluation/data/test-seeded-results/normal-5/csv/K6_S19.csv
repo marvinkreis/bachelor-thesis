@@ -19,9 +19,9 @@ id,name,status,message
 18,Banana Fall Delay Test,fail,Banana must not be visible for a second in the beginning.
 19,Banana Ground Delay Test,pass,
 20,Apple Points Test,fail,Apple must give 5 points when it touches the bowl.
-21,Apple Game Over Test,fail,Apple must not move after game is over (should be over).
+21,Apple Game Over Test,fail,Time must not change after game is over (should be over).
 22,Apple Game Over Message Test,fail,Apple must display a message if it hits the ground.
-23,Banana Bowl Points Test,pass,
+23,Banana Bowl Points Test,fail,Banana didn't touch the bowl after 30 seconds.
 24,Banana Ground Points Test,pass,
 25,Banana Ground Message Test,pass,
 26,Timer Tick Test,pass,

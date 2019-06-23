@@ -93,21 +93,15 @@ not ok 23 - Banana Bowl Points Test
   error:
     name: AssumptionError
     actual: false
-    expected: true
-    operator: ok
-    message: Apple must not touch the ground during this test.
+    expected: bowl
+    operator: ==
+    message: Banana didn't touch the bowl after 30 seconds.
     generatedMessage: false
   ...
-not ok 24 - Banana Ground Points Test
+ok 24 - Banana Ground Points Test
   ---
-  severity: fail
-  error:
-    name: AssumptionError
-    actual: false
-    expected: true
-    operator: ok
-    message: Apple must not touch the ground during this test.
-    generatedMessage: false
+  log:
+    - Apple touched the bowl before the banana touched the ground.
   ...
 ok 25 - Banana Ground Message Test
   ---
@@ -129,8 +123,8 @@ not ok 28 - Timer Game Over Message Test
   ...
 # summary:
 #   tests: 28
-#   pass: 19
-#   fail: 9
+#   pass: 20
+#   fail: 8
 #   error: 0
 #   skip: 0
 # coverage:

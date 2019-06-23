@@ -90,8 +90,8 @@ ok 1 - Test
       message: ''
     - id: 22
       name: Banana Ground Points Constraint
-      status: pass
-      message: ''
+      status: fail
+      message: Bananas must subtract 8 points when they hit the floor.
     - id: 23
       name: Banana Ground Message Constraint
       status: fail

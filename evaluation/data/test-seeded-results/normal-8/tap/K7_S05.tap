@@ -94,7 +94,7 @@ not ok 25 - Banana Ground Message Test
     actual: false
     expected: true
     operator: ok
-    message: Banana must display a message when it hits the ground.
+    message: Banana must display a message for one second when it hits the ground
     generatedMessage: false
   ...
 ok 26 - Timer Tick Test

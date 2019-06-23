@@ -11,11 +11,11 @@ id,name,status,message
 10,Apple Spawn Constraint,pass,
 11,Apple Spawn Random X Position Constraint,pass,
 12,Apple Spawn Y Position Constraint,pass,
-13,Banana Spawn Constraint,fail,
-14,Banana Spawn Random X Position Constraint,skip,Too few bananas spawned.
-15,Banana Spawn Y Position Constraint,skip,Too few bananas spawned.
+13,Banana Spawn Constraint,pass,
+14,Banana Spawn Random X Position Constraint,pass,
+15,Banana Spawn Y Position Constraint,pass,
 16,Only One Apple Constraint,pass,
-17,Only One Banana Constraint,skip,Too few bananas spawned.
+17,Only One Banana Constraint,pass,
 18,Banana Beginning Delay Constraint,fail,Banana must not fall in the first second.
 19,Banana Respawn Delay Constraint,fail,Banana must be invisible for a second after it spawned.
 20,Apple Points Constraint,fail,Apples must give 5 points when they hit the bowl.
@@ -23,5 +23,5 @@ id,name,status,message
 22,Banana Ground Points Constraint,fail,Bananas must subtract 8 points when they hit the floor.
 23,Banana Ground Message Constraint,fail,Banana must display a message when it hits the ground.
 24,Timer Tick Constraint,skip,Timer did not tick at all.
-25,Timer Game Over Constraint,fail,Score must not change after game is over (should be over).
+25,Timer Game Over Constraint,fail,Apple must not move after game is over (should be over).
 26,Timer Game Over Message Constraint,fail,Bowl must display a message after 30 seconds.

@@ -17,11 +17,11 @@ id,name,status,message
 16,Only One Apple Constraint,pass,
 17,Only One Banana Constraint,pass,
 18,Banana Beginning Delay Constraint,fail,Banana must not fall in the first second.
-19,Banana Respawn Delay Constraint,fail,Banana must not fall for a second after it spawned.
-20,Apple Points Constraint,pass,
-21,Banana Bowl Points Constraint,fail,Bananas must give 8 points when they hit the bowl.
-22,Banana Ground Points Constraint,fail,Bananas must subtract 8 points when they hit the floor.
-23,Banana Ground Message Constraint,fail,Banana must display a message when it hits the ground.
+19,Banana Respawn Delay Constraint,fail,
+20,Apple Points Constraint,skip,Apple points could not be checked.
+21,Banana Bowl Points Constraint,skip,Banana bowl points could not be checked.
+22,Banana Ground Points Constraint,skip,Banana ground points could not be checked.
+23,Banana Ground Message Constraint,skip,Banana ground message could not be checked.
 24,Timer Tick Constraint,pass,
 25,Timer Game Over Constraint,pass,
 26,Timer Game Over Message Constraint,fail,Bowl must display a message after 30 seconds.

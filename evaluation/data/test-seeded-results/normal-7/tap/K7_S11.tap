@@ -46,7 +46,17 @@ not ok 5 - Bowl Movement Details Test
     message: Bowl must move to the left when left arrow key is pressed.
     generatedMessage: false
   ...
-ok 6 - Apple Falling Test
+not ok 6 - Apple Falling Test
+  ---
+  severity: fail
+  error:
+    name: AssertionError
+    actual: false
+    expected: true
+    operator: ok
+    message: Apple must appear on the top of the screen after 5 seconds.
+    generatedMessage: false
+  ...
 not ok 7 - Apple Falling Details Test
   ---
   severity: fail
@@ -293,8 +303,8 @@ not ok 28 - Timer Game Over Message Test
   ...
 # summary:
 #   tests: 28
-#   pass: 2
-#   fail: 26
+#   pass: 1
+#   fail: 27
 #   error: 0
 #   skip: 0
 # coverage:

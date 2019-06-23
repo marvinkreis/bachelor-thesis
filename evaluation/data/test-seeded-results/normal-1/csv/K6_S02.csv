@@ -15,7 +15,7 @@ id,name,status,message
 14,Banana Spawn Random X Position Test,fail,At least three Bananas must have spawned after 30 seconds.
 15,Banana Spawn Y Position Test,fail,At least three Bananas must have spawned after 30 seconds.
 16,Only One Apple Test,pass,
-17,Only One Banana Test,fail,At least three Bananas must have spawned after 30 seconds.
+17,Only One Banana Test,pass,
 18,Banana Fall Delay Test,fail,Banana must not be visible for a second in the beginning.
 19,Banana Ground Delay Test,fail,Banana must not be visible for a second after touching the ground.
 20,Apple Points Test,fail,Apple must give 5 points when it touches the bowl.

@@ -87,10 +87,16 @@ not ok 19 - Banana Ground Delay Test
 ok 20 - Apple Points Test
 ok 21 - Apple Game Over Test
 ok 22 - Apple Game Over Message Test
-ok 23 - Banana Bowl Points Test
+not ok 23 - Banana Bowl Points Test
   ---
-  log:
-    - Apple touched the bowl before the banana touched the bowl.
+  severity: fail
+  error:
+    name: AssumptionError
+    actual: false
+    expected: bowl
+    operator: ==
+    message: Banana didn't touch the bowl after 30 seconds.
+    generatedMessage: false
   ...
 ok 24 - Banana Ground Points Test
   ---
@@ -117,8 +123,8 @@ not ok 28 - Timer Game Over Message Test
   ...
 # summary:
 #   tests: 28
-#   pass: 21
-#   fail: 7
+#   pass: 20
+#   fail: 8
 #   error: 0
 #   skip: 0
 # coverage:

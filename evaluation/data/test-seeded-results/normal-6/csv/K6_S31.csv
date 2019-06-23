@@ -25,5 +25,5 @@ id,name,status,message
 24,Banana Ground Points Test,fail,Apple touched the bowl before banana's score could be subtracted.
 25,Banana Ground Message Test,fail,Banana must display a message when it hits the ground.
 26,Timer Tick Test,pass,
-27,Timer Game Over Test,fail,Time must not change after game is over (should be over).
+27,Timer Game Over Test,fail,Bananas must not move after game is over (should be over).
 28,Timer Game Over Message Test,fail,Bowl must display a message when the time is up.

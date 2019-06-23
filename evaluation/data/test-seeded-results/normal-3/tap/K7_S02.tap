@@ -90,7 +90,7 @@ not ok 20 - Apple Points Test
   severity: fail
   error:
     name: AssertionError
-    actual: 0
+    actual: -8
     expected: -3
     operator: ==
     message: Apple must give 5 points when it touches the bowl.
@@ -98,18 +98,7 @@ not ok 20 - Apple Points Test
   log:
     - Banana touched the ground before the apple touched the bowl.
   ...
-not ok 21 - Apple Game Over Test
-  ---
-  severity: fail
-  error:
-    name: AssertionError
-    actual: 170
-    expected: -231
-    operator: ==
-    message: Apple must not move after game is over (should be over).
-    generatedMessage: false
-    constraint: '[no name]'
-  ...
+ok 21 - Apple Game Over Test
 not ok 22 - Apple Game Over Message Test
   ---
   severity: fail
@@ -139,18 +128,7 @@ not ok 25 - Banana Ground Message Test
     generatedMessage: false
   ...
 ok 26 - Timer Tick Test
-not ok 27 - Timer Game Over Test
-  ---
-  severity: fail
-  error:
-    name: AssertionError
-    actual: -48
-    expected: -40
-    operator: ==
-    message: Score must not change after game is over (should be over).
-    generatedMessage: false
-    constraint: '[no name]'
-  ...
+ok 27 - Timer Game Over Test
 not ok 28 - Timer Game Over Message Test
   ---
   severity: fail
@@ -164,8 +142,8 @@ not ok 28 - Timer Game Over Message Test
   ...
 # summary:
 #   tests: 28
-#   pass: 16
-#   fail: 12
+#   pass: 18
+#   fail: 10
 #   error: 0
 #   skip: 0
 # coverage:
