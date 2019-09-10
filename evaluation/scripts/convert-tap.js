@@ -30,53 +30,6 @@ const minimist = require('minimist');
 let isConstraintTests = false;
 
 /**
- * Maps the project names to the names to the student id in the manual evaluation.
- */
-const nameMap = {
-    'FS_001': 'K6_S01',
-    'FS_002': 'K6_S02',
-    'FS_003': 'K6_S03',
-    'FS_005': 'K6_S05',
-    'FS_006': 'K6_S06',
-    'FS_010': 'K6_S10',
-    'FS_011': 'K6_S11',
-    'FS_012': 'K6_S12',
-    'FS_013': 'K6_S13',
-    'FS_014': 'K6_S14',
-    'FS_015': 'K6_S15',
-    'FS_016': 'K6_S16',
-    'FS_017': 'K6_S17',
-    'FS_018': 'K6_S18',
-    'FS_019': 'K6_S19',
-    'FS_020': 'K6_S20',
-    'FS_027': 'K6_S27',
-    'FS_029': 'K6_S29',
-    'FS_030': 'K6_S30',
-    'FS_031': 'K6_S31',
-    'FS_033': 'K6_S33',
-    '2': 'K7_S02',
-    '3': 'K7_S03',
-    '4': 'K7_S04',
-    '5': 'K7_S05',
-    '6': 'K7_S06',
-    '7': 'K7_S07',
-    '8': 'K7_S08',
-    '10': 'K7_S10',
-    '11': 'K7_S11',
-    '12': 'K7_S12',
-    '14': 'K7_S14',
-    '15': 'K7_S15',
-    '16': 'K7_S16',
-    '17': 'K7_S17',
-    '18': 'K7_S18',
-    '19': 'K7_S19',
-    '20': 'K7_S20',
-    '24': 'K7_S24',
-    '26': 'K7_S26',
-    '27': 'K7_S27'
-}
-
-/**
  * Converts a TAP13 string into a CSV string.
  */
 const convertToCsv = function (str) {
@@ -152,13 +105,7 @@ const convertCoverageToCsv = function (str) {
  * Splits a raw output string into TAP13, CSV, and coverage CSV files for each project and saves them.
  */
 const exportTapAndCsv = async function (str) {
-    const projectName = str.match(/# project: (.*)\./)[1];
-    let name = nameMap[projectName];
-
-    if (typeof name === 'undefined') {
-        console.log(`Can't match project name: ${projectName}`);
-        name = projectName;
-    }
+    const name = str.match(/# project: (.*)\./)[1];
 
     const tapPath = path.join('.', 'tap', name + '.tap');
     const csvPath = path.join('.', 'csv', name + '.csv');
